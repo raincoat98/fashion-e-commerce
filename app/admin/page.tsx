@@ -24,8 +24,17 @@ import {
   Search,
   Filter,
   Download,
+  Gift,
 } from "lucide-react";
 import Link from "next/link";
+import CouponManager from "@/components/admin/CouponManager";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Mock 데이터
 const mockOrders = [
@@ -118,8 +127,8 @@ const statusConfig = {
   },
 };
 
-export default function AdminDashboard() {
-  const [selectedStatus, setSelectedStatus] = useState<string>("all");
+export default function AdminPage() {
+  const [selectedStatus, setSelectedStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
   // 통계 계산
@@ -153,33 +162,29 @@ export default function AdminDashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                관리자 대시보드
-              </h1>
-              <p className="text-gray-600 mt-1">LUMINA 주문 및 배송 관리</p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" className="flex items-center space-x-2">
-                <Download className="w-4 h-4" />
-                <span>엑셀 다운로드</span>
-              </Button>
-              <Link href="/admin/settings">
-                <Button className="lumina-gradient text-white">설정</Button>
-              </Link>
-            </div>
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* 헤더 */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              관리자 대시보드
+            </h1>
+            <p className="text-gray-600 mt-1">LUMINA 주문 및 쿠폰 관리</p>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Button variant="outline" className="flex items-center space-x-2">
+              <Download className="w-4 h-4" />
+              <span>엑셀 다운로드</span>
+            </Button>
+            <Link href="/admin/settings">
+              <Button className="lumina-gradient text-white">설정</Button>
+            </Link>
           </div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-8">
         {/* 통계 카드 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -261,69 +266,67 @@ export default function AdminDashboard() {
           </Card>
         </div>
 
-        {/* 주문 관리 */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>주문 관리</CardTitle>
-                <CardDescription>
-                  주문 상태를 관리하고 배송 정보를 업데이트하세요
-                </CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="all" className="w-full">
-              <div className="flex items-center justify-between mb-6">
-                <TabsList>
-                  <TabsTrigger
-                    value="all"
-                    onClick={() => setSelectedStatus("all")}
-                  >
-                    전체 ({totalOrders})
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="pending"
-                    onClick={() => setSelectedStatus("pending")}
-                  >
-                    결제 대기 ({pendingOrders})
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="processing"
-                    onClick={() => setSelectedStatus("processing")}
-                  >
-                    처리 중 ({processingOrders})
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="shipped"
-                    onClick={() => setSelectedStatus("shipped")}
-                  >
-                    배송 중 ({shippedOrders})
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="delivered"
-                    onClick={() => setSelectedStatus("delivered")}
-                  >
-                    배송 완료 ({deliveredOrders})
-                  </TabsTrigger>
-                </TabsList>
+        {/* 메인 탭 */}
+        <Tabs defaultValue="orders" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="orders" className="flex items-center space-x-2">
+              <Package className="w-4 h-4" />
+              <span>주문 관리</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="coupons"
+              className="flex items-center space-x-2"
+            >
+              <Gift className="w-4 h-4" />
+              <span>쿠폰 관리</span>
+            </TabsTrigger>
+          </TabsList>
 
-                <div className="flex items-center space-x-4">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input
-                      type="text"
-                      placeholder="주문번호, 고객명 검색..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+          {/* 주문 관리 탭 */}
+          <TabsContent value="orders" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle>주문 관리</CardTitle>
+                    <CardDescription>
+                      주문 상태를 관리하고 배송 정보를 업데이트하세요
+                    </CardDescription>
                   </div>
                 </div>
-              </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center space-x-4">
+                    <Select
+                      value={selectedStatus}
+                      onValueChange={setSelectedStatus}
+                    >
+                      <SelectTrigger className="w-40">
+                        <SelectValue placeholder="상태" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">전체</SelectItem>
+                        <SelectItem value="pending">결제 대기</SelectItem>
+                        <SelectItem value="processing">처리 중</SelectItem>
+                        <SelectItem value="shipped">배송 중</SelectItem>
+                        <SelectItem value="delivered">배송 완료</SelectItem>
+                      </SelectContent>
+                    </Select>
 
-              <TabsContent value="all" className="space-y-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <input
+                        type="text"
+                        placeholder="주문번호, 고객명 검색..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
@@ -460,10 +463,15 @@ export default function AdminDashboard() {
                     </tbody>
                   </table>
                 </div>
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* 쿠폰 관리 탭 */}
+          <TabsContent value="coupons" className="space-y-6">
+            <CouponManager />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
