@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,28 +25,16 @@ import {
   Mail,
   ArrowRight,
 } from "lucide-react";
+import { useStore } from "@/stores/useStore";
 
 export default function ReturnPage() {
-  const [selectedTab, setSelectedTab] = useState("policy");
-
-  const returnPolicy = {
-    period: "7일",
-    conditions: [
-      "상품 수령 후 7일 이내",
-      "상품의 초기 상태 유지",
-      "세탁이나 사용 흔적 없음",
-      "태그 및 포장재 보존",
-      "교환/반품 신청서 작성",
-    ],
-    exceptions: [
-      "세탁된 상품",
-      "사용 흔적이 있는 상품",
-      "태그가 제거된 상품",
-      "포장재가 훼손된 상품",
-      "개봉된 화장품/속옷류",
-      "주문제작 상품",
-    ],
-  };
+  const {
+    selectedReturnTab,
+    setSelectedReturnTab,
+    returnPolicy,
+    refundMethods,
+    refundFees,
+  } = useStore();
 
   const returnProcess = [
     {
@@ -185,7 +173,10 @@ export default function ReturnPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+                <Tabs
+                  value={selectedReturnTab}
+                  onValueChange={setSelectedReturnTab}
+                >
                   <TabsList className="grid w-full grid-cols-3 mb-6">
                     <TabsTrigger value="policy">정책</TabsTrigger>
                     <TabsTrigger value="process">절차</TabsTrigger>

@@ -18,100 +18,13 @@ import {
   Phone,
   Mail
 } from "lucide-react";
+import { useStore } from "@/stores/useStore";
 
 export default function ShippingPage() {
-  const shippingMethods = [
-    {
-      id: "standard",
-      name: "일반 배송",
-      description: "가장 일반적인 배송 방법",
-      price: "3,000원",
-      freeThreshold: "30,000원",
-      deliveryTime: "2-3일",
-      icon: Truck,
-      features: [
-        "결제 완료 후 1-2일 내 출고",
-        "배송 완료까지 2-3일 소요",
-        "제주도 및 도서산간 추가 1-2일",
-        "부재 시 2회 재시도"
-      ]
-    },
-    {
-      id: "express",
-      name: "빠른 배송",
-      description: "다음날 배송 서비스",
-      price: "5,000원",
-      freeThreshold: "50,000원",
-      deliveryTime: "1일",
-      icon: Package,
-      features: [
-        "오후 2시 이전 주문 시 당일 출고",
-        "다음날 오전 배송 완료",
-        "서울/경기 지역 한정",
-        "부재 시 편의점 보관"
-      ]
-    },
-    {
-      id: "premium",
-      name: "프리미엄 배송",
-      description: "특별한 서비스와 함께",
-      price: "10,000원",
-      freeThreshold: "100,000원",
-      deliveryTime: "1일",
-      icon: Shield,
-      features: [
-        "전국 어디든 1일 배송",
-        "전화 예약 배송",
-        "부재 시 재방문 서비스",
-        "포장 상태 확인 서비스"
-      ]
-    }
-  ];
+      const { selectedShippingTab, setSelectedShippingTab, shippingMethods, deliveryAreas } = useStore();
 
-  const deliveryAreas = [
-    {
-      region: "서울/경기",
-      standard: "1-2일",
-      express: "1일",
-      premium: "1일",
-      note: "가장 빠른 배송"
-    },
-    {
-      region: "인천/강원",
-      standard: "2-3일",
-      express: "1-2일",
-      premium: "1일",
-      note: "일반적인 배송"
-    },
-    {
-      region: "충청/전라",
-      standard: "2-3일",
-      express: "2일",
-      premium: "1일",
-      note: "안정적인 배송"
-    },
-    {
-      region: "경상/부산",
-      standard: "2-3일",
-      express: "2일",
-      premium: "1일",
-      note: "안정적인 배송"
-    },
-    {
-      region: "제주도",
-      standard: "3-4일",
-      express: "2-3일",
-      premium: "1일",
-      note: "추가 배송비 발생"
-    },
-    {
-      region: "도서산간",
-      standard: "3-5일",
-      express: "2-3일",
-      premium: "1일",
-      note: "추가 배송비 발생"
-    }
-  ];
+
+    
 
   const deliveryProcess = [
     {
@@ -170,7 +83,7 @@ export default function ShippingPage() {
                 <CardTitle className="text-2xl font-bold">배송 방법</CardTitle>
               </CardHeader>
               <CardContent>
-                <Tabs defaultValue="standard">
+                <Tabs value={selectedShippingTab} onValueChange={setSelectedShippingTab}>
                   <TabsList className="grid w-full grid-cols-3 mb-6">
                     {shippingMethods.map((method) => {
                       const Icon = method.icon;

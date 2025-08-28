@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,35 +13,24 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react";
+import { useStore } from "@/stores/useStore";
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    category: "",
-    subject: "",
-    message: "",
-  });
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const {
+    contactForm,
+    isContactSubmitted,
+    setContactForm,
+    submitContact,
+    resetContact,
+  } = useStore();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // 실제로는 API 호출을 통해 서버로 전송
-    console.log("문의 제출:", formData);
-    setIsSubmitted(true);
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      category: "",
-      subject: "",
-      message: "",
-    });
+    submitContact();
   };
 
   const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setContactForm({ [field]: value });
   };
 
   return (
@@ -64,7 +53,7 @@ export default function ContactPage() {
                 <CardTitle className="text-2xl font-bold">문의 양식</CardTitle>
               </CardHeader>
               <CardContent>
-                {isSubmitted ? (
+                {isContactSubmitted ? (
                   <div className="text-center py-12">
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -74,7 +63,7 @@ export default function ContactPage() {
                       빠른 시일 내에 답변드리겠습니다.
                     </p>
                     <Button
-                      onClick={() => setIsSubmitted(false)}
+                      onClick={resetContact}
                       className="lumina-gradient text-white"
                     >
                       새 문의 작성
@@ -89,7 +78,7 @@ export default function ContactPage() {
                         </label>
                         <Input
                           type="text"
-                          value={formData.name}
+                          value={contactForm.name}
                           onChange={(e) => handleChange("name", e.target.value)}
                           required
                           placeholder="이름을 입력하세요"
@@ -101,7 +90,7 @@ export default function ContactPage() {
                         </label>
                         <Input
                           type="email"
-                          value={formData.email}
+                          value={contactForm.email}
                           onChange={(e) =>
                             handleChange("email", e.target.value)
                           }
@@ -117,7 +106,7 @@ export default function ContactPage() {
                       </label>
                       <Input
                         type="tel"
-                        value={formData.phone}
+                        value={contactForm.phone}
                         onChange={(e) => handleChange("phone", e.target.value)}
                         placeholder="전화번호를 입력하세요"
                       />
@@ -128,7 +117,7 @@ export default function ContactPage() {
                         문의 유형 *
                       </label>
                       <Select
-                        value={formData.category}
+                        value={contactForm.category}
                         onValueChange={(value) =>
                           handleChange("category", value)
                         }
@@ -154,7 +143,7 @@ export default function ContactPage() {
                       </label>
                       <Input
                         type="text"
-                        value={formData.subject}
+                        value={contactForm.subject}
                         onChange={(e) =>
                           handleChange("subject", e.target.value)
                         }
@@ -168,7 +157,7 @@ export default function ContactPage() {
                         문의 내용 *
                       </label>
                       <Textarea
-                        value={formData.message}
+                        value={contactForm.message}
                         onChange={(e) =>
                           handleChange("message", e.target.value)
                         }

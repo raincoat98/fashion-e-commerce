@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,9 +14,11 @@ import {
   Info,
   CheckCircle,
 } from "lucide-react";
+import { useStore } from "@/stores/useStore";
 
 export default function SizeGuidePage() {
-  const [selectedCategory, setSelectedCategory] = useState("top");
+  const { selectedSizeCategory, setSelectedSizeCategory, sizeData } =
+    useStore();
 
   const sizeCategories = [
     { id: "top", name: "상의", icon: Shirt },
@@ -24,226 +26,6 @@ export default function SizeGuidePage() {
     { id: "bottom", name: "하의", icon: Package },
     { id: "shoes", name: "신발", icon: Footprints },
   ];
-
-  const sizeData = {
-    top: {
-      title: "상의 사이즈 가이드",
-      description:
-        "가슴둘레, 어깨너비, 소매길이를 기준으로 사이즈를 선택하세요.",
-      measurements: ["가슴둘레", "어깨너비", "소매길이", "총장"],
-      sizes: [
-        {
-          size: "XS",
-          chest: "82-86",
-          shoulder: "34-36",
-          sleeve: "58-60",
-          length: "58-62",
-        },
-        {
-          size: "S",
-          chest: "86-90",
-          shoulder: "36-38",
-          sleeve: "60-62",
-          length: "60-64",
-        },
-        {
-          size: "M",
-          chest: "90-94",
-          shoulder: "38-40",
-          sleeve: "62-64",
-          length: "62-66",
-        },
-        {
-          size: "L",
-          chest: "94-98",
-          shoulder: "40-42",
-          sleeve: "64-66",
-          length: "64-68",
-        },
-        {
-          size: "XL",
-          chest: "98-102",
-          shoulder: "42-44",
-          sleeve: "66-68",
-          length: "66-70",
-        },
-        {
-          size: "XXL",
-          chest: "102-106",
-          shoulder: "44-46",
-          sleeve: "68-70",
-          length: "68-72",
-        },
-      ],
-    },
-    dress: {
-      title: "원피스 사이즈 가이드",
-      description: "가슴둘레, 허리둘레, 힙둘레를 기준으로 사이즈를 선택하세요.",
-      measurements: ["가슴둘레", "허리둘레", "힙둘레", "총장"],
-      sizes: [
-        {
-          size: "XS",
-          chest: "82-86",
-          waist: "62-66",
-          hip: "86-90",
-          length: "85-90",
-        },
-        {
-          size: "S",
-          chest: "86-90",
-          waist: "66-70",
-          hip: "90-94",
-          length: "87-92",
-        },
-        {
-          size: "M",
-          chest: "90-94",
-          waist: "70-74",
-          hip: "94-98",
-          length: "89-94",
-        },
-        {
-          size: "L",
-          chest: "94-98",
-          waist: "74-78",
-          hip: "98-102",
-          length: "91-96",
-        },
-        {
-          size: "XL",
-          chest: "98-102",
-          waist: "78-82",
-          hip: "102-106",
-          length: "93-98",
-        },
-        {
-          size: "XXL",
-          chest: "102-106",
-          waist: "82-86",
-          hip: "106-110",
-          length: "95-100",
-        },
-      ],
-    },
-    bottom: {
-      title: "하의 사이즈 가이드",
-      description: "허리둘레, 힙둘레, 밑위길이를 기준으로 사이즈를 선택하세요.",
-      measurements: ["허리둘레", "힙둘레", "밑위길이", "총장"],
-      sizes: [
-        {
-          size: "XS",
-          waist: "62-66",
-          hip: "86-90",
-          rise: "22-24",
-          length: "95-100",
-        },
-        {
-          size: "S",
-          waist: "66-70",
-          hip: "90-94",
-          rise: "23-25",
-          length: "97-102",
-        },
-        {
-          size: "M",
-          waist: "70-74",
-          hip: "94-98",
-          rise: "24-26",
-          length: "99-104",
-        },
-        {
-          size: "L",
-          waist: "74-78",
-          hip: "98-102",
-          rise: "25-27",
-          length: "101-106",
-        },
-        {
-          size: "XL",
-          waist: "78-82",
-          hip: "102-106",
-          rise: "26-28",
-          length: "103-108",
-        },
-        {
-          size: "XXL",
-          waist: "82-86",
-          hip: "106-110",
-          rise: "27-29",
-          length: "105-110",
-        },
-      ],
-    },
-    shoes: {
-      title: "신발 사이즈 가이드",
-      description: "발길이를 기준으로 사이즈를 선택하세요.",
-      measurements: [
-        "발길이",
-        "발볼",
-        "한국사이즈",
-        "미국사이즈",
-        "유럽사이즈",
-      ],
-      sizes: [
-        {
-          size: "220",
-          length: "220",
-          width: "D",
-          kr: "220",
-          us: "5",
-          eu: "36",
-        },
-        {
-          size: "225",
-          length: "225",
-          width: "D",
-          kr: "225",
-          us: "5.5",
-          eu: "37",
-        },
-        {
-          size: "230",
-          length: "230",
-          width: "D",
-          kr: "230",
-          us: "6",
-          eu: "38",
-        },
-        {
-          size: "235",
-          length: "235",
-          width: "D",
-          kr: "235",
-          us: "6.5",
-          eu: "39",
-        },
-        {
-          size: "240",
-          length: "240",
-          width: "D",
-          kr: "240",
-          us: "7",
-          eu: "40",
-        },
-        {
-          size: "245",
-          length: "245",
-          width: "D",
-          kr: "245",
-          us: "7.5",
-          eu: "41",
-        },
-        {
-          size: "250",
-          length: "250",
-          width: "D",
-          kr: "250",
-          us: "8",
-          eu: "42",
-        },
-      ],
-    },
-  };
 
   const measurementGuide = [
     {
@@ -303,8 +85,8 @@ export default function SizeGuidePage() {
               </CardHeader>
               <CardContent>
                 <Tabs
-                  value={selectedCategory}
-                  onValueChange={setSelectedCategory}
+                  value={selectedSizeCategory}
+                  onValueChange={setSelectedSizeCategory}
                 >
                   <TabsList className="grid w-full grid-cols-4 mb-6">
                     {sizeCategories.map((category) => {
