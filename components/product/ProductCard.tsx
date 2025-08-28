@@ -5,7 +5,7 @@ import { Heart, Star, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
-import { useProductStore } from "@/stores/useProductStore";
+import { useCart } from "@/contexts/CartContext";
 
 interface Product {
   id: string;
@@ -29,9 +29,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0] || "");
   const [selectedColor, setSelectedColor] = useState("");
   const { toast } = useToast();
-  const { addToCart, addToWishlist, removeFromWishlist, isInWishlist } =
-    useProductStore();
-  const isWishlisted = isInWishlist(product.id);
+  const { addItem } = useCart();
+  const isWishlisted = false; // 위시리스트 기능은 나중에 구현
 
   const discountPercentage = product.originalPrice
     ? Math.round(
@@ -49,16 +48,14 @@ export default function ProductCard({ product }: ProductCardProps) {
       return;
     }
 
-    addToCart({
-      productId: product.id,
+    addItem({
+      id: parseInt(product.id.toString()),
       name: product.name,
       price: product.price,
       originalPrice: product.originalPrice,
       image: product.image,
       size: selectedSize,
       color: selectedColor || "기본",
-      quantity: 1,
-      stock: 10, // 실제로는 상품의 재고 정보를 가져와야 함
     });
 
     toast({
@@ -69,39 +66,11 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   const handleToggleWishlist = () => {
-    if (isWishlisted) {
-      // 위시리스트에서 제거
-      const wishlistItem = useProductStore
-        .getState()
-        .wishlist.find((item) => item.productId === product.id);
-      if (wishlistItem) {
-        removeFromWishlist(wishlistItem.id);
-        toast({
-          title: "위시리스트에서 제거되었습니다",
-          description: `${product.name}이(가) 위시리스트에서 제거되었습니다.`,
-          duration: 2000,
-        });
-      }
-    } else {
-      // 위시리스트에 추가
-      addToWishlist({
-        productId: product.id,
-        name: product.name,
-        price: product.price,
-        originalPrice: product.originalPrice,
-        image: product.image,
-        rating: product.rating,
-        reviewCount: product.reviewCount,
-        isNew: product.badge === "NEW",
-        isSale: product.badge === "SALE",
-        isBest: product.badge === "BEST",
-      });
-      toast({
-        title: "위시리스트에 추가되었습니다",
-        description: `${product.name}이(가) 위시리스트에 추가되었습니다.`,
-        duration: 2000,
-      });
-    }
+    toast({
+      title: "위시리스트 기능",
+      description: "위시리스트 기능은 준비 중입니다.",
+      duration: 2000,
+    });
   };
 
   return (

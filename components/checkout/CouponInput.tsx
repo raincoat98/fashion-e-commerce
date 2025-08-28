@@ -27,9 +27,8 @@ interface Coupon {
 }
 
 interface CouponInputProps {
-  subtotal: number;
-  onCouponApplied: (coupon: Coupon, discountAmount: number) => void;
-  onCouponRemoved: () => void;
+  onCouponApplied: (coupon: Coupon | null) => void;
+  appliedCoupon: Coupon | null;
 }
 
 // Mock 쿠폰 데이터
@@ -65,12 +64,10 @@ const availableCoupons: Coupon[] = [
 ];
 
 export default function CouponInput({
-  subtotal,
   onCouponApplied,
-  onCouponRemoved,
+  appliedCoupon,
 }: CouponInputProps) {
   const [couponCode, setCouponCode] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -97,41 +94,14 @@ export default function CouponInput({
       return;
     }
 
-    if (subtotal < coupon.minOrderAmount) {
-      setError(
-        `최소 주문 금액 ${coupon.minOrderAmount.toLocaleString()}원 이상 구매 시 사용 가능합니다.`
-      );
-      setIsLoading(false);
-      return;
-    }
-
-    // 할인 금액 계산
-    let discountAmount = 0;
-    switch (coupon.type) {
-      case "percentage":
-        discountAmount = Math.floor(subtotal * (coupon.value / 100));
-        if (coupon.maxDiscountAmount) {
-          discountAmount = Math.min(discountAmount, coupon.maxDiscountAmount);
-        }
-        break;
-      case "fixed":
-        discountAmount = coupon.value;
-        break;
-      case "free_shipping":
-        discountAmount = 3000; // 기본 배송비
-        break;
-    }
-
-    setAppliedCoupon(coupon);
-    onCouponApplied(coupon, discountAmount);
+    onCouponApplied(coupon);
     setCouponCode("");
     setIsLoading(false);
   };
 
   // 쿠폰 제거
   const removeCoupon = () => {
-    setAppliedCoupon(null);
-    onCouponRemoved();
+    onCouponApplied(null);
   };
 
   // 할인 값 표시

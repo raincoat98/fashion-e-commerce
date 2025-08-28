@@ -6,36 +6,41 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Trash2, Plus, Minus, ShoppingBag, Check } from "lucide-react";
 import Link from "next/link";
-import { useProductStore } from "@/stores/useProductStore";
+import { useCart } from "@/contexts/CartContext";
 
 export default function CartPage() {
-  const { cart, updateCartItem, removeFromCart, cartTotal } = useProductStore();
+  const {
+    state: cartState,
+    updateQuantity: updateCartQuantity,
+    removeItem: removeCartItem,
+  } = useCart();
   const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
 
-  const updateQuantity = (id: string, newQuantity: number) => {
-    const cartItem = cart.find((item) => item.id === id);
-    if (!cartItem) return;
-
+  const handleUpdateQuantity = (
+    id: number,
+    size: string,
+    color: string,
+    newQuantity: number
+  ) => {
     if (newQuantity === 0) {
-      removeFromCart(id);
-    } else if (newQuantity > cartItem.stock) {
-      // 재고 초과 시 최대 재고로 설정
-      updateCartItem(id, { quantity: cartItem.stock });
+      removeCartItem(id, size, color);
     } else {
-      updateCartItem(id, { quantity: newQuantity });
+      updateCartQuantity(id, size, color, newQuantity);
     }
   };
 
-  const removeItem = (id: string) => {
-    removeFromCart(id);
+  const handleRemoveItem = (id: number, size: string, color: string) => {
+    removeCartItem(id, size, color);
   };
 
   // 선택 관련 함수들
   const toggleSelectAll = () => {
-    if (selectedItems.length === cart.length) {
+    if (selectedItems.length === cartState.items.length) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(cart.map((item) => item.id));
+      setSelectedItems(
+        cartState.items.map((item) => `${item.id}-${item.size}-${item.color}`)
+      );
     }
   };
 
@@ -46,13 +51,18 @@ export default function CartPage() {
   };
 
   const removeSelectedItems = () => {
-    selectedItems.forEach((id) => removeFromCart(id));
+    selectedItems.forEach((id) => {
+      const [itemId, size, color] = id.split("-");
+      removeCartItem(parseInt(itemId), size, color);
+    });
     setSelectedItems([]);
   };
 
   // 선택된 상품들의 총액 계산
-  const selectedItemsTotal = cart
-    .filter((item) => selectedItems.includes(item.id))
+  const selectedItemsTotal = cartState.items
+    .filter((item) =>
+      selectedItems.includes(`${item.id}-${item.size}-${item.color}`)
+    )
     .reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const subtotal = selectedItemsTotal;
@@ -66,7 +76,7 @@ export default function CartPage() {
       <main className="container mx-auto py-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">장바구니</h1>
 
-        {cart.length === 0 ? (
+        {cartState.items.length === 0 ? (
           <div className="bg-white rounded-2xl p-12 text-center">
             <ShoppingBag className="h-16 w-16 mx-auto mb-6 text-gray-300" />
             <h2 className="text-xl font-medium text-gray-900 mb-4">
@@ -104,18 +114,20 @@ export default function CartPage() {
                     <button
                       onClick={toggleSelectAll}
                       className={`flex items-center justify-center w-5 h-5 rounded border-2 transition-colors ${
-                        selectedItems.length === cart.length && cart.length > 0
+                        selectedItems.length === cartState.items.length &&
+                        cartState.items.length > 0
                           ? "bg-gray-900 border-gray-900"
                           : "border-gray-300"
                       }`}
                     >
-                      {selectedItems.length === cart.length &&
-                        cart.length > 0 && (
+                      {selectedItems.length === cartState.items.length &&
+                        cartState.items.length > 0 && (
                           <Check className="h-3 w-3 text-white" />
                         )}
                     </button>
                     <span className="text-sm font-medium">
-                      전체 선택 ({selectedItems.length}/{cart.length})
+                      전체 선택 ({selectedItems.length}/{cartState.items.length}
+                      )
                     </span>
                   </div>
                   {selectedItems.length > 0 && (
@@ -128,26 +140,32 @@ export default function CartPage() {
                   )}
                 </div>
               </div>
-              {cart.map((item) => (
+              {cartState.items.map((item) => (
                 <div
-                  key={item.id}
+                  key={`${item.id}-${item.size}-${item.color}`}
                   className="bg-white rounded-2xl p-6 shadow-sm"
                 >
                   <div className="flex items-start space-x-4">
                     {/* Selection Checkbox */}
                     <button
-                      onClick={() => toggleSelectItem(item.id)}
+                      onClick={() =>
+                        toggleSelectItem(
+                          `${item.id}-${item.size}-${item.color}`
+                        )
+                      }
                       className={`flex items-center justify-center w-5 h-5 rounded border-2 transition-colors mt-2 ${
-                        selectedItems.includes(item.id)
+                        selectedItems.includes(
+                          `${item.id}-${item.size}-${item.color}`
+                        )
                           ? "bg-gray-900 border-gray-900"
                           : "border-gray-300"
                       }`}
                     >
-                      {selectedItems.includes(item.id) && (
-                        <Check className="h-3 w-3 text-white" />
-                      )}
+                      {selectedItems.includes(
+                        `${item.id}-${item.size}-${item.color}`
+                      ) && <Check className="h-3 w-3 text-white" />}
                     </button>
-                    <Link href={`/products/${item.productId}`}>
+                    <Link href={`/products/${item.id}`}>
                       <img
                         src={item.image}
                         alt={item.name}
@@ -156,7 +174,7 @@ export default function CartPage() {
                     </Link>
 
                     <div className="flex-1">
-                      <Link href={`/products/${item.productId}`}>
+                      <Link href={`/products/${item.id}`}>
                         <h3 className="font-medium text-gray-900 hover:text-gray-700 mb-2">
                           {item.name}
                         </h3>
@@ -189,7 +207,12 @@ export default function CartPage() {
                           <div className="flex items-center border border-gray-300 rounded-lg">
                             <button
                               onClick={() =>
-                                updateQuantity(item.id, item.quantity - 1)
+                                handleUpdateQuantity(
+                                  item.id,
+                                  item.size,
+                                  item.color,
+                                  item.quantity - 1
+                                )
                               }
                               className="p-2 hover:bg-gray-50 transition-colors"
                             >
@@ -200,27 +223,24 @@ export default function CartPage() {
                             </span>
                             <button
                               onClick={() =>
-                                updateQuantity(item.id, item.quantity + 1)
+                                handleUpdateQuantity(
+                                  item.id,
+                                  item.size,
+                                  item.color,
+                                  item.quantity + 1
+                                )
                               }
-                              disabled={item.quantity >= item.stock}
-                              className={`p-2 transition-colors ${
-                                item.quantity >= item.stock
-                                  ? "text-gray-300 cursor-not-allowed"
-                                  : "hover:bg-gray-50"
-                              }`}
+                              className="p-2 hover:bg-gray-50 transition-colors"
                             >
                               <Plus className="h-4 w-4" />
                             </button>
                           </div>
-                          {item.quantity >= item.stock && (
-                            <span className="text-xs text-red-500">
-                              최대 재고: {item.stock}개
-                            </span>
-                          )}
 
                           {/* Remove Button */}
                           <button
-                            onClick={() => removeItem(item.id)}
+                            onClick={() =>
+                              handleRemoveItem(item.id, item.size, item.color)
+                            }
                             className="p-2 text-gray-400 hover:text-red-500 transition-colors"
                           >
                             <Trash2 className="h-4 w-4" />

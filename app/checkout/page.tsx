@@ -61,8 +61,11 @@ interface PaymentInfo {
 }
 
 export default function CheckoutPage() {
-  const { cartState, clearCart } = useCart();
+  const { state: cartState, clearCart } = useCart();
   const { toast } = useToast();
+
+  // cartState가 초기화되지 않았을 때를 대비한 안전한 처리
+  const safeCartState = cartState || { items: [], total: 0, itemCount: 0 };
   const [currentStep, setCurrentStep] = useState<
     "shipping" | "payment" | "complete"
   >("shipping");
@@ -91,7 +94,7 @@ export default function CheckoutPage() {
   };
 
   // 주문 요약 계산
-  const subtotal = cartState.items.reduce(
+  const subtotal = safeCartState.items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
@@ -108,8 +111,8 @@ export default function CheckoutPage() {
     shippingFee,
     discountAmount,
     totalAmount,
-    items: cartState.items.map((item) => ({
-      id: item.id,
+    items: safeCartState.items.map((item) => ({
+      id: item.id.toString(),
       name: item.name,
       price: item.price,
       quantity: item.quantity,
@@ -155,7 +158,7 @@ export default function CheckoutPage() {
     setCurrentStep("payment");
   };
 
-  if (cartState.items.length === 0 && currentStep !== "complete") {
+  if (safeCartState.items.length === 0 && currentStep !== "complete") {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
@@ -294,6 +297,7 @@ export default function CheckoutPage() {
                             })
                           }
                           placeholder="이름을 입력하세요"
+                          spellCheck={false}
                           required
                         />
                       </div>
@@ -310,6 +314,7 @@ export default function CheckoutPage() {
                             })
                           }
                           placeholder="010-0000-0000"
+                          spellCheck={false}
                           required
                         />
                       </div>
@@ -405,7 +410,7 @@ export default function CheckoutPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4 mb-6">
-                    {cartState.items.map((item) => (
+                    {(cartState.items || []).map((item) => (
                       <div key={item.id} className="flex space-x-3">
                         <img
                           src={item.image}
@@ -590,7 +595,7 @@ export default function CheckoutPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4 mb-6">
-                    {cartState.items.map((item) => (
+                    {(cartState.items || []).map((item) => (
                       <div key={item.id} className="flex space-x-3">
                         <img
                           src={item.image}
