@@ -12,9 +12,9 @@ const notoSansKR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "Fashion Store - 트렌디한 여성 의류",
+  title: "LUMINA - 빛나는 당신을 위한 스타일",
   description:
-    "매장 품질의 여성 의류를 온라인에서 만나보세요. 당일발송, 빠른 교환 서비스",
+    "LUMINA는 당신의 개성과 아름다움을 빛나게 하는 프리미엄 의류 브랜드입니다. 세련된 디자인과 최고급 소재로 완성된 스타일을 만나보세요.",
 };
 
 export default function RootLayout({

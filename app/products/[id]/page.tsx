@@ -24,13 +24,13 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     id: parseInt(params.id),
     name: "베이직 코튼 티셔츠",
     description:
-      "부드러운 코튼 소재로 편안한 착용감을 제공하는 베이직 티셔츠입니다.",
+      "LUMINA의 시그니처 베이직 티셔츠. 부드러운 코튼 소재와 세련된 디자인으로 당신의 일상을 빛나게 만듭니다.",
     price: 29000,
     originalPrice: 49000,
   };
 
   return {
-    title: `${product.name} - Fashion Store`,
+    title: `${product.name} - LUMINA`,
     description: product.description,
     openGraph: {
       title: product.name,

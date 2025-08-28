@@ -1,57 +1,169 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Clock, Package, Gift } from 'lucide-react';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Gift, Star, Users, Zap } from "lucide-react";
+import Link from "next/link";
 
 export default function PromoSection() {
-  const promos = [
-    {
-      icon: Clock,
-      title: '타임딜',
-      subtitle: '24시간 한정',
-      description: '매일 오전 10시 새로운 딜',
-      color: 'bg-red-500',
-      textColor: 'text-red-600'
-    },
-    {
-      icon: Package,
-      title: '셋업 번들',
-      subtitle: '상하의 세트',
-      description: '함께 입으면 더 예쁜 조합',
-      color: 'bg-blue-500',
-      textColor: 'text-blue-600'
-    },
-    {
-      icon: Gift,
-      title: '균일가',
-      subtitle: '전 상품 동일가',
-      description: '복잡한 가격 고민 없이',
-      color: 'bg-green-500',
-      textColor: 'text-green-600'
-    }
-  ];
-
   return (
-    <section className="py-12 bg-white">
-      <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {promos.map((promo, index) => (
-            <div
-              key={index}
-              className="group bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 cursor-pointer"
-            >
-              <div className="flex items-start space-x-4">
-                <div className={`${promo.color} rounded-xl p-3 group-hover:scale-110 transition-transform`}>
-                  <promo.icon className="h-6 w-6 text-white" />
+    <section className="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-10 left-10 w-20 h-20 border border-yellow-400/30 rounded-full"></div>
+        <div className="absolute top-40 right-20 w-16 h-16 border border-yellow-400/20 rounded-full"></div>
+        <div className="absolute bottom-20 left-1/4 w-12 h-12 border border-yellow-400/25 rounded-full"></div>
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Content */}
+          <div className="text-white space-y-8">
+            <div className="space-y-4">
+              <div className="inline-flex items-center space-x-2 bg-yellow-500/20 text-yellow-300 px-4 py-2 rounded-full text-sm font-medium border border-yellow-500/30">
+                <Gift className="w-4 h-4" />
+                <span>SPECIAL OFFER</span>
+              </div>
+
+              <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+                <span className="block">첫 구매</span>
+                <span className="block text-yellow-400">20% 할인</span>
+                <span className="block text-2xl md:text-3xl text-gray-300 mt-4">
+                  + 무료 배송
+                </span>
+              </h2>
+
+              <p className="text-lg text-gray-300 leading-relaxed">
+                LUMINA와 함께하는 특별한 첫 경험을 선물해드립니다.
+                <br />
+                <span className="text-yellow-300 font-medium">빛나는 당신</span>
+                을 위한 프리미엄 스타일을 특별한 가격으로 만나보세요.
+              </p>
+            </div>
+
+            {/* Features */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-yellow-400" />
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-lg text-gray-900">{promo.title}</h3>
-                  <p className={`${promo.textColor} font-medium text-sm`}>{promo.subtitle}</p>
-                  <p className="text-gray-600 text-sm mt-1">{promo.description}</p>
+                <div>
+                  <p className="font-semibold text-white">당일 발송</p>
+                  <p className="text-sm text-gray-400">오후 2시까지 주문시</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                  <Star className="w-5 h-5 text-yellow-400" />
+                </div>
+                <div>
+                  <p className="font-semibold text-white">프리미엄 품질</p>
+                  <p className="text-sm text-gray-400">최고급 소재 사용</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                  <Users className="w-5 h-5 text-yellow-400" />
+                </div>
+                <div>
+                  <p className="font-semibold text-white">전용 스타일링</p>
+                  <p className="text-sm text-gray-400">개인 맞춤 코디</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                  <Gift className="w-5 h-5 text-yellow-400" />
+                </div>
+                <div>
+                  <p className="font-semibold text-white">특별 혜택</p>
+                  <p className="text-sm text-gray-400">VIP 멤버십 제공</p>
                 </div>
               </div>
             </div>
-          ))}
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/categories/new">
+                <Button
+                  size="lg"
+                  className="lumina-gradient hover:opacity-90 text-white px-8 py-4 text-lg font-semibold lumina-shadow-lg transition-all duration-300 group"
+                >
+                  지금 쇼핑하기
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+              <Link href="/membership">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/10 px-8 py-4 text-lg font-semibold transition-all duration-300"
+                >
+                  멤버십 가입
+                </Button>
+              </Link>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap items-center gap-6 text-sm text-gray-400">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                <span>10,000+ 고객 만족</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                <span>4.9/5 평점</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                <span>무료 교환 보장</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Visual */}
+          <div className="relative">
+            <div className="relative rounded-3xl overflow-hidden lumina-shadow-lg">
+              <img
+                src="https://images.pexels.com/photos/994523/pexels-photo-994523.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="LUMINA Special Offer"
+                className="w-full h-[600px] object-cover"
+              />
+
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+              {/* Floating Badge */}
+              <div className="absolute top-6 right-6 bg-yellow-500 text-black px-4 py-2 rounded-full text-sm font-bold animate-pulse">
+                -20% OFF
+              </div>
+
+              {/* Content Overlay */}
+              <div className="absolute bottom-6 left-6 right-6 text-white">
+                <h3 className="text-2xl font-bold mb-2">NEW COLLECTION</h3>
+                <p className="text-gray-200 text-sm mb-4">
+                  봄 시즌의 첫 번째 선택
+                </p>
+                <div className="flex items-center space-x-2">
+                  <div className="flex">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                      />
+                    ))}
+                  </div>
+                  <span className="text-sm text-gray-300">(127 reviews)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Decorative Elements */}
+            <div className="absolute -top-4 -left-4 w-8 h-8 bg-yellow-400 rounded-full opacity-60 animate-pulse"></div>
+            <div className="absolute -bottom-4 -right-4 w-6 h-6 bg-yellow-400 rounded-full opacity-40 animate-pulse delay-1000"></div>
+          </div>
         </div>
       </div>
     </section>

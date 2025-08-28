@@ -2,87 +2,102 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { ArrowRight, Sparkles, Star } from "lucide-react";
 import Link from "next/link";
 
 export default function HeroSection() {
   return (
-    <section className="relative bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-      <div className="container mx-auto py-16 lg:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Text Content */}
-          <div className="space-y-6 animate-slide-up">
-            <div className="space-y-4">
-              <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                전 상품
-                <br />
-                <span className="text-red-600">균일가 세일</span>
-              </h1>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                매장에서 직접 선별한 트렌디한 여성 의류를
-                <br />
-                특별한 가격에 만나보세요
-              </p>
-            </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Video/Image */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-gray-900/80"></div>
+        <img
+          src="https://images.pexels.com/photos/994523/pexels-photo-994523.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          alt="LUMINA Collection"
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/categories/sale">
-                <Button
-                  size="lg"
-                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg"
-                >
-                  세일 상품 보기
-                </Button>
-              </Link>
-              <Link href="/categories/new">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="px-8 py-3 rounded-lg"
-                >
-                  신상품 보기
-                </Button>
-              </Link>
-            </div>
+      {/* Floating Elements */}
+      <div className="absolute inset-0 z-10">
+        <div className="absolute top-20 left-10 animate-pulse">
+          <Sparkles className="text-yellow-400/60 w-8 h-8" />
+        </div>
+        <div className="absolute top-40 right-20 animate-pulse delay-1000">
+          <Star className="text-yellow-400/40 w-6 h-6" />
+        </div>
+        <div className="absolute bottom-40 left-20 animate-pulse delay-2000">
+          <Sparkles className="text-yellow-400/50 w-4 h-4" />
+        </div>
+      </div>
 
-            {/* Features */}
-            <div className="grid grid-cols-3 gap-4 pt-4">
-              <div className="text-center">
-                <div className="bg-green-100 rounded-full p-3 w-12 h-12 mx-auto mb-2 flex items-center justify-center">
-                  <span className="text-green-600 font-bold text-sm">24H</span>
-                </div>
-                <p className="text-sm font-medium">당일발송</p>
-              </div>
-              <div className="text-center">
-                <div className="bg-blue-100 rounded-full p-3 w-12 h-12 mx-auto mb-2 flex items-center justify-center">
-                  <span className="text-blue-600 font-bold text-sm">7D</span>
-                </div>
-                <p className="text-sm font-medium">교환보장</p>
-              </div>
-              <div className="text-center">
-                <div className="bg-purple-100 rounded-full p-3 w-12 h-12 mx-auto mb-2 flex items-center justify-center">
-                  <span className="text-purple-600 font-bold text-sm">
-                    5만+
-                  </span>
-                </div>
-                <p className="text-sm font-medium">무료배송</p>
-              </div>
-            </div>
+      {/* Main Content */}
+      <div className="relative z-20 text-center text-white px-4 max-w-4xl mx-auto">
+        {/* Brand Badge */}
+        <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 mb-8 border border-white/20">
+          <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+          <span className="text-sm font-medium">NEW COLLECTION 2024</span>
+        </div>
+
+        {/* Main Headline */}
+        <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+          <span className="block">빛나는 오늘,</span>
+          <span className="block lumina-text-gradient bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 bg-clip-text text-transparent">
+            LUMINA
+          </span>
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed">
+          당신의 개성과 아름다움을 빛나게 하는
+          <br />
+          <span className="text-yellow-300 font-medium">프리미엄 스타일</span>을
+          만나보세요
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+          <Link href="/categories/new">
+            <Button
+              size="lg"
+              className="lumina-gradient hover:opacity-90 text-white px-8 py-4 text-lg font-semibold lumina-shadow-lg transition-all duration-300 group"
+            >
+              Shop Now
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
+          <Link href="/categories/best">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-white/50 text-white hover:bg-white/20 hover:border-white/70 px-8 py-4 text-lg font-semibold transition-all duration-300 bg-black/20"
+            >
+              베스트 셀러
+            </Button>
+          </Link>
+        </div>
+
+        {/* Trust Indicators */}
+        <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-300">
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+            <span>무료 배송</span>
           </div>
-
-          {/* Hero Image */}
-          <div className="relative">
-            <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-pink-100 to-purple-100">
-              <img
-                src="https://images.pexels.com/photos/2043590/pexels-photo-2043590.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Fashion Hero"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {/* Floating Badge */}
-            <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-2 rounded-full text-sm font-bold animate-pulse">
-              UP TO 70% OFF
-            </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
+            <span>7일 교환 보장</span>
           </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-purple-400 rounded-full"></div>
+            <span>프리미엄 품질</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>

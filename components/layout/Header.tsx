@@ -13,8 +13,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       {/* Top Banner */}
-      <div className="bg-gray-900 text-white text-center py-2 text-sm">
-        🎉 전 상품 균일가 세일! 5만원 이상 무료배송
+      <div className="lumina-gradient text-white text-center py-3 text-sm font-medium">
+        ✨ NEW ARRIVAL: 봄 시즌 컬렉션 출시! 첫 구매 20% 할인
       </div>
 
       <div className="container mx-auto">
@@ -33,8 +33,8 @@ export default function Header() {
           </button>
 
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-gray-900">
-            FASHION
+          <Link href="/" className="text-2xl font-bold lumina-text-gradient">
+            LUMINA
           </Link>
 
           {/* Desktop Navigation */}

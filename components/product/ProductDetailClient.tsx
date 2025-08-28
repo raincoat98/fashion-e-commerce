@@ -156,6 +156,9 @@ export default function ProductDetailClient({
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
               {product.name}
             </h1>
+            <p className="text-sm text-gray-600 mb-4 italic">
+              "당신만의 빛을 내는 스타일"
+            </p>
             <div className="flex items-center space-x-3 mb-4">
               <div className="flex items-center space-x-1">
                 <div className="flex">
@@ -243,11 +246,11 @@ export default function ProductDetailClient({
             <div className="flex space-x-3">
               <Button
                 size="lg"
-                className="flex-1 bg-gray-900 hover:bg-gray-800 text-white py-3"
+                className="flex-1 lumina-gradient hover:opacity-90 text-white py-3 font-medium transition-all duration-300 lumina-shadow"
                 disabled={!isInStock}
                 onClick={handleAddToCart}
               >
-                {isInStock ? "장바구니 담기" : "품절"}
+                {isInStock ? "✨ 장바구니에 담기" : "품절"}
               </Button>
               <Button
                 size="lg"
@@ -270,12 +273,28 @@ export default function ProductDetailClient({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white py-3"
+                className="w-full lumina-border-gradient text-gray-900 hover:lumina-gradient hover:text-white py-3 font-medium transition-all duration-300"
                 onClick={handleBuyNow}
               >
-                바로 구매하기
+                💫 바로 구매하기
               </Button>
             )}
+          </div>
+
+          {/* SNS Share */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-medium text-gray-900">공유하기</h4>
+            <div className="flex space-x-3">
+              <button className="flex-1 bg-[#E4405F] hover:bg-[#D63384] text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                📸 Instagram
+              </button>
+              <button className="flex-1 bg-[#000000] hover:bg-gray-800 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                🎵 TikTok
+              </button>
+              <button className="flex-1 bg-[#25D366] hover:bg-[#128C7E] text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                💬 WhatsApp
+              </button>
+            </div>
           </div>
 
           {/* Mobile Sticky Actions */}
@@ -283,20 +302,20 @@ export default function ProductDetailClient({
             <div className="flex space-x-3">
               <Button
                 size="lg"
-                className="flex-1 bg-gray-900 hover:bg-gray-800 text-white"
+                className="flex-1 lumina-gradient hover:opacity-90 text-white"
                 disabled={!isInStock}
                 onClick={handleAddToCart}
               >
-                {isInStock ? "장바구니 담기" : "품절"}
+                {isInStock ? "✨ 장바구니" : "품절"}
               </Button>
               {isInStock && (
                 <Button
                   size="lg"
                   variant="outline"
-                  className="flex-1 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white"
+                  className="flex-1 lumina-border-gradient text-gray-900 hover:lumina-gradient hover:text-white"
                   onClick={handleBuyNow}
                 >
-                  바로 구매
+                  💫 구매
                 </Button>
               )}
             </div>
@@ -321,6 +340,22 @@ export default function ProductDetailClient({
               <div className="text-sm font-medium">품질보증</div>
               <div className="text-xs text-gray-500">불량 시 즉시 교환</div>
             </div>
+          </div>
+
+          {/* Brand Story */}
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl space-y-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 lumina-gradient rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-bold">L</span>
+              </div>
+              <h3 className="font-semibold text-gray-900">LUMINA Story</h3>
+            </div>
+            <p className="text-sm text-gray-700 leading-relaxed">
+              "빛나는 당신을 위한 디자인" LUMINA는 단순한 의류가 아닌, 당신의
+              개성과 아름다움을 빛나게 하는 스타일을 제안합니다. 세련된 디자인과
+              최고급 소재로 완성된 이 제품으로 특별한 순간을 더욱 빛나게
+              만들어보세요.
+            </p>
           </div>
 
           {/* Product Features */}

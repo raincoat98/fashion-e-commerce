@@ -1,72 +1,171 @@
 "use client";
 
 import React from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 export default function CategorySection() {
   const categories = [
     {
-      name: "아우터",
-      slug: "outer",
+      id: "new",
+      name: "NEW ARRIVAL",
+      description: "새로운 시즌의 첫 번째 선택",
       image:
-        "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
-      count: "156개 상품",
+        "https://images.pexels.com/photos/994523/pexels-photo-994523.jpeg?auto=compress&cs=tinysrgb&w=800",
+      count: "24",
+      color: "from-pink-500 to-rose-500",
     },
     {
-      name: "상의",
-      slug: "top",
+      id: "outer",
+      name: "OUTER",
+      description: "완벽한 아우터로 스타일 완성",
       image:
-        "https://images.pexels.com/photos/852860/pexels-photo-852860.jpeg?auto=compress&cs=tinysrgb&w=800",
-      count: "234개 상품",
+        "https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&w=800",
+      count: "18",
+      color: "from-blue-500 to-indigo-500",
     },
     {
-      name: "하의",
-      slug: "bottom",
-      image:
-        "https://images.pexels.com/photos/2584269/pexels-photo-2584269.jpeg?auto=compress&cs=tinysrgb&w=800",
-      count: "189개 상품",
-    },
-    {
-      name: "원피스",
-      slug: "dress",
+      id: "top",
+      name: "TOP",
+      description: "기본부터 특별한 순간까지",
       image:
         "https://images.pexels.com/photos/2043590/pexels-photo-2043590.jpeg?auto=compress&cs=tinysrgb&w=800",
-      count: "97개 상품",
+      count: "32",
+      color: "from-green-500 to-emerald-500",
+    },
+    {
+      id: "bottom",
+      name: "BOTTOM",
+      description: "완벽한 실루엣을 위한 선택",
+      image:
+        "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
+      count: "28",
+      color: "from-purple-500 to-violet-500",
+    },
+    {
+      id: "dress",
+      name: "DRESS",
+      description: "특별한 날을 위한 완벽한 원피스",
+      image:
+        "https://images.pexels.com/photos/852860/pexels-photo-852860.jpeg?auto=compress&cs=tinysrgb&w=800",
+      count: "15",
+      color: "from-yellow-500 to-orange-500",
+    },
+    {
+      id: "accessory",
+      name: "ACCESSORY",
+      description: "마지막 터치를 위한 액세서리",
+      image:
+        "https://images.pexels.com/photos/2584269/pexels-photo-2584269.jpeg?auto=compress&cs=tinysrgb&w=800",
+      count: "42",
+      color: "from-red-500 to-pink-500",
     },
   ];
 
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="container mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            카테고리별 쇼핑
+    <section className="py-20 bg-white">
+      <div className="container mx-auto px-4">
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center space-x-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
+            <Sparkles className="w-4 h-4" />
+            <span>DISCOVER YOUR STYLE</span>
+          </div>
+
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <span className="block">당신만의</span>
+            <span className="lumina-text-gradient">스타일을 찾아보세요</span>
           </h2>
-          <p className="text-gray-600">원하는 스타일을 쉽게 찾아보세요</p>
+
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            LUMINA의 다양한 카테고리에서
+            <br />
+            <span className="text-yellow-600 font-medium">빛나는 당신</span>을
+            위한 완벽한 스타일을 만나보세요
+          </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((category, index) => (
-            <Link
-              key={index}
-              href={`/categories/${category.slug}`}
-              className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
-            >
-              <div className="aspect-square overflow-hidden">
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-4 text-center">
-                <h3 className="font-semibold text-gray-900 mb-1">
-                  {category.name}
-                </h3>
-                <p className="text-sm text-gray-500">{category.count}</p>
+        {/* Categories Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          {categories.map((category) => (
+            <Link key={category.id} href={`/categories/${category.id}`}>
+              <div className="group relative overflow-hidden rounded-2xl bg-white lumina-shadow-lg hover:lumina-shadow-xl transition-all duration-500 cursor-pointer">
+                {/* Background Image */}
+                <div className="relative h-80 overflow-hidden">
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+
+                  {/* Gradient Overlay */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent`}
+                  ></div>
+
+                  {/* Category Badge */}
+                  <div
+                    className={`absolute top-4 left-4 bg-gradient-to-r ${category.color} text-white px-3 py-1 rounded-full text-xs font-bold`}
+                  >
+                    {category.count} ITEMS
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <h3 className="text-2xl font-bold mb-2 group-hover:text-yellow-300 transition-colors">
+                    {category.name}
+                  </h3>
+                  <p className="text-gray-200 text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {category.description}
+                  </p>
+
+                  {/* Arrow Icon */}
+                  <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="text-sm font-medium">바로가기</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center">
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-3xl p-8 md:p-12 max-w-4xl mx-auto">
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              오늘 뭐 입을지 고민이신가요?
+            </h3>
+            <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+              LUMINA의 스타일 가이드와 함께
+              <br />
+              당신만의 특별한 룩을 완성해보세요
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/style-guide">
+                <Button
+                  size="lg"
+                  className="lumina-gradient hover:opacity-90 text-white px-8 py-4 text-lg font-semibold lumina-shadow-lg transition-all duration-300 group"
+                >
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  스타일 가이드 보기
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+              <Link href="/lookbook">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-4 text-lg font-semibold transition-all duration-300"
+                >
+                  룩북 보기
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>
