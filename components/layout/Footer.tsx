@@ -213,7 +213,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             {/* Copyright */}
             <div className="text-gray-400 text-sm">
-              © 2024 LUMINA. All rights reserved. "빛나는 당신을 위한 스타일"
+              © 2025 LUMINA. All rights reserved. "빛나는 당신을 위한 스타일"
             </div>
 
             {/* Legal Links */}

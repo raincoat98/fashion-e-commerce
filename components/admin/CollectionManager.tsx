@@ -53,8 +53,8 @@ const mockCollections: Collection[] = [
     image: "/images/collections/signature.jpg",
     isActive: true,
     productCount: 12,
-    createdAt: "2024-01-01",
-    updatedAt: "2024-01-15",
+    createdAt: "2025-01-01",
+    updatedAt: "2025-01-15",
   },
   {
     id: "2",
@@ -63,8 +63,8 @@ const mockCollections: Collection[] = [
     image: "/images/collections/premium.jpg",
     isActive: true,
     productCount: 8,
-    createdAt: "2024-01-05",
-    updatedAt: "2024-01-10",
+    createdAt: "2025-01-05",
+    updatedAt: "2025-01-10",
   },
   {
     id: "3",
@@ -73,8 +73,8 @@ const mockCollections: Collection[] = [
     image: "/images/collections/elegant.jpg",
     isActive: true,
     productCount: 15,
-    createdAt: "2024-01-10",
-    updatedAt: "2024-01-12",
+    createdAt: "2025-01-10",
+    updatedAt: "2025-01-12",
   },
   {
     id: "4",
@@ -83,8 +83,8 @@ const mockCollections: Collection[] = [
     image: "/images/collections/casual.jpg",
     isActive: false,
     productCount: 6,
-    createdAt: "2024-01-15",
-    updatedAt: "2024-01-20",
+    createdAt: "2025-01-15",
+    updatedAt: "2025-01-20",
   },
 ];
 

@@ -109,8 +109,8 @@ const mockProducts: Product[] = [
     isNew: false,
     isBest: false,
     badge: "HOT",
-    createdAt: "2024-01-01",
-    updatedAt: "2024-01-15",
+    createdAt: "2025-01-01",
+    updatedAt: "2025-01-15",
   },
   {
     id: "2",
@@ -131,8 +131,8 @@ const mockProducts: Product[] = [
     isNew: true,
     isBest: false,
     badge: "NEW",
-    createdAt: "2024-01-05",
-    updatedAt: "2024-01-10",
+    createdAt: "2025-01-05",
+    updatedAt: "2025-01-10",
   },
   {
     id: "3",
@@ -158,8 +158,8 @@ const mockProducts: Product[] = [
     isNew: false,
     isBest: false,
     badge: "LIMITED",
-    createdAt: "2024-01-10",
-    updatedAt: "2024-01-12",
+    createdAt: "2025-01-10",
+    updatedAt: "2025-01-12",
   },
 ];
 

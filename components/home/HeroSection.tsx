@@ -233,7 +233,7 @@ export default function HeroSection() {
         {/* Brand Badge */}
         <div className="brand-badge inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 mb-8 border border-white/20">
           <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-          <span className="text-sm font-medium">NEW COLLECTION 2024</span>
+          <span className="text-sm font-medium">NEW COLLECTION 2025</span>
         </div>
 
         {/* Main Headline */}

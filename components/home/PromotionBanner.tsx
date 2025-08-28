@@ -54,7 +54,7 @@ export default function PromotionBanner({
     type: "percentage" as const,
     value: 20,
     minOrderAmount: 50000,
-    endDate: "2024-12-31",
+    endDate: "2025-12-31",
   };
 
   const activeCoupon = coupon || defaultCoupon;
