@@ -169,13 +169,6 @@ export default function Header() {
               </Button>
             </Link>
 
-            {/* Tracking */}
-            <Link href="/tracking">
-              <Button variant="ghost" size="icon">
-                <Truck className="h-5 w-5" />
-              </Button>
-            </Link>
-
             {/* Cart */}
             <Link href="/cart">
               <Button variant="ghost" size="icon" className="relative">

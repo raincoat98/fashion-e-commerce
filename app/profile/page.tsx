@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AddressManager from "@/components/shipping/AddressManager";
 import CustomerSettings from "@/components/settings/CustomerSettings";
+import TrackingSystem from "@/components/shipping/TrackingSystem";
 import {
   User,
   ShoppingBag,
@@ -484,7 +485,7 @@ export default function ProfilePage() {
 
           {/* 메인 탭 */}
           <Tabs defaultValue="orders" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger
                 value="orders"
                 className="flex items-center space-x-2"
@@ -498,6 +499,13 @@ export default function ProfilePage() {
               >
                 <Star className="w-4 h-4" />
                 <span>내 리뷰</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="tracking"
+                className="flex items-center space-x-2"
+              >
+                <Truck className="w-4 h-4" />
+                <span>배송조회</span>
               </TabsTrigger>
               <TabsTrigger
                 value="addresses"
@@ -633,6 +641,11 @@ export default function ProfilePage() {
                   </CardContent>
                 </Card>
               ))}
+            </TabsContent>
+
+            {/* 배송조회 탭 */}
+            <TabsContent value="tracking" className="space-y-4">
+              <TrackingSystem />
             </TabsContent>
 
             {/* 배송지 관리 탭 */}
