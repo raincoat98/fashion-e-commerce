@@ -26,11 +26,14 @@ import {
   Download,
   Gift,
   Tag,
+  RefreshCw,
 } from "lucide-react";
 import Link from "next/link";
 import CouponManager from "@/components/admin/CouponManager";
 import ProductManager from "@/components/admin/ProductManager";
 import CollectionManager from "@/components/admin/CollectionManager";
+import OrderStatusManager from "@/components/admin/OrderStatusManager";
+import ShippingManager from "@/components/admin/ShippingManager";
 import {
   Select,
   SelectContent,
@@ -271,10 +274,24 @@ export default function AdminPage() {
 
         {/* 메인 탭 */}
         <Tabs defaultValue="orders" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="orders" className="flex items-center space-x-2">
               <Package className="w-4 h-4" />
               <span>주문 관리</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="order-status"
+              className="flex items-center space-x-2"
+            >
+              <RefreshCw className="w-4 h-4" />
+              <span>주문 상태</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="shipping"
+              className="flex items-center space-x-2"
+            >
+              <Truck className="w-4 h-4" />
+              <span>배송 관리</span>
             </TabsTrigger>
             <TabsTrigger
               value="products"
@@ -482,6 +499,16 @@ export default function AdminPage() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* 주문 상태 관리 탭 */}
+          <TabsContent value="order-status" className="space-y-6">
+            <OrderStatusManager />
+          </TabsContent>
+
+          {/* 배송 관리 탭 */}
+          <TabsContent value="shipping" className="space-y-6">
+            <ShippingManager />
           </TabsContent>
 
           {/* 상품 관리 탭 */}

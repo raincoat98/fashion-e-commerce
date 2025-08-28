@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -20,459 +21,677 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import {
-  Truck,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Package,
+  Truck,
   CheckCircle,
   Clock,
   AlertCircle,
-  MapPin,
-  Calendar,
-  Send,
   Download,
+  Printer,
   Search,
-  Filter,
+  MapPin,
+  Phone,
+  Mail,
+  Calendar,
+  FileText,
+  ExternalLink,
+  Copy,
   RefreshCw,
+  Eye,
+  Package2,
+  BarChart3,
+  Settings,
 } from "lucide-react";
 
 interface ShippingOrder {
   id: string;
-  orderNumber: string;
+  orderId: string;
   customerName: string;
   customerPhone: string;
+  customerEmail: string;
   shippingAddress: string;
-  products: string[];
-  totalAmount: number;
-  status: string;
+  shippingMemo?: string;
+  items: {
+    id: string;
+    name: string;
+    quantity: number;
+    size: string;
+    color: string;
+  }[];
+  status: "pending" | "processing" | "shipped" | "delivered" | "returned";
+  courier: string;
   trackingNumber?: string;
   estimatedDelivery?: string;
   actualDelivery?: string;
-  courier?: string;
-  lastUpdate: string;
+  shippingDate?: string;
+  shippingLabel?: string;
+  weight: number;
+  dimensions: {
+    length: number;
+    width: number;
+    height: number;
+  };
+  specialInstructions?: string;
+  insuranceAmount?: number;
+  shippingCost: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
-const mockShippingOrders: ShippingOrder[] = [
+interface Courier {
+  id: string;
+  name: string;
+  code: string;
+  logo: string;
+  trackingUrl: string;
+  phone: string;
+  deliveryTime: string;
+  baseRate: number;
+  weightLimit: number;
+  available: boolean;
+}
+
+const couriers: Courier[] = [
   {
-    id: "1",
-    orderNumber: "ORD-2024-001",
-    customerName: "김미영",
-    customerPhone: "010-1234-5678",
-    shippingAddress: "서울시 강남구 테헤란로 123, 456호",
-    products: ["LUMINA 시그니처 티셔츠", "프리미엄 데님 팬츠"],
-    totalAmount: 218000,
-    status: "ready",
-    estimatedDelivery: "2024-01-18",
-    courier: "CJ대한통운",
-    lastUpdate: "2024-01-15 14:30:00",
+    id: "cj",
+    name: "CJ대한통운",
+    code: "CJ",
+    logo: "https://via.placeholder.com/60x30/FF6B35/FFFFFF?text=CJ",
+    trackingUrl: "https://www.doortodoor.co.kr/parcel/",
+    phone: "1588-1255",
+    deliveryTime: "1-2일",
+    baseRate: 3000,
+    weightLimit: 30,
+    available: true,
   },
   {
-    id: "2",
-    orderNumber: "ORD-2024-002",
-    customerName: "박지민",
-    customerPhone: "010-2345-6789",
-    shippingAddress: "서울시 서초구 강남대로 456, 789호",
-    products: ["엘레간트 원피스"],
-    totalAmount: 159000,
-    status: "shipped",
-    trackingNumber: "CJ123456789",
-    estimatedDelivery: "2024-01-18",
-    courier: "CJ대한통운",
-    lastUpdate: "2024-01-16 09:15:00",
+    id: "hanjin",
+    name: "한진택배",
+    code: "HJ",
+    logo: "https://via.placeholder.com/60x30/FF6B35/FFFFFF?text=한진",
+    trackingUrl:
+      "https://www.hanjin.co.kr/kor/CMS/DeliveryMgr/WaybillResult.do",
+    phone: "1588-0011",
+    deliveryTime: "1-2일",
+    baseRate: 3000,
+    weightLimit: 30,
+    available: true,
   },
   {
-    id: "3",
-    orderNumber: "ORD-2024-003",
-    customerName: "이수진",
-    customerPhone: "010-3456-7890",
-    shippingAddress: "부산시 해운대구 해운대로 789, 101호",
-    products: ["크롭 니트 가디건"],
-    totalAmount: 198000,
-    status: "delivered",
-    trackingNumber: "CJ987654321",
-    estimatedDelivery: "2024-01-17",
-    actualDelivery: "2024-01-17 14:20:00",
-    courier: "CJ대한통운",
-    lastUpdate: "2024-01-17 14:20:00",
+    id: "lotte",
+    name: "롯데택배",
+    code: "LT",
+    logo: "https://via.placeholder.com/60x30/FF6B35/FFFFFF?text=롯데",
+    trackingUrl:
+      "https://www.lotteglogis.com/home/reservation/tracking/linkView",
+    phone: "1588-2121",
+    deliveryTime: "1-2일",
+    baseRate: 3000,
+    weightLimit: 30,
+    available: true,
+  },
+  {
+    id: "logen",
+    name: "로젠택배",
+    code: "LG",
+    logo: "https://via.placeholder.com/60x30/FF6B35/FFFFFF?text=로젠",
+    trackingUrl: "https://www.ilogen.com/web/personal/trace/",
+    phone: "1588-9988",
+    deliveryTime: "1-2일",
+    baseRate: 2800,
+    weightLimit: 30,
+    available: true,
+  },
+  {
+    id: "epost",
+    name: "우체국택배",
+    code: "EP",
+    logo: "https://via.placeholder.com/60x30/FF6B35/FFFFFF?text=우체국",
+    trackingUrl:
+      "https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm",
+    phone: "1588-1300",
+    deliveryTime: "1-3일",
+    baseRate: 2500,
+    weightLimit: 30,
+    available: true,
+  },
+  {
+    id: "daesin",
+    name: "대신택배",
+    code: "DS",
+    logo: "https://via.placeholder.com/60x30/FF6B35/FFFFFF?text=대신",
+    trackingUrl: "https://www.daesinlogistics.co.kr/",
+    phone: "1588-1144",
+    deliveryTime: "1-2일",
+    baseRate: 2800,
+    weightLimit: 30,
+    available: true,
   },
 ];
 
-const statusConfig = {
-  ready: {
-    label: "배송 준비",
-    color: "bg-yellow-100 text-yellow-800",
-    icon: Package,
+const mockShippingOrders: ShippingOrder[] = [
+  {
+    id: "SHIP-2024-001",
+    orderId: "ORD-2024-001",
+    customerName: "김미영",
+    customerPhone: "010-1234-5678",
+    customerEmail: "kim@email.com",
+    shippingAddress: "서울시 강남구 테헤란로 123, 456호",
+    shippingMemo: "문 앞에 놓아주세요",
+    items: [
+      {
+        id: "1",
+        name: "LUMINA 시그니처 티셔츠",
+        quantity: 2,
+        size: "M",
+        color: "화이트",
+      },
+      {
+        id: "2",
+        name: "프리미엄 데님 팬츠",
+        quantity: 1,
+        size: "L",
+        color: "블루",
+      },
+    ],
+    status: "processing",
+    courier: "cj",
+    weight: 1.2,
+    dimensions: {
+      length: 30,
+      width: 20,
+      height: 10,
+    },
+    specialInstructions: "깨지기 쉬운 상품",
+    insuranceAmount: 50000,
+    shippingCost: 3000,
+    createdAt: "2024-01-15 14:30:00",
+    updatedAt: "2024-01-15 16:00:00",
   },
-  shipped: {
-    label: "배송 중",
-    color: "bg-blue-100 text-blue-800",
-    icon: Truck,
+  {
+    id: "SHIP-2024-002",
+    orderId: "ORD-2024-002",
+    customerName: "박지민",
+    customerPhone: "010-9876-5432",
+    customerEmail: "park@email.com",
+    shippingAddress: "부산시 해운대구 해운대로 456, 789호",
+    items: [
+      {
+        id: "3",
+        name: "베이직 후드 집업",
+        quantity: 1,
+        size: "L",
+        color: "그레이",
+      },
+    ],
+    status: "shipped",
+    courier: "hanjin",
+    trackingNumber: "HJ1234567890",
+    estimatedDelivery: "2024-01-18",
+    shippingDate: "2024-01-16 10:00:00",
+    weight: 0.8,
+    dimensions: {
+      length: 25,
+      width: 15,
+      height: 8,
+    },
+    shippingCost: 3000,
+    createdAt: "2024-01-15 15:00:00",
+    updatedAt: "2024-01-16 10:00:00",
   },
-  delivered: {
-    label: "배송 완료",
-    color: "bg-green-100 text-green-800",
-    icon: CheckCircle,
-  },
-  delayed: {
-    label: "배송 지연",
-    color: "bg-red-100 text-red-800",
-    icon: AlertCircle,
-  },
-};
-
-const courierOptions = [
-  { value: "CJ대한통운", label: "CJ대한통운" },
-  { value: "한진택배", label: "한진택배" },
-  { value: "로젠택배", label: "로젠택배" },
-  { value: "우체국택배", label: "우체국택배" },
-  { value: "롯데택배", label: "롯데택배" },
 ];
 
 export default function ShippingManager() {
   const [orders, setOrders] = useState<ShippingOrder[]>(mockShippingOrders);
-  const [selectedStatus, setSelectedStatus] = useState<string>("all");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCourier, setSelectedCourier] = useState<string>("all");
-  const [bulkActions, setBulkActions] = useState<string[]>([]);
+  const [selectedOrder, setSelectedOrder] = useState<ShippingOrder | null>(
+    null
+  );
+  const [isShippingDialogOpen, setIsShippingDialogOpen] = useState(false);
+  const [isTrackingDialogOpen, setIsTrackingDialogOpen] = useState(false);
+  const [isLabelDialogOpen, setIsLabelDialogOpen] = useState(false);
+  const [selectedCourier, setSelectedCourier] = useState<string>("");
+  const [trackingNumber, setTrackingNumber] = useState("");
+  const [specialInstructions, setSpecialInstructions] = useState("");
+  const [insuranceAmount, setInsuranceAmount] = useState<number>(0);
 
-  // 필터링된 주문
-  const filteredOrders = orders.filter((order) => {
-    const matchesStatus =
-      selectedStatus === "all" || order.status === selectedStatus;
-    const matchesSearch =
-      order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.customerName.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCourier =
-      selectedCourier === "all" || order.courier === selectedCourier;
-    return matchesStatus && matchesSearch && matchesCourier;
-  });
+  // 배송 상태별 통계
+  const getStatusStats = () => {
+    const stats = {
+      pending: orders.filter((order) => order.status === "pending").length,
+      processing: orders.filter((order) => order.status === "processing")
+        .length,
+      shipped: orders.filter((order) => order.status === "shipped").length,
+      delivered: orders.filter((order) => order.status === "delivered").length,
+      returned: orders.filter((order) => order.status === "returned").length,
+    };
+    return stats;
+  };
 
-  // 배송 상태 업데이트
-  const updateShippingStatus = (orderId: string, newStatus: string) => {
+  const statusStats = getStatusStats();
+
+  // 송장 발급
+  const issueTrackingNumber = (orderId: string) => {
+    if (!selectedCourier || !trackingNumber) {
+      alert("택배사와 송장번호를 입력해주세요.");
+      return;
+    }
+
     setOrders(
-      orders.map((order) =>
-        order.id === orderId
-          ? {
-              ...order,
-              status: newStatus,
-              lastUpdate: new Date()
-                .toISOString()
-                .replace("T", " ")
-                .substring(0, 19),
-            }
-          : order
-      )
+      orders.map((order) => {
+        if (order.id === orderId) {
+          const courier = couriers.find((c) => c.id === selectedCourier);
+          return {
+            ...order,
+            status: "shipped",
+            courier: selectedCourier,
+            trackingNumber,
+            shippingDate: new Date()
+              .toISOString()
+              .replace("T", " ")
+              .substring(0, 19),
+            estimatedDelivery: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split("T")[0],
+            specialInstructions,
+            insuranceAmount: insuranceAmount > 0 ? insuranceAmount : undefined,
+            updatedAt: new Date()
+              .toISOString()
+              .replace("T", " ")
+              .substring(0, 19),
+          };
+        }
+        return order;
+      })
     );
+
+    setIsShippingDialogOpen(false);
+    setSelectedCourier("");
+    setTrackingNumber("");
+    setSpecialInstructions("");
+    setInsuranceAmount(0);
   };
 
-  // 운송장 번호 추가
-  const addTrackingNumber = (
-    orderId: string,
-    trackingNumber: string,
-    courier: string
-  ) => {
-    setOrders(
-      orders.map((order) =>
-        order.id === orderId
-          ? {
-              ...order,
-              trackingNumber,
-              courier,
-              status: "shipped",
-              lastUpdate: new Date()
-                .toISOString()
-                .replace("T", " ")
-                .substring(0, 19),
-            }
-          : order
-      )
-    );
+  // 배송 추적
+  const trackPackage = (trackingNumber: string, courierCode: string) => {
+    const courier = couriers.find((c) => c.code === courierCode);
+    if (courier) {
+      window.open(`${courier.trackingUrl}?waybill=${trackingNumber}`, "_blank");
+    }
   };
 
-  // 배송 알림 발송
-  const sendShippingNotification = (orderId: string) => {
-    // TODO: 실제 SMS/이메일 발송 로직
-    console.log(`배송 알림 발송: ${orderId}`);
+  // 출고 라벨 생성
+  const generateShippingLabel = (order: ShippingOrder) => {
+    const courier = couriers.find((c) => c.id === order.courier);
+    const labelContent = `
+LUMINA - 출고 라벨
+================
+
+주문번호: ${order.orderId}
+배송번호: ${order.id}
+고객명: ${order.customerName}
+연락처: ${order.customerPhone}
+배송지: ${order.shippingAddress}
+${order.shippingMemo ? `배송메모: ${order.shippingMemo}` : ""}
+
+상품 내역:
+${order.items
+  .map((item) => `${item.name} - ${item.size}/${item.color} x${item.quantity}`)
+  .join("\n")}
+
+택배사: ${courier?.name}
+송장번호: ${order.trackingNumber || "미발급"}
+무게: ${order.weight}kg
+크기: ${order.dimensions.length}x${order.dimensions.width}x${
+      order.dimensions.height
+    }cm
+${order.specialInstructions ? `특별지시: ${order.specialInstructions}` : ""}
+${
+  order.insuranceAmount
+    ? `보험금액: ${order.insuranceAmount.toLocaleString()}원`
+    : ""
+}
+
+발급일시: ${new Date().toLocaleString()}
+    `;
+
+    const blob = new Blob([labelContent], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `shipping-label-${order.id}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
-  // 일괄 배송 준비
-  const bulkPrepareShipping = () => {
-    const selectedOrders = orders.filter((order) =>
-      bulkActions.includes(order.id)
-    );
-    setOrders(
-      orders.map((order) =>
-        bulkActions.includes(order.id)
-          ? {
-              ...order,
-              status: "ready",
-              lastUpdate: new Date()
-                .toISOString()
-                .replace("T", " ")
-                .substring(0, 19),
-            }
-          : order
-      )
-    );
-    setBulkActions([]);
+  // 송장번호 복사
+  const copyTrackingNumber = (trackingNumber: string) => {
+    navigator.clipboard.writeText(trackingNumber);
   };
-
-  // 통계 계산
-  const readyOrders = orders.filter((order) => order.status === "ready").length;
-  const shippedOrders = orders.filter(
-    (order) => order.status === "shipped"
-  ).length;
-  const deliveredOrders = orders.filter(
-    (order) => order.status === "delivered"
-  ).length;
-  const delayedOrders = orders.filter(
-    (order) => order.status === "delayed"
-  ).length;
 
   return (
     <div className="space-y-6">
-      {/* 통계 카드 */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      {/* 배송 통계 */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">배송 준비</p>
-                <p className="text-2xl font-bold text-yellow-600">
-                  {readyOrders}
+                <p className="text-sm font-medium text-gray-600">배송 대기</p>
+                <p className="text-xl font-bold text-gray-900">
+                  {statusStats.pending}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <Package className="w-6 h-6 text-yellow-600" />
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-yellow-100 text-yellow-800">
+                <Clock className="w-4 h-4" />
               </div>
             </div>
           </CardContent>
         </Card>
-
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">처리 중</p>
+                <p className="text-xl font-bold text-gray-900">
+                  {statusStats.processing}
+                </p>
+              </div>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-100 text-blue-800">
+                <Package className="w-4 h-4" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">배송 중</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {shippedOrders}
+                <p className="text-xl font-bold text-gray-900">
+                  {statusStats.shipped}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Truck className="w-6 h-6 text-blue-600" />
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-purple-100 text-purple-800">
+                <Truck className="w-4 h-4" />
               </div>
             </div>
           </CardContent>
         </Card>
-
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">배송 완료</p>
-                <p className="text-2xl font-bold text-green-600">
-                  {deliveredOrders}
+                <p className="text-xl font-bold text-gray-900">
+                  {statusStats.delivered}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-green-600" />
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green-100 text-green-800">
+                <CheckCircle className="w-4 h-4" />
               </div>
             </div>
           </CardContent>
         </Card>
-
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">배송 지연</p>
-                <p className="text-2xl font-bold text-red-600">
-                  {delayedOrders}
+                <p className="text-sm font-medium text-gray-600">반송</p>
+                <p className="text-xl font-bold text-gray-900">
+                  {statusStats.returned}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                <AlertCircle className="w-6 h-6 text-red-600" />
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-red-100 text-red-800">
+                <AlertCircle className="w-4 h-4" />
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* 필터 및 검색 */}
+      {/* 배송 주문 목록 */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>배송 관리</CardTitle>
-              <CardDescription>
-                배송 상태를 관리하고 운송장 번호를 입력하세요
-              </CardDescription>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" className="flex items-center space-x-2">
-                <Download className="w-4 h-4" />
-                <span>엑셀 다운로드</span>
-              </Button>
-              <Button className="lumina-gradient text-white">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                새로고침
-              </Button>
-            </div>
-          </div>
+          <CardTitle>배송 관리</CardTitle>
+          <CardDescription>
+            송장 발급, 배송 추적, 출고 라벨 인쇄를 관리하세요
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-4">
-              <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="배송 상태" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">전체</SelectItem>
-                  <SelectItem value="ready">배송 준비</SelectItem>
-                  <SelectItem value="shipped">배송 중</SelectItem>
-                  <SelectItem value="delivered">배송 완료</SelectItem>
-                  <SelectItem value="delayed">배송 지연</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select
-                value={selectedCourier}
-                onValueChange={setSelectedCourier}
-              >
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="택배사" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">전체</SelectItem>
-                  {courierOptions.map((courier) => (
-                    <SelectItem key={courier.value} value={courier.value}>
-                      {courier.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="주문번호, 고객명 검색..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-64"
-                />
-              </div>
-            </div>
-
-            {bulkActions.length > 0 && (
-              <Button
-                onClick={bulkPrepareShipping}
-                className="lumina-gradient text-white"
-              >
-                선택 주문 배송 준비 ({bulkActions.length}개)
-              </Button>
-            )}
-          </div>
-
-          {/* 주문 목록 */}
           <div className="space-y-4">
-            {filteredOrders.map((order) => {
-              const StatusIcon =
-                statusConfig[order.status as keyof typeof statusConfig].icon;
+            {orders.map((order) => {
+              const courier = couriers.find((c) => c.id === order.courier);
+              const statusConfig = {
+                pending: {
+                  label: "배송 대기",
+                  color: "bg-yellow-100 text-yellow-800",
+                  icon: Clock,
+                },
+                processing: {
+                  label: "처리 중",
+                  color: "bg-blue-100 text-blue-800",
+                  icon: Package,
+                },
+                shipped: {
+                  label: "배송 중",
+                  color: "bg-purple-100 text-purple-800",
+                  icon: Truck,
+                },
+                delivered: {
+                  label: "배송 완료",
+                  color: "bg-green-100 text-green-800",
+                  icon: CheckCircle,
+                },
+                returned: {
+                  label: "반송",
+                  color: "bg-red-100 text-red-800",
+                  icon: AlertCircle,
+                },
+              };
+              const StatusIcon = statusConfig[order.status].icon;
+
               return (
                 <Card
                   key={order.id}
                   className="hover:shadow-md transition-shadow"
                 >
                   <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <input
-                          type="checkbox"
-                          checked={bulkActions.includes(order.id)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setBulkActions([...bulkActions, order.id]);
-                            } else {
-                              setBulkActions(
-                                bulkActions.filter((id) => id !== order.id)
-                              );
-                            }
-                          }}
-                          className="rounded border-gray-300"
-                        />
-
-                        <div>
-                          <div className="flex items-center space-x-3 mb-2">
-                            <h3 className="font-medium text-gray-900">
-                              {order.orderNumber}
-                            </h3>
-                            <Badge
-                              className={
-                                statusConfig[
-                                  order.status as keyof typeof statusConfig
-                                ].color
-                              }
-                            >
-                              <StatusIcon className="w-3 h-3 mr-1" />
-                              {
-                                statusConfig[
-                                  order.status as keyof typeof statusConfig
-                                ].label
-                              }
-                            </Badge>
-                          </div>
-
-                          <div className="space-y-1 text-sm text-gray-600">
-                            <p>
-                              <strong>{order.customerName}</strong> |{" "}
-                              {order.customerPhone}
-                            </p>
-                            <p className="flex items-center space-x-1">
-                              <MapPin className="w-3 h-3" />
-                              <span>{order.shippingAddress}</span>
-                            </p>
-                            <p>{order.products.join(", ")}</p>
-                            <p className="flex items-center space-x-1">
-                              <Calendar className="w-3 h-3" />
-                              <span>예상 배송: {order.estimatedDelivery}</span>
-                            </p>
-                          </div>
+                    <div className="space-y-4">
+                      {/* 주문 헤더 */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <h3 className="font-medium text-gray-900">
+                            {order.id}
+                          </h3>
+                          <Badge className={statusConfig[order.status].color}>
+                            <StatusIcon className="w-3 h-3 mr-1" />
+                            {statusConfig[order.status].label}
+                          </Badge>
+                          {courier && (
+                            <div className="flex items-center space-x-2">
+                              <img
+                                src={courier.logo}
+                                alt={courier.name}
+                                className="h-6"
+                              />
+                              <span className="text-sm text-gray-600">
+                                {courier.name}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {order.createdAt}
                         </div>
                       </div>
 
-                      <div className="flex items-center space-x-3">
-                        <div className="text-right">
-                          <p className="font-medium text-gray-900">
-                            {order.totalAmount.toLocaleString()}원
+                      {/* 고객 정보 */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            {order.customerName}
                           </p>
                           <p className="text-sm text-gray-600">
-                            {order.courier || "택배사 미선택"}
+                            {order.customerPhone}
                           </p>
-                          {order.trackingNumber && (
-                            <p className="text-sm text-blue-600">
-                              운송장: {order.trackingNumber}
+                          <p className="text-sm text-gray-600">
+                            {order.customerEmail}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            배송지
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {order.shippingAddress}
+                          </p>
+                          {order.shippingMemo && (
+                            <p className="text-sm text-gray-500">
+                              메모: {order.shippingMemo}
                             </p>
                           )}
                         </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            배송 정보
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            무게: {order.weight}kg
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            크기: {order.dimensions.length}x
+                            {order.dimensions.width}x{order.dimensions.height}cm
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            배송비: {order.shippingCost.toLocaleString()}원
+                          </p>
+                        </div>
+                      </div>
 
-                        <div className="flex flex-col space-y-2">
-                          {order.status === "ready" && (
-                            <Button size="sm" variant="outline">
-                              운송장 입력
-                            </Button>
-                          )}
-                          {order.status === "shipped" && (
+                      {/* 상품 정보 */}
+                      <div>
+                        <h4 className="font-medium text-gray-900 mb-2">
+                          상품 내역
+                        </h4>
+                        <div className="space-y-2">
+                          {order.items.map((item) => (
+                            <div
+                              key={item.id}
+                              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                            >
+                              <div className="flex-1">
+                                <p className="font-medium">{item.name}</p>
+                                <p className="text-sm text-gray-600">
+                                  {item.size} / {item.color} / {item.quantity}개
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* 송장 정보 */}
+                      {order.trackingNumber && (
+                        <div className="p-4 bg-blue-50 rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-medium text-gray-900">
+                                송장번호
+                              </p>
+                              <p className="text-lg font-mono text-blue-600">
+                                {order.trackingNumber}
+                              </p>
+                              {order.estimatedDelivery && (
+                                <p className="text-sm text-gray-600">
+                                  예상 배송: {order.estimatedDelivery}
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() =>
+                                  copyTrackingNumber(order.trackingNumber!)
+                                }
+                              >
+                                <Copy className="w-4 h-4 mr-1" />
+                                복사
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() =>
+                                  trackPackage(
+                                    order.trackingNumber!,
+                                    courier?.code || ""
+                                  )
+                                }
+                              >
+                                <ExternalLink className="w-4 h-4 mr-1" />
+                                추적
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 액션 버튼 */}
+                      <div className="flex items-center justify-between pt-4 border-t">
+                        <div className="flex items-center space-x-2">
+                          {!order.trackingNumber && (
                             <Button
                               size="sm"
                               variant="outline"
-                              onClick={() => sendShippingNotification(order.id)}
+                              onClick={() => {
+                                setSelectedOrder(order);
+                                setIsShippingDialogOpen(true);
+                              }}
                             >
-                              <Send className="w-3 h-3 mr-1" />
-                              알림 발송
+                              <Package className="w-4 h-4 mr-1" />
+                              송장 발급
                             </Button>
                           )}
-                          <Button size="sm" variant="outline">
-                            상세보기
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => generateShippingLabel(order)}
+                          >
+                            <Printer className="w-4 h-4 mr-1" />
+                            출고 라벨
                           </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              setSelectedOrder(order);
+                              setIsTrackingDialogOpen(true);
+                            }}
+                          >
+                            <Eye className="w-4 h-4 mr-1" />
+                            상세 보기
+                          </Button>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Button size="sm" variant="outline">
+                            <Download className="w-4 h-4 mr-1" />
+                            배송서
+                          </Button>
+                          {order.trackingNumber && (
+                            <Button size="sm" variant="outline">
+                              <FileText className="w-4 h-4 mr-1" />
+                              송장서
+                            </Button>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -483,6 +702,225 @@ export default function ShippingManager() {
           </div>
         </CardContent>
       </Card>
+
+      {/* 송장 발급 다이얼로그 */}
+      <Dialog
+        open={isShippingDialogOpen}
+        onOpenChange={setIsShippingDialogOpen}
+      >
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>송장 발급</DialogTitle>
+            <DialogDescription>
+              택배사와 송장번호를 입력하여 배송을 시작하세요
+            </DialogDescription>
+          </DialogHeader>
+          {selectedOrder && (
+            <div className="space-y-4">
+              {/* 주문 정보 */}
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <h4 className="font-medium mb-2">주문 정보</h4>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p>
+                      <span className="font-medium">주문번호:</span>{" "}
+                      {selectedOrder.orderId}
+                    </p>
+                    <p>
+                      <span className="font-medium">고객명:</span>{" "}
+                      {selectedOrder.customerName}
+                    </p>
+                    <p>
+                      <span className="font-medium">연락처:</span>{" "}
+                      {selectedOrder.customerPhone}
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      <span className="font-medium">배송지:</span>{" "}
+                      {selectedOrder.shippingAddress}
+                    </p>
+                    <p>
+                      <span className="font-medium">무게:</span>{" "}
+                      {selectedOrder.weight}kg
+                    </p>
+                    <p>
+                      <span className="font-medium">크기:</span>{" "}
+                      {selectedOrder.dimensions.length}x
+                      {selectedOrder.dimensions.width}x
+                      {selectedOrder.dimensions.height}cm
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 택배사 선택 */}
+              <div>
+                <Label htmlFor="courier">택배사 선택</Label>
+                <Select
+                  value={selectedCourier}
+                  onValueChange={setSelectedCourier}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="택배사를 선택하세요" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {couriers
+                      .filter((c) => c.available)
+                      .map((courier) => (
+                        <SelectItem key={courier.id} value={courier.id}>
+                          <div className="flex items-center space-x-2">
+                            <img
+                              src={courier.logo}
+                              alt={courier.name}
+                              className="h-4"
+                            />
+                            <span>{courier.name}</span>
+                            <span className="text-xs text-gray-500">
+                              ({courier.deliveryTime})
+                            </span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 송장번호 입력 */}
+              <div>
+                <Label htmlFor="trackingNumber">송장번호</Label>
+                <Input
+                  id="trackingNumber"
+                  value={trackingNumber}
+                  onChange={(e) => setTrackingNumber(e.target.value)}
+                  placeholder="송장번호를 입력하세요"
+                />
+              </div>
+
+              {/* 특별 지시사항 */}
+              <div>
+                <Label htmlFor="specialInstructions">특별 지시사항</Label>
+                <Textarea
+                  id="specialInstructions"
+                  value={specialInstructions}
+                  onChange={(e) => setSpecialInstructions(e.target.value)}
+                  placeholder="특별한 배송 요청사항이 있다면 입력하세요"
+                  rows={3}
+                />
+              </div>
+
+              {/* 보험 금액 */}
+              <div>
+                <Label htmlFor="insuranceAmount">보험 금액 (선택사항)</Label>
+                <Input
+                  id="insuranceAmount"
+                  type="number"
+                  value={insuranceAmount}
+                  onChange={(e) => setInsuranceAmount(Number(e.target.value))}
+                  placeholder="보험 금액을 입력하세요"
+                />
+              </div>
+
+              <div className="flex justify-end space-x-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsShippingDialogOpen(false)}
+                >
+                  취소
+                </Button>
+                <Button onClick={() => issueTrackingNumber(selectedOrder.id)}>
+                  송장 발급
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* 배송 추적 다이얼로그 */}
+      <Dialog
+        open={isTrackingDialogOpen}
+        onOpenChange={setIsTrackingDialogOpen}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>배송 상세 정보</DialogTitle>
+            <DialogDescription>
+              배송 상태와 추적 정보를 확인하세요
+            </DialogDescription>
+          </DialogHeader>
+          {selectedOrder && (
+            <div className="space-y-4">
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <h4 className="font-medium mb-3">배송 정보</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">주문번호</span>
+                    <span>{selectedOrder.orderId}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">배송번호</span>
+                    <span>{selectedOrder.id}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">택배사</span>
+                    <span>
+                      {
+                        couriers.find((c) => c.id === selectedOrder.courier)
+                          ?.name
+                      }
+                    </span>
+                  </div>
+                  {selectedOrder.trackingNumber && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">송장번호</span>
+                      <span className="font-mono">
+                        {selectedOrder.trackingNumber}
+                      </span>
+                    </div>
+                  )}
+                  {selectedOrder.shippingDate && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">발송일</span>
+                      <span>{selectedOrder.shippingDate}</span>
+                    </div>
+                  )}
+                  {selectedOrder.estimatedDelivery && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">예상 배송일</span>
+                      <span>{selectedOrder.estimatedDelivery}</span>
+                    </div>
+                  )}
+                  {selectedOrder.actualDelivery && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">실제 배송일</span>
+                      <span>{selectedOrder.actualDelivery}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {selectedOrder.trackingNumber && (
+                <div className="flex justify-center">
+                  <Button
+                    onClick={() =>
+                      trackPackage(
+                        selectedOrder.trackingNumber!,
+                        couriers.find((c) => c.id === selectedOrder.courier)
+                          ?.code || ""
+                      )
+                    }
+                    className="w-full"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    배송 추적하기
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

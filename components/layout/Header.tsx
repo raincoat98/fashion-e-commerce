@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, ShoppingBag, Menu, X, User, Heart } from "lucide-react";
+import { Search, ShoppingBag, Menu, X, User, Heart, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
@@ -127,6 +127,13 @@ export default function Header() {
             <Button variant="ghost" size="icon" className="hidden sm:flex">
               <Heart className="h-5 w-5" />
             </Button>
+
+            {/* Tracking */}
+            <Link href="/tracking">
+              <Button variant="ghost" size="icon">
+                <Truck className="h-5 w-5" />
+              </Button>
+            </Link>
 
             {/* Cart */}
             <Link href="/cart">
