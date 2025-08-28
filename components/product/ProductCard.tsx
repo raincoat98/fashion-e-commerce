@@ -146,22 +146,33 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
-        {/* Add to Cart Button */}
-        <Button
-          className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-lg py-2 transition-colors"
-          onClick={(e) => {
-            e.preventDefault();
-            // Add to cart logic here
-            toast({
-              title: "장바구니 추가",
-              description: `${product.name}이(가) 장바구니에 추가되었습니다.`,
-              duration: 2000,
-            });
-          }}
-        >
-          <ShoppingBag className="h-4 w-4 mr-2" />
-          장바구니 담기
-        </Button>
+        {/* Action Buttons */}
+        <div className="flex space-x-2">
+          <Button
+            className="flex-1 bg-gray-900 hover:bg-gray-800 text-white rounded-lg py-2 transition-colors"
+            onClick={(e) => {
+              e.preventDefault();
+              // Add to cart logic here
+              toast({
+                title: "장바구니 추가",
+                description: `${product.name}이(가) 장바구니에 추가되었습니다.`,
+                duration: 2000,
+              });
+            }}
+          >
+            <ShoppingBag className="h-4 w-4 mr-2" />
+            장바구니
+          </Button>
+
+          <Link href={`/products/${product.id}`}>
+            <Button
+              variant="outline"
+              className="px-4 py-2 rounded-lg border-gray-300 hover:bg-gray-50 transition-colors"
+            >
+              상세보기
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

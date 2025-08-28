@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, TrendingUp } from "lucide-react";
+import { ArrowRight, Sparkles, TrendingUp, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -187,28 +187,6 @@ export default function FeaturedProducts() {
           {products.map((product) => (
             <div key={product.id} className="group">
               <ProductCard product={product} />
-
-              {/* Quick Buy Overlay */}
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl flex items-center justify-center">
-                <div className="text-center space-y-3">
-                  <Link href={`/products/${product.id}`}>
-                    <Button
-                      size="lg"
-                      className="lumina-gradient hover:opacity-90 text-white px-6 py-3 font-semibold lumina-shadow"
-                      onClick={() => {
-                        toast({
-                          title: "상품 페이지로 이동",
-                          description: `${product.name} 상품 페이지로 이동합니다.`,
-                          duration: 2000,
-                        });
-                      }}
-                    >
-                      <Sparkles className="w-4 h-4 mr-2" />
-                      바로 구매
-                    </Button>
-                  </Link>
-                </div>
-              </div>
             </div>
           ))}
         </div>
