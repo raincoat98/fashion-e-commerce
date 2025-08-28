@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search, ShoppingBag, Menu, X, User, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -8,14 +8,40 @@ import { useCart } from "@/contexts/CartContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isTopBannerVisible, setIsTopBannerVisible] = useState(true);
   const { state: cartState } = useCart();
+
+  // localStorage에서 탑 배너 상태 확인
+  useEffect(() => {
+    const bannerHidden = localStorage.getItem("lumina-top-banner-hidden");
+    if (bannerHidden === "true") {
+      setIsTopBannerVisible(false);
+    }
+  }, []);
+
+  // 탑 배너 닫기 함수
+  const closeTopBanner = () => {
+    setIsTopBannerVisible(false);
+    localStorage.setItem("lumina-top-banner-hidden", "true");
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       {/* Top Banner */}
-      <div className="lumina-gradient text-white text-center py-3 text-sm font-medium">
-        ✨ NEW ARRIVAL: 봄 시즌 컬렉션 출시! 첫 구매 20% 할인
-      </div>
+      {isTopBannerVisible && (
+        <div className="lumina-gradient text-white text-center py-3 text-sm font-medium relative">
+          <div className="flex items-center justify-center">
+            <span>✨ NEW ARRIVAL: 봄 시즌 컬렉션 출시! 첫 구매 20% 할인</span>
+            <button
+              onClick={closeTopBanner}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/80 hover:text-white transition-colors p-1"
+              aria-label="배너 닫기"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="container mx-auto">
         {/* Main Header */}
