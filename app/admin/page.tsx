@@ -27,6 +27,7 @@ import {
   Gift,
   Tag,
   RefreshCw,
+  Plus,
 } from "lucide-react";
 import Link from "next/link";
 import CouponManager from "@/components/admin/CouponManager";
@@ -35,6 +36,7 @@ import CollectionManager from "@/components/admin/CollectionManager";
 import OrderStatusManager from "@/components/admin/OrderStatusManager";
 import ShippingManager from "@/components/admin/ShippingManager";
 import CustomerManager from "@/components/admin/CustomerManager";
+
 import {
   Select,
   SelectContent,
@@ -167,6 +169,11 @@ export default function AdminPage() {
       order.customerEmail.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesStatus && matchesSearch;
   });
+
+  const handleStatusChange = (orderId: string, newStatus: string) => {
+    // 실제로는 API 호출로 상태 업데이트
+    console.log(`Order ${orderId} status changed to ${newStatus}`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
