@@ -51,30 +51,7 @@ import {
   X,
   Save,
 } from "lucide-react";
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  salePrice?: number;
-  category: string;
-  collection: string;
-  images: string[];
-  colors: string[];
-  sizes: string[];
-  stock: number;
-  isActive: boolean;
-  isFeatured: boolean;
-  tags: string[];
-  badge?: string;
-  isLimited?: boolean;
-  isHot?: boolean;
-  isNew?: boolean;
-  isBest?: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import { useProductStore, Product } from "@/stores/useProductStore";
 
 interface Collection {
   id: string;
@@ -84,20 +61,20 @@ interface Collection {
   isActive: boolean;
 }
 
-// Mock 데이터
+// Mock 데이터 (실제로는 스토어에서 가져오므로 사용되지 않음)
 const mockProducts: Product[] = [
   {
     id: "1",
     name: "LUMINA 시그니처 티셔츠",
     description: "프리미엄 코튼 소재의 시그니처 티셔츠",
     price: 89000,
-    salePrice: 71000,
-    category: "top",
-    collection: "signature",
+    originalPrice: 120000,
+    category: "상의",
+    subCategory: "티셔츠",
     images: [
-      "/images/products/tshirt-1.jpg",
-      "/images/products/tshirt-2.jpg",
-      "/images/products/tshirt-3.jpg",
+      "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/1805411/pexels-photo-1805411.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&w=800",
     ],
     colors: ["화이트", "블랙", "네이비"],
     sizes: ["S", "M", "L", "XL"],
@@ -109,18 +86,23 @@ const mockProducts: Product[] = [
     isHot: true,
     isNew: false,
     isBest: false,
-    badge: "HOT",
-    createdAt: "2025-01-01",
-    updatedAt: "2025-01-15",
+    rating: 4.8,
+    reviewCount: 156,
+    createdAt: "2025-01-01T00:00:00Z",
+    updatedAt: "2025-01-15T00:00:00Z",
   },
   {
     id: "2",
     name: "프리미엄 데님 팬츠",
     description: "고급 데님 소재의 프리미엄 팬츠",
     price: 129000,
-    category: "bottom",
-    collection: "premium",
-    images: ["/images/products/jeans-1.jpg", "/images/products/jeans-2.jpg"],
+    originalPrice: 159000,
+    category: "하의",
+    subCategory: "팬츠",
+    images: [
+      "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/852860/pexels-photo-852860.jpeg?auto=compress&cs=tinysrgb&w=800",
+    ],
     colors: ["블루", "블랙"],
     sizes: ["26", "27", "28", "29", "30"],
     stock: 80,
@@ -249,11 +231,20 @@ interface ProductFormData {
 }
 
 export default function ProductManager({ onEditProduct }: ProductManagerProps) {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
   const { toast } = useToast();
+  const {
+    products,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    setSearchTerm,
+    setSelectedCategory,
+    searchTerm,
+    selectedCategory,
+    filteredProducts,
+  } = useProductStore();
+
   const [collections, setCollections] = useState<Collection[]>(mockCollections);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedCollection, setSelectedCollection] = useState<string>("all");
   const [isBulkUploadDialogOpen, setIsBulkUploadDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -317,16 +308,11 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     }
   }, [formData.category]);
 
-  // 필터링된 상품
-  const filteredProducts = products.filter((product) => {
-    const matchesSearch =
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      selectedCategory === "all" || product.category === selectedCategory;
+  // 필터링된 상품 (컬렉션 필터 추가)
+  const finalFilteredProducts = filteredProducts.filter((product) => {
     const matchesCollection =
       selectedCollection === "all" || product.collection === selectedCollection;
-    return matchesSearch && matchesCategory && matchesCollection;
+    return matchesCollection;
   });
 
   // 상품 수정 다이얼로그 열기
@@ -375,9 +361,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
   };
 
   // 상품 삭제
-  const deleteProduct = (id: string) => {
+  const handleDeleteProduct = (id: string) => {
     const productToDelete = products.find((product) => product.id === id);
-    setProducts(products.filter((product) => product.id !== id));
+    deleteProduct(id);
 
     toast({
       title: "상품 삭제 완료",
@@ -391,11 +377,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     const product = products.find((p) => p.id === id);
     const newStatus = !product?.isActive;
 
-    setProducts(
-      products.map((product) =>
-        product.id === id ? { ...product, isActive: newStatus } : product
-      )
-    );
+    updateProduct(id, { isActive: newStatus });
 
     toast({
       title: "상품 상태 변경",
@@ -411,11 +393,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     const product = products.find((p) => p.id === id);
     const newFeatured = !product?.isFeatured;
 
-    setProducts(
-      products.map((product) =>
-        product.id === id ? { ...product, isFeatured: newFeatured } : product
-      )
-    );
+    updateProduct(id, { isFeatured: newFeatured });
 
     toast({
       title: "피처드 상태 변경",
@@ -515,12 +493,11 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
     if (editingProduct) {
       // 수정 모드
-      const updatedProduct: Product = {
-        ...editingProduct,
+      const updates = {
         name: formData.name,
         description: formData.description,
         price: formData.price,
-        salePrice:
+        originalPrice:
           formData.originalPrice !== formData.price
             ? formData.originalPrice
             : undefined,
@@ -530,19 +507,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         sizes: sizes.map((s) => s.name),
         stock: sizes.reduce((sum, size) => sum + size.stock, 0),
         tags: formData.features.filter((f) => f.trim() !== ""),
-        badge,
-        isLimited: formData.isLimited,
-        isHot: formData.isHot,
         isNew: formData.isNew,
+        isSale: formData.originalPrice !== formData.price,
         isBest: formData.isBest,
-        updatedAt: new Date().toISOString().split("T")[0],
       };
 
-      setProducts(
-        products.map((product) =>
-          product.id === editingProduct.id ? updatedProduct : product
-        )
-      );
+      updateProduct(editingProduct.id, updates);
 
       toast({
         title: "상품 수정 완료",
@@ -551,34 +521,29 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
       });
     } else {
       // 등록 모드
-      const newProduct: Product = {
-        id: Date.now().toString(),
+      const newProduct = {
         name: formData.name,
         description: formData.description,
         price: formData.price,
-        salePrice:
+        originalPrice:
           formData.originalPrice !== formData.price
             ? formData.originalPrice
             : undefined,
         category: formData.category,
-        collection: "signature", // 기본값
+        subCategory: formData.category === "top" ? "티셔츠" : "기본",
         images: formData.images,
         colors: colors.map((c) => c.name),
         sizes: sizes.map((s) => s.name),
         stock: sizes.reduce((sum, size) => sum + size.stock, 0),
-        isActive: true,
-        isFeatured: false,
-        tags: formData.features.filter((f) => f.trim() !== ""),
-        badge,
-        isLimited: formData.isLimited,
-        isHot: formData.isHot,
         isNew: formData.isNew,
+        isSale: formData.originalPrice !== formData.price,
         isBest: formData.isBest,
-        createdAt: new Date().toISOString().split("T")[0],
-        updatedAt: new Date().toISOString().split("T")[0],
+        rating: 0,
+        reviewCount: 0,
+        tags: formData.features.filter((f) => f.trim() !== ""),
       };
 
-      setProducts([...products, newProduct]);
+      addProduct(newProduct);
 
       toast({
         title: "상품 등록 완료",
@@ -1283,7 +1248,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
             {/* 상품 목록 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProducts.map((product) => (
+              {finalFilteredProducts.map((product) => (
                 <Card
                   key={product.id}
                   className="hover:shadow-md transition-shadow"
@@ -1345,13 +1310,14 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                         </p>
 
                         <div className="flex items-center space-x-2">
-                          {product.salePrice ? (
+                          {product.originalPrice &&
+                          product.originalPrice > product.price ? (
                             <>
                               <span className="text-lg font-bold text-red-600">
-                                {product.salePrice.toLocaleString()}원
+                                {product.price.toLocaleString()}원
                               </span>
                               <span className="text-sm text-gray-500 line-through">
-                                {product.price.toLocaleString()}원
+                                {product.originalPrice.toLocaleString()}원
                               </span>
                             </>
                           ) : (
@@ -1441,7 +1407,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => deleteProduct(product.id)}
+                          onClick={() => handleDeleteProduct(product.id)}
                           className="text-red-600 hover:text-red-700"
                         >
                           <Trash2 className="w-4 h-4" />

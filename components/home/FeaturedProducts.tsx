@@ -8,6 +8,7 @@ import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useToast } from "@/hooks/use-toast";
+import { useProductStore } from "@/stores/useProductStore";
 
 // GSAP 플러그인 등록
 gsap.registerPlugin(ScrollTrigger);
@@ -18,6 +19,7 @@ export default function FeaturedProducts() {
   const productsRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { products } = useProductStore();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -93,65 +95,29 @@ export default function FeaturedProducts() {
     return () => ctx.revert();
   }, []);
 
-  // Mock data - replace with actual API call
-  const products = [
-    {
-      id: 1,
-      name: "LUMINA 시그니처 티셔츠",
-      price: 89000,
-      originalPrice: 129000,
-      image:
-        "https://images.pexels.com/photos/2043590/pexels-photo-2043590.jpeg?auto=compress&cs=tinysrgb&w=800",
+  // 스토어에서 베스트 상품 4개 가져오기
+  const featuredProducts = products
+    .filter((product) => product.isBest || product.isNew || product.isSale)
+    .slice(0, 4)
+    .map((product) => ({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.originalPrice || product.price,
+      image: product.images[0] || "/images/placeholder.jpg",
       hoverImage:
-        "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=800",
-      badge: "BEST",
-      rating: 4.9,
-      reviewCount: 127,
-      sizes: ["S", "M", "L"],
-    },
-    {
-      id: 2,
-      name: "프리미엄 데님 팬츠",
-      price: 129000,
-      originalPrice: 189000,
-      image:
-        "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
-      hoverImage:
-        "https://images.pexels.com/photos/852860/pexels-photo-852860.jpeg?auto=compress&cs=tinysrgb&w=800",
-      badge: "NEW",
-      rating: 4.8,
-      reviewCount: 89,
-      sizes: ["S", "M", "L", "XL"],
-    },
-    {
-      id: 3,
-      name: "엘레간트 원피스",
-      price: 159000,
-      originalPrice: 229000,
-      image:
-        "https://images.pexels.com/photos/852860/pexels-photo-852860.jpeg?auto=compress&cs=tinysrgb&w=800",
-      hoverImage:
-        "https://images.pexels.com/photos/2584269/pexels-photo-2584269.jpeg?auto=compress&cs=tinysrgb&w=800",
-      badge: "HOT",
-      rating: 4.9,
-      reviewCount: 203,
-      sizes: ["S", "M", "L"],
-    },
-    {
-      id: 4,
-      name: "크롭 니트 가디건",
-      price: 99000,
-      originalPrice: 149000,
-      image:
-        "https://images.pexels.com/photos/2584269/pexels-photo-2584269.jpeg?auto=compress&cs=tinysrgb&w=800",
-      hoverImage:
-        "https://images.pexels.com/photos/2043590/pexels-photo-2043590.jpeg?auto=compress&cs=tinysrgb&w=800",
-      badge: "LIMITED",
-      rating: 4.7,
-      reviewCount: 156,
-      sizes: ["S", "M", "L"],
-    },
-  ];
+        product.images[1] || product.images[0] || "/images/placeholder.jpg",
+      badge: product.isNew
+        ? "NEW"
+        : product.isSale
+        ? "SALE"
+        : product.isBest
+        ? "BEST"
+        : "",
+      rating: product.rating,
+      reviewCount: product.reviewCount,
+      sizes: product.sizes,
+    }));
 
   return (
     <section
@@ -184,7 +150,7 @@ export default function FeaturedProducts() {
           ref={productsRef}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12"
         >
-          {products.map((product) => (
+          {featuredProducts.map((product) => (
             <div key={product.id} className="group">
               <ProductCard product={product} />
             </div>

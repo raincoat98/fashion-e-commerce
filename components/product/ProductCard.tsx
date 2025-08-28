@@ -5,9 +5,10 @@ import { Heart, Star, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
+import { useProductStore } from "@/stores/useProductStore";
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   originalPrice?: number;
@@ -26,13 +27,45 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [selectedSize, setSelectedSize] = useState(product.sizes[0] || "");
+  const [selectedColor, setSelectedColor] = useState("");
   const { toast } = useToast();
+  const { addToCart } = useProductStore();
 
   const discountPercentage = product.originalPrice
     ? Math.round(
         ((product.originalPrice - product.price) / product.originalPrice) * 100
       )
     : 0;
+
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      toast({
+        title: "사이즈를 선택해주세요",
+        description: "장바구니에 추가하기 전에 사이즈를 선택해주세요.",
+        duration: 3000,
+      });
+      return;
+    }
+
+    addToCart({
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      image: product.image,
+      size: selectedSize,
+      color: selectedColor || "기본",
+      quantity: 1,
+      stock: 10, // 실제로는 상품의 재고 정보를 가져와야 함
+    });
+
+    toast({
+      title: "장바구니에 추가되었습니다",
+      description: `${product.name}이(가) 장바구니에 추가되었습니다.`,
+      duration: 2000,
+    });
+  };
 
   return (
     <div
@@ -94,7 +127,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                 key={size}
                 size="sm"
                 variant="secondary"
-                className="text-xs px-3 py-1 bg-white hover:bg-gray-900 hover:text-white transition-colors"
+                className={`text-xs px-3 py-1 transition-colors ${
+                  selectedSize === size
+                    ? "bg-gray-900 text-white"
+                    : "bg-white hover:bg-gray-900 hover:text-white"
+                }`}
+                onClick={() => setSelectedSize(size)}
               >
                 {size}
               </Button>
@@ -150,15 +188,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="flex space-x-2">
           <Button
             className="flex-1 bg-gray-900 hover:bg-gray-800 text-white rounded-lg py-2 transition-colors"
-            onClick={(e) => {
-              e.preventDefault();
-              // Add to cart logic here
-              toast({
-                title: "장바구니 추가",
-                description: `${product.name}이(가) 장바구니에 추가되었습니다.`,
-                duration: 2000,
-              });
-            }}
+            onClick={handleAddToCart}
           >
             <ShoppingBag className="h-4 w-4 mr-2" />
             장바구니

@@ -45,6 +45,7 @@ import {
   Calendar,
   MapPin,
 } from "lucide-react";
+import { useProductStore } from "@/stores/useProductStore";
 
 interface OrderItem {
   id: string;
@@ -149,7 +150,9 @@ const shippingFeeTable = [
 ];
 
 export default function OrderStatusManager() {
-  const [orders, setOrders] = useState<Order[]>([
+  const { orders, updateOrderStatus: updateOrderStatusInStore } =
+    useProductStore();
+  const [localOrders, setLocalOrders] = useState<Order[]>([
     {
       id: "ORD-2024-001",
       customerName: "김미영",
@@ -219,8 +222,12 @@ export default function OrderStatusManager() {
 
   // 주문 상태 업데이트
   const updateOrderStatus = (orderId: string, newStatus: string) => {
-    setOrders(
-      orders.map((order) => {
+    // 스토어의 주문 상태 업데이트
+    updateOrderStatusInStore(orderId, newStatus as any);
+
+    // 로컬 주문 상태도 업데이트
+    setLocalOrders(
+      localOrders.map((order) => {
         if (order.id === orderId) {
           const newHistory = {
             status: newStatus,
@@ -319,7 +326,7 @@ export default function OrderStatusManager() {
   const getStatusStats = () => {
     const stats: { [key: string]: number } = {};
     orderStatusFlow.forEach((status) => {
-      stats[status.value] = orders.filter(
+      stats[status.value] = localOrders.filter(
         (order) => order.status === status.value
       ).length;
     });
@@ -368,7 +375,7 @@ export default function OrderStatusManager() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {orders.map((order) => {
+            {localOrders.map((order) => {
               const StatusIcon =
                 orderStatusFlow.find((s) => s.value === order.status)?.icon ||
                 Clock;

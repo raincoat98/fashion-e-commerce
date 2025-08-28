@@ -4,12 +4,13 @@ import React, { useState } from "react";
 import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Filter, Grid, List, ChevronDown } from "lucide-react";
+import { useProductStore } from "@/stores/useProductStore";
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
-  originalPrice: number;
+  originalPrice?: number;
   image: string;
   hoverImage: string;
   badge?: string;
@@ -21,15 +22,28 @@ interface Product {
 interface CategoryClientProps {
   products: Product[];
   categoryName: string;
+  categorySlug: string;
 }
 
 export default function CategoryClient({
   products,
   categoryName,
+  categorySlug,
 }: CategoryClientProps) {
   const [viewMode, setViewMode] = useState("grid");
   const [sortBy, setSortBy] = useState("popular");
   const [showFilters, setShowFilters] = useState(false);
+
+  // 스토어에서 실제 상품 데이터 가져오기
+  const { products: storeProducts, setSelectedCategory } = useProductStore();
+
+  // 카테고리 설정
+  React.useEffect(() => {
+    setSelectedCategory(categorySlug);
+  }, [categorySlug, setSelectedCategory]);
+
+  // 실제 상품 데이터 사용 (props로 받은 데이터는 fallback)
+  const displayProducts = storeProducts.length > 0 ? storeProducts : products;
 
   return (
     <>
@@ -181,8 +195,31 @@ export default function CategoryClient({
             : "space-y-4"
         }`}
       >
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {displayProducts.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={{
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              originalPrice: product.originalPrice,
+              image: product.images[0] || "/images/placeholder.jpg",
+              hoverImage:
+                product.images[1] ||
+                product.images[0] ||
+                "/images/placeholder.jpg",
+              badge: product.isNew
+                ? "NEW"
+                : product.isSale
+                ? "SALE"
+                : product.isBest
+                ? "BEST"
+                : "",
+              rating: product.rating,
+              reviewCount: product.reviewCount,
+              sizes: product.sizes,
+            }}
+          />
         ))}
       </div>
 

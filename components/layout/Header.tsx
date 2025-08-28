@@ -4,12 +4,12 @@ import React, { useState, useEffect } from "react";
 import { Search, ShoppingBag, Menu, X, User, Heart, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useCart } from "@/contexts/CartContext";
+import { useProductStore } from "@/stores/useProductStore";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTopBannerVisible, setIsTopBannerVisible] = useState(true);
-  const { state: cartState } = useCart();
+  const { cartItemCount } = useProductStore();
 
   // localStorage에서 탑 배너 상태 확인
   useEffect(() => {
@@ -139,9 +139,9 @@ export default function Header() {
             <Link href="/cart">
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingBag className="h-5 w-5" />
-                {cartState.itemCount > 0 && (
+                {cartItemCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {cartState.itemCount}
+                    {cartItemCount}
                   </span>
                 )}
               </Button>
