@@ -14,6 +14,7 @@ import {
   X,
   ArrowRight,
   Sparkles,
+  Check,
 } from "lucide-react";
 
 interface PromotionBannerProps {
@@ -51,11 +52,29 @@ export default function PromotionBanner({
   // 쿠폰 코드 복사
   const copyCouponCode = async () => {
     try {
-      await navigator.clipboard.writeText(activeCoupon.code);
+      // 클립보드 API 사용
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(activeCoupon.code);
+      } else {
+        // 폴백: 구식 브라우저 지원
+        const textArea = document.createElement("textarea");
+        textArea.value = activeCoupon.code;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+      }
+
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     } catch (err) {
       console.error("쿠폰 코드 복사 실패:", err);
+      // 사용자에게 오류 알림
+      alert("쿠폰 코드 복사에 실패했습니다. 수동으로 복사해주세요.");
     }
   };
 
@@ -158,8 +177,11 @@ export default function PromotionBanner({
                 <div>
                   <p className="text-sm text-white/80 mb-2">쿠폰 코드</p>
                   <div className="flex items-center justify-end space-x-2">
-                    <div className="bg-white/20 rounded-lg px-4 py-2 backdrop-blur-sm">
-                      <span className="font-mono font-bold text-lg tracking-wider">
+                    <div
+                      className="bg-white/20 rounded-lg px-4 py-2 backdrop-blur-sm cursor-pointer hover:bg-white/30 transition-colors duration-200"
+                      onClick={copyCouponCode}
+                    >
+                      <span className="font-mono font-bold text-lg tracking-wider select-all">
                         {activeCoupon.code}
                       </span>
                     </div>
@@ -167,18 +189,21 @@ export default function PromotionBanner({
                       size="sm"
                       variant="outline"
                       onClick={copyCouponCode}
-                      className="border-white/30 text-white hover:bg-white/20"
+                      className={`border-white/30 text-white bg-white/20 hover:bg-white/20 transition-all duration-200 ${
+                        isCopied ? "bg-green-500/20 border-green-300" : ""
+                      }`}
+                      disabled={isCopied}
                     >
                       {isCopied ? (
-                        <CheckCircle className="w-4 h-4" />
+                        <Check className="w-4 h-4" />
                       ) : (
                         <Copy className="w-4 h-4" />
                       )}
                     </Button>
                   </div>
                   {isCopied && (
-                    <p className="text-xs text-green-300 mt-1">
-                      복사되었습니다!
+                    <p className="text-xs text-green-300 mt-1 animate-pulse">
+                      ✓ 복사되었습니다!
                     </p>
                   )}
                 </div>
