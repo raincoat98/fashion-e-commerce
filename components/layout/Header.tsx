@@ -117,7 +117,7 @@ export default function Header() {
             </Button>
 
             {/* User */}
-            <Link href="/login">
+            <Link href="/profile">
               <Button variant="ghost" size="icon">
                 <User className="h-5 w-5" />
               </Button>

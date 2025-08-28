@@ -34,6 +34,7 @@ import ProductManager from "@/components/admin/ProductManager";
 import CollectionManager from "@/components/admin/CollectionManager";
 import OrderStatusManager from "@/components/admin/OrderStatusManager";
 import ShippingManager from "@/components/admin/ShippingManager";
+import CustomerManager from "@/components/admin/CustomerManager";
 import {
   Select,
   SelectContent,
@@ -274,7 +275,7 @@ export default function AdminPage() {
 
         {/* 메인 탭 */}
         <Tabs defaultValue="orders" className="w-full">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="orders" className="flex items-center space-x-2">
               <Package className="w-4 h-4" />
               <span>주문 관리</span>
@@ -292,6 +293,13 @@ export default function AdminPage() {
             >
               <Truck className="w-4 h-4" />
               <span>배송 관리</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="customers"
+              className="flex items-center space-x-2"
+            >
+              <Users className="w-4 h-4" />
+              <span>고객 관리</span>
             </TabsTrigger>
             <TabsTrigger
               value="products"
@@ -509,6 +517,11 @@ export default function AdminPage() {
           {/* 배송 관리 탭 */}
           <TabsContent value="shipping" className="space-y-6">
             <ShippingManager />
+          </TabsContent>
+
+          {/* 고객 관리 탭 */}
+          <TabsContent value="customers" className="space-y-6">
+            <CustomerManager />
           </TabsContent>
 
           {/* 상품 관리 탭 */}

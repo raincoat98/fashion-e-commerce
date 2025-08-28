@@ -37,6 +37,7 @@ import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
 import PaymentSystem from "@/components/checkout/PaymentSystem";
 import CouponInput from "@/components/checkout/CouponInput";
+import AddressManager from "@/components/shipping/AddressManager";
 
 interface ShippingInfo {
   name: string;
@@ -71,6 +72,7 @@ export default function CheckoutPage() {
     detailAddress: "",
     memo: "",
   });
+  const [showAddressManager, setShowAddressManager] = useState(false);
   const [agreements, setAgreements] = useState({
     terms: false,
     privacy: false,
