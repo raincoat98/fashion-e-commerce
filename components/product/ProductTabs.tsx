@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import React, { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ReviewSection from "./ReviewSection";
 
 interface ProductTabsProps {
   description: string;
@@ -16,6 +17,26 @@ interface ProductTabsProps {
       sleeve: number;
     };
   };
+  reviews?: {
+    id: number;
+    userId: string;
+    userName: string;
+    userAvatar?: string;
+    rating: number;
+    title: string;
+    content: string;
+    images?: string[];
+    size: string;
+    color: string;
+    helpful: number;
+    date: string;
+    verified: boolean;
+  }[];
+  averageRating?: number;
+  totalReviews?: number;
+  ratingDistribution?: {
+    [key: number]: number;
+  };
 }
 
 export default function ProductTabs({
@@ -23,7 +44,11 @@ export default function ProductTabs({
   materials,
   care,
   modelInfo,
-  measurements
+  measurements,
+  reviews = [],
+  averageRating = 0,
+  totalReviews = 0,
+  ratingDistribution = {},
 }: ProductTabsProps) {
   return (
     <Tabs defaultValue="description" className="w-full">
@@ -33,12 +58,12 @@ export default function ProductTabs({
         <TabsTrigger value="shipping">배송/교환</TabsTrigger>
         <TabsTrigger value="reviews">리뷰</TabsTrigger>
       </TabsList>
-      
+
       <TabsContent value="description" className="mt-8 space-y-6">
         <div className="prose max-w-none">
           <h3 className="text-lg font-semibold mb-4">상품 설명</h3>
           <p className="text-gray-700 leading-relaxed mb-6">{description}</p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="font-medium mb-2">소재 정보</h4>
@@ -49,45 +74,67 @@ export default function ProductTabs({
               <p className="text-gray-600">{care}</p>
             </div>
           </div>
-          
+
           <div className="bg-gray-50 p-4 rounded-lg mt-6">
             <h4 className="font-medium mb-2">모델 착용 정보</h4>
             <p className="text-gray-600">{modelInfo}</p>
           </div>
         </div>
       </TabsContent>
-      
+
       <TabsContent value="size" className="mt-8">
         <div className="space-y-6">
           <h3 className="text-lg font-semibold">상세 사이즈표</h3>
-          
+
           <div className="overflow-x-auto">
             <table className="w-full border-collapse border border-gray-200">
               <thead>
                 <tr className="bg-gray-50">
-                  <th className="border border-gray-200 px-4 py-3 text-left font-medium">사이즈</th>
-                  <th className="border border-gray-200 px-4 py-3 text-center font-medium">가슴둘레</th>
-                  <th className="border border-gray-200 px-4 py-3 text-center font-medium">어깨너비</th>
-                  <th className="border border-gray-200 px-4 py-3 text-center font-medium">총길이</th>
-                  <th className="border border-gray-200 px-4 py-3 text-center font-medium">소매길이</th>
+                  <th className="border border-gray-200 px-4 py-3 text-left font-medium">
+                    사이즈
+                  </th>
+                  <th className="border border-gray-200 px-4 py-3 text-center font-medium">
+                    가슴둘레
+                  </th>
+                  <th className="border border-gray-200 px-4 py-3 text-center font-medium">
+                    어깨너비
+                  </th>
+                  <th className="border border-gray-200 px-4 py-3 text-center font-medium">
+                    총길이
+                  </th>
+                  <th className="border border-gray-200 px-4 py-3 text-center font-medium">
+                    소매길이
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {Object.entries(measurements).map(([size, measures]) => (
                   <tr key={size}>
-                    <td className="border border-gray-200 px-4 py-3 font-medium">{size}</td>
-                    <td className="border border-gray-200 px-4 py-3 text-center">{measures.chest}cm</td>
-                    <td className="border border-gray-200 px-4 py-3 text-center">{measures.shoulder}cm</td>
-                    <td className="border border-gray-200 px-4 py-3 text-center">{measures.length}cm</td>
-                    <td className="border border-gray-200 px-4 py-3 text-center">{measures.sleeve}cm</td>
+                    <td className="border border-gray-200 px-4 py-3 font-medium">
+                      {size}
+                    </td>
+                    <td className="border border-gray-200 px-4 py-3 text-center">
+                      {measures.chest}cm
+                    </td>
+                    <td className="border border-gray-200 px-4 py-3 text-center">
+                      {measures.shoulder}cm
+                    </td>
+                    <td className="border border-gray-200 px-4 py-3 text-center">
+                      {measures.length}cm
+                    </td>
+                    <td className="border border-gray-200 px-4 py-3 text-center">
+                      {measures.sleeve}cm
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          
+
           <div className="bg-blue-50 p-4 rounded-lg">
-            <h4 className="font-medium mb-2 text-blue-900">사이즈 선택 가이드</h4>
+            <h4 className="font-medium mb-2 text-blue-900">
+              사이즈 선택 가이드
+            </h4>
             <ul className="text-sm text-blue-800 space-y-1">
               <li>• 평소 입으시는 사이즈를 선택하세요</li>
               <li>• 오버핏을 원하신다면 한 사이즈 크게 선택하세요</li>
@@ -96,7 +143,7 @@ export default function ProductTabs({
           </div>
         </div>
       </TabsContent>
-      
+
       <TabsContent value="shipping" className="mt-8">
         <div className="space-y-6">
           <div>
@@ -116,7 +163,7 @@ export default function ProductTabs({
               </div>
             </div>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-semibold mb-4">교환/반품 안내</h3>
             <div className="space-y-3 text-sm">
@@ -140,21 +187,32 @@ export default function ProductTabs({
           </div>
         </div>
       </TabsContent>
-      
+
       <TabsContent value="reviews" className="mt-8">
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold">고객 리뷰</h3>
-            <button className="text-sm text-gray-600 hover:text-gray-900">
-              리뷰 작성하기
-            </button>
+        {reviews.length > 0 ? (
+          <ReviewSection
+            reviews={reviews}
+            averageRating={averageRating}
+            totalReviews={totalReviews}
+            ratingDistribution={ratingDistribution}
+          />
+        ) : (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold">고객 리뷰</h3>
+              <button className="text-sm text-gray-600 hover:text-gray-900">
+                리뷰 작성하기
+              </button>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg text-center">
+              <p className="text-gray-600">아직 작성된 리뷰가 없습니다.</p>
+              <p className="text-sm text-gray-500 mt-2">
+                첫 번째 리뷰를 작성해보세요!
+              </p>
+            </div>
           </div>
-          
-          <div className="bg-gray-50 p-6 rounded-lg text-center">
-            <p className="text-gray-600">아직 작성된 리뷰가 없습니다.</p>
-            <p className="text-sm text-gray-500 mt-2">첫 번째 리뷰를 작성해보세요!</p>
-          </div>
-        </div>
+        )}
       </TabsContent>
     </Tabs>
   );

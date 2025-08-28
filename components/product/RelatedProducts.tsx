@@ -11,6 +11,11 @@ export default function RelatedProducts({
   currentProductId,
 }: RelatedProductsProps) {
   // Mock related products - replace with actual API call
+  // In a real app, this would be based on:
+  // - Same category products
+  // - Frequently bought together
+  // - User viewing history
+  // - Similar price range
   const relatedProducts = [
     {
       id: 101,

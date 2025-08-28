@@ -1,38 +1,77 @@
-"use client";
-
-import React, { useState } from "react";
-import { useParams } from "next/navigation";
+import React from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import ImageGallery from "@/components/product/ImageGallery";
-import VariantPicker from "@/components/product/VariantPicker";
-import ProductInfo from "@/components/product/ProductInfo";
+import ProductDetailClient from "@/components/product/ProductDetailClient";
 import RelatedProducts from "@/components/product/RelatedProducts";
 import ProductTabs from "@/components/product/ProductTabs";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Star,
-  Heart,
-  Share2,
-  ChevronRight,
-  Shield,
-  Truck,
-  RotateCcw,
-} from "lucide-react";
 
-export default function ProductDetailPage() {
-  const params = useParams();
-  const [selectedVariant, setSelectedVariant] = useState({
-    size: "M",
-    color: "Black",
-  });
-  const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+// Static generation for export
+export async function generateStaticParams() {
+  return [
+    { id: "1" },
+    { id: "2" },
+    { id: "3" },
+    { id: "4" },
+    { id: "5" },
+    { id: "6" },
+  ];
+}
 
-  // Mock product data - replace with actual API call
+// Generate metadata for each product
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  // Mock product data - in real app, fetch from API
   const product = {
-    id: parseInt(params.id as string),
+    id: parseInt(params.id),
+    name: "베이직 코튼 티셔츠",
+    description:
+      "부드러운 코튼 소재로 편안한 착용감을 제공하는 베이직 티셔츠입니다.",
+    price: 29000,
+    originalPrice: 49000,
+  };
+
+  return {
+    title: `${product.name} - Fashion Store`,
+    description: product.description,
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      type: "website",
+      images: [
+        {
+          url: "https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=800",
+          width: 800,
+          height: 800,
+          alt: product.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.name,
+      description: product.description,
+      images: [
+        "https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=800",
+      ],
+    },
+  };
+}
+
+export default function ProductDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  // Mock product data - replace with actual API call
+  // In real app, this would be fetched from API based on params.id
+  const productId = parseInt(params.id);
+
+  // Simulate product not found for certain IDs
+  if (productId > 6) {
+    throw new Error("Product not found");
+  }
+
+  const product = {
+    id: parseInt(params.id),
     name: "베이직 코튼 티셔츠",
     brand: "FASHION BRAND",
     price: 29000,
@@ -76,211 +115,73 @@ export default function ProductDetailPage() {
       "세탁 후에도 변형 없는 안정적인 핏",
     ],
     badge: "40% OFF",
+    reviews: [
+      {
+        id: 1,
+        userId: "user1",
+        userName: "김**",
+        rating: 5,
+        title: "정말 만족스러운 구매였어요!",
+        content:
+          "사이즈도 딱 맞고 소재도 부드러워서 정말 좋습니다. 일상복으로 입기 완벽해요. 다음에도 구매할 예정입니다.",
+        images: [
+          "https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=200",
+        ],
+        size: "M",
+        color: "Black",
+        helpful: 12,
+        date: "2024-01-15",
+        verified: true,
+      },
+      {
+        id: 2,
+        userId: "user2",
+        userName: "이**",
+        rating: 4,
+        title: "가격 대비 괜찮아요",
+        content:
+          "기본 티셔츠로는 괜찮습니다. 다만 약간 얇은 느낌이 있어서 겹쳐입기 좋아요.",
+        size: "L",
+        color: "White",
+        helpful: 8,
+        date: "2024-01-10",
+        verified: true,
+      },
+      {
+        id: 3,
+        userId: "user3",
+        userName: "박**",
+        rating: 5,
+        title: "색상이 예뻐요",
+        content:
+          "그레이 컬러가 생각보다 예쁘네요. 핏도 좋고 색상도 마음에 들어요. 추천합니다!",
+        images: [
+          "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=200",
+        ],
+        size: "S",
+        color: "Gray",
+        helpful: 15,
+        date: "2024-01-08",
+        verified: false,
+      },
+    ],
+    averageRating: 4.7,
+    totalReviews: 127,
+    ratingDistribution: {
+      5: 89,
+      4: 25,
+      3: 10,
+      2: 2,
+      1: 1,
+    },
   };
-
-  const discountPercentage = Math.round(
-    ((product.originalPrice - product.price) / product.originalPrice) * 100
-  );
-  const selectedSize = product.sizes.find(
-    (size) => size.name === selectedVariant.size
-  );
-  const isInStock = selectedSize?.available && selectedSize.stock > 0;
 
   return (
     <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="container mx-auto py-6">
-        {/* Breadcrumb */}
-        <div className="flex items-center space-x-2 text-sm text-gray-500 mb-6">
-          <span>홈</span>
-          <ChevronRight className="h-4 w-4" />
-          <span>상의</span>
-          <ChevronRight className="h-4 w-4" />
-          <span className="text-gray-900">{product.name}</span>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Images */}
-          <div>
-            <ImageGallery images={product.images} productName={product.name} />
-          </div>
-
-          {/* Product Info */}
-          <div className="space-y-6">
-            {/* Header */}
-            <div>
-              <div className="flex items-center space-x-2 mb-2">
-                <Badge variant="secondary" className="text-xs">
-                  {product.brand}
-                </Badge>
-                {product.badge && (
-                  <Badge variant="destructive" className="text-xs">
-                    {product.badge}
-                  </Badge>
-                )}
-              </div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                {product.name}
-              </h1>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="flex items-center space-x-1">
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${
-                          i < Math.floor(product.rating)
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <span className="font-medium">{product.rating}</span>
-                </div>
-                <span className="text-gray-500">
-                  ({product.reviewCount}개 리뷰)
-                </span>
-              </div>
-            </div>
-
-            {/* Price */}
-            <div className="space-y-2">
-              <div className="flex items-center space-x-3">
-                <span className="text-3xl font-bold text-gray-900">
-                  {product.price.toLocaleString()}원
-                </span>
-                <span className="text-lg text-gray-400 line-through">
-                  {product.originalPrice.toLocaleString()}원
-                </span>
-                <Badge variant="destructive" className="text-sm">
-                  {discountPercentage}% 할인
-                </Badge>
-              </div>
-              <p className="text-sm text-gray-600">
-                5만원 이상 구매시 <strong>무료배송</strong>
-              </p>
-            </div>
-
-            {/* Variant Selection */}
-            <VariantPicker
-              sizes={product.sizes}
-              colors={product.colors}
-              selectedVariant={selectedVariant}
-              onVariantChange={setSelectedVariant}
-              measurements={product.measurements}
-            />
-
-            {/* Quantity */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-900">
-                수량
-              </label>
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center border border-gray-300 rounded-lg">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-2 hover:bg-gray-50 transition-colors"
-                    disabled={quantity <= 1}
-                  >
-                    -
-                  </button>
-                  <span className="px-4 py-2 font-medium">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="p-2 hover:bg-gray-50 transition-colors"
-                    disabled={
-                      !isInStock || quantity >= (selectedSize?.stock || 0)
-                    }
-                  >
-                    +
-                  </button>
-                </div>
-                {selectedSize && (
-                  <span className="text-sm text-gray-500">
-                    {selectedSize.stock}개 남음
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="space-y-3">
-              <div className="flex space-x-3">
-                <Button
-                  size="lg"
-                  className="flex-1 bg-gray-900 hover:bg-gray-800 text-white py-3"
-                  disabled={!isInStock}
-                >
-                  {isInStock ? "장바구니 담기" : "품절"}
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                  className="px-4"
-                >
-                  <Heart
-                    className={`h-5 w-5 ${
-                      isWishlisted ? "fill-red-500 text-red-500" : ""
-                    }`}
-                  />
-                </Button>
-                <Button size="lg" variant="outline" className="px-4">
-                  <Share2 className="h-5 w-5" />
-                </Button>
-              </div>
-
-              {isInStock && (
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white py-3"
-                >
-                  바로 구매하기
-                </Button>
-              )}
-            </div>
-
-            {/* Features */}
-            <div className="grid grid-cols-3 gap-4 py-6 border-t border-gray-200">
-              <div className="text-center">
-                <Truck className="h-6 w-6 mx-auto mb-2 text-green-600" />
-                <div className="text-sm font-medium">당일발송</div>
-                <div className="text-xs text-gray-500">
-                  평일 오후 2시까지 주문시
-                </div>
-              </div>
-              <div className="text-center">
-                <RotateCcw className="h-6 w-6 mx-auto mb-2 text-blue-600" />
-                <div className="text-sm font-medium">교환보장</div>
-                <div className="text-xs text-gray-500">7일 내 무료 교환</div>
-              </div>
-              <div className="text-center">
-                <Shield className="h-6 w-6 mx-auto mb-2 text-purple-600" />
-                <div className="text-sm font-medium">품질보증</div>
-                <div className="text-xs text-gray-500">불량 시 즉시 교환</div>
-              </div>
-            </div>
-
-            {/* Product Features */}
-            <div className="space-y-4">
-              <h3 className="font-semibold text-gray-900">상품 특징</h3>
-              <ul className="space-y-2">
-                {product.features.map((feature, index) => (
-                  <li
-                    key={index}
-                    className="flex items-start space-x-2 text-sm text-gray-700"
-                  >
-                    <span className="text-gray-400 mt-1">•</span>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
+      <main className="container mx-auto py-6" id="product-main">
+        <ProductDetailClient product={product} />
 
         {/* Product Details Tabs */}
         <div className="mt-16">
@@ -290,6 +191,10 @@ export default function ProductDetailPage() {
             care={product.care}
             modelInfo={product.modelInfo}
             measurements={product.measurements}
+            reviews={product.reviews}
+            averageRating={product.averageRating}
+            totalReviews={product.totalReviews}
+            ratingDistribution={product.ratingDistribution}
           />
         </div>
 
@@ -298,6 +203,9 @@ export default function ProductDetailPage() {
           <RelatedProducts currentProductId={product.id} />
         </div>
       </main>
+
+      {/* Mobile bottom padding for sticky actions */}
+      <div className="lg:hidden h-20"></div>
 
       <Footer />
     </div>
