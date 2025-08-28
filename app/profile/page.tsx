@@ -121,7 +121,8 @@ const mockOrders: Order[] = [
         price: 35000,
         size: "M",
         color: "화이트",
-        image: "https://via.placeholder.com/80x80/FF6B35/FFFFFF?text=T-Shirt",
+        image:
+          "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=800",
       },
       {
         id: "2",
@@ -130,7 +131,8 @@ const mockOrders: Order[] = [
         price: 19000,
         size: "L",
         color: "블루",
-        image: "https://via.placeholder.com/80x80/FF6B35/FFFFFF?text=Pants",
+        image:
+          "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
       },
     ],
     shippingAddress: "서울시 강남구 테헤란로 123, 456호",
@@ -150,7 +152,8 @@ const mockOrders: Order[] = [
         price: 65000,
         size: "L",
         color: "그레이",
-        image: "https://via.placeholder.com/80x80/FF6B35/FFFFFF?text=Hoodie",
+        image:
+          "https://images.pexels.com/photos/2065196/pexels-photo-2065196.jpeg?auto=compress&cs=tinysrgb&w=800",
       },
       {
         id: "4",
@@ -159,12 +162,53 @@ const mockOrders: Order[] = [
         price: 60000,
         size: "M",
         color: "베이지",
-        image: "https://via.placeholder.com/80x80/FF6B35/FFFFFF?text=Cardigan",
+        image:
+          "https://images.pexels.com/photos/1805412/pexels-photo-1805412.jpeg?auto=compress&cs=tinysrgb&w=800",
       },
     ],
     shippingAddress: "서울시 강남구 테헤란로 123, 456호",
     paymentMethod: "카카오페이",
     trackingNumber: "CJ9876543210",
+  },
+  {
+    id: "ORD-2024-003",
+    orderDate: "2024-01-05 09:15:00",
+    status: "processing",
+    totalAmount: 168000,
+    items: [
+      {
+        id: "5",
+        name: "플로럴 원피스",
+        quantity: 1,
+        price: 168000,
+        size: "S",
+        color: "블루",
+        image:
+          "https://images.pexels.com/photos/2584269/pexels-photo-2584269.jpeg?auto=compress&cs=tinysrgb&w=800",
+      },
+    ],
+    shippingAddress: "서울시 강남구 테헤란로 123, 456호",
+    paymentMethod: "신용카드",
+  },
+  {
+    id: "ORD-2024-004",
+    orderDate: "2024-01-01 16:45:00",
+    status: "pending",
+    totalAmount: 79000,
+    items: [
+      {
+        id: "6",
+        name: "데님 스커트",
+        quantity: 1,
+        price: 79000,
+        size: "M",
+        color: "라이트블루",
+        image:
+          "https://images.pexels.com/photos/1021694/pexels-photo-1021694.jpeg?auto=compress&cs=tinysrgb&w=800",
+      },
+    ],
+    shippingAddress: "서울시 강남구 테헤란로 123, 456호",
+    paymentMethod: "카카오페이",
   },
 ];
 
@@ -174,7 +218,7 @@ const mockReviews: Review[] = [
     productId: "1",
     productName: "LUMINA 시그니처 티셔츠",
     productImage:
-      "https://via.placeholder.com/80x80/FF6B35/FFFFFF?text=T-Shirt",
+      "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=800",
     rating: 5,
     title: "정말 만족스러워요!",
     content:
@@ -187,7 +231,8 @@ const mockReviews: Review[] = [
     id: "REV-002",
     productId: "2",
     productName: "프리미엄 데님 팬츠",
-    productImage: "https://via.placeholder.com/80x80/FF6B35/FFFFFF?text=Pants",
+    productImage:
+      "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
     rating: 4,
     title: "좋은 상품이에요",
     content: "기본에 충실한 데님 팬츠에요. 색상도 예쁘고 착용감도 좋아요.",
@@ -195,18 +240,40 @@ const mockReviews: Review[] = [
     status: "approved",
     helpfulCount: 8,
   },
+  {
+    id: "REV-003",
+    productId: "3",
+    productName: "베이직 후드 집업",
+    productImage:
+      "https://images.pexels.com/photos/2065196/pexels-photo-2065196.jpeg?auto=compress&cs=tinysrgb&w=800",
+    rating: 5,
+    title: "따뜻하고 편해요",
+    content:
+      "겨울에 입기 딱 좋은 후드집업이에요. 두께감도 적당하고 스타일링하기도 좋아요.",
+    createdAt: "2024-01-14 10:15:00",
+    status: "approved",
+    helpfulCount: 15,
+  },
+  {
+    id: "REV-004",
+    productId: "4",
+    productName: "크롭 니트 가디건",
+    productImage:
+      "https://images.pexels.com/photos/1805412/pexels-photo-1805412.jpeg?auto=compress&cs=tinysrgb&w=800",
+    rating: 4,
+    title: "세련된 디자인",
+    content:
+      "크롭 길이가 딱 좋고 니트 소재가 부드러워요. 레이어드하기도 좋고 단독으로도 예뻐요.",
+    createdAt: "2024-01-12 18:45:00",
+    status: "pending",
+    helpfulCount: 3,
+  },
 ];
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState<CustomerProfile>(mockProfile);
+  const [profile] = useState<CustomerProfile>(mockProfile);
   const [orders] = useState<Order[]>(mockOrders);
   const [reviews] = useState<Review[]>(mockReviews);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editForm, setEditForm] = useState({
-    name: profile.name,
-    phone: profile.phone,
-    address: profile.address,
-  });
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -276,23 +343,6 @@ export default function ProfilePage() {
     }
   };
 
-  const handleSave = () => {
-    setProfile({
-      ...profile,
-      ...editForm,
-    });
-    setIsEditing(false);
-  };
-
-  const handleCancel = () => {
-    setEditForm({
-      name: profile.name,
-      phone: profile.phone,
-      address: profile.address,
-    });
-    setIsEditing(false);
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -300,73 +350,37 @@ export default function ProfilePage() {
       <main className="container mx-auto py-8">
         <div className="max-w-6xl mx-auto space-y-6">
           {/* 프로필 헤더 */}
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">마이페이지</h1>
-              <p className="text-gray-600">내 정보와 주문 내역을 관리하세요</p>
-            </div>
-            <Button variant="outline" onClick={() => setIsEditing(!isEditing)}>
-              <Edit className="w-4 h-4 mr-2" />
-              {isEditing ? "취소" : "정보 수정"}
-            </Button>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">마이페이지</h1>
+            <p className="text-gray-600">내 정보와 주문 내역을 관리하세요</p>
           </div>
 
-          {/* 프로필 정보 */}
+          {/* 계정 요약 */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <User className="w-5 h-5" />
-                <span>프로필 정보</span>
+                <span>계정 요약</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="name">이름</Label>
-                    {isEditing ? (
-                      <Input
-                        id="name"
-                        value={editForm.name}
-                        onChange={(e) =>
-                          setEditForm({ ...editForm, name: e.target.value })
-                        }
-                      />
-                    ) : (
-                      <p className="text-gray-900">{profile.name}</p>
-                    )}
+                    <Label>이름</Label>
+                    <p className="text-gray-900">{profile.name}</p>
                   </div>
                   <div>
-                    <Label htmlFor="email">이메일</Label>
+                    <Label>이메일</Label>
                     <p className="text-gray-900">{profile.email}</p>
                   </div>
                   <div>
-                    <Label htmlFor="phone">전화번호</Label>
-                    {isEditing ? (
-                      <Input
-                        id="phone"
-                        value={editForm.phone}
-                        onChange={(e) =>
-                          setEditForm({ ...editForm, phone: e.target.value })
-                        }
-                      />
-                    ) : (
-                      <p className="text-gray-900">{profile.phone}</p>
-                    )}
+                    <Label>전화번호</Label>
+                    <p className="text-gray-900">{profile.phone}</p>
                   </div>
                   <div>
-                    <Label htmlFor="address">주소</Label>
-                    {isEditing ? (
-                      <Input
-                        id="address"
-                        value={editForm.address}
-                        onChange={(e) =>
-                          setEditForm({ ...editForm, address: e.target.value })
-                        }
-                      />
-                    ) : (
-                      <p className="text-gray-900">{profile.address}</p>
-                    )}
+                    <Label>주소</Label>
+                    <p className="text-gray-900">{profile.address}</p>
                   </div>
                 </div>
                 <div className="space-y-4">
@@ -397,18 +411,6 @@ export default function ProfilePage() {
                   </div>
                 </div>
               </div>
-              {isEditing && (
-                <div className="flex justify-end space-x-2 mt-6 pt-4 border-t">
-                  <Button variant="outline" onClick={handleCancel}>
-                    <X className="w-4 h-4 mr-2" />
-                    취소
-                  </Button>
-                  <Button onClick={handleSave}>
-                    <Save className="w-4 h-4 mr-2" />
-                    저장
-                  </Button>
-                </div>
-              )}
             </CardContent>
           </Card>
 
@@ -482,7 +484,7 @@ export default function ProfilePage() {
 
           {/* 메인 탭 */}
           <Tabs defaultValue="orders" className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger
                 value="orders"
                 className="flex items-center space-x-2"
@@ -509,14 +511,7 @@ export default function ProfilePage() {
                 className="flex items-center space-x-2"
               >
                 <Settings className="w-4 h-4" />
-                <span>설정</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="wishlist"
-                className="flex items-center space-x-2"
-              >
-                <Heart className="w-4 h-4" />
-                <span>위시리스트</span>
+                <span>계정 설정</span>
               </TabsTrigger>
             </TabsList>
 
@@ -648,22 +643,6 @@ export default function ProfilePage() {
             {/* 설정 탭 */}
             <TabsContent value="settings" className="space-y-4">
               <CustomerSettings />
-            </TabsContent>
-
-            {/* 위시리스트 탭 */}
-            <TabsContent value="wishlist" className="space-y-4">
-              <Card>
-                <CardContent className="p-6 text-center">
-                  <Heart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    위시리스트가 비어있습니다
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    관심 있는 상품을 위시리스트에 추가해보세요
-                  </p>
-                  <Button>쇼핑하러 가기</Button>
-                </CardContent>
-              </Card>
             </TabsContent>
           </Tabs>
         </div>

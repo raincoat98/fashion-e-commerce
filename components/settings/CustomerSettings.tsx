@@ -305,12 +305,12 @@ export default function CustomerSettings() {
       {/* 헤더 */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">설정</h2>
-          <p className="text-gray-600">계정 정보와 알림 설정을 관리하세요</p>
+          <h2 className="text-2xl font-bold text-gray-900">계정 설정</h2>
+          <p className="text-gray-600">프로필 정보와 알림 설정을 관리하세요</p>
         </div>
         <Button variant="outline" onClick={() => setIsEditing(!isEditing)}>
           <Edit className="w-4 h-4 mr-2" />
-          {isEditing ? "취소" : "정보 수정"}
+          {isEditing ? "취소" : "프로필 수정"}
         </Button>
       </div>
 
