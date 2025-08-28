@@ -16,13 +16,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Heart, ShoppingBag, Star } from "lucide-react";
+import { Heart, ShoppingBag, Star, ArrowLeft, Home } from "lucide-react";
 import Link from "next/link";
 import { useProductStore } from "@/stores/useProductStore";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function SalePage() {
   const { toast } = useToast();
+  const router = useRouter();
   const {
     products,
     addToCart,
@@ -72,6 +74,26 @@ export default function SalePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* 네비게이션 버튼 */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="outline"
+            onClick={() => router.back()}
+            className="flex items-center space-x-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>뒤로가기</span>
+          </Button>
+          <Link href="/">
+            <Button variant="outline" className="flex items-center space-x-2">
+              <Home className="w-4 h-4" />
+              <span>홈으로</span>
+            </Button>
+          </Link>
+        </div>
+      </div>
+
       {/* 헤더 섹션 */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">🎉 SALE</h1>
