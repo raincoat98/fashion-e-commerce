@@ -9,7 +9,7 @@ import { useProductStore } from "@/stores/useProductStore";
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTopBannerVisible, setIsTopBannerVisible] = useState(true);
-  const { cartItemCount } = useProductStore();
+  const { cartItemCount, wishlistCount } = useProductStore();
 
   // localStorage에서 탑 배너 상태 확인
   useEffect(() => {
@@ -124,9 +124,20 @@ export default function Header() {
             </Link>
 
             {/* Wishlist */}
-            <Button variant="ghost" size="icon" className="hidden sm:flex">
-              <Heart className="h-5 w-5" />
-            </Button>
+            <Link href="/wishlist">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hidden sm:flex relative"
+              >
+                <Heart className="h-5 w-5" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
 
             {/* Tracking */}
             <Link href="/tracking">

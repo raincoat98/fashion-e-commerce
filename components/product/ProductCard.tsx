@@ -26,11 +26,12 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [selectedSize, setSelectedSize] = useState(product.sizes[0] || "");
   const [selectedColor, setSelectedColor] = useState("");
   const { toast } = useToast();
-  const { addToCart } = useProductStore();
+  const { addToCart, addToWishlist, removeFromWishlist, isInWishlist } =
+    useProductStore();
+  const isWishlisted = isInWishlist(product.id);
 
   const discountPercentage = product.originalPrice
     ? Math.round(
@@ -67,6 +68,42 @@ export default function ProductCard({ product }: ProductCardProps) {
     });
   };
 
+  const handleToggleWishlist = () => {
+    if (isWishlisted) {
+      // 위시리스트에서 제거
+      const wishlistItem = useProductStore
+        .getState()
+        .wishlist.find((item) => item.productId === product.id);
+      if (wishlistItem) {
+        removeFromWishlist(wishlistItem.id);
+        toast({
+          title: "위시리스트에서 제거되었습니다",
+          description: `${product.name}이(가) 위시리스트에서 제거되었습니다.`,
+          duration: 2000,
+        });
+      }
+    } else {
+      // 위시리스트에 추가
+      addToWishlist({
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.image,
+        rating: product.rating,
+        reviewCount: product.reviewCount,
+        isNew: product.badge === "NEW",
+        isSale: product.badge === "SALE",
+        isBest: product.badge === "BEST",
+      });
+      toast({
+        title: "위시리스트에 추가되었습니다",
+        description: `${product.name}이(가) 위시리스트에 추가되었습니다.`,
+        duration: 2000,
+      });
+    }
+  };
+
   return (
     <div
       className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
@@ -96,16 +133,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Wishlist Button */}
         <button
-          onClick={() => {
-            setIsWishlisted(!isWishlisted);
-            toast({
-              title: isWishlisted ? "찜하기 해제" : "찜하기 추가",
-              description: `${product.name}을(를) ${
-                isWishlisted ? "찜하기에서 제거" : "찜하기에 추가"
-              }했습니다.`,
-              duration: 2000,
-            });
-          }}
+          onClick={handleToggleWishlist}
           className="absolute top-3 right-3 p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-all duration-200"
         >
           <Heart

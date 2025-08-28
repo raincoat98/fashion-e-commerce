@@ -63,6 +63,22 @@ export interface CartItem {
   stock: number;
 }
 
+// 위시리스트 아이템 타입 정의
+export interface WishlistItem {
+  id: string;
+  productId: string;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  image: string;
+  rating: number;
+  reviewCount: number;
+  isNew: boolean;
+  isSale: boolean;
+  isBest: boolean;
+  addedAt: string;
+}
+
 // 카테고리 타입 정의
 export interface Category {
   id: string;
@@ -86,6 +102,7 @@ interface ProductStore {
   orders: Order[];
   categories: Category[];
   cart: CartItem[];
+  wishlist: WishlistItem[];
 
   // 필터링 및 검색
   searchTerm: string;
@@ -149,6 +166,13 @@ interface ProductStore {
   clearCart: () => void;
   getCartItemById: (id: string) => CartItem | undefined;
 
+  // 위시리스트 관리
+  addToWishlist: (item: Omit<WishlistItem, "id" | "addedAt">) => void;
+  removeFromWishlist: (id: string) => void;
+  clearWishlist: () => void;
+  getWishlistItemById: (id: string) => WishlistItem | undefined;
+  isInWishlist: (productId: string) => boolean;
+
   // 계산된 값들
   filteredProducts: Product[];
   paginatedProducts: Product[];
@@ -157,6 +181,7 @@ interface ProductStore {
   subCategories: string[];
   cartTotal: number;
   cartItemCount: number;
+  wishlistCount: number;
 }
 
 // 샘플 상품 데이터
@@ -432,6 +457,7 @@ export const useProductStore = create<ProductStore>()(
       orders: sampleOrders,
       categories: sampleCategories,
       cart: [],
+      wishlist: [],
 
       // 필터링 및 검색
       searchTerm: "",
@@ -614,6 +640,38 @@ export const useProductStore = create<ProductStore>()(
         return cart.find((item) => item.id === id);
       },
 
+      // 위시리스트 관리 액션들
+      addToWishlist: (item) => {
+        const newWishlistItem: WishlistItem = {
+          ...item,
+          id: Date.now().toString(),
+          addedAt: new Date().toISOString(),
+        };
+        set((state) => ({
+          wishlist: [...state.wishlist, newWishlistItem],
+        }));
+      },
+
+      removeFromWishlist: (id) => {
+        set((state) => ({
+          wishlist: state.wishlist.filter((item) => item.id !== id),
+        }));
+      },
+
+      clearWishlist: () => {
+        set({ wishlist: [] });
+      },
+
+      getWishlistItemById: (id) => {
+        const { wishlist } = get();
+        return wishlist.find((item) => item.id === id);
+      },
+
+      isInWishlist: (productId) => {
+        const { wishlist } = get();
+        return wishlist.some((item) => item.productId === productId);
+      },
+
       // 계산된 값들
       get filteredProducts() {
         const {
@@ -755,6 +813,11 @@ export const useProductStore = create<ProductStore>()(
       get cartItemCount() {
         const { cart } = get();
         return cart.reduce((count, item) => count + item.quantity, 0);
+      },
+
+      get wishlistCount() {
+        const { wishlist } = get();
+        return wishlist.length;
       },
     }),
     {
