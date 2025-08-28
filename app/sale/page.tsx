@@ -31,10 +31,15 @@ export default function SalePage() {
     addToWishlist,
     removeFromWishlist,
     isInWishlist,
+    cartItemCount,
   } = useProductStore();
 
   // 세일 상품만 필터링
   const saleProducts = products.filter((product) => product.isSale);
+
+  // 디버깅: 장바구니 개수 확인
+  console.log("현재 장바구니 개수:", cartItemCount);
+  console.log("장바구니 상태:", useProductStore.getState().cart);
 
   const [sortBy, setSortBy] = useState("discount");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -89,6 +94,16 @@ export default function SalePage() {
             <Button variant="outline" className="flex items-center space-x-2">
               <Home className="w-4 h-4" />
               <span>홈으로</span>
+            </Button>
+          </Link>
+        </div>
+        <div className="flex items-center space-x-4">
+          <Link href="/cart">
+            <Button variant="outline" className="flex items-center space-x-2">
+              <ShoppingBag className="w-4 h-4" />
+              <span>
+                장바구니 {cartItemCount > 0 ? `(${cartItemCount})` : ""}
+              </span>
             </Button>
           </Link>
         </div>
@@ -301,6 +316,7 @@ export default function SalePage() {
                       quantity: 1,
                       stock: product.stock,
                     });
+
                     toast({
                       title: "장바구니에 추가됨",
                       description: `${product.name}이(가) 장바구니에 추가되었습니다.`,
