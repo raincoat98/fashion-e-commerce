@@ -438,15 +438,56 @@ export default function ProductDetailClient({
           {/* SNS Share */}
           <div className="space-y-3">
             <h4 className="text-sm font-medium text-gray-900">공유하기</h4>
-            <div className="flex space-x-3">
-              <button className="flex-1 bg-[#E4405F] hover:bg-[#D63384] text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+            <div className="flex space-x-3 action-buttons">
+              <button
+                onClick={() => {
+                  const shareText = product.name + " - LUMINA";
+                  const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                    window.location.href
+                  )}&quote=${encodeURIComponent(shareText)}`;
+                  window.open(url, "_blank");
+                }}
+                className="flex-1 bg-[#1877F2] hover:bg-[#166FE5] text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
+              >
+                📘 Facebook
+              </button>
+              <button
+                onClick={() => {
+                  const url = `https://www.instagram.com/explore/tags/${encodeURIComponent(
+                    product.name.replace(/\s+/g, "")
+                  )}/`;
+                  window.open(url, "_blank");
+                }}
+                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
+              >
                 📸 Instagram
               </button>
-              <button className="flex-1 bg-[#000000] hover:bg-gray-800 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
-                🎵 TikTok
-              </button>
-              <button className="flex-1 bg-[#25D366] hover:bg-[#128C7E] text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
-                💬 WhatsApp
+              <button
+                onClick={async () => {
+                  try {
+                    const currentUrl = window.location.href;
+                    await navigator.clipboard.writeText(currentUrl);
+                    toast({
+                      title: "링크가 복사되었습니다",
+                      description: "클립보드에 상품 링크가 저장되었습니다.",
+                    });
+                  } catch (err) {
+                    // 폴백: 구식 브라우저 지원
+                    const textArea = document.createElement("textarea");
+                    textArea.value = window.location.href;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(textArea);
+                    toast({
+                      title: "링크가 복사되었습니다",
+                      description: "클립보드에 상품 링크가 저장되었습니다.",
+                    });
+                  }
+                }}
+                className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
+              >
+                📋 링크복사
               </button>
             </div>
           </div>
