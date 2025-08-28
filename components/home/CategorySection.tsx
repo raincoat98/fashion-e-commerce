@@ -149,7 +149,10 @@ export default function CategorySection() {
         </div>
 
         {/* Categories Grid */}
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div
+          ref={gridRef}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+        >
           {categories.map((category) => (
             <Link key={category.id} href={`/categories/${category.id}`}>
               <div className="group relative overflow-hidden rounded-2xl bg-white lumina-shadow-lg hover:lumina-shadow-xl transition-all duration-500 cursor-pointer">

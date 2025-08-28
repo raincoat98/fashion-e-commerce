@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import ImageGallery from "@/components/product/ImageGallery";
 import VariantPicker from "@/components/product/VariantPicker";
@@ -17,6 +17,11 @@ import {
   Truck,
   RotateCcw,
 } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// GSAP 플러그인 등록
+gsap.registerPlugin(ScrollTrigger);
 
 interface ProductDetailClientProps {
   product: {
@@ -79,6 +84,14 @@ export default function ProductDetailClient({
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
+  // GSAP 애니메이션 refs
+  const containerRef = useRef<HTMLDivElement>(null);
+  const breadcrumbRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const infoRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const brandStoryRef = useRef<HTMLDivElement>(null);
+
   const discountPercentage = Math.round(
     ((product.originalPrice - product.price) / product.originalPrice) * 100
   );
@@ -86,6 +99,140 @@ export default function ProductDetailClient({
     (size) => size.name === selectedVariant.size
   );
   const isInStock = selectedSize?.available && selectedSize.stock > 0;
+
+  // GSAP 애니메이션 설정
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // 브레드크럼 애니메이션
+      gsap.fromTo(
+        breadcrumbRef.current,
+        {
+          y: -20,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+        }
+      );
+
+      // 이미지 갤러리 애니메이션
+      gsap.fromTo(
+        imageRef.current,
+        {
+          x: -50,
+          opacity: 0,
+          scale: 0.95,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          ease: "power3.out",
+          delay: 0.2,
+        }
+      );
+
+      // 상품 정보 애니메이션
+      gsap.fromTo(
+        infoRef.current,
+        {
+          x: 50,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          delay: 0.4,
+        }
+      );
+
+      // 기능 섹션 애니메이션
+      gsap.fromTo(
+        featuresRef.current,
+        {
+          y: 30,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: featuresRef.current,
+            start: "top 85%",
+            end: "bottom 15%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // 브랜드 스토리 애니메이션
+      gsap.fromTo(
+        brandStoryRef.current,
+        {
+          y: 30,
+          opacity: 0,
+          scale: 0.95,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: brandStoryRef.current,
+            start: "top 85%",
+            end: "bottom 15%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // 가격 정보 애니메이션
+      gsap.fromTo(
+        ".price-animation",
+        {
+          scale: 0.8,
+          opacity: 0,
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+          delay: 0.6,
+          stagger: 0.1,
+        }
+      );
+
+      // 액션 버튼들 애니메이션
+      gsap.fromTo(
+        ".action-buttons",
+        {
+          y: 20,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+          delay: 0.8,
+          stagger: 0.1,
+        }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleAddToCart = () => {
     if (!isInStock) return;
@@ -123,9 +270,12 @@ export default function ProductDetailClient({
   };
 
   return (
-    <div>
+    <div ref={containerRef} className="overflow-hidden">
       {/* Breadcrumb */}
-      <div className="flex items-center space-x-2 text-sm text-gray-500 mb-6">
+      <div
+        ref={breadcrumbRef}
+        className="flex items-center space-x-2 text-sm text-gray-500 mb-6"
+      >
         <span>홈</span>
         <ChevronRight className="h-4 w-4" />
         <span>상의</span>
@@ -135,12 +285,12 @@ export default function ProductDetailClient({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         {/* Product Images */}
-        <div className="order-1 lg:order-1">
+        <div ref={imageRef} className="order-1 lg:order-1">
           <ImageGallery images={product.images} productName={product.name} />
         </div>
 
         {/* Product Info */}
-        <div className="order-2 lg:order-2 space-y-6">
+        <div ref={infoRef} className="order-2 lg:order-2 space-y-6">
           {/* Header */}
           <div>
             <div className="flex items-center space-x-2 mb-2">
@@ -184,13 +334,13 @@ export default function ProductDetailClient({
           {/* Price */}
           <div className="space-y-2">
             <div className="flex items-center space-x-3">
-              <span className="text-3xl font-bold text-gray-900">
+              <span className="price-animation text-3xl font-bold text-gray-900">
                 {product.price.toLocaleString()}원
               </span>
-              <span className="text-lg text-gray-400 line-through">
+              <span className="price-animation text-lg text-gray-400 line-through">
                 {product.originalPrice.toLocaleString()}원
               </span>
-              <Badge variant="destructive" className="text-sm">
+              <Badge variant="destructive" className="price-animation text-sm">
                 {discountPercentage}% 할인
               </Badge>
             </div>
@@ -246,7 +396,7 @@ export default function ProductDetailClient({
             <div className="flex space-x-3">
               <Button
                 size="lg"
-                className="flex-1 lumina-gradient hover:opacity-90 text-white py-3 font-medium transition-all duration-300 lumina-shadow"
+                className="action-buttons flex-1 lumina-gradient hover:opacity-90 text-white py-3 font-medium transition-all duration-300 lumina-shadow"
                 disabled={!isInStock}
                 onClick={handleAddToCart}
               >
@@ -256,7 +406,7 @@ export default function ProductDetailClient({
                 size="lg"
                 variant="outline"
                 onClick={() => setIsWishlisted(!isWishlisted)}
-                className="px-4"
+                className="action-buttons px-4"
               >
                 <Heart
                   className={`h-5 w-5 ${
@@ -264,7 +414,11 @@ export default function ProductDetailClient({
                   }`}
                 />
               </Button>
-              <Button size="lg" variant="outline" className="px-4">
+              <Button
+                size="lg"
+                variant="outline"
+                className="action-buttons px-4"
+              >
                 <Share2 className="h-5 w-5" />
               </Button>
             </div>
@@ -273,7 +427,7 @@ export default function ProductDetailClient({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full lumina-border-gradient text-gray-900 hover:lumina-gradient hover:text-white py-3 font-medium transition-all duration-300"
+                className="action-buttons w-full lumina-border-gradient text-gray-900 hover:lumina-gradient hover:text-white py-3 font-medium transition-all duration-300"
                 onClick={handleBuyNow}
               >
                 💫 바로 구매하기
@@ -322,7 +476,10 @@ export default function ProductDetailClient({
           </div>
 
           {/* Features */}
-          <div className="grid grid-cols-3 gap-4 py-6 border-t border-gray-200">
+          <div
+            ref={featuresRef}
+            className="grid grid-cols-3 gap-4 py-6 border-t border-gray-200"
+          >
             <div className="text-center">
               <Truck className="h-6 w-6 mx-auto mb-2 text-green-600" />
               <div className="text-sm font-medium">당일발송</div>
@@ -343,7 +500,10 @@ export default function ProductDetailClient({
           </div>
 
           {/* Brand Story */}
-          <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl space-y-4">
+          <div
+            ref={brandStoryRef}
+            className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl space-y-4"
+          >
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 lumina-gradient rounded-full flex items-center justify-center">
                 <span className="text-white text-sm font-bold">L</span>

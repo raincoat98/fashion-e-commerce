@@ -181,26 +181,29 @@ export default function ProductDetailPage({
       <Header />
 
       <main className="container mx-auto py-6" id="product-main">
-        <ProductDetailClient product={product} />
+        {/* 페이지 로딩 애니메이션을 위한 wrapper */}
+        <div className="product-page-wrapper">
+          <ProductDetailClient product={product} />
 
-        {/* Product Details Tabs */}
-        <div className="mt-16">
-          <ProductTabs
-            description={product.description}
-            materials={product.materials}
-            care={product.care}
-            modelInfo={product.modelInfo}
-            measurements={product.measurements}
-            reviews={product.reviews}
-            averageRating={product.averageRating}
-            totalReviews={product.totalReviews}
-            ratingDistribution={product.ratingDistribution}
-          />
-        </div>
+          {/* Product Details Tabs */}
+          <div className="mt-16">
+            <ProductTabs
+              description={product.description}
+              materials={product.materials}
+              care={product.care}
+              modelInfo={product.modelInfo}
+              measurements={product.measurements}
+              reviews={product.reviews}
+              averageRating={product.averageRating}
+              totalReviews={product.totalReviews}
+              ratingDistribution={product.ratingDistribution}
+            />
+          </div>
 
-        {/* Related Products */}
-        <div className="mt-16">
-          <RelatedProducts currentProductId={product.id} />
+          {/* Related Products */}
+          <div className="mt-16">
+            <RelatedProducts currentProductId={product.id} />
+          </div>
         </div>
       </main>
 

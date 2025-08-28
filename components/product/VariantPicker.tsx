@@ -1,9 +1,15 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Ruler } from 'lucide-react';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Ruler } from "lucide-react";
 
 interface Size {
   name: string;
@@ -39,7 +45,7 @@ export default function VariantPicker({
   colors,
   selectedVariant,
   onVariantChange,
-  measurements
+  measurements,
 }: VariantPickerProps) {
   const [showSizeGuide, setShowSizeGuide] = useState(false);
 
@@ -52,7 +58,7 @@ export default function VariantPicker({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-hidden">
       {/* Size Selection */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
@@ -61,7 +67,11 @@ export default function VariantPicker({
           </label>
           <Dialog open={showSizeGuide} onOpenChange={setShowSizeGuide}>
             <DialogTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-sm text-gray-600 hover:text-gray-900">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-sm text-gray-600 hover:text-gray-900"
+              >
                 <Ruler className="h-4 w-4 mr-1" />
                 사이즈 가이드
               </Button>
@@ -76,20 +86,34 @@ export default function VariantPicker({
                     <thead>
                       <tr className="border-b">
                         <th className="text-left py-2 font-medium">사이즈</th>
-                        <th className="text-center py-2 font-medium">가슴둘레</th>
-                        <th className="text-center py-2 font-medium">어깨너비</th>
+                        <th className="text-center py-2 font-medium">
+                          가슴둘레
+                        </th>
+                        <th className="text-center py-2 font-medium">
+                          어깨너비
+                        </th>
                         <th className="text-center py-2 font-medium">총길이</th>
-                        <th className="text-center py-2 font-medium">소매길이</th>
+                        <th className="text-center py-2 font-medium">
+                          소매길이
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {Object.entries(measurements).map(([size, measures]) => (
                         <tr key={size} className="border-b">
                           <td className="py-2 font-medium">{size}</td>
-                          <td className="text-center py-2">{measures.chest}cm</td>
-                          <td className="text-center py-2">{measures.shoulder}cm</td>
-                          <td className="text-center py-2">{measures.length}cm</td>
-                          <td className="text-center py-2">{measures.sleeve}cm</td>
+                          <td className="text-center py-2">
+                            {measures.chest}cm
+                          </td>
+                          <td className="text-center py-2">
+                            {measures.shoulder}cm
+                          </td>
+                          <td className="text-center py-2">
+                            {measures.length}cm
+                          </td>
+                          <td className="text-center py-2">
+                            {measures.sleeve}cm
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -108,27 +132,29 @@ export default function VariantPicker({
             </DialogContent>
           </Dialog>
         </div>
-        
+
         <div className="flex flex-wrap gap-2">
           {sizes.map((size) => (
             <Button
               key={size.name}
-              variant={selectedVariant.size === size.name ? "default" : "outline"}
+              variant={
+                selectedVariant.size === size.name ? "default" : "outline"
+              }
               size="sm"
               onClick={() => handleSizeChange(size.name)}
               disabled={!size.available}
-              className={`min-w-[48px] ${
+              className={`min-w-[48px] transition-all ${
                 !size.available
-                  ? 'opacity-50 cursor-not-allowed'
+                  ? "opacity-50 cursor-not-allowed"
                   : selectedVariant.size === size.name
-                  ? 'bg-gray-900 text-white'
-                  : 'hover:border-gray-900'
+                  ? "bg-gray-900 text-white shadow-lg"
+                  : "hover:border-gray-900 hover:shadow-md"
               }`}
             >
               {size.name}
               {!size.available && (
-                <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="w-full h-px bg-gray-400 rotate-45" />
+                <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <span className="text-gray-400 text-xs font-bold">품절</span>
                 </span>
               )}
             </Button>
@@ -141,8 +167,8 @@ export default function VariantPicker({
         <label className="block text-sm font-medium text-gray-900">
           색상: <span className="font-bold">{selectedVariant.color}</span>
         </label>
-        
-        <div className="flex flex-wrap gap-3">
+
+        <div className="flex flex-wrap gap-4">
           {colors.map((color) => (
             <button
               key={color.name}
@@ -150,20 +176,22 @@ export default function VariantPicker({
               disabled={!color.available}
               className={`relative w-12 h-12 rounded-full border-2 transition-all ${
                 selectedVariant.color === color.name
-                  ? 'border-gray-900 scale-110'
-                  : 'border-gray-300 hover:border-gray-400'
+                  ? "border-gray-900 border-4 shadow-lg"
+                  : "border-gray-300 hover:border-gray-400 hover:shadow-md"
               } ${
-                !color.available ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                !color.available
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-pointer"
               }`}
               style={{ backgroundColor: color.hex }}
               title={color.name}
             >
               {!color.available && (
-                <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="w-full h-px bg-gray-400 rotate-45" />
+                <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <span className="text-gray-400 text-xs font-bold">품절</span>
                 </span>
               )}
-              {color.hex === '#FFFFFF' && (
+              {color.hex === "#FFFFFF" && (
                 <div className="absolute inset-0 rounded-full border border-gray-200" />
               )}
             </button>

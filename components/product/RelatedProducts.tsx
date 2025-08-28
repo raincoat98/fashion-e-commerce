@@ -1,7 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ProductCard from "@/components/product/ProductCard";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// GSAP 플러그인 등록
+gsap.registerPlugin(ScrollTrigger);
 
 interface RelatedProductsProps {
   currentProductId: number;
@@ -10,6 +15,63 @@ interface RelatedProductsProps {
 export default function RelatedProducts({
   currentProductId,
 }: RelatedProductsProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const productsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // 섹션 제목 애니메이션
+      gsap.fromTo(
+        titleRef.current,
+        {
+          y: 30,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // 관련 상품들 애니메이션
+      if (productsRef.current?.children) {
+        gsap.fromTo(
+          productsRef.current.children,
+          {
+            y: 60,
+            opacity: 0,
+            scale: 0.9,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            ease: "back.out(1.7)",
+            stagger: 0.15,
+            scrollTrigger: {
+              trigger: productsRef.current,
+              start: "top 85%",
+              end: "bottom 15%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   // Mock related products - replace with actual API call
   // In a real app, this would be based on:
   // - Same category products
@@ -76,12 +138,15 @@ export default function RelatedProducts({
   ].filter((product) => product.id !== currentProductId);
 
   return (
-    <section>
-      <h2 className="text-2xl font-bold text-gray-900 mb-8">
+    <section ref={sectionRef}>
+      <h2 ref={titleRef} className="text-2xl font-bold text-gray-900 mb-8">
         함께 보면 좋은 상품
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div
+        ref={productsRef}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+      >
         {relatedProducts.slice(0, 4).map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
