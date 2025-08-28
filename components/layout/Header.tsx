@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Search, ShoppingBag, Menu, X, User, Heart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import React, { useState } from "react";
+import { Search, ShoppingBag, Menu, X, User, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +24,11 @@ export default function Header() {
             className="lg:hidden p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </button>
 
           {/* Logo */}
@@ -34,25 +38,46 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex space-x-8">
-            <Link href="/categories/new" className="text-gray-700 hover:text-gray-900 transition-colors">
+            <Link
+              href="/categories/new"
+              className="text-gray-700 hover:text-gray-900 transition-colors"
+            >
               신상품
             </Link>
-            <Link href="/categories/best" className="text-gray-700 hover:text-gray-900 transition-colors">
+            <Link
+              href="/categories/best"
+              className="text-gray-700 hover:text-gray-900 transition-colors"
+            >
               베스트
             </Link>
-            <Link href="/categories/outer" className="text-gray-700 hover:text-gray-900 transition-colors">
+            <Link
+              href="/categories/outer"
+              className="text-gray-700 hover:text-gray-900 transition-colors"
+            >
               아우터
             </Link>
-            <Link href="/categories/top" className="text-gray-700 hover:text-gray-900 transition-colors">
+            <Link
+              href="/categories/top"
+              className="text-gray-700 hover:text-gray-900 transition-colors"
+            >
               상의
             </Link>
-            <Link href="/categories/bottom" className="text-gray-700 hover:text-gray-900 transition-colors">
+            <Link
+              href="/categories/bottom"
+              className="text-gray-700 hover:text-gray-900 transition-colors"
+            >
               하의
             </Link>
-            <Link href="/categories/dress" className="text-gray-700 hover:text-gray-900 transition-colors">
+            <Link
+              href="/categories/dress"
+              className="text-gray-700 hover:text-gray-900 transition-colors"
+            >
               원피스
             </Link>
-            <Link href="/sale" className="text-red-600 hover:text-red-700 font-medium transition-colors">
+            <Link
+              href="/sale"
+              className="text-red-600 hover:text-red-700 font-medium transition-colors"
+            >
               SALE
             </Link>
           </nav>
@@ -65,9 +90,11 @@ export default function Header() {
             </Button>
 
             {/* User */}
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-            </Button>
+            <Link href="/login">
+              <Button variant="ghost" size="icon">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
 
             {/* Wishlist */}
             <Button variant="ghost" size="icon" className="hidden sm:flex">
