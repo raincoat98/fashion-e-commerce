@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Heart, Star, ShoppingBag } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import React, { useState } from "react";
+import { Heart, Star, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface Product {
   id: number;
@@ -27,7 +27,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   const discountPercentage = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    ? Math.round(
+        ((product.originalPrice - product.price) / product.originalPrice) * 100
+      )
     : 0;
 
   return (
@@ -40,7 +42,11 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="relative aspect-square overflow-hidden bg-gray-100">
         <Link href={`/products/${product.id}`}>
           <img
-            src={isHovered && product.hoverImage ? product.hoverImage : product.image}
+            src={
+              isHovered && product.hoverImage
+                ? product.hoverImage
+                : product.image
+            }
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
@@ -60,15 +66,17 @@ export default function ProductCard({ product }: ProductCardProps) {
         >
           <Heart
             className={`h-4 w-4 ${
-              isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400'
+              isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400"
             } transition-colors`}
           />
         </button>
 
         {/* Quick Actions (appears on hover) */}
-        <div className={`absolute bottom-4 left-4 right-4 transform transition-all duration-300 ${
-          isHovered ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-        }`}>
+        <div
+          className={`absolute bottom-4 left-4 right-4 transform transition-all duration-300 ${
+            isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+          }`}
+        >
           <div className="flex space-x-2">
             {product.sizes.slice(0, 3).map((size) => (
               <Button

@@ -1,85 +1,97 @@
-'use client';
+"use client";
 
-import React from 'react';
-import ProductCard from '@/components/product/ProductCard';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import React from "react";
+import ProductCard from "@/components/product/ProductCard";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function FeaturedProducts() {
   // Mock data - replace with actual API call
   const products = [
     {
       id: 1,
-      name: '베이직 코튼 티셔츠',
+      name: "베이직 코튼 티셔츠",
       price: 29000,
       originalPrice: 49000,
-      image: 'https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=400',
-      hoverImage: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=400',
-      badge: '40% OFF',
+      image:
+        "https://images.pexels.com/photos/2043590/pexels-photo-2043590.jpeg?auto=compress&cs=tinysrgb&w=800",
+      hoverImage:
+        "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=800",
+      badge: "40% OFF",
       rating: 4.8,
       reviewCount: 127,
-      sizes: ['S', 'M', 'L']
+      sizes: ["S", "M", "L"],
     },
     {
       id: 2,
-      name: '와이드 데님 팬츠',
+      name: "와이드 데님 팬츠",
       price: 39000,
       originalPrice: 69000,
-      image: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=400',
-      hoverImage: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400',
-      badge: '43% OFF',
+      image:
+        "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
+      hoverImage:
+        "https://images.pexels.com/photos/852860/pexels-photo-852860.jpeg?auto=compress&cs=tinysrgb&w=800",
+      badge: "43% OFF",
       rating: 4.6,
       reviewCount: 89,
-      sizes: ['S', 'M', 'L', 'XL']
+      sizes: ["S", "M", "L", "XL"],
     },
     {
       id: 3,
-      name: '플로럴 맥시 원피스',
+      name: "플로럴 맥시 원피스",
       price: 49000,
       originalPrice: 89000,
-      image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400',
-      hoverImage: 'https://images.pexels.com/photos/1536619/pexels-photo-1536619.jpeg?auto=compress&cs=tinysrgb&w=400',
-      badge: '45% OFF',
+      image:
+        "https://images.pexels.com/photos/852860/pexels-photo-852860.jpeg?auto=compress&cs=tinysrgb&w=800",
+      hoverImage:
+        "https://images.pexels.com/photos/2584269/pexels-photo-2584269.jpeg?auto=compress&cs=tinysrgb&w=800",
+      badge: "45% OFF",
       rating: 4.9,
       reviewCount: 203,
-      sizes: ['S', 'M', 'L']
+      sizes: ["S", "M", "L"],
     },
     {
       id: 4,
-      name: '크롭 니트 가디건',
+      name: "크롭 니트 가디건",
       price: 34000,
       originalPrice: 59000,
-      image: 'https://images.pexels.com/photos/1536619/pexels-photo-1536619.jpeg?auto=compress&cs=tinysrgb&w=400',
-      hoverImage: 'https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=400',
-      badge: '42% OFF',
+      image:
+        "https://images.pexels.com/photos/2584269/pexels-photo-2584269.jpeg?auto=compress&cs=tinysrgb&w=800",
+      hoverImage:
+        "https://images.pexels.com/photos/2043590/pexels-photo-2043590.jpeg?auto=compress&cs=tinysrgb&w=800",
+      badge: "42% OFF",
       rating: 4.7,
       reviewCount: 156,
-      sizes: ['S', 'M', 'L']
+      sizes: ["S", "M", "L"],
     },
     {
       id: 5,
-      name: '하이웨스트 미니스커트',
+      name: "하이웨스트 미니스커트",
       price: 25000,
       originalPrice: 45000,
-      image: 'https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=400',
-      hoverImage: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=400',
-      badge: '44% OFF',
+      image:
+        "https://images.pexels.com/photos/1805411/pexels-photo-1805411.jpeg?auto=compress&cs=tinysrgb&w=800",
+      hoverImage:
+        "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
+      badge: "44% OFF",
       rating: 4.5,
       reviewCount: 78,
-      sizes: ['S', 'M', 'L']
+      sizes: ["S", "M", "L"],
     },
     {
       id: 6,
-      name: '오버핏 블레이저',
+      name: "오버핏 블레이저",
       price: 59000,
       originalPrice: 99000,
-      image: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=400',
-      hoverImage: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400',
-      badge: '40% OFF',
+      image:
+        "https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&w=800",
+      hoverImage:
+        "https://images.pexels.com/photos/852860/pexels-photo-852860.jpeg?auto=compress&cs=tinysrgb&w=800",
+      badge: "40% OFF",
       rating: 4.8,
       reviewCount: 245,
-      sizes: ['S', 'M', 'L', 'XL']
-    }
+      sizes: ["S", "M", "L", "XL"],
+    },
   ];
 
   return (

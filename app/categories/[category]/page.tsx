@@ -21,22 +21,29 @@ export default function CategoryPage({
   params: { category: string };
 }) {
   // Mock data - replace with actual API call
-  const products = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    name: `상품 ${i + 1}`,
-    price: Math.floor(Math.random() * 50000) + 20000,
-    originalPrice: Math.floor(Math.random() * 80000) + 40000,
-    image: `https://images.pexels.com/photos/${1536619 + i}/pexels-photo-${
-      1536619 + i
-    }.jpeg?auto=compress&cs=tinysrgb&w=400`,
-    hoverImage: `https://images.pexels.com/photos/${1545743 + i}/pexels-photo-${
-      1545743 + i
-    }.jpeg?auto=compress&cs=tinysrgb&w=400`,
-    badge: i % 3 === 0 ? "SALE" : undefined,
-    rating: 4.5 + Math.random() * 0.5,
-    reviewCount: Math.floor(Math.random() * 200) + 10,
-    sizes: ["S", "M", "L"],
-  }));
+  const products = Array.from({ length: 12 }, (_, i) => {
+    // 고품질 패션 이미지 ID 배열
+    const fashionImageIds = [
+      2065195, 1805411, 1021693, 1926769, 852860, 2584269, 1536619, 1545743,
+      2065196, 1805412, 1021694, 1926770, 2043590, 2043591, 2043592, 2043593,
+    ];
+
+    const mainImageId = fashionImageIds[i % fashionImageIds.length];
+    const hoverImageId = fashionImageIds[(i + 1) % fashionImageIds.length];
+
+    return {
+      id: i + 1,
+      name: `패션 상품 ${i + 1}`,
+      price: Math.floor(Math.random() * 50000) + 20000,
+      originalPrice: Math.floor(Math.random() * 80000) + 40000,
+      image: `https://images.pexels.com/photos/${mainImageId}/pexels-photo-${mainImageId}.jpeg?auto=compress&cs=tinysrgb&w=800`,
+      hoverImage: `https://images.pexels.com/photos/${hoverImageId}/pexels-photo-${hoverImageId}.jpeg?auto=compress&cs=tinysrgb&w=800`,
+      badge: i % 3 === 0 ? "SALE" : i % 3 === 1 ? "NEW" : "HOT",
+      rating: 4.5 + Math.random() * 0.5,
+      reviewCount: Math.floor(Math.random() * 200) + 10,
+      sizes: ["S", "M", "L"],
+    };
+  });
 
   const categoryNames: { [key: string]: string } = {
     new: "신상품",
