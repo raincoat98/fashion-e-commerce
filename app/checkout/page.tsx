@@ -35,6 +35,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 import PaymentSystem from "@/components/checkout/PaymentSystem";
 import CouponInput from "@/components/checkout/CouponInput";
 import AddressManager from "@/components/shipping/AddressManager";
@@ -61,6 +62,7 @@ interface PaymentInfo {
 
 export default function CheckoutPage() {
   const { cartState, clearCart } = useCart();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState<
     "shipping" | "payment" | "complete"
   >("shipping");
@@ -136,6 +138,13 @@ export default function CheckoutPage() {
     setPaymentResult(result);
     setCurrentStep("complete");
     clearCart();
+
+    toast({
+      title: "주문 완료!",
+      description:
+        "주문이 성공적으로 완료되었습니다. 주문 확인 이메일을 확인해주세요.",
+      duration: 5000,
+    });
   };
 
   const handleBackToShipping = () => {
@@ -368,7 +377,18 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="flex justify-end">
-                      <Button type="submit" className="px-8">
+                      <Button
+                        type="submit"
+                        className="px-8"
+                        onClick={() => {
+                          toast({
+                            title: "배송 정보 저장",
+                            description:
+                              "배송 정보가 저장되어 결제 단계로 이동합니다.",
+                            duration: 2000,
+                          });
+                        }}
+                      >
                         다음 단계
                       </Button>
                     </div>

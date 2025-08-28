@@ -266,6 +266,12 @@ export default function ProductDetailClient({
       color: selectedVariant.color,
     });
 
+    toast({
+      title: "장바구니에 추가되었습니다",
+      description: `${product.name}이(가) 장바구니에 추가되어 결제 페이지로 이동합니다.`,
+      duration: 2000,
+    });
+
     router.push("/checkout");
   };
 
@@ -405,7 +411,16 @@ export default function ProductDetailClient({
               <Button
                 size="lg"
                 variant="outline"
-                onClick={() => setIsWishlisted(!isWishlisted)}
+                onClick={() => {
+                  setIsWishlisted(!isWishlisted);
+                  toast({
+                    title: isWishlisted ? "찜하기 해제" : "찜하기 추가",
+                    description: `${product.name}을(를) ${
+                      isWishlisted ? "찜하기에서 제거" : "찜하기에 추가"
+                    }했습니다.`,
+                    duration: 2000,
+                  });
+                }}
                 className="action-buttons px-4"
               >
                 <Heart
@@ -446,6 +461,12 @@ export default function ProductDetailClient({
                     window.location.href
                   )}&quote=${encodeURIComponent(shareText)}`;
                   window.open(url, "_blank");
+
+                  toast({
+                    title: "Facebook 공유",
+                    description: "Facebook에서 상품을 공유합니다.",
+                    duration: 2000,
+                  });
                 }}
                 className="flex-1 bg-[#1877F2] hover:bg-[#166FE5] text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
               >
@@ -457,6 +478,12 @@ export default function ProductDetailClient({
                     product.name.replace(/\s+/g, "")
                   )}/`;
                   window.open(url, "_blank");
+
+                  toast({
+                    title: "Instagram 공유",
+                    description: "Instagram에서 상품을 공유합니다.",
+                    duration: 2000,
+                  });
                 }}
                 className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
               >

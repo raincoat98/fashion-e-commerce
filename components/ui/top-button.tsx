@@ -3,9 +3,11 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronUp } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function TopButton() {
   const [isVisible, setIsVisible] = useState(false);
+  const { toast } = useToast();
 
   // 스크롤 위치 감지
   useEffect(() => {
@@ -26,6 +28,12 @@ export default function TopButton() {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
+    });
+
+    toast({
+      title: "페이지 상단으로 이동",
+      description: "페이지 최상단으로 이동했습니다.",
+      duration: 2000,
     });
   };
 

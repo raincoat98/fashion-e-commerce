@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -249,6 +250,7 @@ interface ProductFormData {
 
 export default function ProductManager({ onEditProduct }: ProductManagerProps) {
   const [products, setProducts] = useState<Product[]>(mockProducts);
+  const { toast } = useToast();
   const [collections, setCollections] = useState<Collection[]>(mockCollections);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -374,29 +376,54 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
   // 상품 삭제
   const deleteProduct = (id: string) => {
+    const productToDelete = products.find((product) => product.id === id);
     setProducts(products.filter((product) => product.id !== id));
+
+    toast({
+      title: "상품 삭제 완료",
+      description: `${productToDelete?.name || "상품"}이 삭제되었습니다.`,
+      duration: 3000,
+    });
   };
 
   // 상품 활성화/비활성화
   const toggleProductStatus = (id: string) => {
+    const product = products.find((p) => p.id === id);
+    const newStatus = !product?.isActive;
+
     setProducts(
       products.map((product) =>
-        product.id === id
-          ? { ...product, isActive: !product.isActive }
-          : product
+        product.id === id ? { ...product, isActive: newStatus } : product
       )
     );
+
+    toast({
+      title: "상품 상태 변경",
+      description: `${product?.name || "상품"}이 ${
+        newStatus ? "활성화" : "비활성화"
+      }되었습니다.`,
+      duration: 2000,
+    });
   };
 
   // 상품 피처드 토글
   const toggleProductFeatured = (id: string) => {
+    const product = products.find((p) => p.id === id);
+    const newFeatured = !product?.isFeatured;
+
     setProducts(
       products.map((product) =>
-        product.id === id
-          ? { ...product, isFeatured: !product.isFeatured }
-          : product
+        product.id === id ? { ...product, isFeatured: newFeatured } : product
       )
     );
+
+    toast({
+      title: "피처드 상태 변경",
+      description: `${product?.name || "상품"}이 ${
+        newFeatured ? "피처드" : "일반"
+      } 상품으로 변경되었습니다.`,
+      duration: 2000,
+    });
   };
 
   // 대량 업로드 시뮬레이션
@@ -516,6 +543,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
           product.id === editingProduct.id ? updatedProduct : product
         )
       );
+
+      toast({
+        title: "상품 수정 완료",
+        description: "상품 정보가 성공적으로 수정되었습니다.",
+        duration: 3000,
+      });
     } else {
       // 등록 모드
       const newProduct: Product = {
@@ -546,6 +579,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
       };
 
       setProducts([...products, newProduct]);
+
+      toast({
+        title: "상품 등록 완료",
+        description: "새로운 상품이 성공적으로 등록되었습니다.",
+        duration: 3000,
+      });
     }
 
     setShowProductForm(false);
@@ -1033,6 +1072,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   setShowProductForm(false);
                   setEditingProduct(null);
                   resetForm();
+
+                  toast({
+                    title: "작업 취소",
+                    description: "상품 등록/수정이 취소되었습니다.",
+                    duration: 2000,
+                  });
                 }}
               >
                 취소

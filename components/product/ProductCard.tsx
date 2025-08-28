@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Heart, Star, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 interface Product {
   id: number;
@@ -25,6 +26,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const { toast } = useToast();
 
   const discountPercentage = product.originalPrice
     ? Math.round(
@@ -61,7 +63,16 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Wishlist Button */}
         <button
-          onClick={() => setIsWishlisted(!isWishlisted)}
+          onClick={() => {
+            setIsWishlisted(!isWishlisted);
+            toast({
+              title: isWishlisted ? "찜하기 해제" : "찜하기 추가",
+              description: `${product.name}을(를) ${
+                isWishlisted ? "찜하기에서 제거" : "찜하기에 추가"
+              }했습니다.`,
+              duration: 2000,
+            });
+          }}
           className="absolute top-3 right-3 p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-all duration-200"
         >
           <Heart
@@ -141,6 +152,11 @@ export default function ProductCard({ product }: ProductCardProps) {
           onClick={(e) => {
             e.preventDefault();
             // Add to cart logic here
+            toast({
+              title: "장바구니 추가",
+              description: `${product.name}이(가) 장바구니에 추가되었습니다.`,
+              duration: 2000,
+            });
           }}
         >
           <ShoppingBag className="h-4 w-4 mr-2" />
