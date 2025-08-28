@@ -4,12 +4,14 @@ import React, { useState, useEffect } from "react";
 import { Search, ShoppingBag, Menu, X, User, Heart, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useProductStore } from "@/stores/useProductStore";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTopBannerVisible, setIsTopBannerVisible] = useState(true);
   const { cartItemCount, wishlistCount } = useProductStore();
+  const pathname = usePathname();
 
   // localStorage에서 탑 배너 상태 확인
   useEffect(() => {
@@ -67,43 +69,71 @@ export default function Header() {
           <nav className="hidden lg:flex space-x-8">
             <Link
               href="/categories/new"
-              className="text-gray-700 hover:text-gray-900 transition-colors"
+              className={`transition-colors ${
+                pathname === "/categories/new"
+                  ? "text-gray-900 font-bold"
+                  : "text-gray-700 hover:text-gray-900"
+              }`}
             >
               신상품
             </Link>
             <Link
               href="/categories/best"
-              className="text-gray-700 hover:text-gray-900 transition-colors"
+              className={`transition-colors ${
+                pathname === "/categories/best"
+                  ? "text-gray-900 font-bold"
+                  : "text-gray-700 hover:text-gray-900"
+              }`}
             >
               베스트
             </Link>
             <Link
               href="/categories/outer"
-              className="text-gray-700 hover:text-gray-900 transition-colors"
+              className={`transition-colors ${
+                pathname === "/categories/outer"
+                  ? "text-gray-900 font-bold"
+                  : "text-gray-700 hover:text-gray-900"
+              }`}
             >
               아우터
             </Link>
             <Link
               href="/categories/top"
-              className="text-gray-700 hover:text-gray-900 transition-colors"
+              className={`transition-colors ${
+                pathname === "/categories/top"
+                  ? "text-gray-900 font-bold"
+                  : "text-gray-700 hover:text-gray-900"
+              }`}
             >
               상의
             </Link>
             <Link
               href="/categories/bottom"
-              className="text-gray-700 hover:text-gray-900 transition-colors"
+              className={`transition-colors ${
+                pathname === "/categories/bottom"
+                  ? "text-gray-900 font-bold"
+                  : "text-gray-700 hover:text-gray-900"
+              }`}
             >
               하의
             </Link>
             <Link
               href="/categories/dress"
-              className="text-gray-700 hover:text-gray-900 transition-colors"
+              className={`transition-colors ${
+                pathname === "/categories/dress"
+                  ? "text-gray-900 font-bold"
+                  : "text-gray-700 hover:text-gray-900"
+              }`}
             >
               원피스
             </Link>
             <Link
               href="/sale"
-              className="text-red-600 hover:text-red-700 font-medium transition-colors"
+              className={`transition-colors ${
+                pathname === "/sale"
+                  ? "text-red-700 font-bold"
+                  : "text-red-600 hover:text-red-700 font-medium"
+              }`}
             >
               SALE
             </Link>
@@ -166,49 +196,77 @@ export default function Header() {
             <nav className="space-y-4">
               <Link
                 href="/categories/new"
-                className="block text-gray-700 hover:text-gray-900 transition-colors"
+                className={`block transition-colors ${
+                  pathname === "/categories/new"
+                    ? "text-gray-900 font-bold"
+                    : "text-gray-700 hover:text-gray-900"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 신상품
               </Link>
               <Link
                 href="/categories/best"
-                className="block text-gray-700 hover:text-gray-900 transition-colors"
+                className={`block transition-colors ${
+                  pathname === "/categories/best"
+                    ? "text-gray-900 font-bold"
+                    : "text-gray-700 hover:text-gray-900"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 베스트
               </Link>
               <Link
                 href="/categories/outer"
-                className="block text-gray-700 hover:text-gray-900 transition-colors"
+                className={`block transition-colors ${
+                  pathname === "/categories/outer"
+                    ? "text-gray-900 font-bold"
+                    : "text-gray-700 hover:text-gray-900"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 아우터
               </Link>
               <Link
                 href="/categories/top"
-                className="block text-gray-700 hover:text-gray-900 transition-colors"
+                className={`block transition-colors ${
+                  pathname === "/categories/top"
+                    ? "text-gray-900 font-bold"
+                    : "text-gray-700 hover:text-gray-900"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 상의
               </Link>
               <Link
                 href="/categories/bottom"
-                className="block text-gray-700 hover:text-gray-900 transition-colors"
+                className={`block transition-colors ${
+                  pathname === "/categories/bottom"
+                    ? "text-gray-900 font-bold"
+                    : "text-gray-700 hover:text-gray-900"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 하의
               </Link>
               <Link
                 href="/categories/dress"
-                className="block text-gray-700 hover:text-gray-900 transition-colors"
+                className={`block transition-colors ${
+                  pathname === "/categories/dress"
+                    ? "text-gray-900 font-bold"
+                    : "text-gray-700 hover:text-gray-900"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 원피스
               </Link>
               <Link
                 href="/sale"
-                className="block text-red-600 hover:text-red-700 font-medium transition-colors"
+                className={`block transition-colors ${
+                  pathname === "/sale"
+                    ? "text-red-700 font-bold"
+                    : "text-red-600 hover:text-red-700 font-medium"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 SALE
