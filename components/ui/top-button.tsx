@@ -29,12 +29,6 @@ export default function TopButton() {
       top: 0,
       behavior: "smooth",
     });
-
-    toast({
-      title: "페이지 상단으로 이동",
-      description: "페이지 최상단으로 이동했습니다.",
-      duration: 2000,
-    });
   };
 
   if (!isVisible) {
