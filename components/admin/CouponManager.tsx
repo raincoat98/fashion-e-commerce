@@ -137,6 +137,7 @@ export default function CouponManager() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingCoupon, setEditingCoupon] = useState<Coupon | null>(null);
 
   // 새 쿠폰 폼 상태
@@ -202,6 +203,13 @@ export default function CouponManager() {
       )
     );
     setEditingCoupon(null);
+    setIsEditDialogOpen(false);
+  };
+
+  // 쿠폰 수정 다이얼로그 열기
+  const openEditDialog = (coupon: Coupon) => {
+    setEditingCoupon(coupon);
+    setIsEditDialogOpen(true);
   };
 
   // 쿠폰 삭제
@@ -221,6 +229,80 @@ export default function CouponManager() {
   // 쿠폰 코드 복사
   const copyCouponCode = (code: string) => {
     navigator.clipboard.writeText(code);
+  };
+
+  // 쿠폰 코드 자동 생성
+  const generateCouponCode = () => {
+    const patterns = [
+      // LUMINA + 타임스탬프 + 랜덤
+      () => {
+        const prefix = "LUMINA";
+        const timestamp = Date.now().toString().slice(-6);
+        const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+        return `${prefix}${timestamp}${random}`;
+      },
+      // 할인율 기반 코드
+      () => {
+        const discount = newCoupon.value || 20;
+        const random = Math.random().toString(36).substring(2, 5).toUpperCase();
+        return `SAVE${discount}${random}`;
+      },
+      // 시즌 기반 코드
+      () => {
+        const seasons = ["SPRING", "SUMMER", "AUTUMN", "WINTER"];
+        const currentSeason =
+          seasons[Math.floor(Math.random() * seasons.length)];
+        const random = Math.random().toString(36).substring(2, 5).toUpperCase();
+        return `${currentSeason}${random}`;
+      },
+      // 숫자 기반 코드
+      () => {
+        const numbers = Math.floor(Math.random() * 900000) + 100000;
+        return `CODE${numbers}`;
+      },
+    ];
+
+    const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
+    const generatedCode = randomPattern();
+    setNewCoupon({ ...newCoupon, code: generatedCode });
+  };
+
+  // 쿠폰 코드 자동 생성 (수정용)
+  const generateEditCouponCode = () => {
+    const patterns = [
+      // LUMINA + 타임스탬프 + 랜덤
+      () => {
+        const prefix = "LUMINA";
+        const timestamp = Date.now().toString().slice(-6);
+        const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+        return `${prefix}${timestamp}${random}`;
+      },
+      // 할인율 기반 코드
+      () => {
+        const discount = editingCoupon?.value || 20;
+        const random = Math.random().toString(36).substring(2, 5).toUpperCase();
+        return `SAVE${discount}${random}`;
+      },
+      // 시즌 기반 코드
+      () => {
+        const seasons = ["SPRING", "SUMMER", "AUTUMN", "WINTER"];
+        const currentSeason =
+          seasons[Math.floor(Math.random() * seasons.length)];
+        const random = Math.random().toString(36).substring(2, 5).toUpperCase();
+        return `${currentSeason}${random}`;
+      },
+      // 숫자 기반 코드
+      () => {
+        const numbers = Math.floor(Math.random() * 900000) + 100000;
+        return `CODE${numbers}`;
+      },
+    ];
+
+    const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
+    const generatedCode = randomPattern();
+    if (editingCoupon) {
+      setEditingCoupon({ ...editingCoupon, code: generatedCode });
+    }
   };
 
   // 통계 계산
@@ -366,14 +448,28 @@ export default function CouponManager() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="code">쿠폰 코드</Label>
-                        <Input
-                          id="code"
-                          value={newCoupon.code}
-                          onChange={(e) =>
-                            setNewCoupon({ ...newCoupon, code: e.target.value })
-                          }
-                          placeholder="예: WELCOME20"
-                        />
+                        <div className="flex space-x-2">
+                          <Input
+                            id="code"
+                            value={newCoupon.code}
+                            onChange={(e) =>
+                              setNewCoupon({
+                                ...newCoupon,
+                                code: e.target.value,
+                              })
+                            }
+                            placeholder="예: WELCOME20"
+                            className="flex-1"
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={generateCouponCode}
+                            className="whitespace-nowrap"
+                          >
+                            코드 생성
+                          </Button>
+                        </div>
                       </div>
                       <div>
                         <Label htmlFor="name">쿠폰명</Label>
@@ -508,6 +604,207 @@ export default function CouponManager() {
                   </div>
                 </DialogContent>
               </Dialog>
+
+              {/* 쿠폰 수정 다이얼로그 */}
+              <Dialog
+                open={isEditDialogOpen}
+                onOpenChange={setIsEditDialogOpen}
+              >
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>쿠폰 수정</DialogTitle>
+                    <DialogDescription>
+                      쿠폰 정보를 수정하세요
+                    </DialogDescription>
+                  </DialogHeader>
+                  {editingCoupon && (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="edit-code">쿠폰 코드</Label>
+                          <div className="flex space-x-2">
+                            <Input
+                              id="edit-code"
+                              value={editingCoupon.code}
+                              onChange={(e) =>
+                                setEditingCoupon({
+                                  ...editingCoupon,
+                                  code: e.target.value,
+                                })
+                              }
+                              placeholder="예: WELCOME20"
+                              className="flex-1"
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={generateEditCouponCode}
+                              className="whitespace-nowrap"
+                            >
+                              코드 생성
+                            </Button>
+                          </div>
+                        </div>
+                        <div>
+                          <Label htmlFor="edit-name">쿠폰명</Label>
+                          <Input
+                            id="edit-name"
+                            value={editingCoupon.name}
+                            onChange={(e) =>
+                              setEditingCoupon({
+                                ...editingCoupon,
+                                name: e.target.value,
+                              })
+                            }
+                            placeholder="쿠폰 이름"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="edit-description">설명</Label>
+                        <Textarea
+                          id="edit-description"
+                          value={editingCoupon.description}
+                          onChange={(e) =>
+                            setEditingCoupon({
+                              ...editingCoupon,
+                              description: e.target.value,
+                            })
+                          }
+                          placeholder="쿠폰에 대한 설명"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <Label htmlFor="edit-type">쿠폰 타입</Label>
+                          <Select
+                            value={editingCoupon.type}
+                            onValueChange={(value: any) =>
+                              setEditingCoupon({
+                                ...editingCoupon,
+                                type: value,
+                              })
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="percentage">
+                                퍼센트 할인
+                              </SelectItem>
+                              <SelectItem value="fixed">정액 할인</SelectItem>
+                              <SelectItem value="free_shipping">
+                                무료 배송
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label htmlFor="edit-value">할인 값</Label>
+                          <Input
+                            id="edit-value"
+                            type="number"
+                            value={editingCoupon.value}
+                            onChange={(e) =>
+                              setEditingCoupon({
+                                ...editingCoupon,
+                                value: parseInt(e.target.value),
+                              })
+                            }
+                            placeholder={
+                              editingCoupon.type === "percentage"
+                                ? "20"
+                                : "5000"
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="edit-minOrder">최소 주문 금액</Label>
+                          <Input
+                            id="edit-minOrder"
+                            type="number"
+                            value={editingCoupon.minOrderAmount}
+                            onChange={(e) =>
+                              setEditingCoupon({
+                                ...editingCoupon,
+                                minOrderAmount: parseInt(e.target.value),
+                              })
+                            }
+                            placeholder="30000"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="edit-startDate">시작일</Label>
+                          <Input
+                            id="edit-startDate"
+                            type="date"
+                            value={editingCoupon.startDate}
+                            onChange={(e) =>
+                              setEditingCoupon({
+                                ...editingCoupon,
+                                startDate: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="edit-endDate">종료일</Label>
+                          <Input
+                            id="edit-endDate"
+                            type="date"
+                            value={editingCoupon.endDate}
+                            onChange={(e) =>
+                              setEditingCoupon({
+                                ...editingCoupon,
+                                endDate: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="edit-usageLimit">사용 제한</Label>
+                        <Input
+                          id="edit-usageLimit"
+                          type="number"
+                          value={editingCoupon.usageLimit}
+                          onChange={(e) =>
+                            setEditingCoupon({
+                              ...editingCoupon,
+                              usageLimit: parseInt(e.target.value),
+                            })
+                          }
+                          placeholder="100"
+                        />
+                      </div>
+
+                      <div className="flex justify-end space-x-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => setIsEditDialogOpen(false)}
+                        >
+                          취소
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            updateCoupon(editingCoupon.id, editingCoupon)
+                          }
+                          className="lumina-gradient text-white"
+                        >
+                          수정 완료
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </CardHeader>
@@ -602,7 +899,7 @@ export default function CouponManager() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => setEditingCoupon(coupon)}
+                        onClick={() => openEditDialog(coupon)}
                       >
                         <Edit className="w-4 h-4" />
                       </Button>

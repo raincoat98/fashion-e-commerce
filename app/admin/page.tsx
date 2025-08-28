@@ -25,9 +25,12 @@ import {
   Filter,
   Download,
   Gift,
+  Tag,
 } from "lucide-react";
 import Link from "next/link";
 import CouponManager from "@/components/admin/CouponManager";
+import ProductManager from "@/components/admin/ProductManager";
+import CollectionManager from "@/components/admin/CollectionManager";
 import {
   Select,
   SelectContent,
@@ -268,10 +271,24 @@ export default function AdminPage() {
 
         {/* 메인 탭 */}
         <Tabs defaultValue="orders" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="orders" className="flex items-center space-x-2">
               <Package className="w-4 h-4" />
               <span>주문 관리</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="products"
+              className="flex items-center space-x-2"
+            >
+              <Package className="w-4 h-4" />
+              <span>상품 관리</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="collections"
+              className="flex items-center space-x-2"
+            >
+              <Tag className="w-4 h-4" />
+              <span>컬렉션 관리</span>
             </TabsTrigger>
             <TabsTrigger
               value="coupons"
@@ -465,6 +482,16 @@ export default function AdminPage() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* 상품 관리 탭 */}
+          <TabsContent value="products" className="space-y-6">
+            <ProductManager />
+          </TabsContent>
+
+          {/* 컬렉션 관리 탭 */}
+          <TabsContent value="collections" className="space-y-6">
+            <CollectionManager />
           </TabsContent>
 
           {/* 쿠폰 관리 탭 */}
