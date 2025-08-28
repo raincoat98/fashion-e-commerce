@@ -1,12 +1,96 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, TrendingUp } from "lucide-react";
 import Link from "next/link";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// GSAP 플러그인 등록
+gsap.registerPlugin(ScrollTrigger);
 
 export default function FeaturedProducts() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const productsRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // 섹션 헤더 애니메이션
+      gsap.fromTo(
+        headerRef.current,
+        {
+          y: 50,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // 상품 카드들 애니메이션
+      if (productsRef.current?.children) {
+        gsap.fromTo(
+          productsRef.current.children,
+          {
+            y: 80,
+            opacity: 0,
+            scale: 0.9,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            ease: "back.out(1.7)",
+            stagger: 0.15,
+            scrollTrigger: {
+              trigger: productsRef.current,
+              start: "top 85%",
+              end: "bottom 15%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
+      // CTA 버튼 애니메이션
+      gsap.fromTo(
+        ctaRef.current,
+        {
+          y: 30,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: ctaRef.current,
+            start: "top 90%",
+            end: "bottom 10%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   // Mock data - replace with actual API call
   const products = [
     {
@@ -68,10 +152,13 @@ export default function FeaturedProducts() {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+    <section
+      ref={sectionRef}
+      className="py-20 bg-gradient-to-b from-white to-gray-50"
+    >
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div ref={headerRef} className="text-center mb-16">
           <div className="inline-flex items-center space-x-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
             <TrendingUp className="w-4 h-4" />
             <span>TRENDING NOW</span>
@@ -91,7 +178,10 @@ export default function FeaturedProducts() {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div
+          ref={productsRef}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12"
+        >
           {products.map((product) => (
             <div key={product.id} className="group">
               <ProductCard product={product} />
@@ -115,7 +205,7 @@ export default function FeaturedProducts() {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center">
+        <div ref={ctaRef} className="text-center">
           <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-3xl p-8 md:p-12 max-w-4xl mx-auto">
             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
               더 많은 스타일을 발견하세요

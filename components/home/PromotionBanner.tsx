@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +16,11 @@ import {
   Sparkles,
   Check,
 } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// GSAP 플러그인 등록
+gsap.registerPlugin(ScrollTrigger);
 
 interface PromotionBannerProps {
   coupon?: {
@@ -35,6 +40,11 @@ export default function PromotionBanner({
   onClose,
 }: PromotionBannerProps) {
   const [isCopied, setIsCopied] = useState(false);
+  const bannerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const discountRef = useRef<HTMLDivElement>(null);
+  const codeRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   // 기본 쿠폰 데이터 (쿠폰이 없을 때 표시)
   const defaultCoupon = {
@@ -48,6 +58,114 @@ export default function PromotionBanner({
   };
 
   const activeCoupon = coupon || defaultCoupon;
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // 배너 전체 애니메이션
+      gsap.fromTo(
+        bannerRef.current,
+        {
+          y: 50,
+          opacity: 0,
+          scale: 0.95,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          ease: "power3.out",
+        }
+      );
+
+      // 콘텐츠 요소들 애니메이션
+      if (contentRef.current?.children) {
+        gsap.fromTo(
+          contentRef.current.children,
+          {
+            x: -30,
+            opacity: 0,
+          },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power2.out",
+            delay: 0.3,
+            stagger: 0.1,
+          }
+        );
+      }
+
+      // 할인 정보 애니메이션
+      gsap.fromTo(
+        discountRef.current,
+        {
+          scale: 0.8,
+          opacity: 0,
+          rotation: -5,
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          rotation: 0,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+          delay: 0.5,
+        }
+      );
+
+      // 쿠폰 코드 애니메이션
+      gsap.fromTo(
+        codeRef.current,
+        {
+          x: 30,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 0.7,
+        }
+      );
+
+      // 버튼 애니메이션
+      gsap.fromTo(
+        buttonRef.current,
+        {
+          y: 20,
+          opacity: 0,
+          scale: 0.9,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+          delay: 0.9,
+        }
+      );
+
+      // 스크롤 트리거 애니메이션
+      ScrollTrigger.create({
+        trigger: bannerRef.current,
+        start: "top 80%",
+        onEnter: () => {
+          gsap.to(bannerRef.current, {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power2.out",
+          });
+        },
+      });
+    }, bannerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   // 쿠폰 코드 복사
   const copyCouponCode = async () => {
@@ -121,7 +239,7 @@ export default function PromotionBanner({
   };
 
   return (
-    <div className="relative overflow-hidden">
+    <div ref={bannerRef} className="relative overflow-hidden">
       <Card className={`${getBackgroundClass()} text-white border-0 shadow-lg`}>
         <CardContent className="p-6">
           {/* 닫기 버튼 */}
@@ -134,7 +252,7 @@ export default function PromotionBanner({
             </button>
           )}
 
-          <div className="flex items-center justify-between">
+          <div ref={contentRef} className="flex items-center justify-between">
             {/* 왼쪽: 쿠폰 정보 */}
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-3">
@@ -163,7 +281,10 @@ export default function PromotionBanner({
 
             {/* 중앙: 할인 정보 */}
             <div className="text-center mx-8">
-              <div className="bg-white/20 rounded-2xl p-6 backdrop-blur-sm">
+              <div
+                ref={discountRef}
+                className="bg-white/20 rounded-2xl p-6 backdrop-blur-sm"
+              >
                 <div className="text-4xl font-bold mb-2">
                   {getDiscountDisplay()}
                 </div>
@@ -172,7 +293,7 @@ export default function PromotionBanner({
             </div>
 
             {/* 오른쪽: 쿠폰 코드 */}
-            <div className="flex-1 text-right">
+            <div ref={codeRef} className="flex-1 text-right">
               <div className="space-y-4">
                 <div>
                   <p className="text-sm text-white/80 mb-2">쿠폰 코드</p>
@@ -208,7 +329,10 @@ export default function PromotionBanner({
                   )}
                 </div>
 
-                <Button className="lumina-gradient hover:opacity-90 text-white px-6 py-3 font-semibold lumina-shadow-lg transition-all duration-300 group">
+                <Button
+                  ref={buttonRef}
+                  className="lumina-gradient hover:opacity-90 text-white px-6 py-3 font-semibold lumina-shadow-lg transition-all duration-300 group"
+                >
                   <Sparkles className="w-4 h-4 mr-2" />
                   쿠폰 사용하기
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
