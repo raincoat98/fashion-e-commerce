@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 
 // 상품 타입 정의
 export interface Product {
@@ -451,375 +451,393 @@ const sampleOrders: Order[] = [
 // Zustand 스토어 생성
 export const useProductStore = create<ProductStore>()(
   devtools(
-    (set, get) => ({
-      // 초기 상태
-      products: sampleProducts,
-      orders: sampleOrders,
-      categories: sampleCategories,
-      cart: [],
-      wishlist: [],
+    persist(
+      (set, get) => ({
+        // 초기 상태
+        products: sampleProducts,
+        orders: sampleOrders,
+        categories: sampleCategories,
+        cart: [],
+        wishlist: [],
 
-      // 필터링 및 검색
-      searchTerm: "",
-      selectedCategory: "",
-      selectedSubCategory: "",
-      priceRange: [0, 500000],
-      selectedSizes: [],
-      selectedColors: [],
-      sortBy: "createdAt",
-      sortOrder: "desc",
+        // 필터링 및 검색
+        searchTerm: "",
+        selectedCategory: "",
+        selectedSubCategory: "",
+        priceRange: [0, 500000],
+        selectedSizes: [],
+        selectedColors: [],
+        sortBy: "createdAt",
+        sortOrder: "desc",
 
-      // 페이지네이션
-      currentPage: 1,
-      itemsPerPage: 12,
+        // 페이지네이션
+        currentPage: 1,
+        itemsPerPage: 12,
 
-      // 선택된 상품
-      selectedProduct: null,
+        // 선택된 상품
+        selectedProduct: null,
 
-      // 상품 관리 액션들
-      addProduct: (product) => {
-        const newProduct: Product = {
-          ...product,
-          id: Date.now().toString(),
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-        set((state) => ({
-          products: [...state.products, newProduct],
-        }));
-      },
+        // 상품 관리 액션들
+        addProduct: (product) => {
+          const newProduct: Product = {
+            ...product,
+            id: Date.now().toString(),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          set((state) => ({
+            products: [...state.products, newProduct],
+          }));
+        },
 
-      updateProduct: (id, updates) => {
-        set((state) => ({
-          products: state.products.map((product) =>
-            product.id === id
-              ? { ...product, ...updates, updatedAt: new Date().toISOString() }
-              : product
-          ),
-        }));
-      },
+        updateProduct: (id, updates) => {
+          set((state) => ({
+            products: state.products.map((product) =>
+              product.id === id
+                ? {
+                    ...product,
+                    ...updates,
+                    updatedAt: new Date().toISOString(),
+                  }
+                : product
+            ),
+          }));
+        },
 
-      deleteProduct: (id) => {
-        set((state) => ({
-          products: state.products.filter((product) => product.id !== id),
-        }));
-      },
+        deleteProduct: (id) => {
+          set((state) => ({
+            products: state.products.filter((product) => product.id !== id),
+          }));
+        },
 
-      getProductById: (id) => {
-        const { products } = get();
-        return products.find((product) => product.id === id);
-      },
+        getProductById: (id) => {
+          const { products } = get();
+          return products.find((product) => product.id === id);
+        },
 
-      // 필터링 및 검색 액션들
-      setSearchTerm: (term) => set({ searchTerm: term, currentPage: 1 }),
-      setSelectedCategory: (category) =>
-        set({
-          selectedCategory: category,
-          selectedSubCategory: "",
-          currentPage: 1,
-        }),
-      setSelectedSubCategory: (subCategory) =>
-        set({ selectedSubCategory: subCategory, currentPage: 1 }),
-      setPriceRange: (range) => set({ priceRange: range, currentPage: 1 }),
-      setSelectedSizes: (sizes) =>
-        set({ selectedSizes: sizes, currentPage: 1 }),
-      setSelectedColors: (colors) =>
-        set({ selectedColors: colors, currentPage: 1 }),
-      setSortBy: (sortBy) => set({ sortBy, currentPage: 1 }),
-      setSortOrder: (order) => set({ sortOrder: order, currentPage: 1 }),
+        // 필터링 및 검색 액션들
+        setSearchTerm: (term) => set({ searchTerm: term, currentPage: 1 }),
+        setSelectedCategory: (category) =>
+          set({
+            selectedCategory: category,
+            selectedSubCategory: "",
+            currentPage: 1,
+          }),
+        setSelectedSubCategory: (subCategory) =>
+          set({ selectedSubCategory: subCategory, currentPage: 1 }),
+        setPriceRange: (range) => set({ priceRange: range, currentPage: 1 }),
+        setSelectedSizes: (sizes) =>
+          set({ selectedSizes: sizes, currentPage: 1 }),
+        setSelectedColors: (colors) =>
+          set({ selectedColors: colors, currentPage: 1 }),
+        setSortBy: (sortBy) => set({ sortBy, currentPage: 1 }),
+        setSortOrder: (order) => set({ sortOrder: order, currentPage: 1 }),
 
-      resetFilters: () =>
-        set({
-          searchTerm: "",
-          selectedCategory: "",
-          selectedSubCategory: "",
-          priceRange: [0, 500000],
-          selectedSizes: [],
-          selectedColors: [],
-          sortBy: "createdAt",
-          sortOrder: "desc",
-          currentPage: 1,
-        }),
+        resetFilters: () =>
+          set({
+            searchTerm: "",
+            selectedCategory: "",
+            selectedSubCategory: "",
+            priceRange: [0, 500000],
+            selectedSizes: [],
+            selectedColors: [],
+            sortBy: "createdAt",
+            sortOrder: "desc",
+            currentPage: 1,
+          }),
 
-      // 페이지네이션 액션들
-      setCurrentPage: (page) => set({ currentPage: page }),
-      setItemsPerPage: (items) => set({ itemsPerPage: items, currentPage: 1 }),
+        // 페이지네이션 액션들
+        setCurrentPage: (page) => set({ currentPage: page }),
+        setItemsPerPage: (items) =>
+          set({ itemsPerPage: items, currentPage: 1 }),
 
-      // 선택된 상품 액션
-      setSelectedProduct: (product) => set({ selectedProduct: product }),
+        // 선택된 상품 액션
+        setSelectedProduct: (product) => set({ selectedProduct: product }),
 
-      // 주문 관리 액션들
-      addOrder: (order) => {
-        const newOrder: Order = {
-          ...order,
-          id: `order-${Date.now()}`,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-        set((state) => ({
-          orders: [...state.orders, newOrder],
-        }));
-      },
+        // 주문 관리 액션들
+        addOrder: (order) => {
+          const newOrder: Order = {
+            ...order,
+            id: `order-${Date.now()}`,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          set((state) => ({
+            orders: [...state.orders, newOrder],
+          }));
+        },
 
-      updateOrderStatus: (id, status) => {
-        set((state) => ({
-          orders: state.orders.map((order) =>
-            order.id === id
-              ? { ...order, status, updatedAt: new Date().toISOString() }
-              : order
-          ),
-        }));
-      },
+        updateOrderStatus: (id, status) => {
+          set((state) => ({
+            orders: state.orders.map((order) =>
+              order.id === id
+                ? { ...order, status, updatedAt: new Date().toISOString() }
+                : order
+            ),
+          }));
+        },
 
-      getOrderById: (id) => {
-        const { orders } = get();
-        return orders.find((order) => order.id === id);
-      },
+        getOrderById: (id) => {
+          const { orders } = get();
+          return orders.find((order) => order.id === id);
+        },
 
-      // 카테고리 관리 액션들
-      addCategory: (category) => {
-        const newCategory: Category = {
-          ...category,
-          id: Date.now().toString(),
-        };
-        set((state) => ({
-          categories: [...state.categories, newCategory],
-        }));
-      },
+        // 카테고리 관리 액션들
+        addCategory: (category) => {
+          const newCategory: Category = {
+            ...category,
+            id: Date.now().toString(),
+          };
+          set((state) => ({
+            categories: [...state.categories, newCategory],
+          }));
+        },
 
-      updateCategory: (id, updates) => {
-        set((state) => ({
-          categories: state.categories.map((category) =>
-            category.id === id ? { ...category, ...updates } : category
-          ),
-        }));
-      },
+        updateCategory: (id, updates) => {
+          set((state) => ({
+            categories: state.categories.map((category) =>
+              category.id === id ? { ...category, ...updates } : category
+            ),
+          }));
+        },
 
-      deleteCategory: (id) => {
-        set((state) => ({
-          categories: state.categories.filter((category) => category.id !== id),
-        }));
-      },
+        deleteCategory: (id) => {
+          set((state) => ({
+            categories: state.categories.filter(
+              (category) => category.id !== id
+            ),
+          }));
+        },
 
-      getCategoryBySlug: (slug) => {
-        const { categories } = get();
-        return categories.find((category) => category.slug === slug);
-      },
+        getCategoryBySlug: (slug) => {
+          const { categories } = get();
+          return categories.find((category) => category.slug === slug);
+        },
 
-      // 장바구니 관리 액션들
-      addToCart: (item) => {
-        const newCartItem: CartItem = {
-          ...item,
-          id: Date.now().toString(),
-        };
-        set((state) => ({
-          cart: [...state.cart, newCartItem],
-        }));
-      },
+        // 장바구니 관리 액션들
+        addToCart: (item) => {
+          const newCartItem: CartItem = {
+            ...item,
+            id: Date.now().toString(),
+          };
+          set((state) => ({
+            cart: [...state.cart, newCartItem],
+          }));
+        },
 
-      updateCartItem: (id, updates) => {
-        set((state) => ({
-          cart: state.cart.map((item) =>
-            item.id === id ? { ...item, ...updates } : item
-          ),
-        }));
-      },
+        updateCartItem: (id, updates) => {
+          set((state) => ({
+            cart: state.cart.map((item) =>
+              item.id === id ? { ...item, ...updates } : item
+            ),
+          }));
+        },
 
-      removeFromCart: (id) => {
-        set((state) => ({
-          cart: state.cart.filter((item) => item.id !== id),
-        }));
-      },
+        removeFromCart: (id) => {
+          set((state) => ({
+            cart: state.cart.filter((item) => item.id !== id),
+          }));
+        },
 
-      clearCart: () => {
-        set({ cart: [] });
-      },
+        clearCart: () => {
+          set({ cart: [] });
+        },
 
-      getCartItemById: (id) => {
-        const { cart } = get();
-        return cart.find((item) => item.id === id);
-      },
+        getCartItemById: (id) => {
+          const { cart } = get();
+          return cart.find((item) => item.id === id);
+        },
 
-      // 위시리스트 관리 액션들
-      addToWishlist: (item) => {
-        const newWishlistItem: WishlistItem = {
-          ...item,
-          id: Date.now().toString(),
-          addedAt: new Date().toISOString(),
-        };
-        set((state) => ({
-          wishlist: [...state.wishlist, newWishlistItem],
-        }));
-      },
+        // 위시리스트 관리 액션들
+        addToWishlist: (item) => {
+          const newWishlistItem: WishlistItem = {
+            ...item,
+            id: Date.now().toString(),
+            addedAt: new Date().toISOString(),
+          };
+          set((state) => ({
+            wishlist: [...state.wishlist, newWishlistItem],
+          }));
+        },
 
-      removeFromWishlist: (id) => {
-        set((state) => ({
-          wishlist: state.wishlist.filter((item) => item.id !== id),
-        }));
-      },
+        removeFromWishlist: (id) => {
+          set((state) => ({
+            wishlist: state.wishlist.filter((item) => item.id !== id),
+          }));
+        },
 
-      clearWishlist: () => {
-        set({ wishlist: [] });
-      },
+        clearWishlist: () => {
+          set({ wishlist: [] });
+        },
 
-      getWishlistItemById: (id) => {
-        const { wishlist } = get();
-        return wishlist.find((item) => item.id === id);
-      },
+        getWishlistItemById: (id) => {
+          const { wishlist } = get();
+          return wishlist.find((item) => item.id === id);
+        },
 
-      isInWishlist: (productId) => {
-        const { wishlist } = get();
-        return wishlist.some((item) => item.productId === productId);
-      },
+        isInWishlist: (productId) => {
+          const { wishlist } = get();
+          return wishlist.some((item) => item.productId === productId);
+        },
 
-      // 계산된 값들
-      get filteredProducts() {
-        const {
-          products,
-          searchTerm,
-          selectedCategory,
-          selectedSubCategory,
-          priceRange,
-          selectedSizes,
-          selectedColors,
-          sortBy,
-          sortOrder,
-        } = get();
+        // 계산된 값들
+        get filteredProducts() {
+          const {
+            products,
+            searchTerm,
+            selectedCategory,
+            selectedSubCategory,
+            priceRange,
+            selectedSizes,
+            selectedColors,
+            sortBy,
+            sortOrder,
+          } = get();
 
-        let filtered = products;
+          let filtered = products;
 
-        // 검색어 필터링
-        if (searchTerm) {
+          // 검색어 필터링
+          if (searchTerm) {
+            filtered = filtered.filter(
+              (product) =>
+                product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                product.description
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                product.tags.some((tag) =>
+                  tag.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+            );
+          }
+
+          // 카테고리 필터링
+          if (selectedCategory) {
+            filtered = filtered.filter(
+              (product) => product.category === selectedCategory
+            );
+          }
+
+          // 서브카테고리 필터링
+          if (selectedSubCategory) {
+            filtered = filtered.filter(
+              (product) => product.subCategory === selectedSubCategory
+            );
+          }
+
+          // 가격 범위 필터링
           filtered = filtered.filter(
             (product) =>
-              product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              product.description
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase()) ||
-              product.tags.some((tag) =>
-                tag.toLowerCase().includes(searchTerm.toLowerCase())
-              )
+              product.price >= priceRange[0] && product.price <= priceRange[1]
           );
-        }
 
-        // 카테고리 필터링
-        if (selectedCategory) {
-          filtered = filtered.filter(
-            (product) => product.category === selectedCategory
-          );
-        }
-
-        // 서브카테고리 필터링
-        if (selectedSubCategory) {
-          filtered = filtered.filter(
-            (product) => product.subCategory === selectedSubCategory
-          );
-        }
-
-        // 가격 범위 필터링
-        filtered = filtered.filter(
-          (product) =>
-            product.price >= priceRange[0] && product.price <= priceRange[1]
-        );
-
-        // 사이즈 필터링
-        if (selectedSizes.length > 0) {
-          filtered = filtered.filter((product) =>
-            selectedSizes.some((size) => product.sizes.includes(size))
-          );
-        }
-
-        // 색상 필터링
-        if (selectedColors.length > 0) {
-          filtered = filtered.filter((product) =>
-            selectedColors.some((color) => product.colors.includes(color))
-          );
-        }
-
-        // 정렬
-        filtered.sort((a, b) => {
-          let aValue: any, bValue: any;
-
-          switch (sortBy) {
-            case "name":
-              aValue = a.name;
-              bValue = b.name;
-              break;
-            case "price":
-              aValue = a.price;
-              bValue = b.price;
-              break;
-            case "rating":
-              aValue = a.rating;
-              bValue = b.rating;
-              break;
-            case "createdAt":
-              aValue = new Date(a.createdAt);
-              bValue = new Date(b.createdAt);
-              break;
-            default:
-              aValue = a.name;
-              bValue = b.name;
+          // 사이즈 필터링
+          if (selectedSizes.length > 0) {
+            filtered = filtered.filter((product) =>
+              selectedSizes.some((size) => product.sizes.includes(size))
+            );
           }
 
-          if (sortOrder === "asc") {
-            return aValue > bValue ? 1 : -1;
-          } else {
-            return aValue < bValue ? 1 : -1;
+          // 색상 필터링
+          if (selectedColors.length > 0) {
+            filtered = filtered.filter((product) =>
+              selectedColors.some((color) => product.colors.includes(color))
+            );
           }
-        });
 
-        return filtered;
-      },
+          // 정렬
+          filtered.sort((a, b) => {
+            let aValue: any, bValue: any;
 
-      get paginatedProducts() {
-        const { filteredProducts, currentPage, itemsPerPage } = get();
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        return filteredProducts.slice(startIndex, endIndex);
-      },
+            switch (sortBy) {
+              case "name":
+                aValue = a.name;
+                bValue = b.name;
+                break;
+              case "price":
+                aValue = a.price;
+                bValue = b.price;
+                break;
+              case "rating":
+                aValue = a.rating;
+                bValue = b.rating;
+                break;
+              case "createdAt":
+                aValue = new Date(a.createdAt);
+                bValue = new Date(b.createdAt);
+                break;
+              default:
+                aValue = a.name;
+                bValue = b.name;
+            }
 
-      get totalPages() {
-        const { filteredProducts, itemsPerPage } = get();
-        return Math.ceil(filteredProducts.length / itemsPerPage);
-      },
+            if (sortOrder === "asc") {
+              return aValue > bValue ? 1 : -1;
+            } else {
+              return aValue < bValue ? 1 : -1;
+            }
+          });
 
-      get categoryNames() {
-        const { products } = get();
-        return Array.from(new Set(products.map((product) => product.category)));
-      },
+          return filtered;
+        },
 
-      get subCategories() {
-        const { products, selectedCategory } = get();
-        if (!selectedCategory) return [];
-        return Array.from(
-          new Set(
-            products
-              .filter((product) => product.category === selectedCategory)
-              .map((product) => product.subCategory)
-              .filter(Boolean)
-          )
-        );
-      },
+        get paginatedProducts() {
+          const { filteredProducts, currentPage, itemsPerPage } = get();
+          const startIndex = (currentPage - 1) * itemsPerPage;
+          const endIndex = startIndex + itemsPerPage;
+          return filteredProducts.slice(startIndex, endIndex);
+        },
 
-      get cartTotal() {
-        const { cart } = get();
-        return cart.reduce(
-          (total, item) => total + item.price * item.quantity,
-          0
-        );
-      },
+        get totalPages() {
+          const { filteredProducts, itemsPerPage } = get();
+          return Math.ceil(filteredProducts.length / itemsPerPage);
+        },
 
-      get cartItemCount() {
-        const { cart } = get();
-        return cart.reduce((count, item) => count + item.quantity, 0);
-      },
+        get categoryNames() {
+          const { products } = get();
+          return Array.from(
+            new Set(products.map((product) => product.category))
+          );
+        },
 
-      get wishlistCount() {
-        const { wishlist } = get();
-        return wishlist.length;
-      },
-    }),
+        get subCategories() {
+          const { products, selectedCategory } = get();
+          if (!selectedCategory) return [];
+          return Array.from(
+            new Set(
+              products
+                .filter((product) => product.category === selectedCategory)
+                .map((product) => product.subCategory)
+                .filter(Boolean)
+            )
+          );
+        },
+
+        get cartTotal() {
+          const { cart } = get();
+          return cart.reduce(
+            (total, item) => total + item.price * item.quantity,
+            0
+          );
+        },
+
+        get cartItemCount() {
+          const { cart } = get();
+          return cart.reduce((count, item) => count + item.quantity, 0);
+        },
+
+        get wishlistCount() {
+          const { wishlist } = get();
+          return wishlist.length;
+        },
+      }),
+      {
+        name: "lumina-wishlist",
+        partialize: (state) => ({
+          wishlist: state.wishlist,
+          cart: state.cart,
+        }),
+      }
+    ),
     {
       name: "product-store",
     }

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
+import { useProductStore } from "@/stores/useProductStore";
 import {
   Star,
   Heart,
@@ -77,12 +78,13 @@ export default function ProductDetailClient({
   const router = useRouter();
   const { addItem } = useCart();
   const { toast } = useToast();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useProductStore();
   const [selectedVariant, setSelectedVariant] = useState({
     size: "M",
     color: "Black",
   });
   const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const isWishlisted = isInWishlist(product.id.toString());
 
   // GSAP 애니메이션 refs
   const containerRef = useRef<HTMLDivElement>(null);
@@ -412,14 +414,32 @@ export default function ProductDetailClient({
                 size="lg"
                 variant="outline"
                 onClick={() => {
-                  setIsWishlisted(!isWishlisted);
-                  toast({
-                    title: isWishlisted ? "찜하기 해제" : "찜하기 추가",
-                    description: `${product.name}을(를) ${
-                      isWishlisted ? "찜하기에서 제거" : "찜하기에 추가"
-                    }했습니다.`,
-                    duration: 2000,
-                  });
+                  if (isWishlisted) {
+                    removeFromWishlist(product.id.toString());
+                    toast({
+                      title: "위시리스트에서 제거되었습니다",
+                      description: `${product.name}이(가) 위시리스트에서 제거되었습니다.`,
+                      duration: 2000,
+                    });
+                  } else {
+                    addToWishlist({
+                      productId: product.id.toString(),
+                      name: product.name,
+                      price: product.price,
+                      originalPrice: product.originalPrice,
+                      image: product.images[0],
+                      rating: product.rating,
+                      reviewCount: product.reviewCount,
+                      isNew: false,
+                      isSale: product.originalPrice > product.price,
+                      isBest: false,
+                    });
+                    toast({
+                      title: "위시리스트에 추가되었습니다",
+                      description: `${product.name}이(가) 위시리스트에 추가되었습니다.`,
+                      duration: 2000,
+                    });
+                  }
                 }}
                 className="action-buttons px-4"
               >

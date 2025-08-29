@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
+import { useProductStore } from "@/stores/useProductStore";
 
 interface Product {
   id: string;
@@ -30,7 +31,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [selectedColor, setSelectedColor] = useState("");
   const { toast } = useToast();
   const { addItem } = useCart();
-  const isWishlisted = false; // 위시리스트 기능은 나중에 구현
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useProductStore();
+  const isWishlisted = isInWishlist(product.id);
 
   const discountPercentage = product.originalPrice
     ? Math.round(
@@ -66,11 +68,32 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   const handleToggleWishlist = () => {
-    toast({
-      title: "위시리스트 기능",
-      description: "위시리스트 기능은 준비 중입니다.",
-      duration: 2000,
-    });
+    if (isWishlisted) {
+      removeFromWishlist(product.id);
+      toast({
+        title: "위시리스트에서 제거되었습니다",
+        description: `${product.name}이(가) 위시리스트에서 제거되었습니다.`,
+        duration: 2000,
+      });
+    } else {
+      addToWishlist({
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.image,
+        rating: product.rating,
+        reviewCount: product.reviewCount,
+        isNew: false,
+        isSale: !!product.originalPrice,
+        isBest: false,
+      });
+      toast({
+        title: "위시리스트에 추가되었습니다",
+        description: `${product.name}이(가) 위시리스트에 추가되었습니다.`,
+        duration: 2000,
+      });
+    }
   };
 
   return (
