@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import ReviewSection from "./ReviewSection";
+import ReviewForm from "./ReviewForm";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -10,6 +12,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 interface ProductTabsProps {
+  productId?: string;
+  productName?: string;
+  productImage?: string;
   description: string;
   materials: string;
   care: string;
@@ -45,6 +50,9 @@ interface ProductTabsProps {
 }
 
 export default function ProductTabs({
+  productId = "1",
+  productName = "상품",
+  productImage,
   description,
   materials,
   care,
@@ -56,6 +64,29 @@ export default function ProductTabs({
   ratingDistribution = {},
 }: ProductTabsProps) {
   const tabsRef = useRef<HTMLDivElement>(null);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+
+  // 리뷰 제출 핸들러
+  const handleReviewSubmit = async (reviewData: {
+    rating: number;
+    title: string;
+    content: string;
+    images: File[];
+    pros: string;
+    cons: string;
+    recommend: boolean;
+  }) => {
+    console.log("새 리뷰 제출:", {
+      productId,
+      ...reviewData,
+    });
+
+    // 실제로는 API 호출하여 서버에 저장
+    // await submitReview(productId, reviewData);
+
+    // 리뷰 폼 닫기
+    setShowReviewForm(false);
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -245,30 +276,68 @@ export default function ProductTabs({
         </TabsContent>
 
         <TabsContent value="reviews" className="tab-content mt-8">
-          {reviews.length > 0 ? (
-            <ReviewSection
-              reviews={reviews}
-              averageRating={averageRating}
-              totalReviews={totalReviews}
-              ratingDistribution={ratingDistribution}
-            />
-          ) : (
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">고객 리뷰</h3>
-                <button className="text-sm text-gray-600 hover:text-gray-900">
-                  리뷰 작성하기
-                </button>
+          <div className="space-y-8">
+            {/* 리뷰 작성 폼 */}
+            {showReviewForm && (
+              <div className="space-y-4">
+                <ReviewForm
+                  productId={productId}
+                  productName={productName}
+                  productImage={productImage}
+                  onSubmit={handleReviewSubmit}
+                  onCancel={() => setShowReviewForm(false)}
+                />
               </div>
+            )}
 
-              <div className="bg-gray-50 p-6 rounded-lg text-center">
-                <p className="text-gray-600">아직 작성된 리뷰가 없습니다.</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  첫 번째 리뷰를 작성해보세요!
-                </p>
+            {/* 기존 리뷰 섹션 */}
+            {reviews.length > 0 ? (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">고객 리뷰</h3>
+                  {!showReviewForm && (
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowReviewForm(true)}
+                    >
+                      리뷰 작성하기
+                    </Button>
+                  )}
+                </div>
+                <ReviewSection
+                  reviews={reviews}
+                  averageRating={averageRating}
+                  totalReviews={totalReviews}
+                  ratingDistribution={ratingDistribution}
+                />
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">고객 리뷰</h3>
+                  {!showReviewForm && (
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowReviewForm(true)}
+                    >
+                      리뷰 작성하기
+                    </Button>
+                  )}
+                </div>
+
+                {!showReviewForm && (
+                  <div className="bg-gray-50 p-6 rounded-lg text-center">
+                    <p className="text-gray-600">
+                      아직 작성된 리뷰가 없습니다.
+                    </p>
+                    <p className="text-sm text-gray-500 mt-2">
+                      첫 번째 리뷰를 작성해보세요!
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </TabsContent>
       </Tabs>
     </div>
