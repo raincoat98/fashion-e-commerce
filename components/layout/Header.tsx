@@ -97,6 +97,16 @@ export default function Header() {
               베스트
             </Link>
             <Link
+              href="/admin"
+              className={`transition-colors ${
+                pathname === "/admin"
+                  ? "text-gray-900 font-bold"
+                  : "text-gray-700 hover:text-gray-900"
+              }`}
+            >
+              관리자
+            </Link>
+            <Link
               href="/categories/outer"
               className={`transition-colors ${
                 pathname === "/categories/outer"
@@ -284,6 +294,17 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 SALE
+              </Link>
+              <Link
+                href="/admin"
+                className={`block transition-colors ${
+                  pathname === "/admin"
+                    ? "text-gray-900 font-bold"
+                    : "text-gray-700 hover:text-gray-900"
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                관리자
               </Link>
             </nav>
           </div>

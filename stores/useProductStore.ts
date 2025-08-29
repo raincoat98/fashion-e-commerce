@@ -485,9 +485,23 @@ export const useProductStore = create<ProductStore>()(
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
           };
-          set((state) => ({
-            products: [...state.products, newProduct],
-          }));
+          console.log("새 상품 추가:", newProduct);
+          set((state) => {
+            // 중복 추가 방지
+            const existingProduct = state.products.find(
+              (p) => p.name === newProduct.name
+            );
+            if (existingProduct) {
+              console.log("이미 존재하는 상품:", existingProduct.name);
+              return state;
+            }
+
+            const updatedProducts = [...state.products, newProduct];
+            console.log("업데이트된 상품 목록:", updatedProducts);
+            return {
+              products: updatedProducts,
+            };
+          });
         },
 
         updateProduct: (id, updates) => {
