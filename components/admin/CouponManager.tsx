@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -42,6 +43,7 @@ import {
   EyeOff,
   Download,
   Search,
+  Home,
 } from "lucide-react";
 
 interface Coupon {
@@ -423,6 +425,15 @@ export default function CouponManager() {
               <CardDescription>쿠폰을 생성하고 관리하세요</CardDescription>
             </div>
             <div className="flex items-center space-x-4">
+              <Link href="/">
+                <Button
+                  variant="outline"
+                  className="flex items-center space-x-2"
+                >
+                  <Home className="w-4 h-4" />
+                  <span>홈으로 가기</span>
+                </Button>
+              </Link>
               <Button variant="outline" className="flex items-center space-x-2">
                 <Download className="w-4 h-4" />
                 <span>엑셀 다운로드</span>

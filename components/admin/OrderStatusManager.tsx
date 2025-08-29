@@ -212,6 +212,66 @@ export default function OrderStatusManager() {
   const [isReceiptDialogOpen, setIsReceiptDialogOpen] = useState(false);
   const [statusNote, setStatusNote] = useState("");
 
+  // 엑셀 다운로드 함수
+  const handleExportOrderStatus = () => {
+    const csvContent = generateOrderStatusCSV(localOrders);
+    downloadCSV(
+      csvContent,
+      `order_status_${new Date().toISOString().split("T")[0]}.csv`
+    );
+  };
+
+  // CSV 생성 함수
+  const generateOrderStatusCSV = (orders: Order[]) => {
+    const headers = [
+      "주문번호",
+      "고객명",
+      "고객이메일",
+      "고객전화",
+      "주문일",
+      "상태",
+      "총액",
+      "결제방법",
+      "결제상태",
+      "배송주소",
+      "예상배송일",
+      "운송장번호",
+    ];
+    const rows = orders.map((order) => [
+      order.id,
+      order.customerName,
+      order.customerEmail,
+      order.customerPhone,
+      order.orderDate,
+      orderStatusFlow.find((s) => s.value === order.status)?.label ||
+        order.status,
+      order.totalAmount,
+      order.paymentMethod === "card" ? "카드" : order.paymentMethod,
+      order.paymentStatus === "paid" ? "결제완료" : order.paymentStatus,
+      order.shippingAddress,
+      order.estimatedDelivery || "미정",
+      order.trackingNumber || "미발급",
+    ]);
+    return [headers, ...rows]
+      .map((row) => row.map((cell) => `"${cell}"`).join(","))
+      .join("\n");
+  };
+
+  // CSV 다운로드 함수
+  const downloadCSV = (csvContent: string, filename: string) => {
+    const blob = new Blob(["\uFEFF" + csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // 배송비 계산
   const calculateShippingFee = (subtotal: number) => {
     const feeRule = shippingFeeTable.find(
@@ -368,10 +428,22 @@ export default function OrderStatusManager() {
       {/* 주문 목록 */}
       <Card>
         <CardHeader>
-          <CardTitle>주문 관리</CardTitle>
-          <CardDescription>
-            주문 상태를 관리하고 부분 취소, 영수증 발급을 처리하세요
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>주문 관리</CardTitle>
+              <CardDescription>
+                주문 상태를 관리하고 부분 취소, 영수증 발급을 처리하세요
+              </CardDescription>
+            </div>
+            <Button
+              variant="outline"
+              className="flex items-center space-x-2"
+              onClick={handleExportOrderStatus}
+            >
+              <Download className="w-4 h-4" />
+              <span>엑셀 다운로드</span>
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">

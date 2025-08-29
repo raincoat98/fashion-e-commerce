@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,6 +51,7 @@ import {
   ImagePlus,
   X,
   Save,
+  Home,
 } from "lucide-react";
 import { useProductStore, Product } from "@/stores/useProductStore";
 
@@ -1138,6 +1140,15 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                 <CardDescription>상품을 등록하고 관리하세요</CardDescription>
               </div>
               <div className="flex items-center space-x-4">
+                <Link href="/">
+                  <Button
+                    variant="outline"
+                    className="flex items-center space-x-2"
+                  >
+                    <Home className="w-4 h-4" />
+                    <span>홈으로 가기</span>
+                  </Button>
+                </Link>
                 <Button
                   onClick={() => setShowProductForm(true)}
                   className="lumina-gradient text-white"

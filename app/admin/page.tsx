@@ -29,6 +29,7 @@ import {
   RefreshCw,
   Plus,
   Image,
+  Home,
 } from "lucide-react";
 import Link from "next/link";
 import CouponManager from "@/components/admin/CouponManager";
@@ -177,6 +178,124 @@ export default function AdminPage() {
     console.log(`Order ${orderId} status changed to ${newStatus}`);
   };
 
+  // 엑셀 다운로드 함수들
+  const handleExportOrders = () => {
+    const csvContent = generateOrdersCSV(filteredOrders);
+    downloadCSV(
+      csvContent,
+      `orders_${new Date().toISOString().split("T")[0]}.csv`
+    );
+  };
+
+  const handleExportOrderStatus = () => {
+    const csvContent = generateOrderStatusCSV(mockOrders);
+    downloadCSV(
+      csvContent,
+      `order_status_${new Date().toISOString().split("T")[0]}.csv`
+    );
+  };
+
+  const handleExportShipping = () => {
+    const csvContent = generateShippingCSV(mockOrders);
+    downloadCSV(
+      csvContent,
+      `shipping_${new Date().toISOString().split("T")[0]}.csv`
+    );
+  };
+
+  // CSV 생성 함수들
+  const generateOrdersCSV = (orders: any[]) => {
+    const headers = [
+      "주문번호",
+      "고객명",
+      "고객이메일",
+      "고객전화",
+      "상품명",
+      "수량",
+      "총액",
+      "주문일",
+      "상태",
+      "배송주소",
+    ];
+    const rows = orders.map((order) => [
+      order.id,
+      order.customerName,
+      order.customerEmail,
+      order.customerPhone,
+      order.products.map((p: any) => p.name).join("; "),
+      order.products.reduce((sum: number, p: any) => sum + p.quantity, 0),
+      order.totalAmount,
+      order.orderDate,
+      statusConfig[order.status as keyof typeof statusConfig]?.label ||
+        order.status,
+      order.shippingAddress,
+    ]);
+    return [headers, ...rows]
+      .map((row) => row.map((cell) => `"${cell}"`).join(","))
+      .join("\n");
+  };
+
+  const generateOrderStatusCSV = (orders: any[]) => {
+    const headers = [
+      "주문번호",
+      "고객명",
+      "주문일",
+      "상태",
+      "상태변경일",
+      "처리자",
+    ];
+    const rows = orders.map((order) => [
+      order.id,
+      order.customerName,
+      order.orderDate,
+      statusConfig[order.status as keyof typeof statusConfig]?.label ||
+        order.status,
+      order.orderDate, // 실제로는 상태 변경일이 있어야 함
+      "관리자", // 실제로는 처리자 정보가 있어야 함
+    ]);
+    return [headers, ...rows]
+      .map((row) => row.map((cell) => `"${cell}"`).join(","))
+      .join("\n");
+  };
+
+  const generateShippingCSV = (orders: any[]) => {
+    const headers = [
+      "주문번호",
+      "고객명",
+      "배송주소",
+      "운송장번호",
+      "예상배송일",
+      "배송상태",
+    ];
+    const rows = orders.map((order) => [
+      order.id,
+      order.customerName,
+      order.shippingAddress,
+      order.trackingNumber || "미발급",
+      order.estimatedDelivery || "미정",
+      statusConfig[order.status as keyof typeof statusConfig]?.label ||
+        order.status,
+    ]);
+    return [headers, ...rows]
+      .map((row) => row.map((cell) => `"${cell}"`).join(","))
+      .join("\n");
+  };
+
+  // CSV 다운로드 함수
+  const downloadCSV = (csvContent: string, filename: string) => {
+    const blob = new Blob(["\uFEFF" + csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -189,12 +308,11 @@ export default function AdminPage() {
             <p className="text-gray-600 mt-1">LUMINA 주문 및 쿠폰 관리</p>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="outline" className="flex items-center space-x-2">
-              <Download className="w-4 h-4" />
-              <span>엑셀 다운로드</span>
-            </Button>
-            <Link href="/admin/settings">
-              <Button className="lumina-gradient text-white">설정</Button>
+            <Link href="/">
+              <Button variant="outline" className="flex items-center space-x-2">
+                <Home className="w-4 h-4" />
+                <span>홈으로 가기</span>
+              </Button>
             </Link>
           </div>
         </div>
@@ -350,6 +468,16 @@ export default function AdminPage() {
                     <CardDescription>
                       주문 상태를 관리하고 배송 정보를 업데이트하세요
                     </CardDescription>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <Button
+                      variant="outline"
+                      className="flex items-center space-x-2"
+                      onClick={() => handleExportOrders()}
+                    >
+                      <Download className="w-4 h-4" />
+                      <span>엑셀 다운로드</span>
+                    </Button>
                   </div>
                 </div>
               </CardHeader>

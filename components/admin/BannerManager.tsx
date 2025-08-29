@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useBanners } from "@/hooks/useBanners";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,6 +49,7 @@ import {
   Upload,
   ArrowUp,
   ArrowDown,
+  Home,
 } from "lucide-react";
 
 interface Banner {
@@ -70,6 +72,7 @@ export default function BannerManager() {
     addBanner,
     updateBanner,
     deleteBanner,
+    reorderBanners,
     toggleBannerStatus,
   } = useBanners();
 
@@ -135,7 +138,7 @@ export default function BannerManager() {
     }
   };
 
-  const handleOrderChange = (id: string, direction: "up" | "down") => {
+  const handleOrderChange = async (id: string, direction: "up" | "down") => {
     const currentIndex = banners.findIndex((banner) => banner.id === id);
     if (currentIndex === -1) return;
 
@@ -153,11 +156,12 @@ export default function BannerManager() {
     }
 
     // 순서 번호 업데이트
-    newBanners.forEach((banner, index) => {
-      banner.order = index + 1;
-    });
-
-    setBanners(newBanners);
+    const bannerIds = newBanners.map((banner) => banner.id);
+    try {
+      await reorderBanners(bannerIds);
+    } catch (error) {
+      console.error("Failed to reorder banners:", error);
+    }
   };
 
   const handleToggleBannerStatus = async (id: string) => {
@@ -207,13 +211,24 @@ export default function BannerManager() {
                 메인 페이지 배너를 등록, 수정, 삭제할 수 있습니다
               </CardDescription>
             </div>
-            <Button
-              onClick={handleAddBanner}
-              className="flex items-center space-x-2"
-            >
-              <Plus className="w-4 h-4" />
-              <span>배너 추가</span>
-            </Button>
+            <div className="flex items-center space-x-4">
+              <Link href="/">
+                <Button
+                  variant="outline"
+                  className="flex items-center space-x-2"
+                >
+                  <Home className="w-4 h-4" />
+                  <span>홈으로 가기</span>
+                </Button>
+              </Link>
+              <Button
+                onClick={handleAddBanner}
+                className="flex items-center space-x-2"
+              >
+                <Plus className="w-4 h-4" />
+                <span>배너 추가</span>
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>

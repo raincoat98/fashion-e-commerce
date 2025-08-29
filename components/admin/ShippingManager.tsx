@@ -261,6 +261,85 @@ export default function ShippingManager() {
   const [specialInstructions, setSpecialInstructions] = useState("");
   const [insuranceAmount, setInsuranceAmount] = useState<number>(0);
 
+  // 엑셀 다운로드 함수
+  const handleExportShipping = () => {
+    const csvContent = generateShippingCSV(orders);
+    downloadCSV(
+      csvContent,
+      `shipping_${new Date().toISOString().split("T")[0]}.csv`
+    );
+  };
+
+  // CSV 생성 함수
+  const generateShippingCSV = (shippingOrders: ShippingOrder[]) => {
+    const headers = [
+      "주문번호",
+      "배송번호",
+      "고객명",
+      "고객전화",
+      "고객이메일",
+      "배송주소",
+      "배송메모",
+      "상품명",
+      "수량",
+      "사이즈",
+      "컬러",
+      "상태",
+      "택배사",
+      "운송장번호",
+      "예상배송일",
+      "실제배송일",
+      "배송비",
+      "특별지시사항",
+    ];
+    const rows = shippingOrders.map((order) => [
+      order.orderId,
+      order.id,
+      order.customerName,
+      order.customerPhone,
+      order.customerEmail,
+      order.shippingAddress,
+      order.shippingMemo || "",
+      order.items.map((item) => item.name).join("; "),
+      order.items.reduce((sum, item) => sum + item.quantity, 0),
+      order.items.map((item) => item.size).join("; "),
+      order.items.map((item) => item.color).join("; "),
+      order.status === "pending"
+        ? "배송대기"
+        : order.status === "processing"
+        ? "배송처리중"
+        : order.status === "shipped"
+        ? "배송중"
+        : order.status === "delivered"
+        ? "배송완료"
+        : "반품",
+      order.courier,
+      order.trackingNumber || "미발급",
+      order.estimatedDelivery || "미정",
+      order.actualDelivery || "미배송",
+      order.shippingCost,
+      order.specialInstructions || "",
+    ]);
+    return [headers, ...rows]
+      .map((row) => row.map((cell) => `"${cell}"`).join(","))
+      .join("\n");
+  };
+
+  // CSV 다운로드 함수
+  const downloadCSV = (csvContent: string, filename: string) => {
+    const blob = new Blob(["\uFEFF" + csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // 배송 상태별 통계
   const getStatusStats = () => {
     const stats = {
@@ -461,10 +540,22 @@ ${
       {/* 배송 주문 목록 */}
       <Card>
         <CardHeader>
-          <CardTitle>배송 관리</CardTitle>
-          <CardDescription>
-            송장 발급, 배송 추적, 출고 라벨 인쇄를 관리하세요
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>배송 관리</CardTitle>
+              <CardDescription>
+                송장 발급, 배송 추적, 출고 라벨 인쇄를 관리하세요
+              </CardDescription>
+            </div>
+            <Button
+              variant="outline"
+              className="flex items-center space-x-2"
+              onClick={handleExportShipping}
+            >
+              <Download className="w-4 h-4" />
+              <span>엑셀 다운로드</span>
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
