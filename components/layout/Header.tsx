@@ -6,12 +6,20 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useProductStore } from "@/stores/useProductStore";
+import { useCart } from "@/contexts/CartContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTopBannerVisible, setIsTopBannerVisible] = useState(true);
-  const { cartItemCount, wishlistCount } = useProductStore();
+  const { wishlist } = useProductStore();
+  const { state: cartState } = useCart();
   const pathname = usePathname();
+
+  // 장바구니 아이템 수 계산
+  const cartItemCount = cartState.itemCount;
+
+  // 위시리스트 아이템 수 계산
+  const wishlistCount = wishlist.length;
 
   // localStorage에서 탑 배너 상태 확인
   useEffect(() => {
@@ -160,7 +168,13 @@ export default function Header() {
                 size="icon"
                 className="hidden sm:flex relative"
               >
-                <Heart className="h-5 w-5" />
+                <Heart
+                  className={`h-5 w-5 transition-all duration-300 ${
+                    wishlistCount > 0
+                      ? "text-red-500 fill-current"
+                      : "text-gray-700 hover:text-gray-900"
+                  }`}
+                />
                 {wishlistCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {wishlistCount}
@@ -172,7 +186,13 @@ export default function Header() {
             {/* Cart */}
             <Link href="/cart">
               <Button variant="ghost" size="icon" className="relative">
-                <ShoppingBag className="h-5 w-5" />
+                <ShoppingBag
+                  className={`h-5 w-5 transition-all duration-300 ${
+                    cartItemCount > 0
+                      ? "text-blue-600 fill-current"
+                      : "text-gray-700 hover:text-gray-900"
+                  }`}
+                />
                 {cartItemCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {cartItemCount}
