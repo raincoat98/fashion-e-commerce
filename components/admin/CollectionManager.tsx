@@ -688,17 +688,17 @@ export default function CollectionManager() {
                             }
                           );
                           return collection.isActive ? (
-                            <Badge className="bg-green-100 text-green-800">
+                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
                               활성
                             </Badge>
                           ) : (
-                            <Badge className="bg-gray-100 text-gray-800">
+                            <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">
                               비활성
                             </Badge>
                           );
                         })()}
                         {collection.isFeature && (
-                          <Badge className="bg-purple-100 text-purple-800">
+                          <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">
                             피처
                           </Badge>
                         )}

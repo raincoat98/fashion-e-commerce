@@ -279,19 +279,19 @@ export default function ProfilePage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
       case "paid":
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-100 text-blue-800 hover:bg-blue-100";
       case "processing":
-        return "bg-purple-100 text-purple-800";
+        return "bg-purple-100 text-purple-800 hover:bg-purple-100";
       case "shipped":
-        return "bg-indigo-100 text-indigo-800";
+        return "bg-indigo-100 text-indigo-800 hover:bg-indigo-100";
       case "delivered":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 text-green-800 hover:bg-green-100";
       case "cancelled":
-        return "bg-red-100 text-red-800";
+        return "bg-red-100 text-red-800 hover:bg-red-100";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
     }
   };
 
@@ -317,15 +317,15 @@ export default function ProfilePage() {
   const getMembershipColor = (level: string) => {
     switch (level) {
       case "bronze":
-        return "bg-orange-100 text-orange-800";
+        return "bg-orange-100 text-orange-800 hover:bg-orange-100";
       case "silver":
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
       case "gold":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
       case "platinum":
-        return "bg-purple-100 text-purple-800";
+        return "bg-purple-100 text-purple-800 hover:bg-purple-100";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
     }
   };
 

@@ -89,27 +89,27 @@ const mockOrder = {
 const statusConfig = {
   pending: {
     label: "결제 대기",
-    color: "bg-yellow-100 text-yellow-800",
+    color: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
     icon: Clock,
   },
   processing: {
     label: "처리 중",
-    color: "bg-blue-100 text-blue-800",
+    color: "bg-blue-100 text-blue-800 hover:bg-blue-100",
     icon: Package,
   },
   shipped: {
     label: "배송 중",
-    color: "bg-purple-100 text-purple-800",
+    color: "bg-purple-100 text-purple-800 hover:bg-purple-100",
     icon: Truck,
   },
   delivered: {
     label: "배송 완료",
-    color: "bg-green-100 text-green-800",
+    color: "bg-green-100 text-green-800 hover:bg-green-100",
     icon: CheckCircle,
   },
   cancelled: {
     label: "주문 취소",
-    color: "bg-red-100 text-red-800",
+    color: "bg-red-100 text-red-800 hover:bg-red-100",
     icon: AlertCircle,
   },
 };

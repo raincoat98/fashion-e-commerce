@@ -210,41 +210,41 @@ export default function CustomerManager() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 text-green-800 hover:bg-green-100";
       case "inactive":
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
       case "suspended":
-        return "bg-red-100 text-red-800";
+        return "bg-red-100 text-red-800 hover:bg-red-100";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
     }
   };
 
   const getMembershipColor = (level: string) => {
     switch (level) {
       case "bronze":
-        return "bg-orange-100 text-orange-800";
+        return "bg-orange-100 text-orange-800 hover:bg-orange-100";
       case "silver":
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
       case "gold":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
       case "platinum":
-        return "bg-purple-100 text-purple-800";
+        return "bg-purple-100 text-purple-800 hover:bg-purple-100";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
     }
   };
 
   const getReviewStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
       case "approved":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 text-green-800 hover:bg-green-100";
       case "rejected":
-        return "bg-red-100 text-red-800";
+        return "bg-red-100 text-red-800 hover:bg-red-100";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
     }
   };
 

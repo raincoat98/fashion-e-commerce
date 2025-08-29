@@ -743,7 +743,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                 )}
                 {formData.isHot && <Badge variant="destructive">HOT</Badge>}
                 {formData.isNew && (
-                  <Badge className="bg-blue-100 text-blue-800">NEW</Badge>
+                  <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+                    NEW
+                  </Badge>
                 )}
                 {formData.isBest && (
                   <Badge className="bg-yellow-500 text-white">BEST</Badge>
@@ -881,7 +883,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                     }
                   />
                   <Label htmlFor="isNew" className="flex items-center gap-1">
-                    <Badge className="bg-blue-100 text-blue-800">NEW</Badge>
+                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+                      NEW
+                    </Badge>
                   </Label>
                 </div>
                 <div className="flex items-center space-x-1">
@@ -1452,17 +1456,17 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                               name: product.name,
                             });
                             return product.isActive ? (
-                              <Badge className="bg-green-100 text-green-800">
+                              <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
                                 활성
                               </Badge>
                             ) : (
-                              <Badge className="bg-gray-100 text-gray-800">
+                              <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">
                                 비활성
                               </Badge>
                             );
                           })()}
                           {product.isFeatured && (
-                            <Badge className="bg-purple-100 text-purple-800">
+                            <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">
                               피처드
                             </Badge>
                           )}
@@ -1473,7 +1477,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                             <Badge variant="destructive">HOT</Badge>
                           )}
                           {product.isNew && (
-                            <Badge className="bg-blue-100 text-blue-800">
+                            <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
                               NEW
                             </Badge>
                           )}
