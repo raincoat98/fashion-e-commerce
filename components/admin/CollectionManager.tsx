@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -67,7 +67,30 @@ export default function CollectionManager() {
     removeProductsFromCollection,
   } = useCollectionStore();
 
+  // 관리자는 기본적으로 비활성 컬렉션도 볼 수 있도록 설정
+  useEffect(() => {
+    setShowInactive(true);
+
+    // 디버깅: 초기 컬렉션 상태 확인
+    console.log("초기 컬렉션 로드:", collections);
+    const casualCollection = collections.find((c) => c.id === "4");
+    console.log("캐주얼 컬렉션 상태:", casualCollection);
+  }, [setShowInactive, collections]);
+
   const { products, filteredProducts } = useProductStore();
+
+  // 개발용: localStorage 초기화 함수
+  const resetCollectionStore = () => {
+    localStorage.removeItem("collection-store");
+    window.location.reload();
+  };
+
+  // 전역에서 접근 가능하도록 설정 (개발용)
+  useEffect(() => {
+    (window as any).resetCollectionStore = resetCollectionStore;
+    (window as any).logCollections = () =>
+      console.log("현재 컬렉션들:", collections);
+  }, [collections]);
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -78,6 +101,8 @@ export default function CollectionManager() {
   );
   const [managingCollection, setManagingCollection] =
     useState<Collection | null>(null);
+  const [productSearchTerm, setProductSearchTerm] = useState("");
+  const [, forceUpdate] = useState({});
 
   // 새 컬렉션 폼 상태
   const [newCollection, setNewCollection] = useState({
@@ -114,7 +139,7 @@ export default function CollectionManager() {
 
   // 컬렉션 수정 다이얼로그 열기
   const openEditDialog = (collection: Collection) => {
-    setEditingCollection(collection);
+    setEditingCollection({ ...collection }); // 깊은 복사로 수정
     setIsEditDialogOpen(true);
   };
 
@@ -144,24 +169,55 @@ export default function CollectionManager() {
 
   // 컬렉션 활성화/비활성화
   const toggleCollectionStatus = (id: string) => {
+    console.log("=== 토글 시작 ===");
+    console.log("toggleCollectionStatus 호출됨:", id);
+    console.log("현재 전체 컬렉션:", collections);
+
     const collection = collections.find((c) => c.id === id);
+    console.log("찾은 컬렉션:", collection);
+
     if (collection) {
-      updateCollection(id, { isActive: !collection.isActive });
+      const newStatus = !collection.isActive;
+      console.log("현재 상태:", collection.isActive, "새로운 상태:", newStatus);
+
+      updateCollection(id, { isActive: newStatus });
+
+      // 강제 리렌더링
+      setTimeout(() => {
+        forceUpdate({});
+        console.log("강제 리렌더링 실행");
+
+        // 업데이트 후 상태 확인
+        const updatedCollection = collections.find((c) => c.id === id);
+        console.log("업데이트 후 컬렉션:", updatedCollection);
+      }, 200);
+
       toast({
         title: "상태 변경 완료",
-        description: `컬렉션이 ${
-          !collection.isActive ? "활성화" : "비활성화"
-        }되었습니다.`,
+        description: `컬렉션이 ${newStatus ? "활성화" : "비활성화"}되었습니다.`,
         duration: 2000,
       });
+    } else {
+      console.error("컬렉션을 찾을 수 없음:", id);
     }
+    console.log("=== 토글 종료 ===");
   };
 
   // 상품 관리 다이얼로그 열기
   const openProductManageDialog = (collection: Collection) => {
     setManagingCollection(collection);
+    setProductSearchTerm(""); // 검색어 초기화
     setIsProductManageDialogOpen(true);
   };
+
+  // 상품 검색 필터링
+  const filteredProductsForDialog = products.filter(
+    (product) =>
+      product.name.toLowerCase().includes(productSearchTerm.toLowerCase()) ||
+      product.description
+        .toLowerCase()
+        .includes(productSearchTerm.toLowerCase())
+  );
 
   // 상품을 컬렉션에 추가/제거
   const toggleProductInCollection = (
@@ -173,6 +229,25 @@ export default function CollectionManager() {
         addProductToCollection(managingCollection.id, productId);
       } else {
         removeProductFromCollection(managingCollection.id, productId);
+      }
+    }
+  };
+
+  // 전체 상품 선택/해제
+  const toggleAllProducts = () => {
+    if (managingCollection) {
+      const allProductIds = filteredProductsForDialog.map((p) => p.id);
+      const selectedProductIds = managingCollection.productIds;
+      const allSelected = allProductIds.every((id) =>
+        selectedProductIds.includes(id)
+      );
+
+      if (allSelected) {
+        // 전체 해제
+        removeProductsFromCollection(managingCollection.id, allProductIds);
+      } else {
+        // 전체 선택
+        addProductsToCollection(managingCollection.id, allProductIds);
       }
     }
   };
@@ -307,15 +382,64 @@ export default function CollectionManager() {
                   </div>
 
                   <div>
-                    <Label htmlFor="image">컬렉션 이미지</Label>
+                    <Label htmlFor="image">이미지 URL</Label>
                     <Input
                       id="image"
-                      type="file"
-                      accept="image/*"
+                      value={newCollection.image}
                       onChange={(e) =>
-                        e.target.files && handleImageUpload(e.target.files[0])
+                        setNewCollection({
+                          ...newCollection,
+                          image: e.target.value,
+                        })
+                      }
+                      placeholder="이미지 URL을 입력하세요"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="slug">슬러그</Label>
+                      <Input
+                        id="slug"
+                        value={newCollection.slug}
+                        onChange={(e) =>
+                          setNewCollection({
+                            ...newCollection,
+                            slug: e.target.value,
+                          })
+                        }
+                        placeholder="URL용 슬러그"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="sortOrder">정렬 순서</Label>
+                      <Input
+                        id="sortOrder"
+                        type="number"
+                        value={newCollection.sortOrder}
+                        onChange={(e) =>
+                          setNewCollection({
+                            ...newCollection,
+                            sortOrder: parseInt(e.target.value),
+                          })
+                        }
+                        placeholder="정렬 순서"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="isFeature"
+                      checked={newCollection.isFeature}
+                      onCheckedChange={(checked) =>
+                        setNewCollection({
+                          ...newCollection,
+                          isFeature: checked as boolean,
+                        })
                       }
                     />
+                    <Label htmlFor="isFeature">피처 컬렉션으로 설정</Label>
                   </div>
 
                   <div className="flex justify-end space-x-2">
@@ -379,15 +503,79 @@ export default function CollectionManager() {
                     </div>
 
                     <div>
-                      <Label htmlFor="edit-image">컬렉션 이미지</Label>
+                      <Label htmlFor="edit-image">이미지 URL</Label>
                       <Input
                         id="edit-image"
-                        type="file"
-                        accept="image/*"
+                        value={editingCollection.image}
                         onChange={(e) =>
-                          e.target.files && handleImageUpload(e.target.files[0])
+                          setEditingCollection({
+                            ...editingCollection,
+                            image: e.target.value,
+                          })
                         }
+                        placeholder="이미지 URL을 입력하세요"
                       />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="edit-slug">슬러그</Label>
+                        <Input
+                          id="edit-slug"
+                          value={editingCollection.slug || ""}
+                          onChange={(e) =>
+                            setEditingCollection({
+                              ...editingCollection,
+                              slug: e.target.value,
+                            })
+                          }
+                          placeholder="URL용 슬러그"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="edit-sortOrder">정렬 순서</Label>
+                        <Input
+                          id="edit-sortOrder"
+                          type="number"
+                          value={editingCollection.sortOrder || 1}
+                          onChange={(e) =>
+                            setEditingCollection({
+                              ...editingCollection,
+                              sortOrder: parseInt(e.target.value),
+                            })
+                          }
+                          placeholder="정렬 순서"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-4">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="edit-isActive"
+                          checked={editingCollection.isActive}
+                          onCheckedChange={(checked) =>
+                            setEditingCollection({
+                              ...editingCollection,
+                              isActive: checked as boolean,
+                            })
+                          }
+                        />
+                        <Label htmlFor="edit-isActive">활성화</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="edit-isFeature"
+                          checked={editingCollection.isFeature || false}
+                          onCheckedChange={(checked) =>
+                            setEditingCollection({
+                              ...editingCollection,
+                              isFeature: checked as boolean,
+                            })
+                          }
+                        />
+                        <Label htmlFor="edit-isFeature">피처 컬렉션</Label>
+                      </div>
                     </div>
 
                     <div className="flex justify-end space-x-2">
@@ -425,41 +613,66 @@ export default function CollectionManager() {
 
           {/* 컬렉션 목록 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCollections.map((collection) => (
+            {collections.map((collection) => (
               <Card
                 key={collection.id}
-                className="hover:shadow-md transition-shadow"
+                className={`hover:shadow-md transition-shadow ${
+                  !collection.isActive ? "border-gray-300" : ""
+                }`}
               >
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     {/* 컬렉션 이미지 */}
-                    <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                    <div
+                      className={`relative aspect-video bg-gray-100 rounded-lg overflow-hidden ${
+                        !collection.isActive ? "opacity-70" : ""
+                      }`}
+                    >
                       {collection.image ? (
                         <img
                           src={collection.image}
-                          alt={collection.name}
+                          alt={`${collection.name} 컬렉션 이미지`}
                           className="w-full h-full object-cover"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Image className="w-12 h-12 text-gray-400" />
+                          <Image className="w-12 h-12 text-gray-400" alt="" />
                         </div>
                       )}
-                      <div className="absolute top-2 right-2">
-                        {collection.isActive ? (
-                          <Badge className="bg-green-100 text-green-800">
-                            활성
-                          </Badge>
-                        ) : (
-                          <Badge className="bg-gray-100 text-gray-800">
-                            비활성
+                      <div className="absolute top-2 right-2 flex flex-col gap-1">
+                        {(() => {
+                          console.log(
+                            `컬렉션 ${collection.name} 배지 렌더링:`,
+                            {
+                              id: collection.id,
+                              isActive: collection.isActive,
+                              isFeature: collection.isFeature,
+                            }
+                          );
+                          return collection.isActive ? (
+                            <Badge className="bg-green-100 text-green-800">
+                              활성
+                            </Badge>
+                          ) : (
+                            <Badge className="bg-gray-100 text-gray-800">
+                              비활성
+                            </Badge>
+                          );
+                        })()}
+                        {collection.isFeature && (
+                          <Badge className="bg-purple-100 text-purple-800">
+                            피처
                           </Badge>
                         )}
                       </div>
                     </div>
 
                     {/* 컬렉션 정보 */}
-                    <div className="space-y-2">
+                    <div
+                      className={`space-y-2 ${
+                        !collection.isActive ? "opacity-70" : ""
+                      }`}
+                    >
                       <h3 className="font-medium text-gray-900">
                         {collection.name}
                       </h3>
@@ -474,13 +687,14 @@ export default function CollectionManager() {
                     </div>
 
                     {/* 액션 버튼 */}
-                    <div className="flex items-center justify-between pt-2">
+                    <div className="flex items-center justify-between pt-2 opacity-100">
                       <div className="flex items-center space-x-2">
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => openEditDialog(collection)}
                           title="컬렉션 수정"
+                          className="hover:bg-blue-50 hover:border-blue-300"
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
@@ -489,6 +703,7 @@ export default function CollectionManager() {
                           variant="outline"
                           onClick={() => openProductManageDialog(collection)}
                           title="상품 관리"
+                          className="hover:bg-green-50 hover:border-green-300"
                         >
                           <Package className="w-4 h-4" />
                         </Button>
@@ -497,6 +712,11 @@ export default function CollectionManager() {
                           variant="outline"
                           onClick={() => toggleCollectionStatus(collection.id)}
                           title={collection.isActive ? "비활성화" : "활성화"}
+                          className={`${
+                            collection.isActive
+                              ? "hover:bg-orange-50 hover:border-orange-300"
+                              : "hover:bg-green-50 hover:border-green-300"
+                          }`}
                         >
                           {collection.isActive ? (
                             <EyeOff className="w-4 h-4" />
@@ -509,7 +729,7 @@ export default function CollectionManager() {
                         size="sm"
                         variant="outline"
                         onClick={() => handleDeleteCollection(collection.id)}
-                        className="text-red-600 hover:text-red-700"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300"
                         title="삭제"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -540,9 +760,33 @@ export default function CollectionManager() {
           </DialogHeader>
 
           <div className="space-y-4">
+            {/* 상품 검색 및 전체 선택 */}
+            <div className="flex gap-4 items-center">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  placeholder="상품명으로 검색..."
+                  value={productSearchTerm}
+                  onChange={(e) => setProductSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <Button
+                variant="outline"
+                onClick={toggleAllProducts}
+                className="whitespace-nowrap"
+              >
+                {filteredProductsForDialog.every((p) =>
+                  managingCollection?.productIds.includes(p.id)
+                )
+                  ? "전체 해제"
+                  : "전체 선택"}
+              </Button>
+            </div>
+
             {/* 상품 목록 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
-              {products.map((product) => {
+              {filteredProductsForDialog.map((product) => {
                 const isSelected =
                   managingCollection?.productIds.includes(product.id) || false;
                 return (
@@ -569,7 +813,7 @@ export default function CollectionManager() {
                         {product.images.length > 0 && (
                           <img
                             src={product.images[0]}
-                            alt={product.name}
+                            alt={`${product.name} 상품 이미지`}
                             className="w-12 h-12 object-cover rounded mb-2"
                           />
                         )}

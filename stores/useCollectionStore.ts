@@ -203,8 +203,9 @@ export const useCollectionStore = create<CollectionStore>()(
         },
 
         updateCollection: (id, updates) => {
-          set((state) => ({
-            collections: state.collections.map((collection) =>
+          console.log("updateCollection 호출됨:", { id, updates });
+          set((state) => {
+            const updatedCollections = state.collections.map((collection) =>
               collection.id === id
                 ? {
                     ...collection,
@@ -212,8 +213,12 @@ export const useCollectionStore = create<CollectionStore>()(
                     updatedAt: new Date().toISOString(),
                   }
                 : collection
-            ),
-          }));
+            );
+            console.log("업데이트된 컬렉션들:", updatedCollections);
+            return {
+              collections: updatedCollections,
+            };
+          });
         },
 
         deleteCollection: (id) => {
