@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
       type: "website",
       images: [
         {
-          url: "https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=800",
+          url: "https://images.pexels.com/photos/2703907/pexels-photo-2703907.jpeg?auto=compress&cs=tinysrgb&w=800",
           width: 800,
           height: 800,
           alt: defaultProduct.name,
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
       title: defaultProduct.name,
       description: defaultProduct.description,
       images: [
-        "https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/2703907/pexels-photo-2703907.jpeg?auto=compress&cs=tinysrgb&w=800",
       ],
     },
   };

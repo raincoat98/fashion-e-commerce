@@ -141,7 +141,7 @@ function getCategoryProducts(categorySlug: string) {
       price: 129000,
       originalPrice: 159000,
       image:
-        "https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/2703907/pexels-photo-2703907.jpeg?auto=compress&cs=tinysrgb&w=800",
       hoverImage:
         "https://images.pexels.com/photos/2703907/pexels-photo-2703907.jpeg?auto=compress&cs=tinysrgb&w=800",
       badge: "SALE",
