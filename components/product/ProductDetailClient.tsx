@@ -85,6 +85,7 @@ export default function ProductDetailClient({
     color: "Black",
   });
   const [quantity, setQuantity] = useState(1);
+  const [showShareOptions, setShowShareOptions] = useState(false);
   const isWishlisted = isInWishlist(product.id.toString());
 
   // GSAP 애니메이션 refs
@@ -94,6 +95,7 @@ export default function ProductDetailClient({
   const infoRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
   const brandStoryRef = useRef<HTMLDivElement>(null);
+  const shareOptionsRef = useRef<HTMLDivElement>(null);
 
   const discountPercentage = Math.round(
     ((product.originalPrice - product.price) / product.originalPrice) * 100
@@ -237,6 +239,53 @@ export default function ProductDetailClient({
     return () => ctx.revert();
   }, []);
 
+  // 공유 옵션 애니메이션
+  useEffect(() => {
+    if (shareOptionsRef.current) {
+      if (showShareOptions) {
+        gsap.fromTo(
+          shareOptionsRef.current,
+          {
+            height: 0,
+            opacity: 0,
+            y: -20,
+          },
+          {
+            height: "auto",
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: "power2.out",
+          }
+        );
+
+        gsap.fromTo(
+          shareOptionsRef.current.querySelectorAll("button"),
+          {
+            scale: 0.8,
+            opacity: 0,
+          },
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.3,
+            ease: "back.out(1.7)",
+            stagger: 0.1,
+            delay: 0.2,
+          }
+        );
+      } else {
+        gsap.to(shareOptionsRef.current, {
+          height: 0,
+          opacity: 0,
+          y: -20,
+          duration: 0.3,
+          ease: "power2.in",
+        });
+      }
+    }
+  }, [showShareOptions]);
+
   const handleAddToCart = () => {
     if (!isInStock) return;
 
@@ -316,7 +365,7 @@ export default function ProductDetailClient({
               {product.name}
             </h1>
             <p className="text-sm text-gray-600 mb-4 italic">
-              "당신만의 빛을 내는 스타일"
+              &ldquo;당신만의 빛을 내는 스타일&rdquo;
             </p>
             <div className="flex items-center space-x-3 mb-4">
               <div className="flex items-center space-x-1">
@@ -454,6 +503,7 @@ export default function ProductDetailClient({
                 size="lg"
                 variant="outline"
                 className="action-buttons px-4"
+                onClick={() => setShowShareOptions(!showShareOptions)}
               >
                 <Share2 className="h-5 w-5" />
               </Button>
@@ -472,73 +522,81 @@ export default function ProductDetailClient({
           </div>
 
           {/* SNS Share */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-medium text-gray-900">공유하기</h4>
-            <div className="flex space-x-3 action-buttons">
-              <button
-                onClick={() => {
-                  const shareText = product.name + " - LUMINA";
-                  const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                    window.location.href
-                  )}&quote=${encodeURIComponent(shareText)}`;
-                  window.open(url, "_blank");
+          {showShareOptions && (
+            <div ref={shareOptionsRef} className="space-y-3 overflow-hidden">
+              <h4 className="text-sm font-medium text-gray-900">공유하기</h4>
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => {
+                    const shareText = product.name + " - LUMINA";
+                    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                      window.location.href
+                    )}&quote=${encodeURIComponent(shareText)}`;
+                    window.open(url, "_blank");
 
-                  toast({
-                    title: "Facebook 공유",
-                    description: "Facebook에서 상품을 공유합니다.",
-                    duration: 2000,
-                  });
-                }}
-                className="flex-1 bg-[#1877F2] hover:bg-[#166FE5] text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
-              >
-                📘 Facebook
-              </button>
-              <button
-                onClick={() => {
-                  const url = `https://www.instagram.com/explore/tags/${encodeURIComponent(
-                    product.name.replace(/\s+/g, "")
-                  )}/`;
-                  window.open(url, "_blank");
+                    toast({
+                      title: "Facebook 공유",
+                      description: "Facebook에서 상품을 공유합니다.",
+                      duration: 2000,
+                    });
 
-                  toast({
-                    title: "Instagram 공유",
-                    description: "Instagram에서 상품을 공유합니다.",
-                    duration: 2000,
-                  });
-                }}
-                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
-              >
-                📸 Instagram
-              </button>
-              <button
-                onClick={async () => {
-                  try {
-                    const currentUrl = window.location.href;
-                    await navigator.clipboard.writeText(currentUrl);
+                    setShowShareOptions(false);
+                  }}
+                  className="flex-1 bg-[#1877F2] hover:bg-[#166FE5] text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
+                >
+                  📘 Facebook
+                </button>
+                <button
+                  onClick={() => {
+                    const url = `https://www.instagram.com/explore/tags/${encodeURIComponent(
+                      product.name.replace(/\s+/g, "")
+                    )}/`;
+                    window.open(url, "_blank");
+
                     toast({
-                      title: "링크가 복사되었습니다",
-                      description: "클립보드에 상품 링크가 저장되었습니다.",
+                      title: "Instagram 공유",
+                      description: "Instagram에서 상품을 공유합니다.",
+                      duration: 2000,
                     });
-                  } catch (err) {
-                    // 폴백: 구식 브라우저 지원
-                    const textArea = document.createElement("textarea");
-                    textArea.value = window.location.href;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand("copy");
-                    document.body.removeChild(textArea);
-                    toast({
-                      title: "링크가 복사되었습니다",
-                      description: "클립보드에 상품 링크가 저장되었습니다.",
-                    });
-                  }
-                }}
-                className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
-              >
-                📋 링크복사
-              </button>
+
+                    setShowShareOptions(false);
+                  }}
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
+                >
+                  📸 Instagram
+                </button>
+                <button
+                  onClick={async () => {
+                    try {
+                      const currentUrl = window.location.href;
+                      await navigator.clipboard.writeText(currentUrl);
+                      toast({
+                        title: "링크가 복사되었습니다",
+                        description: "클립보드에 상품 링크가 저장되었습니다.",
+                      });
+                    } catch (err) {
+                      // 폴백: 구식 브라우저 지원
+                      const textArea = document.createElement("textarea");
+                      textArea.value = window.location.href;
+                      document.body.appendChild(textArea);
+                      textArea.select();
+                      document.execCommand("copy");
+                      document.body.removeChild(textArea);
+                      toast({
+                        title: "링크가 복사되었습니다",
+                        description: "클립보드에 상품 링크가 저장되었습니다.",
+                      });
+                    }
+
+                    setShowShareOptions(false);
+                  }}
+                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
+                >
+                  📋 링크복사
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Mobile Sticky Actions */}
           <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40">
@@ -600,10 +658,10 @@ export default function ProductDetailClient({
               <h3 className="font-semibold text-gray-900">LUMINA Story</h3>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed">
-              "빛나는 당신을 위한 디자인" LUMINA는 단순한 의류가 아닌, 당신의
-              개성과 아름다움을 빛나게 하는 스타일을 제안합니다. 세련된 디자인과
-              최고급 소재로 완성된 이 제품으로 특별한 순간을 더욱 빛나게
-              만들어보세요.
+              &ldquo;빛나는 당신을 위한 디자인&rdquo; LUMINA는 단순한 의류가
+              아닌, 당신의 개성과 아름다움을 빛나게 하는 스타일을 제안합니다.
+              세련된 디자인과 최고급 소재로 완성된 이 제품으로 특별한 순간을
+              더욱 빛나게 만들어보세요.
             </p>
           </div>
 
