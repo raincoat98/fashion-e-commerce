@@ -324,7 +324,7 @@ const sampleProducts: Product[] = [
     subCategory: "스커트",
     images: [
       "https://images.pexels.com/photos/1021694/pexels-photo-1021694.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "https://images.pexels.com/photos/1926770/pexels-photo-1926770.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/1805411/pexels-photo-1805411.jpeg?auto=compress&cs=tinysrgb&w=800",
     ],
     sizes: ["XS", "S", "M", "L"],
     colors: ["라이트블루", "다크블루"],
