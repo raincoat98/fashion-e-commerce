@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import DraggableProductList from "./DraggableProductList";
-import { useCart } from "@/contexts/CartContext";
 
 interface Product {
   id: string;

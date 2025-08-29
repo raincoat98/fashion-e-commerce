@@ -1,15 +1,18 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   ChevronLeft,
   ChevronRight,
   ShoppingCart,
   Heart,
   Star,
+  Image as ImageIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
@@ -51,9 +54,11 @@ export default function DraggableProductList({
   const [scrollLeft, setScrollLeft] = useState(0);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+  const [imageLoading, setImageLoading] = useState<Set<string>>(new Set());
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const { addToCart } = useCart();
+  const { addItem } = useCart();
 
   // 스크롤 위치에 따른 화살표 표시/숨김
   const updateArrowVisibility = useCallback(() => {
@@ -67,6 +72,16 @@ export default function DraggableProductList({
   useEffect(() => {
     updateArrowVisibility();
   }, [updateArrowVisibility, products]);
+
+  // 상품이 변경될 때 이미지 로딩 상태 초기화
+  useEffect(() => {
+    // 이미지가 있는 상품들만 로딩 상태에 추가
+    const productsWithImages = products.filter(
+      (p) => p.image && p.image.trim() !== ""
+    );
+    setImageLoading(new Set(productsWithImages.map((p) => p.id)));
+    setImageErrors(new Set());
+  }, [products]);
 
   // 마우스 이벤트 핸들러
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -136,18 +151,43 @@ export default function DraggableProductList({
 
   // 상품 추가 핸들러
   const handleAddToCart = (product: Product) => {
-    addToCart({
-      id: product.id,
+    addItem({
+      id: parseInt(product.id),
       name: product.name,
       price: product.price,
       image: product.image,
-      quantity: 1,
+      size: "M", // 기본 사이즈
+      color: "기본", // 기본 컬러
     });
   };
 
   const handleAddToWishlist = (productId: string) => {
     // 위시리스트 추가 로직
     console.log("Added to wishlist:", productId);
+  };
+
+  // 이미지 로딩 핸들러
+  const handleImageLoad = (productId: string) => {
+    setImageLoading((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(productId);
+      return newSet;
+    });
+  };
+
+  // 이미지 에러 핸들러
+  const handleImageError = (productId: string) => {
+    setImageErrors((prev) => new Set(prev).add(productId));
+    setImageLoading((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(productId);
+      return newSet;
+    });
+  };
+
+  // 기본 플레이스홀더 이미지
+  const getPlaceholderImage = () => {
+    return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='16' fill='%239ca3af'%3E이미지 없음%3C/text%3E%3C/svg%3E";
   };
 
   if (!products.length) {
@@ -225,12 +265,40 @@ export default function DraggableProductList({
                 <CardContent className="p-4">
                   <div className="relative mb-4">
                     <Link href={`/products/${product.id}`}>
-                      <div className="aspect-square overflow-hidden rounded-lg">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300"
-                        />
+                      <div className="aspect-square overflow-hidden rounded-lg bg-gray-100 relative">
+                        {/* 로딩 스켈레톤 */}
+                        {imageLoading.has(product.id) && (
+                          <Skeleton className="w-full h-full absolute inset-0" />
+                        )}
+
+                        {/* 이미지 */}
+                        {!imageErrors.has(product.id) &&
+                        product.image &&
+                        product.image.trim() !== "" ? (
+                          <Image
+                            src={product.image}
+                            alt={product.name}
+                            width={300}
+                            height={300}
+                            className={cn(
+                              "w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300",
+                              imageLoading.has(product.id) && "opacity-0"
+                            )}
+                            onLoad={() => handleImageLoad(product.id)}
+                            onError={() => handleImageError(product.id)}
+                            priority={false}
+                          />
+                        ) : (
+                          /* 에러 시 플레이스홀더 */
+                          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                            <div className="text-center">
+                              <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                              <p className="text-sm text-gray-500">
+                                이미지 없음
+                              </p>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </Link>
 

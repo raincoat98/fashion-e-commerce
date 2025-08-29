@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +34,7 @@ export default function BannerSlider({
 }: BannerSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
 
   // 활성화된 배너만 필터링
   const activeBanners = banners.filter((banner) => banner.isActive);
@@ -80,6 +82,11 @@ export default function BannerSlider({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [prevSlide, nextSlide]);
 
+  // 이미지 에러 핸들러
+  const handleImageError = (bannerId: string) => {
+    setImageErrors((prev) => new Set(prev).add(bannerId));
+  };
+
   if (!activeBanners.length) {
     return (
       <div
@@ -118,11 +125,26 @@ export default function BannerSlider({
           >
             {/* 배경 이미지 */}
             <div className="absolute inset-0">
-              <img
-                src={banner.imageUrl}
-                alt={banner.title}
-                className="w-full h-full object-cover"
-              />
+              {!imageErrors.has(banner.id) &&
+              banner.imageUrl &&
+              banner.imageUrl.trim() !== "" ? (
+                <Image
+                  src={banner.imageUrl}
+                  alt={banner.title}
+                  fill
+                  className="object-cover"
+                  onError={() => handleImageError(banner.id)}
+                  priority={index === 0}
+                />
+              ) : (
+                /* 에러 시 플레이스홀더 */
+                <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <ImageIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-lg">배너 이미지 없음</p>
+                  </div>
+                </div>
+              )}
               {/* 그라데이션 오버레이 */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent" />
             </div>

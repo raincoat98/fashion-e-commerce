@@ -162,6 +162,40 @@ const mockProducts: Product[] = [
     isNew: false,
     description: "여성스러운 플리츠 디자인의 스커트",
   },
+  {
+    id: "13",
+    name: "이미지 없는 상품 1",
+    price: 75000,
+    image: "", // 빈 이미지 URL
+    category: "상의",
+    rating: 4.5,
+    reviewCount: 45,
+    isNew: true,
+    description: "이미지가 없는 상품입니다",
+  },
+  {
+    id: "14",
+    name: "이미지 없는 상품 2",
+    price: 95000,
+    image: "invalid-url", // 잘못된 이미지 URL
+    category: "하의",
+    rating: 4.3,
+    reviewCount: 32,
+    isSale: true,
+    discount: 15,
+    description: "잘못된 이미지 URL을 가진 상품입니다",
+  },
+  {
+    id: "15",
+    name: "이미지 없는 상품 3",
+    price: 120000,
+    image: "https://nonexistent-image-url.com/image.jpg", // 존재하지 않는 이미지
+    category: "원피스",
+    rating: 4.6,
+    reviewCount: 28,
+    isNew: false,
+    description: "존재하지 않는 이미지 URL을 가진 상품입니다",
+  },
 ];
 
 export function useProducts() {
@@ -207,6 +241,17 @@ export function useProducts() {
   // 인기 상품 필터링 (평점 기준)
   const getPopularProducts = (limit: number = 8) => {
     return products.sort((a, b) => b.rating - a.rating).slice(0, limit);
+  };
+
+  // 이미지 URL 검증
+  const isValidImageUrl = (url: string): boolean => {
+    if (!url || url.trim() === "") return false;
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   // 상품 검색

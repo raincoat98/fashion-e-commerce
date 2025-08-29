@@ -62,6 +62,28 @@ const mockBanners: Banner[] = [
     createdAt: "2025-01-12",
     updatedAt: "2025-01-12",
   },
+  {
+    id: "5",
+    title: "이미지 없는 배너",
+    description: "이미지가 없는 배너 테스트",
+    imageUrl: "", // 빈 이미지 URL
+    linkUrl: "/test",
+    order: 5,
+    isActive: true,
+    createdAt: "2025-01-11",
+    updatedAt: "2025-01-11",
+  },
+  {
+    id: "6",
+    title: "잘못된 이미지 배너",
+    description: "잘못된 이미지 URL을 가진 배너",
+    imageUrl: "invalid-url",
+    linkUrl: "/test",
+    order: 6,
+    isActive: true,
+    createdAt: "2025-01-10",
+    updatedAt: "2025-01-10",
+  },
 ];
 
 export function useBanners() {
