@@ -290,7 +290,7 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-3 flex flex-col">
                   <Link href="/checkout">
                     <Button
                       className="w-full bg-red-600 hover:bg-red-700 text-white py-3"
