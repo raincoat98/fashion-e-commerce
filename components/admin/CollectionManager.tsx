@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -22,6 +23,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Plus,
   Edit,
   Trash2,
@@ -30,122 +38,78 @@ import {
   Eye,
   EyeOff,
   Search,
+  Package,
+  Settings,
 } from "lucide-react";
+import { useCollectionStore, Collection } from "@/stores/useCollectionStore";
+import { useProductStore } from "@/stores/useProductStore";
+import { useToast } from "@/hooks/use-toast";
 
-interface Collection {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  isActive: boolean;
-  productCount: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-// Mock 데이터
-const mockCollections: Collection[] = [
-  {
-    id: "1",
-    name: "시그니처",
-    description:
-      "LUMINA의 대표 컬렉션으로, 브랜드의 핵심 아이덴티티를 담은 프리미엄 제품들",
-    image: "/images/collections/signature.jpg",
-    isActive: true,
-    productCount: 12,
-    createdAt: "2025-01-01",
-    updatedAt: "2025-01-15",
-  },
-  {
-    id: "2",
-    name: "프리미엄",
-    description: "고급스러운 소재와 세련된 디자인으로 완성된 프리미엄 컬렉션",
-    image: "/images/collections/premium.jpg",
-    isActive: true,
-    productCount: 8,
-    createdAt: "2025-01-05",
-    updatedAt: "2025-01-10",
-  },
-  {
-    id: "3",
-    name: "엘레간트",
-    description: "우아하고 세련된 실루엣으로 완성된 엘레간트 컬렉션",
-    image: "/images/collections/elegant.jpg",
-    isActive: true,
-    productCount: 15,
-    createdAt: "2025-01-10",
-    updatedAt: "2025-01-12",
-  },
-  {
-    id: "4",
-    name: "캐주얼",
-    description: "편안하면서도 스타일리시한 일상복 컬렉션",
-    image: "/images/collections/casual.jpg",
-    isActive: false,
-    productCount: 6,
-    createdAt: "2025-01-15",
-    updatedAt: "2025-01-20",
-  },
-];
+// Collection 인터페이스는 이미 스토어에서 import됨
 
 export default function CollectionManager() {
-  const [collections, setCollections] = useState<Collection[]>(mockCollections);
-  const [searchTerm, setSearchTerm] = useState("");
+  const { toast } = useToast();
+  const {
+    collections,
+    filteredCollections,
+    activeCollections,
+    addCollection,
+    updateCollection,
+    deleteCollection,
+    searchTerm,
+    setSearchTerm,
+    setShowInactive,
+    selectedCollection,
+    setSelectedCollection,
+    addProductToCollection,
+    removeProductFromCollection,
+    addProductsToCollection,
+    removeProductsFromCollection,
+  } = useCollectionStore();
+
+  const { products, filteredProducts } = useProductStore();
+
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isProductManageDialogOpen, setIsProductManageDialogOpen] =
+    useState(false);
   const [editingCollection, setEditingCollection] = useState<Collection | null>(
     null
   );
+  const [managingCollection, setManagingCollection] =
+    useState<Collection | null>(null);
 
   // 새 컬렉션 폼 상태
   const [newCollection, setNewCollection] = useState({
     name: "",
     description: "",
     image: "",
-  });
-
-  // 필터링된 컬렉션
-  const filteredCollections = collections.filter((collection) => {
-    const matchesSearch =
-      collection.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      collection.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesSearch;
+    isFeature: false,
+    sortOrder: 1,
+    slug: "",
   });
 
   // 컬렉션 생성
   const createCollection = () => {
-    const collection: Collection = {
-      id: Date.now().toString(),
+    addCollection({
       ...newCollection,
       isActive: true,
-      productCount: 0,
-      createdAt: new Date().toISOString().split("T")[0],
-      updatedAt: new Date().toISOString().split("T")[0],
-    };
-    setCollections([...collections, collection]);
+      productIds: [],
+    });
     setIsCreateDialogOpen(false);
     setNewCollection({
       name: "",
       description: "",
       image: "",
+      isFeature: false,
+      sortOrder: 1,
+      slug: "",
     });
-  };
-
-  // 컬렉션 수정
-  const updateCollection = (id: string, updates: Partial<Collection>) => {
-    setCollections(
-      collections.map((collection) =>
-        collection.id === id
-          ? {
-              ...collection,
-              ...updates,
-              updatedAt: new Date().toISOString().split("T")[0],
-            }
-          : collection
-      )
-    );
-    setEditingCollection(null);
-    setIsEditDialogOpen(false);
+    toast({
+      title: "컬렉션 생성 완료",
+      description: "새로운 컬렉션이 성공적으로 생성되었습니다.",
+      duration: 3000,
+    });
   };
 
   // 컬렉션 수정 다이얼로그 열기
@@ -154,20 +118,63 @@ export default function CollectionManager() {
     setIsEditDialogOpen(true);
   };
 
+  // 컬렉션 수정 저장
+  const saveCollection = () => {
+    if (editingCollection) {
+      updateCollection(editingCollection.id, editingCollection);
+      setEditingCollection(null);
+      setIsEditDialogOpen(false);
+      toast({
+        title: "컬렉션 수정 완료",
+        description: "컬렉션 정보가 성공적으로 수정되었습니다.",
+        duration: 3000,
+      });
+    }
+  };
+
   // 컬렉션 삭제
-  const deleteCollection = (id: string) => {
-    setCollections(collections.filter((collection) => collection.id !== id));
+  const handleDeleteCollection = (id: string) => {
+    deleteCollection(id);
+    toast({
+      title: "컬렉션 삭제 완료",
+      description: "컬렉션이 성공적으로 삭제되었습니다.",
+      duration: 3000,
+    });
   };
 
   // 컬렉션 활성화/비활성화
   const toggleCollectionStatus = (id: string) => {
-    setCollections(
-      collections.map((collection) =>
-        collection.id === id
-          ? { ...collection, isActive: !collection.isActive }
-          : collection
-      )
-    );
+    const collection = collections.find((c) => c.id === id);
+    if (collection) {
+      updateCollection(id, { isActive: !collection.isActive });
+      toast({
+        title: "상태 변경 완료",
+        description: `컬렉션이 ${
+          !collection.isActive ? "활성화" : "비활성화"
+        }되었습니다.`,
+        duration: 2000,
+      });
+    }
+  };
+
+  // 상품 관리 다이얼로그 열기
+  const openProductManageDialog = (collection: Collection) => {
+    setManagingCollection(collection);
+    setIsProductManageDialogOpen(true);
+  };
+
+  // 상품을 컬렉션에 추가/제거
+  const toggleProductInCollection = (
+    productId: string,
+    isSelected: boolean
+  ) => {
+    if (managingCollection) {
+      if (isSelected) {
+        addProductToCollection(managingCollection.id, productId);
+      } else {
+        removeProductFromCollection(managingCollection.id, productId);
+      }
+    }
   };
 
   // 이미지 업로드 시뮬레이션
@@ -177,7 +184,7 @@ export default function CollectionManager() {
   };
 
   // 통계 계산
-  const activeCollections = collections.filter(
+  const activeCollectionsCount = collections.filter(
     (collection) => collection.isActive
   ).length;
   const totalProducts = collections.reduce(
@@ -197,7 +204,7 @@ export default function CollectionManager() {
               <div>
                 <p className="text-sm font-medium text-gray-600">활성 컬렉션</p>
                 <p className="text-2xl font-bold text-blue-600">
-                  {activeCollections}
+                  {activeCollectionsCount}
                 </p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -391,12 +398,7 @@ export default function CollectionManager() {
                         취소
                       </Button>
                       <Button
-                        onClick={() =>
-                          updateCollection(
-                            editingCollection.id,
-                            editingCollection
-                          )
-                        }
+                        onClick={saveCollection}
                         className="lumina-gradient text-white"
                       >
                         수정 완료
@@ -478,13 +480,23 @@ export default function CollectionManager() {
                           size="sm"
                           variant="outline"
                           onClick={() => openEditDialog(collection)}
+                          title="컬렉션 수정"
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
                         <Button
                           size="sm"
                           variant="outline"
+                          onClick={() => openProductManageDialog(collection)}
+                          title="상품 관리"
+                        >
+                          <Package className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
                           onClick={() => toggleCollectionStatus(collection.id)}
+                          title={collection.isActive ? "비활성화" : "활성화"}
                         >
                           {collection.isActive ? (
                             <EyeOff className="w-4 h-4" />
@@ -496,8 +508,9 @@ export default function CollectionManager() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => deleteCollection(collection.id)}
+                        onClick={() => handleDeleteCollection(collection.id)}
                         className="text-red-600 hover:text-red-700"
+                        title="삭제"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -509,6 +522,90 @@ export default function CollectionManager() {
           </div>
         </CardContent>
       </Card>
+
+      {/* 상품 관리 다이얼로그 */}
+      <Dialog
+        open={isProductManageDialogOpen}
+        onOpenChange={setIsProductManageDialogOpen}
+      >
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              <Package className="w-5 h-5" />
+              <span>{managingCollection?.name} 상품 관리</span>
+            </DialogTitle>
+            <DialogDescription>
+              이 컬렉션에 포함할 상품을 선택하세요.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            {/* 상품 목록 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
+              {products.map((product) => {
+                const isSelected =
+                  managingCollection?.productIds.includes(product.id) || false;
+                return (
+                  <div
+                    key={product.id}
+                    className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                      isSelected
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                    onClick={() =>
+                      toggleProductInCollection(product.id, !isSelected)
+                    }
+                  >
+                    <div className="flex items-start space-x-3">
+                      <Checkbox
+                        checked={isSelected}
+                        onChange={() =>
+                          toggleProductInCollection(product.id, !isSelected)
+                        }
+                        className="mt-1"
+                      />
+                      <div className="flex-1 min-w-0">
+                        {product.images.length > 0 && (
+                          <img
+                            src={product.images[0]}
+                            alt={product.name}
+                            className="w-12 h-12 object-cover rounded mb-2"
+                          />
+                        )}
+                        <h4 className="text-sm font-medium text-gray-900 truncate">
+                          {product.name}
+                        </h4>
+                        <p className="text-sm text-gray-500">
+                          {product.price.toLocaleString()}원
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {product.category}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* 선택된 상품 수 표시 */}
+            <div className="text-sm text-gray-600 text-center py-2 bg-gray-50 rounded">
+              선택된 상품: {managingCollection?.productIds.length || 0}개
+            </div>
+
+            {/* 액션 버튼 */}
+            <div className="flex justify-end space-x-2">
+              <Button
+                variant="outline"
+                onClick={() => setIsProductManageDialogOpen(false)}
+              >
+                닫기
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

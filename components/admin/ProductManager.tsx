@@ -55,14 +55,7 @@ import {
   Home,
 } from "lucide-react";
 import { useProductStore, Product } from "@/stores/useProductStore";
-
-interface Collection {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  isActive: boolean;
-}
+import { useCollectionStore, Collection } from "@/stores/useCollectionStore";
 
 // Mock 데이터 (실제로는 스토어에서 가져오므로 사용되지 않음)
 const mockProducts: Product[] = []; /* 사용되지 않는 mock 데이터
@@ -151,30 +144,6 @@ const unusedMockProducts = [
   },
 ]; */
 
-const mockCollections: Collection[] = [
-  {
-    id: "1",
-    name: "시그니처",
-    description: "LUMINA의 대표 컬렉션",
-    image: "/images/collections/signature.jpg",
-    isActive: true,
-  },
-  {
-    id: "2",
-    name: "프리미엄",
-    description: "고급스러운 프리미엄 컬렉션",
-    image: "/images/collections/premium.jpg",
-    isActive: true,
-  },
-  {
-    id: "3",
-    name: "엘레간트",
-    description: "우아하고 세련된 엘레간트 컬렉션",
-    image: "/images/collections/elegant.jpg",
-    isActive: true,
-  },
-];
-
 const categoryOptions = [
   { value: "top", label: "상의" },
   { value: "bottom", label: "하의" },
@@ -225,6 +194,7 @@ interface ProductFormData {
   images: string[];
   badge?: string;
   category: string;
+  collection?: string;
   materials: string;
   care: string;
   modelInfo: string;
@@ -253,12 +223,20 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     filteredProducts,
   } = useProductStore();
 
+  // 컬렉션 스토어
+  const {
+    collections,
+    activeCollections,
+    addProductToCollection,
+    removeProductFromCollection,
+    getCollectionsByProductId,
+  } = useCollectionStore();
+
   // 관리자는 기본적으로 비활성화 상품도 보기
   React.useEffect(() => {
     setShowInactive(true);
   }, [setShowInactive]);
 
-  const [collections, setCollections] = useState<Collection[]>(mockCollections);
   const [selectedCollection, setSelectedCollection] = useState<string>("all");
   const [isBulkUploadDialogOpen, setIsBulkUploadDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -273,6 +251,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     description: "",
     images: [],
     category: "top",
+    collection: "none",
     materials: "",
     care: "",
     modelInfo: "",
@@ -365,9 +344,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
     // 컬렉션 필터링
     if (selectedCollection !== "all") {
-      filtered = filtered.filter(
-        (product) => product.collection === selectedCollection
-      );
+      const collection = collections.find((c) => c.id === selectedCollection);
+      if (collection) {
+        filtered = filtered.filter((product) =>
+          collection.productIds.includes(product.id)
+        );
+      }
     }
 
     console.log("finalFilteredProducts 계산 완료:", {
@@ -391,6 +373,11 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
       onEditProduct(product);
     } else {
       // 수정할 상품 데이터를 폼에 설정
+      // 상품이 속한 컬렉션 찾기
+      const productCollections = getCollectionsByProductId(product.id);
+      const currentCollection =
+        productCollections.length > 0 ? productCollections[0].id : "none";
+
       setFormData({
         name: product.name,
         price: product.price,
@@ -398,6 +385,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         description: product.description,
         images: product.images,
         category: product.category,
+        collection: currentCollection,
         materials: "", // 기존 데이터에 없으므로 빈 값
         care: "", // 기존 데이터에 없으므로 빈 값
         modelInfo: "", // 기존 데이터에 없으므로 빈 값
@@ -616,6 +604,18 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
       updateProduct(editingProduct.id, updates);
 
+      // 컬렉션 연동 업데이트
+      // 기존 컬렉션에서 제거
+      const existingCollections = getCollectionsByProductId(editingProduct.id);
+      existingCollections.forEach((collection) => {
+        removeProductFromCollection(collection.id, editingProduct.id);
+      });
+
+      // 새 컬렉션에 추가 (none이 아닌 경우에만)
+      if (formData.collection && formData.collection !== "none") {
+        addProductToCollection(formData.collection, editingProduct.id);
+      }
+
       toast({
         title: "상품 수정 완료",
         description: "상품 정보가 성공적으로 수정되었습니다.",
@@ -644,13 +644,23 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         isFeatured: formData.isFeatured ?? false,
         isLimited: formData.isLimited ?? false,
         isHot: formData.isHot ?? false,
-        collection: "basic",
+        collection:
+          formData.collection && formData.collection !== "none"
+            ? formData.collection
+            : "basic",
         rating: 0,
         reviewCount: 0,
         tags: formData.features.filter((f) => f.trim() !== ""),
       };
 
       addProduct(newProduct);
+
+      // 컬렉션에 상품 추가 (none이 아닌 경우에만)
+      if (formData.collection && formData.collection !== "none") {
+        // 새로 생성된 상품의 ID는 Date.now().toString()로 생성됨
+        const newProductId = Date.now().toString();
+        addProductToCollection(formData.collection, newProductId);
+      }
 
       toast({
         title: "상품 등록 완료",
@@ -672,6 +682,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
       description: "",
       images: [],
       category: "top",
+      collection: "none",
       materials: "",
       care: "",
       modelInfo: "",
@@ -775,6 +786,27 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                     <SelectItem value="dress">원피스</SelectItem>
                     <SelectItem value="outer">아우터</SelectItem>
                     <SelectItem value="accessory">액세서리</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="collection">컬렉션</Label>
+                <Select
+                  value={formData.collection || ""}
+                  onValueChange={(value) =>
+                    handleInputChange("collection", value)
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="컬렉션을 선택하세요" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">선택 안함</SelectItem>
+                    {activeCollections.map((collection) => (
+                      <SelectItem key={collection.id} value={collection.id}>
+                        {collection.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -1468,9 +1500,27 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                           )}
                         </div>
 
-                        <div className="flex items-center justify-between text-sm text-gray-600">
-                          <span>재고: {product.stock}개</span>
-                          <span>{product.category}</span>
+                        <div className="space-y-1 text-sm text-gray-600">
+                          <div className="flex items-center justify-between">
+                            <span>재고: {product.stock}개</span>
+                            <span>{product.category}</span>
+                          </div>
+                          {(() => {
+                            const productCollections =
+                              getCollectionsByProductId(product.id);
+                            return (
+                              productCollections.length > 0 && (
+                                <div className="flex items-center gap-1">
+                                  <Tag className="w-3 h-3" />
+                                  <span className="text-xs">
+                                    {productCollections
+                                      .map((c) => c.name)
+                                      .join(", ")}
+                                  </span>
+                                </div>
+                              )
+                            );
+                          })()}
                         </div>
 
                         {/* 옵션 정보 */}

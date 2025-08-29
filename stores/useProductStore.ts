@@ -114,6 +114,7 @@ interface ProductStore {
   searchTerm: string;
   selectedCategory: string;
   selectedSubCategory: string;
+  selectedCollection: string;
   priceRange: [number, number];
   selectedSizes: string[];
   selectedColors: string[];
@@ -141,6 +142,7 @@ interface ProductStore {
   setSearchTerm: (term: string) => void;
   setSelectedCategory: (category: string) => void;
   setSelectedSubCategory: (subCategory: string) => void;
+  setSelectedCollection: (collection: string) => void;
   setPriceRange: (range: [number, number]) => void;
   setSelectedSizes: (sizes: string[]) => void;
   setSelectedColors: (colors: string[]) => void;
@@ -498,6 +500,7 @@ export const useProductStore = create<ProductStore>()(
         searchTerm: "",
         selectedCategory: "",
         selectedSubCategory: "",
+        selectedCollection: "",
         priceRange: [0, 500000],
         selectedSizes: [],
         selectedColors: [],
@@ -585,6 +588,8 @@ export const useProductStore = create<ProductStore>()(
           }),
         setSelectedSubCategory: (subCategory) =>
           set({ selectedSubCategory: subCategory, currentPage: 1 }),
+        setSelectedCollection: (collection) =>
+          set({ selectedCollection: collection, currentPage: 1 }),
         setPriceRange: (range) => set({ priceRange: range, currentPage: 1 }),
         setSelectedSizes: (sizes) =>
           set({ selectedSizes: sizes, currentPage: 1 }),
@@ -599,6 +604,7 @@ export const useProductStore = create<ProductStore>()(
             searchTerm: "",
             selectedCategory: "",
             selectedSubCategory: "",
+            selectedCollection: "",
             priceRange: [0, 500000],
             selectedSizes: [],
             selectedColors: [],
@@ -757,6 +763,7 @@ export const useProductStore = create<ProductStore>()(
             searchTerm,
             selectedCategory,
             selectedSubCategory,
+            selectedCollection,
             priceRange,
             selectedSizes,
             selectedColors,
@@ -797,6 +804,13 @@ export const useProductStore = create<ProductStore>()(
           if (selectedSubCategory) {
             filtered = filtered.filter(
               (product) => product.subCategory === selectedSubCategory
+            );
+          }
+
+          // 컬렉션 필터링
+          if (selectedCollection) {
+            filtered = filtered.filter(
+              (product) => product.collection === selectedCollection
             );
           }
 
