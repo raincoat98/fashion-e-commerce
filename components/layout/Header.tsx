@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, ShoppingBag, Menu, X, User, Heart, Truck } from "lucide-react";
+import { ShoppingBag, Menu, X, User, Heart, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useProductStore } from "@/stores/useProductStore";
 import { useCart } from "@/contexts/CartContext";
+import Search from "@/components/ui/search";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -150,9 +151,9 @@ export default function Header() {
           {/* Right Actions */}
           <div className="flex items-center space-x-3">
             {/* Search */}
-            <Button variant="ghost" size="icon" className="hidden sm:flex">
-              <Search className="h-5 w-5" />
-            </Button>
+            <div className="hidden sm:block w-64">
+              <Search placeholder="상품명, 브랜드를 검색하세요" />
+            </div>
 
             {/* User */}
             <Link href="/profile">
@@ -290,15 +291,7 @@ export default function Header() {
 
         {/* Search Bar (Mobile) */}
         <div className="sm:hidden pb-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <input
-              type="text"
-              placeholder="상품명, 브랜드를 검색하세요"
-              spellCheck={false}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900"
-            />
-          </div>
+          <Search placeholder="상품명, 브랜드를 검색하세요" />
         </div>
       </div>
     </header>
