@@ -85,9 +85,9 @@ export default function RelatedProducts({
       price: 59000,
       originalPrice: 89000,
       image:
-        "https://images.pexels.com/photos/1536619/pexels-photo-1536619.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/4482959/pexels-photo-4482959.jpeg?auto=compress&cs=tinysrgb&w=400",
       hoverImage:
-        "https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/25841774/pexels-photo-25841774.jpeg?auto=compress&cs=tinysrgb&w=400",
       badge: "34% OFF",
       rating: 4.6,
       reviewCount: 89,
@@ -101,7 +101,7 @@ export default function RelatedProducts({
       image:
         "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=400",
       hoverImage:
-        "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/6983021/pexels-photo-6983021.jpeg?auto=compress&cs=tinysrgb&w=400",
       badge: "40% OFF",
       rating: 4.8,
       reviewCount: 156,
@@ -113,9 +113,9 @@ export default function RelatedProducts({
       price: 45000,
       originalPrice: 75000,
       image:
-        "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/6983021/pexels-photo-6983021.jpeg?auto=compress&cs=tinysrgb&w=400",
       hoverImage:
-        "https://images.pexels.com/photos/1536619/pexels-photo-1536619.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/4482959/pexels-photo-4482959.jpeg?auto=compress&cs=tinysrgb&w=400",
       badge: "40% OFF",
       rating: 4.7,
       reviewCount: 203,
@@ -127,7 +127,7 @@ export default function RelatedProducts({
       price: 29000,
       originalPrice: 49000,
       image:
-        "https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/25841774/pexels-photo-25841774.jpeg?auto=compress&cs=tinysrgb&w=400",
       hoverImage:
         "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=400",
       badge: "41% OFF",
