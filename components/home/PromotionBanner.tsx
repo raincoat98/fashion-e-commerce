@@ -252,7 +252,11 @@ export default function PromotionBanner({
             </button>
           )}
 
-          <div ref={contentRef} className="flex items-center justify-between">
+          {/* 데스크톱 레이아웃 */}
+          <div
+            ref={contentRef}
+            className="hidden lg:flex items-center justify-between"
+          >
             {/* 왼쪽: 쿠폰 정보 */}
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-3">
@@ -338,6 +342,97 @@ export default function PromotionBanner({
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </div>
+            </div>
+          </div>
+
+          {/* 모바일 레이아웃 */}
+          <div className="lg:hidden space-y-6">
+            {/* 상단: 쿠폰 정보와 할인 정보 */}
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="flex items-center space-x-3 mb-3">
+                  <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                    {getDiscountIcon()}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold leading-tight">
+                      {activeCoupon.name}
+                    </h3>
+                    <p className="text-white/80 text-xs">
+                      {activeCoupon.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 모바일용 할인 정보 */}
+              <div className="ml-4">
+                <div
+                  ref={discountRef}
+                  className="bg-white/20 rounded-xl p-3 backdrop-blur-sm text-center"
+                >
+                  <div className="text-2xl font-bold mb-1">
+                    {getDiscountDisplay()}
+                  </div>
+                  <p className="text-white/80 text-xs">할인</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 배지들 */}
+            <div className="flex flex-wrap gap-2">
+              <Badge className="bg-white/20 text-white border-white/30 text-xs">
+                최소 주문 {activeCoupon.minOrderAmount.toLocaleString()}원
+              </Badge>
+              <Badge className="bg-white/20 text-white border-white/30 text-xs">
+                ~{activeCoupon.endDate}
+              </Badge>
+            </div>
+
+            {/* 하단: 쿠폰 코드와 버튼 */}
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm text-white/80 mb-2">쿠폰 코드</p>
+                <div className="flex items-center space-x-2">
+                  <div
+                    className="flex-1 bg-white/20 rounded-lg px-3 py-2 backdrop-blur-sm cursor-pointer hover:bg-white/30 transition-colors duration-200"
+                    onClick={copyCouponCode}
+                  >
+                    <span className="font-mono font-bold text-base tracking-wider select-all block text-center">
+                      {activeCoupon.code}
+                    </span>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={copyCouponCode}
+                    className={`border-white/30 text-white bg-white/20 hover:bg-white/20 transition-all duration-200 ${
+                      isCopied ? "bg-green-500/20 border-green-300" : ""
+                    }`}
+                    disabled={isCopied}
+                  >
+                    {isCopied ? (
+                      <Check className="w-4 h-4" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </Button>
+                </div>
+                {isCopied && (
+                  <p className="text-xs text-green-300 mt-1 animate-pulse text-center">
+                    ✓ 복사되었습니다!
+                  </p>
+                )}
+              </div>
+
+              <Button
+                ref={buttonRef}
+                className="w-full lumina-gradient hover:opacity-90 text-white px-4 py-3 font-semibold lumina-shadow-lg transition-all duration-300 group"
+              >
+                <Sparkles className="w-4 h-4 mr-2" />
+                쿠폰 사용하기
+                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
             </div>
           </div>
         </CardContent>

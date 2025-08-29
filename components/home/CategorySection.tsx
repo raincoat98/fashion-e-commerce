@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -126,23 +127,23 @@ export default function CategorySection() {
   ];
 
   return (
-    <section ref={sectionRef} className="py-20 bg-white">
+    <section ref={sectionRef} className="py-12 sm:py-16 lg:py-20 bg-white">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div ref={headerRef} className="text-center mb-16">
+        <div ref={headerRef} className="text-center mb-10 sm:mb-12 lg:mb-16">
           <div className="inline-flex items-center space-x-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
             <Sparkles className="w-4 h-4" />
             <span>DISCOVER YOUR STYLE</span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
             <span className="block">당신만의</span>
             <span className="lumina-text-gradient">스타일을 찾아보세요</span>
           </h2>
 
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
             LUMINA의 다양한 카테고리에서
-            <br />
+            <br className="hidden sm:block" />
             <span className="text-yellow-600 font-medium">빛나는 당신</span>을
             위한 완벽한 스타일을 만나보세요
           </p>
@@ -151,17 +152,20 @@ export default function CategorySection() {
         {/* Categories Grid */}
         <div
           ref={gridRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-10 sm:mb-12 lg:mb-16"
         >
           {categories.map((category) => (
             <Link key={category.id} href={`/categories/${category.id}`}>
-              <div className="group relative overflow-hidden rounded-2xl bg-white lumina-shadow-lg hover:lumina-shadow-xl transition-all duration-500 cursor-pointer">
+              <div className="group relative overflow-hidden rounded-xl sm:rounded-2xl bg-white lumina-shadow-lg hover:lumina-shadow-xl transition-all duration-500 cursor-pointer">
                 {/* Background Image */}
-                <div className="relative h-80 overflow-hidden">
-                  <img
+                <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
+                  <Image
                     src={category.image}
                     alt={category.name}
+                    width={400}
+                    height={320}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    unoptimized={true}
                   />
 
                   {/* Gradient Overlay */}
@@ -171,25 +175,27 @@ export default function CategorySection() {
 
                   {/* Category Badge */}
                   <div
-                    className={`absolute top-4 left-4 bg-gradient-to-r ${category.color} text-white px-3 py-1 rounded-full text-xs font-bold`}
+                    className={`absolute top-3 left-3 sm:top-4 sm:left-4 bg-gradient-to-r ${category.color} text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs font-bold`}
                   >
                     {category.count} ITEMS
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 className="text-2xl font-bold mb-2 group-hover:text-yellow-300 transition-colors">
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white">
+                  <h3 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 group-hover:text-yellow-300 transition-colors">
                     {category.name}
                   </h3>
-                  <p className="text-gray-200 text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-gray-200 text-xs sm:text-sm mb-3 sm:mb-4 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 line-clamp-2">
                     {category.description}
                   </p>
 
                   {/* Arrow Icon */}
-                  <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span className="text-sm font-medium">바로가기</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <div className="flex items-center space-x-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="text-xs sm:text-sm font-medium">
+                      바로가기
+                    </span>
+                    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </div>
@@ -199,32 +205,32 @@ export default function CategorySection() {
 
         {/* CTA Section */}
         <div className="text-center">
-          <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-3xl p-8 md:p-12 max-w-4xl mx-auto">
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 max-w-4xl mx-auto">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
               오늘 뭐 입을지 고민이신가요?
             </h3>
-            <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto">
               LUMINA의 스타일 가이드와 함께
-              <br />
+              <br className="hidden sm:block" />
               당신만의 특별한 룩을 완성해보세요
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/style-guide">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <Link href="/style-guide" className="flex-1 sm:flex-none">
                 <Button
                   size="lg"
-                  className="lumina-gradient hover:opacity-90 text-white px-8 py-4 text-lg font-semibold lumina-shadow-lg transition-all duration-300 group"
+                  className="w-full sm:w-auto lumina-gradient hover:opacity-90 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold lumina-shadow-lg transition-all duration-300 group"
                 >
-                  <Sparkles className="w-5 h-5 mr-2" />
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   스타일 가이드 보기
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Link href="/lookbook">
+              <Link href="/lookbook" className="flex-1 sm:flex-none">
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-4 text-lg font-semibold transition-all duration-300"
+                  className="w-full sm:w-auto border-gray-300 text-gray-700 hover:bg-gray-50 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300"
                 >
                   룩북 보기
                 </Button>
