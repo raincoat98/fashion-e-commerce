@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Star,
   ThumbsUp,
   MessageCircle,
   Image as ImageIcon,
 } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 interface Review {
   id: number;
@@ -46,6 +48,60 @@ export default function ReviewSection({
   const [sortBy, setSortBy] = useState<"recent" | "helpful" | "rating">(
     "recent"
   );
+  const [helpfulClicks, setHelpfulClicks] = useState<Set<number>>(new Set());
+  const [reviewHelpfulCounts, setReviewHelpfulCounts] = useState<{
+    [key: number]: number;
+  }>(() => {
+    // 초기 도움됨 카운트를 reviews에서 가져오기
+    const initialCounts: { [key: number]: number } = {};
+    reviews.forEach((review) => {
+      initialCounts[review.id] = review.helpful;
+    });
+    return initialCounts;
+  });
+  const { toast } = useToast();
+
+  // reviews가 변경되면 reviewHelpfulCounts 업데이트
+  useEffect(() => {
+    setReviewHelpfulCounts((prev) => {
+      const newCounts: { [key: number]: number } = {};
+      reviews.forEach((review) => {
+        // 기존에 클릭한 리뷰는 증가된 카운트 유지, 새 리뷰는 기본 카운트 사용
+        newCounts[review.id] =
+          prev[review.id] !== undefined ? prev[review.id] : review.helpful;
+      });
+      return newCounts;
+    });
+  }, [reviews]);
+
+  // 도움됨 버튼 클릭 핸들러
+  const handleHelpfulClick = (reviewId: number) => {
+    if (helpfulClicks.has(reviewId)) {
+      // 이미 클릭한 경우
+      toast({
+        title: "이미 도움됨을 표시했습니다",
+        description: "각 리뷰당 한 번만 도움됨을 표시할 수 있습니다.",
+        variant: "default",
+      });
+      return;
+    }
+
+    // 도움됨 카운트 증가
+    setReviewHelpfulCounts((prev) => ({
+      ...prev,
+      [reviewId]: (prev[reviewId] || 0) + 1,
+    }));
+
+    // 클릭 기록 추가
+    setHelpfulClicks((prev) => new Set(prev).add(reviewId));
+
+    // 성공 메시지
+    toast({
+      title: "도움됨으로 표시했습니다",
+      description: "리뷰 작성자에게 도움이 되었다는 것을 알려드렸습니다.",
+      variant: "default",
+    });
+  };
 
   const filteredReviews = reviews.filter(
     (review) => selectedRating === null || review.rating === selectedRating
@@ -56,7 +112,10 @@ export default function ReviewSection({
       case "recent":
         return new Date(b.date).getTime() - new Date(a.date).getTime();
       case "helpful":
-        return b.helpful - a.helpful;
+        return (
+          (reviewHelpfulCounts[b.id] || b.helpful) -
+          (reviewHelpfulCounts[a.id] || a.helpful)
+        );
       case "rating":
         return b.rating - a.rating;
       default:
@@ -206,20 +265,38 @@ export default function ReviewSection({
                 {review.images && review.images.length > 0 && (
                   <div className="flex space-x-2">
                     {review.images.map((image, index) => (
-                      <img
-                        key={index}
-                        src={image}
-                        alt={`리뷰 이미지 ${index + 1}`}
-                        className="w-20 h-20 object-cover rounded-lg"
-                      />
+                      <div key={index} className="relative w-20 h-20">
+                        <Image
+                          src={image}
+                          alt={`리뷰 이미지 ${index + 1}`}
+                          width={80}
+                          height={80}
+                          className="object-cover rounded-lg"
+                          unoptimized={true}
+                        />
+                      </div>
                     ))}
                   </div>
                 )}
 
                 <div className="flex items-center space-x-4 text-sm text-gray-500">
-                  <button className="flex items-center space-x-1 hover:text-gray-700">
-                    <ThumbsUp className="h-4 w-4" />
-                    <span>도움됨 ({review.helpful})</span>
+                  <button
+                    className={`flex items-center space-x-1 transition-colors ${
+                      helpfulClicks.has(review.id)
+                        ? "text-blue-600 hover:text-blue-700"
+                        : "hover:text-gray-700"
+                    }`}
+                    onClick={() => handleHelpfulClick(review.id)}
+                  >
+                    <ThumbsUp
+                      className={`h-4 w-4 ${
+                        helpfulClicks.has(review.id) ? "fill-current" : ""
+                      }`}
+                    />
+                    <span>
+                      도움됨 ({reviewHelpfulCounts[review.id] || review.helpful}
+                      ){helpfulClicks.has(review.id) && " ✓"}
+                    </span>
                   </button>
                   <button className="flex items-center space-x-1 hover:text-gray-700">
                     <MessageCircle className="h-4 w-4" />
