@@ -75,7 +75,8 @@ const sampleCollections: Collection[] = [
     name: "시그니처",
     description:
       "LUMINA의 대표 컬렉션으로, 브랜드의 핵심 아이덴티티를 담은 프리미엄 제품들",
-    image: "/images/collections/signature.jpg",
+    image:
+      "https://images.pexels.com/photos/1488463/pexels-photo-1488463.jpeg?auto=compress&cs=tinysrgb&w=800",
     isActive: true,
     productCount: 0,
     productIds: [],
@@ -89,7 +90,8 @@ const sampleCollections: Collection[] = [
     id: "2",
     name: "프리미엄",
     description: "고급스러운 소재와 세련된 디자인으로 완성된 프리미엄 컬렉션",
-    image: "/images/collections/premium.jpg",
+    image:
+      "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
     isActive: true,
     productCount: 0,
     productIds: [],
@@ -103,7 +105,8 @@ const sampleCollections: Collection[] = [
     id: "3",
     name: "엘레간트",
     description: "우아하고 세련된 실루엣으로 완성된 엘레간트 컬렉션",
-    image: "/images/collections/elegant.jpg",
+    image:
+      "https://images.pexels.com/photos/2584269/pexels-photo-2584269.jpeg?auto=compress&cs=tinysrgb&w=800",
     isActive: true,
     productCount: 0,
     productIds: [],
@@ -117,7 +120,8 @@ const sampleCollections: Collection[] = [
     id: "4",
     name: "캐주얼",
     description: "편안하면서도 스타일리시한 일상복 컬렉션",
-    image: "/images/collections/casual.jpg",
+    image:
+      "https://images.pexels.com/photos/2703907/pexels-photo-2703907.jpeg?auto=compress&cs=tinysrgb&w=800",
     isActive: false,
     productCount: 0,
     productIds: [],
@@ -131,7 +135,8 @@ const sampleCollections: Collection[] = [
     id: "basic",
     name: "베이직",
     description: "기본에 충실한 베이직 컬렉션",
-    image: "/images/collections/basic.jpg",
+    image:
+      "https://images.pexels.com/photos/1065084/pexels-photo-1065084.jpeg?auto=compress&cs=tinysrgb&w=800",
     isActive: true,
     productCount: 0,
     productIds: ["1", "2", "4", "5"], // 기존 상품들을 베이직 컬렉션에 연결
@@ -145,7 +150,8 @@ const sampleCollections: Collection[] = [
     id: "special",
     name: "스페셜",
     description: "특별한 순간을 위한 스페셜 컬렉션",
-    image: "/images/collections/special.jpg",
+    image:
+      "https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=800",
     isActive: true,
     productCount: 0,
     productIds: ["3"], // 플로럴 원피스를 스페셜 컬렉션에 연결
