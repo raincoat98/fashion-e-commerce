@@ -41,8 +41,10 @@ import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import PaymentSystem from "@/components/checkout/PaymentSystem";
 import CouponInput from "@/components/checkout/CouponInput";
+import PointInput from "@/components/checkout/PointInput";
 import AddressManager from "@/components/shipping/AddressManager";
 import { useAddressStore, ShippingAddress } from "@/stores/useAddressStore";
+import { usePointStore } from "@/stores/usePointStore";
 
 interface ShippingInfo {
   name: string;
@@ -70,6 +72,7 @@ export default function CheckoutPage() {
   const searchParams = useSearchParams();
   const { addresses, getDefaultAddress, getAddressById, initializeAddresses } =
     useAddressStore();
+  const { usablePoints, usePoints } = usePointStore();
 
   // URL 파라미터에서 모드 확인
   const mode = searchParams.get("mode");
@@ -155,6 +158,7 @@ export default function CheckoutPage() {
     payment: false,
   });
   const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
+  const [usedPoints, setUsedPoints] = useState<number>(0);
   const [paymentResult, setPaymentResult] = useState<any>(null);
 
   // 배송비 계산
@@ -175,12 +179,13 @@ export default function CheckoutPage() {
       ? Math.floor(subtotal * (appliedCoupon.value / 100))
       : appliedCoupon.value
     : 0;
-  const totalAmount = subtotal + shippingFee - discountAmount;
+  const totalAmount = subtotal + shippingFee - discountAmount - usedPoints;
 
   const orderSummary = {
     subtotal,
     shippingFee,
     discountAmount,
+    pointDiscount: usedPoints,
     totalAmount,
     items: currentItems.map((item) => ({
       id: item.id.toString(),
@@ -209,6 +214,11 @@ export default function CheckoutPage() {
   };
 
   const handlePaymentComplete = (result: any) => {
+    // 포인트 사용 처리
+    if (usedPoints > 0) {
+      usePoints(usedPoints, "주문 시 포인트 사용", result.transactionId);
+    }
+
     setPaymentResult(result);
     setCurrentStep("complete");
 
@@ -637,9 +647,17 @@ export default function CheckoutPage() {
                     </div>
                     {appliedCoupon && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">할인</span>
+                        <span className="text-gray-600">쿠폰 할인</span>
                         <span className="text-red-600">
                           -{discountAmount.toLocaleString()}원
+                        </span>
+                      </div>
+                    )}
+                    {usedPoints > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">포인트 사용</span>
+                        <span className="text-blue-600">
+                          -{usedPoints.toLocaleString()}P
                         </span>
                       </div>
                     )}
@@ -674,6 +692,24 @@ export default function CheckoutPage() {
                     <CouponInput
                       onCouponApplied={setAppliedCoupon}
                       appliedCoupon={appliedCoupon}
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* 포인트 사용 */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>포인트 사용</CardTitle>
+                    <CardDescription>
+                      보유한 포인트를 사용하여 할인을 받으세요
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <PointInput
+                      totalAmount={subtotal + shippingFee - discountAmount}
+                      onPointsUsed={setUsedPoints}
+                      usedPoints={usedPoints}
+                      availablePoints={usablePoints}
                     />
                   </CardContent>
                 </Card>
@@ -824,9 +860,17 @@ export default function CheckoutPage() {
                     </div>
                     {appliedCoupon && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">할인</span>
+                        <span className="text-gray-600">쿠폰 할인</span>
                         <span className="text-red-600">
                           -{discountAmount.toLocaleString()}원
+                        </span>
+                      </div>
+                    )}
+                    {usedPoints > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">포인트 사용</span>
+                        <span className="text-blue-600">
+                          -{usedPoints.toLocaleString()}P
                         </span>
                       </div>
                     )}

@@ -40,6 +40,8 @@ import {
   Shield,
   Zap,
 } from "lucide-react";
+import { usePointStore } from "@/stores/usePointStore";
+import { useToast } from "@/hooks/use-toast";
 
 interface PaymentMethod {
   id: string;
@@ -66,6 +68,7 @@ interface OrderSummary {
   subtotal: number;
   shippingFee: number;
   discountAmount: number;
+  pointDiscount: number;
   totalAmount: number;
   items: {
     id: string;
@@ -190,6 +193,9 @@ export default function PaymentSystem({
   const [isReceiptDialogOpen, setIsReceiptDialogOpen] = useState(false);
   const [paymentResult, setPaymentResult] = useState<any>(null);
 
+  const { addPoints, calculateEarnedPoints } = usePointStore();
+  const { toast } = useToast();
+
   // 카드 번호 포맷팅
   const formatCardNumber = (value: string) => {
     const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
@@ -231,6 +237,17 @@ export default function PaymentSystem({
       receiptNumber: `RCP-${Date.now()}`,
     };
 
+    // 포인트 적립 처리
+    const earnedPoints = calculateEarnedPoints(orderSummary.totalAmount);
+    if (earnedPoints > 0) {
+      addPoints(earnedPoints, "주문 완료 적립", result.transactionId);
+
+      toast({
+        title: "포인트 적립 완료",
+        description: `${earnedPoints.toLocaleString()}P가 적립되었습니다.`,
+      });
+    }
+
     setPaymentResult(result);
     setIsProcessing(false);
     onPaymentComplete(result);
@@ -259,7 +276,11 @@ ${orderSummary.items
 
 상품금액: ${orderSummary.subtotal.toLocaleString()}원
 배송비: ${orderSummary.shippingFee.toLocaleString()}원
-할인금액: -${orderSummary.discountAmount.toLocaleString()}원
+할인금액: -${orderSummary.discountAmount.toLocaleString()}원${
+      orderSummary.pointDiscount > 0
+        ? `\n포인트 사용: -${orderSummary.pointDiscount.toLocaleString()}P`
+        : ""
+    }
 총 결제금액: ${orderSummary.totalAmount.toLocaleString()}원
 
 감사합니다.
@@ -514,6 +535,14 @@ ${orderSummary.items
                   -{orderSummary.discountAmount.toLocaleString()}원
                 </span>
               </div>
+              {orderSummary.pointDiscount > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">포인트 사용</span>
+                  <span className="text-blue-600">
+                    -{orderSummary.pointDiscount.toLocaleString()}P
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between text-lg font-semibold border-t pt-2">
                 <span>총 결제금액</span>
                 <span>{orderSummary.totalAmount.toLocaleString()}원</span>
