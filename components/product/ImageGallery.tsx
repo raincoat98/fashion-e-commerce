@@ -1,15 +1,18 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Expand, X } from 'lucide-react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import React, { useState } from "react";
+import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface ImageGalleryProps {
   images: string[];
   productName: string;
 }
 
-export default function ImageGallery({ images, productName }: ImageGalleryProps) {
+export default function ImageGallery({
+  images,
+  productName,
+}: ImageGalleryProps) {
   const [currentImage, setCurrentImage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -31,7 +34,7 @@ export default function ImageGallery({ images, productName }: ImageGalleryProps)
           className="w-full h-full object-cover cursor-pointer"
           onClick={() => setIsModalOpen(true)}
         />
-        
+
         {/* Navigation Arrows */}
         {images.length > 1 && (
           <>
@@ -72,8 +75,8 @@ export default function ImageGallery({ images, productName }: ImageGalleryProps)
             onClick={() => setCurrentImage(index)}
             className={`aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
               currentImage === index
-                ? 'border-gray-900'
-                : 'border-transparent hover:border-gray-300'
+                ? "border-gray-900"
+                : "border-transparent hover:border-gray-300"
             }`}
           >
             <img
@@ -95,7 +98,7 @@ export default function ImageGallery({ images, productName }: ImageGalleryProps)
             >
               <X className="h-6 w-6" />
             </button>
-            
+
             <img
               src={images[currentImage]}
               alt={`${productName} ${currentImage + 1}`}
@@ -126,7 +129,7 @@ export default function ImageGallery({ images, productName }: ImageGalleryProps)
                   key={index}
                   onClick={() => setCurrentImage(index)}
                   className={`w-3 h-3 rounded-full transition-colors ${
-                    currentImage === index ? 'bg-white' : 'bg-white/50'
+                    currentImage === index ? "bg-white" : "bg-white/50"
                   }`}
                 />
               ))}

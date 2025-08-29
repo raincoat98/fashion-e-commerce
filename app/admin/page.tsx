@@ -30,6 +30,16 @@ import {
   Plus,
   Image,
   Home,
+  BarChart3,
+  ShoppingCart,
+  Settings,
+  Bell,
+  Menu,
+  X,
+  Eye,
+  ArrowUpRight,
+  Activity,
+  Star,
 } from "lucide-react";
 import Link from "next/link";
 import CouponManager from "@/components/admin/CouponManager";
@@ -47,6 +57,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 // Mock 데이터
 const mockOrders = [
@@ -142,6 +162,17 @@ const statusConfig = {
 export default function AdminPage() {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("dashboard");
+
+  // 주문 관리 상태
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [isStatusChangeDialogOpen, setIsStatusChangeDialogOpen] =
+    useState(false);
+  const [isPartialCancelDialogOpen, setIsPartialCancelDialogOpen] =
+    useState(false);
+  const [newOrderStatus, setNewOrderStatus] = useState("");
+  const [cancelItems, setCancelItems] = useState<{ [key: string]: number }>({});
 
   // 통계 계산
   const totalOrders = mockOrders.length;
@@ -162,6 +193,83 @@ export default function AdminPage() {
     0
   );
 
+  // 주문 플로우에 맞는 메뉴 아이템들
+  const menuItems = [
+    {
+      id: "dashboard",
+      name: "대시보드",
+      icon: BarChart3,
+      description: "전체 현황 보기",
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+    },
+    {
+      id: "orders",
+      name: "주문 관리",
+      icon: ShoppingCart,
+      description: "신규 주문 및 처리",
+      color: "text-green-600",
+      bgColor: "bg-green-50",
+      badge: pendingOrders > 0 ? pendingOrders : null,
+    },
+    {
+      id: "order-status",
+      name: "주문 상태",
+      icon: RefreshCw,
+      description: "주문 상태 업데이트",
+      color: "text-purple-600",
+      bgColor: "bg-purple-50",
+    },
+    {
+      id: "shipping",
+      name: "배송 관리",
+      icon: Truck,
+      description: "배송 및 물류",
+      color: "text-orange-600",
+      bgColor: "bg-orange-50",
+    },
+    {
+      id: "products",
+      name: "상품 관리",
+      icon: Package,
+      description: "재고 및 상품 정보",
+      color: "text-indigo-600",
+      bgColor: "bg-indigo-50",
+    },
+    {
+      id: "collections",
+      name: "컬렉션",
+      icon: Tag,
+      description: "상품 카테고리",
+      color: "text-pink-600",
+      bgColor: "bg-pink-50",
+    },
+    {
+      id: "customers",
+      name: "고객 관리",
+      icon: Users,
+      description: "고객 정보 및 분석",
+      color: "text-teal-600",
+      bgColor: "bg-teal-50",
+    },
+    {
+      id: "banners",
+      name: "배너 관리",
+      icon: Image,
+      description: "홈페이지 배너",
+      color: "text-red-600",
+      bgColor: "bg-red-50",
+    },
+    {
+      id: "coupons",
+      name: "쿠폰 관리",
+      icon: Gift,
+      description: "할인 쿠폰",
+      color: "text-yellow-600",
+      bgColor: "bg-yellow-50",
+    },
+  ];
+
   // 필터링된 주문
   const filteredOrders = mockOrders.filter((order) => {
     const matchesStatus =
@@ -176,6 +284,78 @@ export default function AdminPage() {
   const handleStatusChange = (orderId: string, newStatus: string) => {
     // 실제로는 API 호출로 상태 업데이트
     console.log(`Order ${orderId} status changed to ${newStatus}`);
+  };
+
+  // 주문 상태 변경
+  const handleOrderStatusChange = () => {
+    if (selectedOrder && newOrderStatus) {
+      handleStatusChange(selectedOrder.id, newOrderStatus);
+      setIsStatusChangeDialogOpen(false);
+      setSelectedOrder(null);
+      setNewOrderStatus("");
+    }
+  };
+
+  // 부분 취소 처리
+  const handlePartialCancel = () => {
+    if (selectedOrder) {
+      const cancelledItems = Object.entries(cancelItems)
+        .filter(([_, quantity]) => quantity > 0)
+        .map(([productName, quantity]) => ({ productName, quantity }));
+
+      console.log(`Order ${selectedOrder.id} partial cancel:`, cancelledItems);
+      setIsPartialCancelDialogOpen(false);
+      setSelectedOrder(null);
+      setCancelItems({});
+    }
+  };
+
+  // 영수증 발급
+  const generateReceipt = (order: any) => {
+    const receiptContent = `
+LUMINA - 영수증
+=================
+
+주문번호: ${order.id}
+주문일자: ${order.orderDate}
+고객명: ${order.customerName}
+고객이메일: ${order.customerEmail}
+고객전화: ${order.customerPhone}
+
+주문 상품:
+${order.products
+  .map(
+    (product: any) =>
+      `${product.name} - ${
+        product.quantity
+      }개 x ${product.price.toLocaleString()}원 = ${(
+        product.quantity * product.price
+      ).toLocaleString()}원`
+  )
+  .join("\n")}
+
+총 주문금액: ${order.totalAmount.toLocaleString()}원
+주문상태: ${
+      statusConfig[order.status as keyof typeof statusConfig]?.label ||
+      order.status
+    }
+
+배송지: ${order.shippingAddress}
+${order.trackingNumber ? `운송장번호: ${order.trackingNumber}` : ""}
+${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
+
+발급일시: ${new Date().toLocaleString()}
+    `;
+
+    const blob = new Blob([receiptContent], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `receipt-${order.id}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   // 엑셀 다운로드 함수들
@@ -297,307 +477,394 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* 헤더 */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              관리자 대시보드
-            </h1>
-            <p className="text-gray-600 mt-1">LUMINA 주문 및 쿠폰 관리</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* 모바일 사이드바 */}
+      <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+        <SheetContent side="left" className="w-80 p-0">
+          <div className="h-full bg-white border-r">
+            <div className="p-6 border-b bg-gradient-to-r from-blue-600 to-indigo-600">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
+                  <BarChart3 className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <h2 className="font-bold text-white">LUMINA</h2>
+                  <p className="text-blue-100 text-sm">관리자 대시보드</p>
+                </div>
+              </div>
+            </div>
+            <nav className="p-4">
+              {menuItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`w-full p-4 rounded-xl mb-2 text-left transition-all duration-200 ${
+                      activeTab === item.id
+                        ? `${item.bgColor} ${item.color} border-2 border-current/20`
+                        : "hover:bg-gray-50 text-gray-600"
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <Icon className="w-5 h-5" />
+                      <div className="flex-1">
+                        <div className="font-medium">{item.name}</div>
+                        <div className="text-xs opacity-75">
+                          {item.description}
+                        </div>
+                      </div>
+                      {item.badge && (
+                        <Badge className="bg-red-500 text-white">
+                          {item.badge}
+                        </Badge>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </nav>
           </div>
-          <div className="flex items-center space-x-4">
-            <Link href="/">
-              <Button variant="outline" className="flex items-center space-x-2">
-                <Home className="w-4 h-4" />
-                <span>홈으로 가기</span>
-              </Button>
-            </Link>
+        </SheetContent>
+      </Sheet>
+
+      <div className="flex min-h-screen">
+        {/* 데스크톱 사이드바 */}
+        <div className="hidden lg:flex lg:flex-col lg:w-80 lg:flex-shrink-0 h-screen bg-white border-r border-gray-200 sticky top-0 overflow-y-auto">
+          <div className="p-6 border-b bg-gradient-to-r from-blue-600 to-indigo-600">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
+                <BarChart3 className="w-7 h-7 text-blue-600" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h2 className="text-xl font-bold text-white truncate">
+                  LUMINA
+                </h2>
+                <p className="text-blue-100 text-sm truncate">
+                  관리자 대시보드
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-
-        {/* 통계 카드 */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">총 주문</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {totalOrders}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Package className="w-6 h-6 text-blue-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">결제 대기</p>
-                  <p className="text-2xl font-bold text-yellow-600">
-                    {pendingOrders}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-yellow-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">처리 중</p>
-                  <p className="text-2xl font-bold text-blue-600">
-                    {processingOrders}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Package className="w-6 h-6 text-blue-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">배송 중</p>
-                  <p className="text-2xl font-bold text-purple-600">
-                    {shippedOrders}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Truck className="w-6 h-6 text-purple-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">총 매출</p>
-                  <p className="text-2xl font-bold text-green-600">
-                    {totalRevenue.toLocaleString()}원
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <DollarSign className="w-6 h-6 text-green-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* 메인 탭 */}
-        <Tabs defaultValue="orders" className="w-full">
-          <TabsList className="grid w-full grid-cols-8">
-            <TabsTrigger value="orders" className="flex items-center space-x-2">
-              <Package className="w-4 h-4" />
-              <span>주문 관리</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="order-status"
-              className="flex items-center space-x-2"
-            >
-              <RefreshCw className="w-4 h-4" />
-              <span>주문 상태</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="shipping"
-              className="flex items-center space-x-2"
-            >
-              <Truck className="w-4 h-4" />
-              <span>배송 관리</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="customers"
-              className="flex items-center space-x-2"
-            >
-              <Users className="w-4 h-4" />
-              <span>고객 관리</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="products"
-              className="flex items-center space-x-2"
-            >
-              <Package className="w-4 h-4" />
-              <span>상품 관리</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="collections"
-              className="flex items-center space-x-2"
-            >
-              <Tag className="w-4 h-4" />
-              <span>컬렉션 관리</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="banners"
-              className="flex items-center space-x-2"
-            >
-              <Image className="w-4 h-4" />
-              <span>배너 관리</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="coupons"
-              className="flex items-center space-x-2"
-            >
-              <Gift className="w-4 h-4" />
-              <span>쿠폰 관리</span>
-            </TabsTrigger>
-          </TabsList>
-
-          {/* 주문 관리 탭 */}
-          <TabsContent value="orders" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle>주문 관리</CardTitle>
-                    <CardDescription>
-                      주문 상태를 관리하고 배송 정보를 업데이트하세요
-                    </CardDescription>
+          <nav className="p-4 space-y-2">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`w-full p-4 rounded-xl text-left transition-all duration-200 ${
+                    activeTab === item.id
+                      ? `${item.bgColor} ${item.color} border-2 border-current/20 shadow-lg`
+                      : "hover:bg-gray-50 text-gray-600"
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <Icon className="w-5 h-5 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium truncate">{item.name}</div>
+                      <div className="text-xs opacity-75 truncate">
+                        {item.description}
+                      </div>
+                    </div>
+                    {item.badge && (
+                      <Badge className="bg-red-500 text-white flex-shrink-0">
+                        {item.badge}
+                      </Badge>
+                    )}
                   </div>
-                  <div className="flex items-center space-x-4">
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* 메인 콘텐츠 */}
+        <div className="flex-1 min-w-0">
+          {/* 헤더 */}
+          <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+            <div className="px-4 lg:px-8 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3 lg:space-x-4 min-w-0 flex-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="lg:hidden flex-shrink-0"
+                    onClick={() => setIsMobileMenuOpen(true)}
+                  >
+                    <Menu className="w-5 h-5" />
+                  </Button>
+                  <div className="min-w-0 flex-1">
+                    <h1 className="text-lg lg:text-2xl font-bold text-gray-900 truncate">
+                      {menuItems.find((item) => item.id === activeTab)?.name ||
+                        "대시보드"}
+                    </h1>
+                    <p className="text-gray-600 text-xs lg:text-sm truncate">
+                      {
+                        menuItems.find((item) => item.id === activeTab)
+                          ?.description
+                      }
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2 lg:space-x-3 flex-shrink-0">
+                  <Button variant="ghost" size="sm" className="relative">
+                    <Bell className="w-4 h-4 lg:w-5 lg:h-5" />
+                    {pendingOrders > 0 && (
+                      <span className="absolute -top-1 -right-1 w-4 h-4 lg:w-5 lg:h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                        {pendingOrders}
+                      </span>
+                    )}
+                  </Button>
+                  <Link href="/">
                     <Button
                       variant="outline"
+                      size="sm"
                       className="flex items-center space-x-2"
-                      onClick={() => handleExportOrders()}
                     >
-                      <Download className="w-4 h-4" />
-                      <span>엑셀 다운로드</span>
+                      <Home className="w-4 h-4" />
+                      <span className="hidden sm:inline">쇼핑몰로</span>
+                      <span className="sm:hidden">홈</span>
                     </Button>
-                  </div>
+                  </Link>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-4">
-                    <Select
-                      value={selectedStatus}
-                      onValueChange={setSelectedStatus}
-                    >
-                      <SelectTrigger className="w-40">
-                        <SelectValue placeholder="상태" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">전체</SelectItem>
-                        <SelectItem value="pending">결제 대기</SelectItem>
-                        <SelectItem value="processing">처리 중</SelectItem>
-                        <SelectItem value="shipped">배송 중</SelectItem>
-                        <SelectItem value="delivered">배송 완료</SelectItem>
-                      </SelectContent>
-                    </Select>
+              </div>
+            </div>
+          </header>
 
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                      <input
-                        type="text"
-                        placeholder="주문번호, 고객명 검색..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
+          <main className="p-4 lg:p-8 min-w-0 overflow-hidden">
+            {/* 대시보드 홈 */}
+            {activeTab === "dashboard" && (
+              <div className="space-y-4 lg:space-y-6">
+                {/* 상단 통계 카드 */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
+                  <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 lg:p-6">
+                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
+                        <div className="flex items-center space-x-3 lg:space-x-0 lg:block">
+                          <div className="w-10 h-10 lg:hidden bg-blue-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <ShoppingCart className="w-5 h-5 text-blue-700" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs lg:text-sm font-medium text-blue-700 truncate">
+                              총 주문
+                            </p>
+                            <p className="text-xl lg:text-3xl font-bold text-blue-900">
+                              {totalOrders}
+                            </p>
+                            <p className="text-xs text-blue-600 mt-0 lg:mt-1">
+                              +12% 이번 달
+                            </p>
+                          </div>
+                        </div>
+                        <div className="hidden lg:flex w-14 h-14 bg-blue-200 rounded-2xl items-center justify-center">
+                          <ShoppingCart className="w-7 h-7 text-blue-700" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200 hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 lg:p-6">
+                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
+                        <div className="flex items-center space-x-3 lg:space-x-0 lg:block">
+                          <div className="w-10 h-10 lg:hidden bg-emerald-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <TrendingUp className="w-5 h-5 text-emerald-700" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs lg:text-sm font-medium text-emerald-700 truncate">
+                              총 매출
+                            </p>
+                            <p className="text-xl lg:text-3xl font-bold text-emerald-900">
+                              {Math.floor(totalRevenue / 10000)}만원
+                            </p>
+                            <p className="text-xs text-emerald-600 mt-0 lg:mt-1">
+                              +8% 이번 달
+                            </p>
+                          </div>
+                        </div>
+                        <div className="hidden lg:flex w-14 h-14 bg-emerald-200 rounded-2xl items-center justify-center">
+                          <TrendingUp className="w-7 h-7 text-emerald-700" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200 hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 lg:p-6">
+                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
+                        <div className="flex items-center space-x-3 lg:space-x-0 lg:block">
+                          <div className="w-10 h-10 lg:hidden bg-orange-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Activity className="w-5 h-5 text-orange-700" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs lg:text-sm font-medium text-orange-700 truncate">
+                              처리 중
+                            </p>
+                            <p className="text-xl lg:text-3xl font-bold text-orange-900">
+                              {processingOrders + pendingOrders}
+                            </p>
+                            <p className="text-xs text-orange-600 mt-0 lg:mt-1">
+                              확인 필요
+                            </p>
+                          </div>
+                        </div>
+                        <div className="hidden lg:flex w-14 h-14 bg-orange-200 rounded-2xl items-center justify-center">
+                          <Activity className="w-7 h-7 text-orange-700" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 lg:p-6">
+                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
+                        <div className="flex items-center space-x-3 lg:space-x-0 lg:block">
+                          <div className="w-10 h-10 lg:hidden bg-purple-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Star className="w-5 h-5 text-purple-700" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs lg:text-sm font-medium text-purple-700 truncate">
+                              고객 만족도
+                            </p>
+                            <p className="text-xl lg:text-3xl font-bold text-purple-900">
+                              4.8
+                            </p>
+                            <p className="text-xs text-purple-600 mt-0 lg:mt-1">
+                              5점 만점
+                            </p>
+                          </div>
+                        </div>
+                        <div className="hidden lg:flex w-14 h-14 bg-purple-200 rounded-2xl items-center justify-center">
+                          <Star className="w-7 h-7 text-purple-700" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* 빠른 액션 카드 */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                  <Card
+                    className="hover:shadow-lg transition-all duration-200 cursor-pointer bg-gradient-to-br from-white to-green-50 border-green-200"
+                    onClick={() => setActiveTab("orders")}
+                  >
+                    <CardContent className="p-4 lg:p-6">
+                      <div className="flex items-center space-x-3 lg:space-x-4">
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <ShoppingCart className="w-5 h-5 lg:w-6 lg:h-6 text-green-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 text-sm lg:text-base truncate">
+                            신규 주문 처리
+                          </h3>
+                          <p className="text-xs lg:text-sm text-gray-600 truncate">
+                            {pendingOrders}개의 새로운 주문
+                          </p>
+                        </div>
+                        <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 flex-shrink-0" />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card
+                    className="hover:shadow-lg transition-all duration-200 cursor-pointer bg-gradient-to-br from-white to-orange-50 border-orange-200"
+                    onClick={() => setActiveTab("shipping")}
+                  >
+                    <CardContent className="p-4 lg:p-6">
+                      <div className="flex items-center space-x-3 lg:space-x-4">
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <Truck className="w-5 h-5 lg:w-6 lg:h-6 text-orange-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 text-sm lg:text-base truncate">
+                            배송 관리
+                          </h3>
+                          <p className="text-xs lg:text-sm text-gray-600 truncate">
+                            {shippedOrders}개 상품 배송 중
+                          </p>
+                        </div>
+                        <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 flex-shrink-0" />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card
+                    className="hover:shadow-lg transition-all duration-200 cursor-pointer bg-gradient-to-br from-white to-indigo-50 border-indigo-200"
+                    onClick={() => setActiveTab("products")}
+                  >
+                    <CardContent className="p-4 lg:p-6">
+                      <div className="flex items-center space-x-3 lg:space-x-4">
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <Package className="w-5 h-5 lg:w-6 lg:h-6 text-indigo-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 text-sm lg:text-base truncate">
+                            재고 관리
+                          </h3>
+                          <p className="text-xs lg:text-sm text-gray-600 truncate">
+                            상품 재고 확인 및 관리
+                          </p>
+                        </div>
+                        <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 flex-shrink-0" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* 최근 주문 요약 */}
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle>최근 주문</CardTitle>
+                        <CardDescription>
+                          오늘 들어온 주문을 확인하세요
+                        </CardDescription>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setActiveTab("orders")}
+                        className="flex items-center space-x-2"
+                      >
+                        <Eye className="w-4 h-4" />
+                        <span>전체 보기</span>
+                      </Button>
                     </div>
-                  </div>
-                </div>
-
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200">
-                        <th className="text-left py-3 px-4 font-medium text-gray-900">
-                          주문번호
-                        </th>
-                        <th className="text-left py-3 px-4 font-medium text-gray-900">
-                          고객정보
-                        </th>
-                        <th className="text-left py-3 px-4 font-medium text-gray-900">
-                          상품
-                        </th>
-                        <th className="text-left py-3 px-4 font-medium text-gray-900">
-                          총액
-                        </th>
-                        <th className="text-left py-3 px-4 font-medium text-gray-900">
-                          주문일
-                        </th>
-                        <th className="text-left py-3 px-4 font-medium text-gray-900">
-                          상태
-                        </th>
-                        <th className="text-left py-3 px-4 font-medium text-gray-900">
-                          배송정보
-                        </th>
-                        <th className="text-left py-3 px-4 font-medium text-gray-900">
-                          액션
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredOrders.map((order) => {
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {mockOrders.slice(0, 3).map((order) => {
                         const StatusIcon =
                           statusConfig[
                             order.status as keyof typeof statusConfig
                           ].icon;
                         return (
-                          <tr
+                          <div
                             key={order.id}
-                            className="border-b border-gray-100 hover:bg-gray-50"
+                            className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
                           >
-                            <td className="py-4 px-4">
-                              <span className="font-medium text-gray-900">
-                                {order.id}
-                              </span>
-                            </td>
-                            <td className="py-4 px-4">
+                            <div className="flex items-center space-x-4">
+                              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                                <StatusIcon className="w-5 h-5 text-gray-600" />
+                              </div>
                               <div>
                                 <p className="font-medium text-gray-900">
+                                  {order.id}
+                                </p>
+                                <p className="text-sm text-gray-600">
                                   {order.customerName}
                                 </p>
-                                <p className="text-sm text-gray-600">
-                                  {order.customerEmail}
-                                </p>
-                                <p className="text-sm text-gray-600">
-                                  {order.customerPhone}
-                                </p>
                               </div>
-                            </td>
-                            <td className="py-4 px-4">
-                              <div className="space-y-1">
-                                {order.products.map((product, index) => (
-                                  <div key={index} className="text-sm">
-                                    <span className="font-medium">
-                                      {product.name}
-                                    </span>
-                                    <span className="text-gray-600">
-                                      {" "}
-                                      x{product.quantity}
-                                    </span>
-                                  </div>
-                                ))}
-                              </div>
-                            </td>
-                            <td className="py-4 px-4">
-                              <span className="font-medium text-gray-900">
+                            </div>
+                            <div className="text-right">
+                              <p className="font-medium text-gray-900">
                                 {order.totalAmount.toLocaleString()}원
-                              </span>
-                            </td>
-                            <td className="py-4 px-4">
-                              <span className="text-sm text-gray-600">
-                                {order.orderDate}
-                              </span>
-                            </td>
-                            <td className="py-4 px-4">
+                              </p>
                               <Badge
                                 className={
                                   statusConfig[
@@ -605,90 +872,581 @@ export default function AdminPage() {
                                   ].color
                                 }
                               >
-                                <StatusIcon className="w-3 h-3 mr-1" />
                                 {
                                   statusConfig[
                                     order.status as keyof typeof statusConfig
                                   ].label
                                 }
                               </Badge>
-                            </td>
-                            <td className="py-4 px-4">
-                              <div className="text-sm">
-                                {order.trackingNumber ? (
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* 주문 관리 탭 */}
+            {activeTab === "orders" && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle>주문 관리</CardTitle>
+                        <CardDescription>
+                          주문 상태를 관리하고 배송 정보를 업데이트하세요
+                        </CardDescription>
+                      </div>
+                      <div className="flex items-center space-x-4">
+                        <Button
+                          variant="outline"
+                          className="flex items-center space-x-2"
+                          onClick={() => handleExportOrders()}
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>엑셀 다운로드</span>
+                        </Button>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 flex-1">
+                        <Select
+                          value={selectedStatus}
+                          onValueChange={setSelectedStatus}
+                        >
+                          <SelectTrigger className="w-full sm:w-40">
+                            <SelectValue placeholder="상태" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">전체</SelectItem>
+                            <SelectItem value="pending">결제 대기</SelectItem>
+                            <SelectItem value="processing">처리 중</SelectItem>
+                            <SelectItem value="shipped">배송 중</SelectItem>
+                            <SelectItem value="delivered">배송 완료</SelectItem>
+                          </SelectContent>
+                        </Select>
+
+                        <div className="relative flex-1 sm:max-w-xs">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                          <input
+                            type="text"
+                            placeholder="주문번호, 고객명 검색..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 모바일: 카드 형태, 데스크톱: 테이블 형태 */}
+                    <div className="lg:hidden space-y-4">
+                      {filteredOrders.map((order) => {
+                        const StatusIcon =
+                          statusConfig[
+                            order.status as keyof typeof statusConfig
+                          ].icon;
+                        return (
+                          <Card
+                            key={order.id}
+                            className="bg-white border-gray-200"
+                          >
+                            <CardContent className="p-4">
+                              <div className="space-y-3">
+                                {/* 주문 번호와 상태 */}
+                                <div className="flex items-center justify-between">
+                                  <h3 className="font-semibold text-gray-900">
+                                    {order.id}
+                                  </h3>
+                                  <Badge
+                                    className={
+                                      statusConfig[
+                                        order.status as keyof typeof statusConfig
+                                      ].color
+                                    }
+                                  >
+                                    <StatusIcon className="w-3 h-3 mr-1" />
+                                    {
+                                      statusConfig[
+                                        order.status as keyof typeof statusConfig
+                                      ].label
+                                    }
+                                  </Badge>
+                                </div>
+
+                                {/* 고객 정보 */}
+                                <div>
+                                  <p className="font-medium text-gray-900">
+                                    {order.customerName}
+                                  </p>
+                                  <p className="text-sm text-gray-600">
+                                    {order.customerEmail}
+                                  </p>
+                                  <p className="text-sm text-gray-600">
+                                    {order.customerPhone}
+                                  </p>
+                                </div>
+
+                                {/* 상품 정보 */}
+                                <div>
+                                  <p className="text-sm font-medium text-gray-900 mb-1">
+                                    주문 상품
+                                  </p>
+                                  <div className="space-y-1">
+                                    {order.products.map((product, index) => (
+                                      <div
+                                        key={index}
+                                        className="text-sm text-gray-600"
+                                      >
+                                        <span className="font-medium">
+                                          {product.name}
+                                        </span>
+                                        <span> x{product.quantity}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                {/* 금액과 날짜 */}
+                                <div className="flex justify-between items-center">
                                   <div>
-                                    <p className="font-medium">
+                                    <p className="text-sm text-gray-600">
+                                      주문일
+                                    </p>
+                                    <p className="text-sm font-medium">
+                                      {order.orderDate}
+                                    </p>
+                                  </div>
+                                  <div className="text-right">
+                                    <p className="text-sm text-gray-600">
+                                      총액
+                                    </p>
+                                    <p className="font-semibold text-gray-900">
+                                      {order.totalAmount.toLocaleString()}원
+                                    </p>
+                                  </div>
+                                </div>
+
+                                {/* 배송 정보 */}
+                                {order.trackingNumber && (
+                                  <div>
+                                    <p className="text-sm text-gray-600">
                                       운송장: {order.trackingNumber}
                                     </p>
-                                    <p className="text-gray-600">
+                                    <p className="text-sm text-gray-600">
                                       예상 배송: {order.estimatedDelivery}
                                     </p>
                                   </div>
-                                ) : (
-                                  <span className="text-gray-500">
-                                    배송 정보 없음
-                                  </span>
                                 )}
+
+                                {/* 액션 버튼 */}
+                                <div className="pt-3 border-t space-y-2">
+                                  <div className="grid grid-cols-2 gap-2">
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => {
+                                        setSelectedOrder(order);
+                                        setNewOrderStatus(order.status);
+                                        setIsStatusChangeDialogOpen(true);
+                                      }}
+                                      className="text-xs"
+                                    >
+                                      상태변경
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => {
+                                        setSelectedOrder(order);
+                                        setCancelItems({});
+                                        setIsPartialCancelDialogOpen(true);
+                                      }}
+                                      className="text-xs"
+                                    >
+                                      부분취소
+                                    </Button>
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-2">
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => generateReceipt(order)}
+                                      className="text-xs"
+                                    >
+                                      영수증
+                                    </Button>
+                                    <Link
+                                      href={`/admin/orders/${order.id}`}
+                                      className="block"
+                                    >
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        className="w-full text-xs"
+                                      >
+                                        상세보기
+                                      </Button>
+                                    </Link>
+                                  </div>
+                                </div>
                               </div>
-                            </td>
-                            <td className="py-4 px-4">
-                              <Link href={`/admin/orders/${order.id}`}>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="flex items-center space-x-1"
-                                >
-                                  <span>상세보기</span>
-                                  <ArrowRight className="w-3 h-3" />
-                                </Button>
-                              </Link>
-                            </td>
-                          </tr>
+                            </CardContent>
+                          </Card>
                         );
                       })}
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                    </div>
 
-          {/* 주문 상태 관리 탭 */}
-          <TabsContent value="order-status" className="space-y-6">
-            <OrderStatusManager />
-          </TabsContent>
+                    {/* 데스크톱 테이블 */}
+                    <div className="hidden lg:block">
+                      <div className="overflow-x-auto">
+                        <table className="w-full min-w-full">
+                          <thead>
+                            <tr className="border-b border-gray-200">
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[120px]">
+                                주문번호
+                              </th>
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[200px]">
+                                고객정보
+                              </th>
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[200px]">
+                                상품
+                              </th>
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[100px]">
+                                총액
+                              </th>
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[120px]">
+                                주문일
+                              </th>
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[120px]">
+                                상태
+                              </th>
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[150px]">
+                                배송정보
+                              </th>
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[100px]">
+                                액션
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {filteredOrders.map((order) => {
+                              const StatusIcon =
+                                statusConfig[
+                                  order.status as keyof typeof statusConfig
+                                ].icon;
+                              return (
+                                <tr
+                                  key={order.id}
+                                  className="border-b border-gray-100 hover:bg-gray-50"
+                                >
+                                  <td className="py-4 px-4 min-w-[120px]">
+                                    <span className="font-medium text-gray-900">
+                                      {order.id}
+                                    </span>
+                                  </td>
+                                  <td className="py-4 px-4 min-w-[200px]">
+                                    <div>
+                                      <p className="font-medium text-gray-900">
+                                        {order.customerName}
+                                      </p>
+                                      <p className="text-sm text-gray-600">
+                                        {order.customerEmail}
+                                      </p>
+                                      <p className="text-sm text-gray-600">
+                                        {order.customerPhone}
+                                      </p>
+                                    </div>
+                                  </td>
+                                  <td className="py-4 px-4 min-w-[200px]">
+                                    <div className="space-y-1">
+                                      {order.products.map((product, index) => (
+                                        <div key={index} className="text-sm">
+                                          <span className="font-medium">
+                                            {product.name}
+                                          </span>
+                                          <span className="text-gray-600">
+                                            {" "}
+                                            x{product.quantity}
+                                          </span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </td>
+                                  <td className="py-4 px-4 min-w-[100px]">
+                                    <span className="font-medium text-gray-900">
+                                      {order.totalAmount.toLocaleString()}원
+                                    </span>
+                                  </td>
+                                  <td className="py-4 px-4 min-w-[120px]">
+                                    <span className="text-sm text-gray-600">
+                                      {order.orderDate}
+                                    </span>
+                                  </td>
+                                  <td className="py-4 px-4 min-w-[120px]">
+                                    <Badge
+                                      className={
+                                        statusConfig[
+                                          order.status as keyof typeof statusConfig
+                                        ].color
+                                      }
+                                    >
+                                      <StatusIcon className="w-3 h-3 mr-1" />
+                                      {
+                                        statusConfig[
+                                          order.status as keyof typeof statusConfig
+                                        ].label
+                                      }
+                                    </Badge>
+                                  </td>
+                                  <td className="py-4 px-4 min-w-[150px]">
+                                    <div className="text-sm">
+                                      {order.trackingNumber ? (
+                                        <div>
+                                          <p className="font-medium">
+                                            운송장: {order.trackingNumber}
+                                          </p>
+                                          <p className="text-gray-600">
+                                            예상 배송: {order.estimatedDelivery}
+                                          </p>
+                                        </div>
+                                      ) : (
+                                        <span className="text-gray-500">
+                                          배송 정보 없음
+                                        </span>
+                                      )}
+                                    </div>
+                                  </td>
+                                  <td className="py-4 px-4 min-w-[180px]">
+                                    <div className="flex flex-wrap gap-1">
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => {
+                                          setSelectedOrder(order);
+                                          setNewOrderStatus(order.status);
+                                          setIsStatusChangeDialogOpen(true);
+                                        }}
+                                        className="text-xs px-2 py-1"
+                                      >
+                                        상태변경
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => {
+                                          setSelectedOrder(order);
+                                          setCancelItems({});
+                                          setIsPartialCancelDialogOpen(true);
+                                        }}
+                                        className="text-xs px-2 py-1"
+                                      >
+                                        부분취소
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => generateReceipt(order)}
+                                        className="text-xs px-2 py-1"
+                                      >
+                                        영수증
+                                      </Button>
+                                      <Link href={`/admin/orders/${order.id}`}>
+                                        <Button
+                                          size="sm"
+                                          variant="outline"
+                                          className="text-xs px-2 py-1"
+                                        >
+                                          상세보기
+                                        </Button>
+                                      </Link>
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
 
-          {/* 배송 관리 탭 */}
-          <TabsContent value="shipping" className="space-y-6">
-            <ShippingManager />
-          </TabsContent>
+            {/* 주문 상태 관리 탭 */}
+            {activeTab === "order-status" && (
+              <div className="space-y-6">
+                <OrderStatusManager />
+              </div>
+            )}
 
-          {/* 고객 관리 탭 */}
-          <TabsContent value="customers" className="space-y-6">
-            <CustomerManager />
-          </TabsContent>
+            {/* 배송 관리 탭 */}
+            {activeTab === "shipping" && (
+              <div className="space-y-6">
+                <ShippingManager />
+              </div>
+            )}
 
-          {/* 상품 관리 탭 */}
-          <TabsContent value="products" className="space-y-6">
-            <ProductManager />
-          </TabsContent>
+            {/* 고객 관리 탭 */}
+            {activeTab === "customers" && (
+              <div className="space-y-6">
+                <CustomerManager />
+              </div>
+            )}
 
-          {/* 컬렉션 관리 탭 */}
-          <TabsContent value="collections" className="space-y-6">
-            <CollectionManager />
-          </TabsContent>
+            {/* 상품 관리 탭 */}
+            {activeTab === "products" && (
+              <div className="space-y-6">
+                <ProductManager />
+              </div>
+            )}
 
-          {/* 배너 관리 탭 */}
-          <TabsContent value="banners" className="space-y-6">
-            <BannerManager />
-          </TabsContent>
+            {/* 컬렉션 관리 탭 */}
+            {activeTab === "collections" && (
+              <div className="space-y-6">
+                <CollectionManager />
+              </div>
+            )}
 
-          {/* 쿠폰 관리 탭 */}
-          <TabsContent value="coupons" className="space-y-6">
-            <CouponManager />
-          </TabsContent>
-        </Tabs>
+            {/* 배너 관리 탭 */}
+            {activeTab === "banners" && (
+              <div className="space-y-6">
+                <BannerManager />
+              </div>
+            )}
+
+            {/* 쿠폰 관리 탭 */}
+            {activeTab === "coupons" && (
+              <div className="space-y-6">
+                <CouponManager />
+              </div>
+            )}
+          </main>
+        </div>
       </div>
+
+      {/* 주문 상태 변경 다이얼로그 */}
+      <Dialog
+        open={isStatusChangeDialogOpen}
+        onOpenChange={setIsStatusChangeDialogOpen}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>주문 상태 변경</DialogTitle>
+            <DialogDescription>
+              주문 {selectedOrder?.id}의 상태를 변경하세요.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="orderStatus">새로운 상태</Label>
+              <Select value={newOrderStatus} onValueChange={setNewOrderStatus}>
+                <SelectTrigger>
+                  <SelectValue placeholder="상태를 선택하세요" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pending">결제 대기</SelectItem>
+                  <SelectItem value="processing">처리 중</SelectItem>
+                  <SelectItem value="shipped">배송 중</SelectItem>
+                  <SelectItem value="delivered">배송 완료</SelectItem>
+                  <SelectItem value="cancelled">주문 취소</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button
+                variant="outline"
+                onClick={() => setIsStatusChangeDialogOpen(false)}
+              >
+                취소
+              </Button>
+              <Button onClick={handleOrderStatusChange}>상태 변경</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* 부분 취소 다이얼로그 */}
+      <Dialog
+        open={isPartialCancelDialogOpen}
+        onOpenChange={setIsPartialCancelDialogOpen}
+      >
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>부분 취소</DialogTitle>
+            <DialogDescription>
+              주문 {selectedOrder?.id}에서 취소할 상품과 수량을 선택하세요.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            {selectedOrder?.products.map((product: any, index: number) => (
+              <div key={index} className="border rounded-lg p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h4 className="font-medium">{product.name}</h4>
+                    <p className="text-sm text-gray-600">
+                      주문 수량: {product.quantity}개 | 단가:{" "}
+                      {product.price.toLocaleString()}원
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Label htmlFor={`cancel-${index}`} className="text-sm">
+                      취소 수량:
+                    </Label>
+                    <Input
+                      id={`cancel-${index}`}
+                      type="number"
+                      min="0"
+                      max={product.quantity}
+                      value={cancelItems[product.name] || 0}
+                      onChange={(e) =>
+                        setCancelItems({
+                          ...cancelItems,
+                          [product.name]: parseInt(e.target.value) || 0,
+                        })
+                      }
+                      className="w-20"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            <div className="border-t pt-4">
+              <div className="text-sm text-gray-600">
+                취소 예상 금액:{" "}
+                {Object.entries(cancelItems)
+                  .reduce((total, [productName, quantity]) => {
+                    const product = selectedOrder?.products.find(
+                      (p: any) => p.name === productName
+                    );
+                    return total + (product ? product.price * quantity : 0);
+                  }, 0)
+                  .toLocaleString()}
+                원
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-2">
+              <Button
+                variant="outline"
+                onClick={() => setIsPartialCancelDialogOpen(false)}
+              >
+                취소
+              </Button>
+              <Button onClick={handlePartialCancel} variant="destructive">
+                부분 취소 처리
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

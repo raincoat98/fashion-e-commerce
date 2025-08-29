@@ -14,6 +14,7 @@ import {
   X,
   AlertCircle,
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Coupon {
   code: string;
@@ -70,11 +71,16 @@ export default function CouponInput({
   const [couponCode, setCouponCode] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   // 쿠폰 검증 및 적용
   const applyCoupon = async () => {
     if (!couponCode.trim()) {
-      setError("쿠폰 코드를 입력해주세요.");
+      toast({
+        title: "쿠폰 코드 필요",
+        description: "쿠폰 코드를 입력해주세요.",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -89,7 +95,12 @@ export default function CouponInput({
     );
 
     if (!coupon) {
-      setError("유효하지 않은 쿠폰 코드입니다.");
+      toast({
+        title: "유효하지 않은 쿠폰",
+        description:
+          "입력하신 쿠폰 코드가 유효하지 않습니다. 다시 확인해주세요.",
+        variant: "destructive",
+      });
       setIsLoading(false);
       return;
     }
@@ -97,11 +108,20 @@ export default function CouponInput({
     onCouponApplied(coupon);
     setCouponCode("");
     setIsLoading(false);
+
+    toast({
+      title: "쿠폰 적용 완료",
+      description: `${coupon.name}이(가) 성공적으로 적용되었습니다.`,
+    });
   };
 
   // 쿠폰 제거
   const removeCoupon = () => {
     onCouponApplied(null);
+    toast({
+      title: "쿠폰 제거 완료",
+      description: "적용된 쿠폰이 제거되었습니다.",
+    });
   };
 
   // 할인 값 표시
@@ -202,13 +222,29 @@ export default function CouponInput({
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => {
+                      onClick={async () => {
                         setCouponCode(coupon.code);
-                        applyCoupon();
+                        setIsLoading(true);
+                        setError("");
+
+                        // Mock API 호출 시뮬레이션
+                        await new Promise((resolve) =>
+                          setTimeout(resolve, 500)
+                        );
+
+                        onCouponApplied(coupon);
+                        setCouponCode("");
+                        setIsLoading(false);
+
+                        toast({
+                          title: "쿠폰 적용 완료",
+                          description: `${coupon.name}이(가) 성공적으로 적용되었습니다.`,
+                        });
                       }}
+                      disabled={isLoading}
                       className="text-xs"
                     >
-                      적용
+                      {isLoading ? "적용 중..." : "적용"}
                     </Button>
                   </div>
                 ))}

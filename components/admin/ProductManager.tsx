@@ -1200,109 +1200,119 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
       </Dialog>
 
       {/* 기존 ProductManager 표시 */}
-      <>
+      <div>
         {/* 통계 카드 */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">활성 상품</p>
-                  <p className="text-2xl font-bold text-blue-600">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6 mb-6">
+          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+            <CardContent className="p-4 lg:p-6">
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-blue-200 rounded-xl flex items-center justify-center">
+                    <Package className="w-5 h-5 lg:w-6 lg:h-6 text-blue-700" />
+                  </div>
+                  <p className="text-xl lg:text-2xl font-bold text-blue-900">
                     {activeProducts}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Package className="w-6 h-6 text-blue-600" />
-                </div>
+                <p className="text-xs lg:text-sm font-medium text-blue-700 truncate">
+                  활성 상품
+                </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    피처드 상품
-                  </p>
-                  <p className="text-2xl font-bold text-purple-600">
+          <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+            <CardContent className="p-4 lg:p-6">
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-purple-200 rounded-xl flex items-center justify-center">
+                    <Star className="w-5 h-5 lg:w-6 lg:h-6 text-purple-700" />
+                  </div>
+                  <p className="text-xl lg:text-2xl font-bold text-purple-900">
                     {featuredProducts}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Star className="w-6 h-6 text-purple-600" />
-                </div>
+                <p className="text-xs lg:text-sm font-medium text-purple-700 truncate">
+                  피처드 상품
+                </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">총 재고</p>
-                  <p className="text-2xl font-bold text-green-600">
+          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+            <CardContent className="p-4 lg:p-6">
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-green-200 rounded-xl flex items-center justify-center">
+                    <ShoppingCart className="w-5 h-5 lg:w-6 lg:h-6 text-green-700" />
+                  </div>
+                  <p className="text-xl lg:text-2xl font-bold text-green-900">
                     {totalStock}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <ShoppingCart className="w-6 h-6 text-green-600" />
-                </div>
+                <p className="text-xs lg:text-sm font-medium text-green-700 truncate">
+                  총 재고
+                </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    총 재고 가치
-                  </p>
-                  <p className="text-2xl font-bold text-orange-600">
-                    {totalValue.toLocaleString()}원
+          <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
+            <CardContent className="p-4 lg:p-6">
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-orange-200 rounded-xl flex items-center justify-center">
+                    <DollarSign className="w-5 h-5 lg:w-6 lg:h-6 text-orange-700" />
+                  </div>
+                  <p className="text-xl lg:text-2xl font-bold text-orange-900">
+                    {Math.floor(totalValue / 10000)}만
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <DollarSign className="w-6 h-6 text-orange-600" />
-                </div>
+                <p className="text-xs lg:text-sm font-medium text-orange-700 truncate">
+                  총 재고 가치
+                </p>
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* 상품 관리 */}
-        <Card>
+        <Card className="bg-gradient-to-br from-white to-gray-50 border-gray-200">
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
-                <CardTitle>상품 관리</CardTitle>
+                <CardTitle className="text-lg lg:text-xl">상품 관리</CardTitle>
                 <CardDescription>상품을 등록하고 관리하세요</CardDescription>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-wrap items-center gap-2 lg:gap-4">
                 <Link href="/">
                   <Button
                     variant="outline"
+                    size="sm"
                     className="flex items-center space-x-2"
                   >
                     <Home className="w-4 h-4" />
-                    <span>홈으로 가기</span>
+                    <span className="hidden sm:inline">홈으로 가기</span>
+                    <span className="sm:hidden">홈</span>
                   </Button>
                 </Link>
                 <Button
                   onClick={() => setShowProductForm(true)}
-                  className="lumina-gradient text-white"
+                  size="sm"
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  상품 등록
+                  <span className="hidden sm:inline">상품 등록</span>
+                  <span className="sm:hidden">등록</span>
                 </Button>
                 <Button
                   variant="outline"
+                  size="sm"
                   className="flex items-center space-x-2"
                 >
                   <Download className="w-4 h-4" />
-                  <span>엑셀 다운로드</span>
+                  <span className="hidden sm:inline">엑셀 다운로드</span>
+                  <span className="sm:hidden">엑셀</span>
                 </Button>
                 <Dialog
                   open={isBulkUploadDialogOpen}
@@ -1311,10 +1321,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   <DialogTrigger asChild>
                     <Button
                       variant="outline"
+                      size="sm"
                       className="flex items-center space-x-2"
                     >
                       <Upload className="w-4 h-4" />
-                      <span>대량 업로드</span>
+                      <span className="hidden sm:inline">대량 업로드</span>
+                      <span className="sm:hidden">업로드</span>
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
@@ -1410,7 +1422,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
             </div>
 
             {/* 상품 목록 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {finalFilteredProducts.map((product) => (
                 <Card
                   key={product.id}
@@ -1611,7 +1623,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
             </div>
           </CardContent>
         </Card>
-      </>
+      </div>
     </div>
   );
 }

@@ -77,6 +77,21 @@ export default function CollectionManager() {
     console.log("캐주얼 컬렉션 상태:", casualCollection);
   }, [setShowInactive, collections]);
 
+  // 컬렉션 정보가 변경될 때 managing 컬렉션도 업데이트
+  useEffect(() => {
+    if (managingCollection) {
+      const updatedCollection = collections.find(
+        (c) => c.id === managingCollection.id
+      );
+      if (
+        updatedCollection &&
+        JSON.stringify(updatedCollection) !== JSON.stringify(managingCollection)
+      ) {
+        setManagingCollection(updatedCollection);
+      }
+    }
+  }, [collections]);
+
   const { products, filteredProducts } = useProductStore();
 
   // 개발용: localStorage 초기화 함수
@@ -205,7 +220,9 @@ export default function CollectionManager() {
 
   // 상품 관리 다이얼로그 열기
   const openProductManageDialog = (collection: Collection) => {
-    setManagingCollection(collection);
+    // 최신 컬렉션 정보 가져오기
+    const latestCollection = collections.find((c) => c.id === collection.id);
+    setManagingCollection(latestCollection || collection);
     setProductSearchTerm(""); // 검색어 초기화
     setIsProductManageDialogOpen(true);
   };
@@ -220,16 +237,15 @@ export default function CollectionManager() {
   );
 
   // 상품을 컬렉션에 추가/제거
-  const toggleProductInCollection = (
-    productId: string,
-    isSelected: boolean
-  ) => {
+  const toggleProductInCollection = (productId: string, shouldAdd: boolean) => {
     if (managingCollection) {
-      if (isSelected) {
+      if (shouldAdd) {
         addProductToCollection(managingCollection.id, productId);
       } else {
         removeProductFromCollection(managingCollection.id, productId);
       }
+      // 강제 리렌더링을 위해 상태 업데이트
+      forceUpdate({});
     }
   };
 
@@ -249,6 +265,8 @@ export default function CollectionManager() {
         // 전체 선택
         addProductsToCollection(managingCollection.id, allProductIds);
       }
+      // 강제 리렌더링을 위해 상태 업데이트
+      forceUpdate({});
     }
   };
 
@@ -272,52 +290,71 @@ export default function CollectionManager() {
   return (
     <div className="space-y-6">
       {/* 통계 카드 */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">활성 컬렉션</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {activeCollectionsCount}
-                </p>
+      <div className="grid grid-cols-3 gap-2 lg:gap-6">
+        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 hover:shadow-md transition-shadow">
+          <CardContent className="p-3 lg:p-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-2 lg:space-y-0">
+              <div className="flex items-center space-x-2 lg:space-x-0 lg:block">
+                <div className="w-8 h-8 lg:hidden bg-blue-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Tag className="w-4 h-4 text-blue-700" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-blue-700 truncate">
+                    활성 컬렉션
+                  </p>
+                  <p className="text-lg lg:text-2xl font-bold text-blue-900">
+                    {activeCollectionsCount}
+                  </p>
+                </div>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Tag className="w-6 h-6 text-blue-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">총 상품 수</p>
-                <p className="text-2xl font-bold text-green-600">
-                  {totalProducts}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <Image className="w-6 h-6 text-green-600" />
+              <div className="hidden lg:flex w-12 h-12 bg-blue-200 rounded-xl items-center justify-center">
+                <Tag className="w-6 h-6 text-blue-700" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  평균 상품 수
-                </p>
-                <p className="text-2xl font-bold text-purple-600">
-                  {averageProductsPerCollection}
-                </p>
+        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200 hover:shadow-md transition-shadow">
+          <CardContent className="p-3 lg:p-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-2 lg:space-y-0">
+              <div className="flex items-center space-x-2 lg:space-x-0 lg:block">
+                <div className="w-8 h-8 lg:hidden bg-green-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Package className="w-4 h-4 text-green-700" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-green-700 truncate">
+                    총 상품 수
+                  </p>
+                  <p className="text-lg lg:text-2xl font-bold text-green-900">
+                    {totalProducts}
+                  </p>
+                </div>
               </div>
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <Tag className="w-6 h-6 text-purple-600" />
+              <div className="hidden lg:flex w-12 h-12 bg-green-200 rounded-xl items-center justify-center">
+                <Package className="w-6 h-6 text-green-700" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 hover:shadow-md transition-shadow">
+          <CardContent className="p-3 lg:p-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-2 lg:space-y-0">
+              <div className="flex items-center space-x-2 lg:space-x-0 lg:block">
+                <div className="w-8 h-8 lg:hidden bg-purple-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Tag className="w-4 h-4 text-purple-700" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-purple-700 truncate">
+                    평균 상품 수
+                  </p>
+                  <p className="text-lg lg:text-2xl font-bold text-purple-900">
+                    {averageProductsPerCollection}
+                  </p>
+                </div>
+              </div>
+              <div className="hidden lg:flex w-12 h-12 bg-purple-200 rounded-xl items-center justify-center">
+                <Tag className="w-6 h-6 text-purple-700" />
               </div>
             </div>
           </CardContent>
@@ -325,11 +362,11 @@ export default function CollectionManager() {
       </div>
 
       {/* 컬렉션 관리 */}
-      <Card>
+      <Card className="bg-gradient-to-br from-white to-gray-50 border-gray-200">
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
-              <CardTitle>컬렉션 관리</CardTitle>
+              <CardTitle className="text-lg lg:text-xl">컬렉션 관리</CardTitle>
               <CardDescription>컬렉션을 생성하고 관리하세요</CardDescription>
             </div>
             <Dialog
@@ -337,9 +374,10 @@ export default function CollectionManager() {
               onOpenChange={setIsCreateDialogOpen}
             >
               <DialogTrigger asChild>
-                <Button className="lumina-gradient text-white">
+                <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white w-fit">
                   <Plus className="w-4 h-4 mr-2" />
-                  컬렉션 생성
+                  <span className="hidden sm:inline">컬렉션 생성</span>
+                  <span className="sm:hidden">생성</span>
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-2xl">
@@ -599,20 +637,20 @@ export default function CollectionManager() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between mb-6">
-            <div className="relative">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+            <div className="relative flex-1 lg:max-w-xs">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="컬렉션명, 설명 검색..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-64"
+                className="pl-10 w-full"
               />
             </div>
           </div>
 
           {/* 컬렉션 목록 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {collections.map((collection) => (
               <Card
                 key={collection.id}
@@ -636,7 +674,7 @@ export default function CollectionManager() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Image className="w-12 h-12 text-gray-400" alt="" />
+                          <Image className="w-12 h-12 text-gray-400" />
                         </div>
                       )}
                       <div className="absolute top-2 right-2 flex flex-col gap-1">
@@ -752,7 +790,9 @@ export default function CollectionManager() {
           <DialogHeader>
             <DialogTitle className="flex items-center space-x-2">
               <Package className="w-5 h-5" />
-              <span>{managingCollection?.name} 상품 관리</span>
+              <span className="truncate">
+                {managingCollection?.name} 상품 관리
+              </span>
             </DialogTitle>
             <DialogDescription>
               이 컬렉션에 포함할 상품을 선택하세요.
@@ -761,7 +801,7 @@ export default function CollectionManager() {
 
           <div className="space-y-4">
             {/* 상품 검색 및 전체 선택 */}
-            <div className="flex gap-4 items-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
@@ -774,7 +814,8 @@ export default function CollectionManager() {
               <Button
                 variant="outline"
                 onClick={toggleAllProducts}
-                className="whitespace-nowrap"
+                className="whitespace-nowrap w-full sm:w-auto"
+                size="sm"
               >
                 {filteredProductsForDialog.every((p) =>
                   managingCollection?.productIds.includes(p.id)
@@ -785,47 +826,54 @@ export default function CollectionManager() {
             </div>
 
             {/* 상품 목록 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 max-h-96 overflow-y-auto">
               {filteredProductsForDialog.map((product) => {
                 const isSelected =
                   managingCollection?.productIds.includes(product.id) || false;
                 return (
                   <div
                     key={product.id}
-                    className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                    className={`border rounded-lg p-3 lg:p-4 cursor-pointer transition-colors ${
                       isSelected
                         ? "border-blue-500 bg-blue-50"
                         : "border-gray-200 hover:border-gray-300"
                     }`}
-                    onClick={() =>
-                      toggleProductInCollection(product.id, !isSelected)
-                    }
+                    onClick={(e) => {
+                      // 체크박스 클릭이 아닌 경우에만 토글
+                      if ((e.target as HTMLElement).tagName !== "BUTTON") {
+                        toggleProductInCollection(product.id, !isSelected);
+                      }
+                    }}
                   >
-                    <div className="flex items-start space-x-3">
+                    <div className="flex items-start space-x-2 lg:space-x-3">
                       <Checkbox
                         checked={isSelected}
-                        onChange={() =>
-                          toggleProductInCollection(product.id, !isSelected)
+                        onCheckedChange={(checked) =>
+                          toggleProductInCollection(product.id, !!checked)
                         }
-                        className="mt-1"
+                        className="mt-1 flex-shrink-0"
                       />
                       <div className="flex-1 min-w-0">
-                        {product.images.length > 0 && (
-                          <img
-                            src={product.images[0]}
-                            alt={`${product.name} 상품 이미지`}
-                            className="w-12 h-12 object-cover rounded mb-2"
-                          />
-                        )}
-                        <h4 className="text-sm font-medium text-gray-900 truncate">
-                          {product.name}
-                        </h4>
-                        <p className="text-sm text-gray-500">
-                          {product.price.toLocaleString()}원
-                        </p>
-                        <p className="text-xs text-gray-400">
-                          {product.category}
-                        </p>
+                        <div className="flex items-start space-x-2">
+                          {product.images.length > 0 && (
+                            <img
+                              src={product.images[0]}
+                              alt={`${product.name} 상품 이미지`}
+                              className="w-10 h-10 lg:w-12 lg:h-12 object-cover rounded flex-shrink-0"
+                            />
+                          )}
+                          <div className="min-w-0 flex-1">
+                            <h4 className="text-sm font-medium text-gray-900 truncate">
+                              {product.name}
+                            </h4>
+                            <p className="text-sm text-gray-500">
+                              {product.price.toLocaleString()}원
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              {product.category}
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -839,10 +887,11 @@ export default function CollectionManager() {
             </div>
 
             {/* 액션 버튼 */}
-            <div className="flex justify-end space-x-2">
+            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-2">
               <Button
                 variant="outline"
                 onClick={() => setIsProductManageDialogOpen(false)}
+                className="w-full sm:w-auto"
               >
                 닫기
               </Button>

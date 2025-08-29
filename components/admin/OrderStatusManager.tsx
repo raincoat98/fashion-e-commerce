@@ -317,8 +317,8 @@ export default function OrderStatusManager() {
     itemId: string,
     cancelQuantity: number
   ) => {
-    setOrders(
-      orders.map((order) => {
+    setLocalOrders(
+      localOrders.map((order) => {
         if (order.id === orderId) {
           const updatedItems = order.items.map((item) => {
             if (item.id === itemId) {
@@ -360,8 +360,8 @@ export default function OrderStatusManager() {
 
   // 영수증 발급
   const issueReceipt = (orderId: string) => {
-    setOrders(
-      orders.map((order) => {
+    setLocalOrders(
+      localOrders.map((order) => {
         if (order.id === orderId) {
           const receiptNumber = `RCP-${Date.now()}`;
           return {
@@ -396,28 +396,31 @@ export default function OrderStatusManager() {
   const statusStats = getStatusStats();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* 주문 상태 통계 */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 lg:gap-4">
         {orderStatusFlow.map((status) => {
           const Icon = status.icon;
           return (
-            <Card key={status.value}>
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">
-                      {status.label}
-                    </p>
-                    <p className="text-xl font-bold text-gray-900">
+            <Card
+              key={status.value}
+              className="bg-gradient-to-br from-white to-gray-50 border-gray-200 hover:shadow-md transition-all duration-200"
+            >
+              <CardContent className="p-3 lg:p-4">
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div
+                      className={`w-8 h-8 lg:w-10 lg:h-10 rounded-xl flex items-center justify-center ${status.color}`}
+                    >
+                      <Icon className="w-4 h-4 lg:w-5 lg:h-5" />
+                    </div>
+                    <p className="text-xl lg:text-2xl font-bold text-gray-900">
                       {statusStats[status.value] || 0}
                     </p>
                   </div>
-                  <div
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center ${status.color}`}
-                  >
-                    <Icon className="w-4 h-4" />
-                  </div>
+                  <p className="text-xs lg:text-sm font-medium text-gray-600 truncate">
+                    {status.label}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -426,22 +429,24 @@ export default function OrderStatusManager() {
       </div>
 
       {/* 주문 목록 */}
-      <Card>
+      <Card className="bg-gradient-to-br from-white to-gray-50 border-gray-200">
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <CardTitle>주문 관리</CardTitle>
+              <CardTitle className="text-lg lg:text-xl">주문 관리</CardTitle>
               <CardDescription>
                 주문 상태를 관리하고 부분 취소, 영수증 발급을 처리하세요
               </CardDescription>
             </div>
             <Button
               variant="outline"
-              className="flex items-center space-x-2"
+              size="sm"
+              className="flex items-center space-x-2 w-fit"
               onClick={handleExportOrderStatus}
             >
               <Download className="w-4 h-4" />
-              <span>엑셀 다운로드</span>
+              <span className="hidden sm:inline">엑셀 다운로드</span>
+              <span className="sm:hidden">엑셀</span>
             </Button>
           </div>
         </CardHeader>
@@ -458,22 +463,22 @@ export default function OrderStatusManager() {
               return (
                 <Card
                   key={order.id}
-                  className="hover:shadow-md transition-shadow"
+                  className="hover:shadow-lg transition-all duration-200 bg-white border-gray-200"
                 >
-                  <CardContent className="p-6">
+                  <CardContent className="p-4 lg:p-6">
                     <div className="space-y-4">
                       {/* 주문 헤더 */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <h3 className="font-medium text-gray-900">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="flex flex-wrap items-center gap-2 lg:gap-4">
+                          <h3 className="font-semibold text-gray-900 text-lg">
                             {order.id}
                           </h3>
                           <Badge
-                            className={
+                            className={`${
                               orderStatusFlow.find(
                                 (s) => s.value === order.status
                               )?.color
-                            }
+                            } px-3 py-1`}
                           >
                             <StatusIcon className="w-3 h-3 mr-1" />
                             {
@@ -482,19 +487,25 @@ export default function OrderStatusManager() {
                               )?.label
                             }
                           </Badge>
-                          <Badge variant="outline">
+                          <Badge variant="outline" className="px-3 py-1">
                             {PaymentMethod?.label}
                           </Badge>
                         </div>
-                        <div className="text-sm text-gray-600">
+                        <div className="text-sm text-gray-600 font-medium">
                           {order.orderDate}
                         </div>
                       </div>
 
                       {/* 고객 정보 */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <Mail className="w-4 h-4 text-blue-600" />
+                            <p className="text-sm font-semibold text-blue-900">
+                              고객 정보
+                            </p>
+                          </div>
+                          <p className="font-medium text-gray-900">
                             {order.customerName}
                           </p>
                           <p className="text-sm text-gray-600">
@@ -504,61 +515,79 @@ export default function OrderStatusManager() {
                             {order.customerPhone}
                           </p>
                         </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">
-                            배송지
-                          </p>
-                          <p className="text-sm text-gray-600">
+                        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <MapPin className="w-4 h-4 text-orange-600" />
+                            <p className="text-sm font-semibold text-orange-900">
+                              배송지
+                            </p>
+                          </div>
+                          <p className="text-sm text-gray-700 leading-relaxed">
                             {order.shippingAddress}
                           </p>
                           {order.shippingMemo && (
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-gray-600 mt-1 italic">
                               메모: {order.shippingMemo}
                             </p>
                           )}
                         </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">
-                            금액 정보
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            상품금액: {order.subtotal.toLocaleString()}원
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            배송비: {order.shippingFee.toLocaleString()}원
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            할인: -{order.discountAmount.toLocaleString()}원
-                          </p>
-                          <p className="text-sm font-medium text-gray-900">
-                            총 결제: {order.totalAmount.toLocaleString()}원
-                          </p>
+                        <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <DollarSign className="w-4 h-4 text-green-600" />
+                            <p className="text-sm font-semibold text-green-900">
+                              금액 정보
+                            </p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-sm text-gray-600">
+                              상품: {order.subtotal.toLocaleString()}원
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              배송비: {order.shippingFee.toLocaleString()}원
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              할인: -{order.discountAmount.toLocaleString()}원
+                            </p>
+                            <div className="border-t border-green-200 pt-1 mt-2">
+                              <p className="font-semibold text-green-900">
+                                총 결제: {order.totalAmount.toLocaleString()}원
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
                       {/* 주문 상품 */}
                       <div>
-                        <h4 className="font-medium text-gray-900 mb-2">
-                          주문 상품
-                        </h4>
-                        <div className="space-y-2">
+                        <div className="flex items-center space-x-2 mb-3">
+                          <ShoppingCart className="w-4 h-4 text-gray-600" />
+                          <h4 className="font-semibold text-gray-900">
+                            주문 상품
+                          </h4>
+                        </div>
+                        <div className="space-y-3">
                           {order.items.map((item) => (
                             <div
                               key={item.id}
-                              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-200"
                             >
-                              <div className="flex-1">
-                                <p className="font-medium">{item.name}</p>
-                                <p className="text-sm text-gray-600">
-                                  {item.size} / {item.color} /{" "}
-                                  {item.price.toLocaleString()}원
+                              <div className="flex-1 min-w-0">
+                                <p className="font-semibold text-gray-900 truncate">
+                                  {item.name}
                                 </p>
+                                <div className="flex flex-wrap gap-2 text-sm text-gray-600 mt-1">
+                                  <span>{item.size}</span>
+                                  <span>•</span>
+                                  <span>{item.color}</span>
+                                  <span>•</span>
+                                  <span>{item.price.toLocaleString()}원</span>
+                                </div>
                               </div>
-                              <div className="text-right">
-                                <p className="text-sm">
+                              <div className="text-left sm:text-right shrink-0">
+                                <p className="font-medium">
                                   {item.quantity - item.cancelledQuantity}개
                                   {item.cancelledQuantity > 0 && (
-                                    <span className="text-red-600 ml-2">
+                                    <span className="text-red-600 ml-2 text-sm">
                                       (취소: {item.cancelledQuantity}개)
                                     </span>
                                   )}
@@ -577,33 +606,37 @@ export default function OrderStatusManager() {
                       </div>
 
                       {/* 액션 버튼 */}
-                      <div className="flex items-center justify-between pt-4 border-t">
-                        <div className="flex items-center space-x-2">
+                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-4 border-t border-gray-200">
+                        <div className="flex flex-wrap gap-2">
                           <Button
                             size="sm"
-                            variant="outline"
+                            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700"
                             onClick={() => {
                               setSelectedOrder(order);
                               setIsStatusDialogOpen(true);
                             }}
                           >
                             <RefreshCw className="w-4 h-4 mr-1" />
-                            상태 변경
+                            <span className="hidden sm:inline">상태 변경</span>
+                            <span className="sm:hidden">상태</span>
                           </Button>
                           <Button
                             size="sm"
                             variant="outline"
+                            className="border-red-200 text-red-600 hover:bg-red-50"
                             onClick={() => {
                               setSelectedOrder(order);
                               setIsCancelDialogOpen(true);
                             }}
                           >
                             <X className="w-4 h-4 mr-1" />
-                            부분 취소
+                            <span className="hidden sm:inline">부분 취소</span>
+                            <span className="sm:hidden">취소</span>
                           </Button>
                           <Button
                             size="sm"
                             variant="outline"
+                            className="border-green-200 text-green-600 hover:bg-green-50"
                             onClick={() => {
                               setSelectedOrder(order);
                               setIsReceiptDialogOpen(true);
@@ -611,20 +644,24 @@ export default function OrderStatusManager() {
                             disabled={order.receipt.issued}
                           >
                             <Receipt className="w-4 h-4 mr-1" />
-                            {order.receipt.issued
-                              ? "영수증 발급됨"
-                              : "영수증 발급"}
+                            <span className="hidden sm:inline">
+                              {order.receipt.issued
+                                ? "영수증 발급됨"
+                                : "영수증 발급"}
+                            </span>
+                            <span className="sm:hidden">영수증</span>
                           </Button>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex flex-wrap gap-2">
                           <Button size="sm" variant="outline">
                             <Download className="w-4 h-4 mr-1" />
-                            주문서
+                            <span className="hidden sm:inline">주문서</span>
+                            <span className="sm:hidden">다운로드</span>
                           </Button>
                           {order.receipt.issued && (
                             <Button size="sm" variant="outline">
                               <Receipt className="w-4 h-4 mr-1" />
-                              영수증
+                              <span className="hidden sm:inline">영수증</span>
                             </Button>
                           )}
                         </div>
