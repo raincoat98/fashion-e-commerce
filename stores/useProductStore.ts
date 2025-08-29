@@ -8,15 +8,21 @@ export interface Product {
   description: string;
   price: number;
   originalPrice?: number;
+  salePrice?: number;
   category: string;
   subCategory?: string;
   images: string[];
   sizes: string[];
   colors: string[];
   stock: number;
+  isActive: boolean;
   isNew: boolean;
   isSale: boolean;
   isBest: boolean;
+  isFeatured?: boolean;
+  isLimited?: boolean;
+  isHot?: boolean;
+  collection?: string;
   rating: number;
   reviewCount: number;
   tags: string[];
@@ -113,6 +119,7 @@ interface ProductStore {
   selectedColors: string[];
   sortBy: "name" | "price" | "rating" | "createdAt";
   sortOrder: "asc" | "desc";
+  showInactive: boolean; // 관리자용 비활성 상품 표시 옵션
 
   // 페이지네이션
   currentPage: number;
@@ -139,6 +146,7 @@ interface ProductStore {
   setSelectedColors: (colors: string[]) => void;
   setSortBy: (sortBy: "name" | "price" | "rating" | "createdAt") => void;
   setSortOrder: (order: "asc" | "desc") => void;
+  setShowInactive: (show: boolean) => void;
   resetFilters: () => void;
 
   // 페이지네이션
@@ -204,9 +212,14 @@ const sampleProducts: Product[] = [
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: ["화이트", "블랙", "네이비"],
     stock: 50,
+    isActive: true,
     isNew: true,
     isSale: true,
     isBest: false,
+    isFeatured: false,
+    isLimited: false,
+    isHot: false,
+    collection: "basic",
     rating: 4.8,
     reviewCount: 127,
     tags: ["클래식", "오피스", "데이트"],
@@ -227,9 +240,14 @@ const sampleProducts: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["베이지", "블랙", "그레이"],
     stock: 35,
+    isActive: true,
     isNew: false,
     isSale: false,
     isBest: true,
+    isFeatured: true,
+    isLimited: false,
+    isHot: false,
+    collection: "basic",
     rating: 4.9,
     reviewCount: 89,
     tags: ["슬림", "오피스", "캐주얼"],
@@ -252,9 +270,14 @@ const sampleProducts: Product[] = [
     sizes: ["XS", "S", "M", "L"],
     colors: ["블루", "핑크"],
     stock: 25,
+    isActive: true,
     isNew: true,
     isSale: true,
     isBest: false,
+    isFeatured: false,
+    isLimited: true,
+    isHot: true,
+    collection: "special",
     rating: 4.7,
     reviewCount: 156,
     tags: ["플로럴", "데이트", "파티"],
@@ -276,9 +299,14 @@ const sampleProducts: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["아이보리", "그레이", "베이지"],
     stock: 40,
+    isActive: true,
     isNew: false,
     isSale: false,
     isBest: true,
+    isFeatured: true,
+    isLimited: false,
+    isHot: false,
+    collection: "basic",
     rating: 4.6,
     reviewCount: 203,
     tags: ["니트", "캐주얼", "레이어드"],
@@ -301,9 +329,14 @@ const sampleProducts: Product[] = [
     sizes: ["XS", "S", "M", "L"],
     colors: ["라이트블루", "다크블루"],
     stock: 30,
+    isActive: false,
     isNew: false,
     isSale: true,
     isBest: false,
+    isFeatured: false,
+    isLimited: false,
+    isHot: false,
+    collection: "basic",
     rating: 4.5,
     reviewCount: 78,
     tags: ["데님", "캐주얼", "베이직"],
@@ -470,6 +503,7 @@ export const useProductStore = create<ProductStore>()(
         selectedColors: [],
         sortBy: "createdAt",
         sortOrder: "desc",
+        showInactive: false, // 기본적으로 활성화된 상품만 보기 (관리자는 수동으로 설정)
 
         // 페이지네이션
         currentPage: 1,
@@ -506,8 +540,12 @@ export const useProductStore = create<ProductStore>()(
         },
 
         updateProduct: (id, updates) => {
-          set((state) => ({
-            products: state.products.map((product) =>
+          console.log("updateProduct 호출:", { id, updates });
+          set((state) => {
+            const oldProduct = state.products.find((p) => p.id === id);
+            console.log("업데이트 전 상품:", oldProduct);
+
+            const newProducts = state.products.map((product) =>
               product.id === id
                 ? {
                     ...product,
@@ -515,8 +553,15 @@ export const useProductStore = create<ProductStore>()(
                     updatedAt: new Date().toISOString(),
                   }
                 : product
-            ),
-          }));
+            );
+
+            const updatedProduct = newProducts.find((p) => p.id === id);
+            console.log("업데이트 후 상품:", updatedProduct);
+
+            return {
+              products: newProducts,
+            };
+          });
         },
 
         deleteProduct: (id) => {
@@ -547,6 +592,7 @@ export const useProductStore = create<ProductStore>()(
           set({ selectedColors: colors, currentPage: 1 }),
         setSortBy: (sortBy) => set({ sortBy, currentPage: 1 }),
         setSortOrder: (order) => set({ sortOrder: order, currentPage: 1 }),
+        setShowInactive: (show) => set({ showInactive: show, currentPage: 1 }),
 
         resetFilters: () =>
           set({
@@ -558,6 +604,7 @@ export const useProductStore = create<ProductStore>()(
             selectedColors: [],
             sortBy: "createdAt",
             sortOrder: "desc",
+            showInactive: false,
             currentPage: 1,
           }),
 
@@ -715,9 +762,15 @@ export const useProductStore = create<ProductStore>()(
             selectedColors,
             sortBy,
             sortOrder,
+            showInactive,
           } = get();
 
           let filtered = products;
+
+          // 활성화 상품 필터링 (showInactive가 false인 경우만)
+          if (!showInactive) {
+            filtered = filtered.filter((product) => product.isActive);
+          }
 
           // 검색어 필터링
           if (searchTerm) {

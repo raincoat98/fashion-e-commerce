@@ -64,8 +64,13 @@ export function useProducts() {
 
       console.log("useProducts - storeProducts:", storeProducts);
 
-      // useProductStore의 상품들을 Product 형식으로 변환
-      const convertedProducts = storeProducts.map(convertStoreProductToProduct);
+      // useProductStore의 활성화된 상품들만 필터링 후 Product 형식으로 변환
+      const activeProducts = storeProducts.filter(
+        (product) => product.isActive
+      );
+      const convertedProducts = activeProducts.map(
+        convertStoreProductToProduct
+      );
 
       console.log("useProducts - convertedProducts:", convertedProducts);
 

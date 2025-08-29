@@ -24,6 +24,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import {
   Dialog,
   DialogContent,
@@ -64,7 +65,8 @@ interface Collection {
 }
 
 // Mock 데이터 (실제로는 스토어에서 가져오므로 사용되지 않음)
-const mockProducts: Product[] = [
+const mockProducts: Product[] = []; /* 사용되지 않는 mock 데이터
+const unusedMockProducts = [
   {
     id: "1",
     name: "LUMINA 시그니처 티셔츠",
@@ -82,6 +84,7 @@ const mockProducts: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     stock: 150,
     isActive: true,
+    isSale: true,
     isFeatured: true,
     tags: ["시그니처", "베스트셀러", "신상"],
     isLimited: false,
@@ -146,7 +149,7 @@ const mockProducts: Product[] = [
     createdAt: "2025-01-10",
     updatedAt: "2025-01-12",
   },
-];
+]; */
 
 const mockCollections: Collection[] = [
   {
@@ -226,10 +229,12 @@ interface ProductFormData {
   care: string;
   modelInfo: string;
   features: string[];
+  isActive?: boolean;
   isLimited?: boolean;
   isHot?: boolean;
   isNew?: boolean;
   isBest?: boolean;
+  isFeatured?: boolean;
 }
 
 export default function ProductManager({ onEditProduct }: ProductManagerProps) {
@@ -241,15 +246,23 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     deleteProduct,
     setSearchTerm,
     setSelectedCategory,
+    setShowInactive,
     searchTerm,
     selectedCategory,
+    showInactive,
     filteredProducts,
   } = useProductStore();
+
+  // 관리자는 기본적으로 비활성화 상품도 보기
+  React.useEffect(() => {
+    setShowInactive(true);
+  }, [setShowInactive]);
 
   const [collections, setCollections] = useState<Collection[]>(mockCollections);
   const [selectedCollection, setSelectedCollection] = useState<string>("all");
   const [isBulkUploadDialogOpen, setIsBulkUploadDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [, forceUpdate] = useState({});
 
   // ProductForm 통합을 위한 상태
   const [showProductForm, setShowProductForm] = useState(false);
@@ -264,10 +277,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     care: "",
     modelInfo: "",
     features: [""],
+    isActive: true,
     isLimited: false,
     isHot: false,
     isNew: false,
     isBest: false,
+    isFeatured: false,
   });
 
   const [sizes, setSizes] = useState([
@@ -311,11 +326,64 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
   }, [formData.category]);
 
   // 필터링된 상품 (컬렉션 필터 추가)
-  const finalFilteredProducts = filteredProducts.filter((product) => {
-    const matchesCollection =
-      selectedCollection === "all" || product.collection === selectedCollection;
-    return matchesCollection;
-  });
+  const finalFilteredProducts = React.useMemo(() => {
+    console.log("finalFilteredProducts 계산 시작:", {
+      productsLength: products.length,
+      showInactive,
+      searchTerm,
+      selectedCategory,
+      selectedCollection,
+    });
+
+    let filtered = products;
+
+    // 활성화 상품 필터링 (showInactive가 false인 경우만)
+    if (!showInactive) {
+      filtered = filtered.filter((product) => product.isActive);
+    }
+
+    // 검색어 필터링
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.description
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          product.tags.some((tag) =>
+            tag.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+      );
+    }
+
+    // 카테고리 필터링
+    if (selectedCategory && selectedCategory !== "all") {
+      filtered = filtered.filter(
+        (product) => product.category === selectedCategory
+      );
+    }
+
+    // 컬렉션 필터링
+    if (selectedCollection !== "all") {
+      filtered = filtered.filter(
+        (product) => product.collection === selectedCollection
+      );
+    }
+
+    console.log("finalFilteredProducts 계산 완료:", {
+      originalLength: products.length,
+      filteredLength: filtered.length,
+      firstProduct: filtered[0],
+    });
+
+    return filtered;
+  }, [
+    products,
+    showInactive,
+    searchTerm,
+    selectedCategory,
+    selectedCollection,
+  ]);
 
   // 상품 수정 다이얼로그 열기
   const openEditDialog = (product: Product) => {
@@ -375,36 +443,64 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
   };
 
   // 상품 활성화/비활성화
-  const toggleProductStatus = (id: string) => {
-    const product = products.find((p) => p.id === id);
-    const newStatus = !product?.isActive;
+  const toggleProductStatus = React.useCallback(
+    (id: string) => {
+      const product = products.find((p) => p.id === id);
+      const newStatus = !product?.isActive;
 
-    updateProduct(id, { isActive: newStatus });
+      console.log("상품 상태 변경 전:", {
+        id,
+        currentStatus: product?.isActive,
+        newStatus,
+      });
 
-    toast({
-      title: "상품 상태 변경",
-      description: `${product?.name || "상품"}이 ${
-        newStatus ? "활성화" : "비활성화"
-      }되었습니다.`,
-      duration: 2000,
-    });
-  };
+      updateProduct(id, { isActive: newStatus });
+
+      // 강제 리렌더링
+      setTimeout(() => {
+        forceUpdate({});
+        console.log("강제 리렌더링 실행");
+      }, 100);
+
+      console.log(
+        "상품 상태 변경 후 - products:",
+        products.find((p) => p.id === id)
+      );
+
+      toast({
+        title: "상품 상태 변경",
+        description: `${product?.name || "상품"}이 ${
+          newStatus ? "활성화" : "비활성화"
+        }되었습니다.`,
+        duration: 2000,
+      });
+    },
+    [products, updateProduct, forceUpdate, toast]
+  );
 
   // 상품 피처드 토글
-  const toggleProductFeatured = (id: string) => {
-    const product = products.find((p) => p.id === id);
-    const newFeatured = !product?.isFeatured;
+  const toggleProductFeatured = React.useCallback(
+    (id: string) => {
+      const product = products.find((p) => p.id === id);
+      const newFeatured = !product?.isFeatured;
 
-    updateProduct(id, { isFeatured: newFeatured });
+      updateProduct(id, { isFeatured: newFeatured });
 
-    toast({
-      title: "피처드 상태 변경",
-      description: `${product?.name || "상품"}이 ${
-        newFeatured ? "피처드" : "일반"
-      } 상품으로 변경되었습니다.`,
-      duration: 2000,
-    });
-  };
+      // 강제 리렌더링
+      setTimeout(() => {
+        forceUpdate({});
+      }, 100);
+
+      toast({
+        title: "피처드 상태 변경",
+        description: `${product?.name || "상품"}이 ${
+          newFeatured ? "피처드" : "일반"
+        } 상품으로 변경되었습니다.`,
+        duration: 2000,
+      });
+    },
+    [products, updateProduct, forceUpdate, toast]
+  );
 
   // 대량 업로드 시뮬레이션
   const handleBulkUpload = (file: File) => {
@@ -509,9 +605,13 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         sizes: sizes.map((s) => s.name),
         stock: sizes.reduce((sum, size) => sum + size.stock, 0),
         tags: formData.features.filter((f) => f.trim() !== ""),
-        isNew: formData.isNew,
+        isActive: formData.isActive ?? true,
+        isNew: formData.isNew ?? false,
         isSale: formData.originalPrice !== formData.price,
-        isBest: formData.isBest,
+        isBest: formData.isBest ?? false,
+        isFeatured: formData.isFeatured ?? false,
+        isLimited: formData.isLimited ?? false,
+        isHot: formData.isHot ?? false,
       };
 
       updateProduct(editingProduct.id, updates);
@@ -537,9 +637,14 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         colors: colors.map((c) => c.name),
         sizes: sizes.map((s) => s.name),
         stock: sizes.reduce((sum, size) => sum + size.stock, 0),
-        isNew: formData.isNew,
+        isActive: formData.isActive ?? true,
+        isNew: formData.isNew ?? false,
         isSale: formData.originalPrice !== formData.price,
-        isBest: formData.isBest,
+        isBest: formData.isBest ?? false,
+        isFeatured: formData.isFeatured ?? false,
+        isLimited: formData.isLimited ?? false,
+        isHot: formData.isHot ?? false,
+        collection: "basic",
         rating: 0,
         reviewCount: 0,
         tags: formData.features.filter((f) => f.trim() !== ""),
@@ -571,10 +676,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
       care: "",
       modelInfo: "",
       features: [""],
+      isActive: true,
       isLimited: false,
       isHot: false,
       isNew: false,
       isBest: false,
+      isFeatured: false,
     });
     // 카테고리에 따라 기본 사이즈 설정
     if (formData.category === "bottom") {
@@ -1245,6 +1352,17 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   </SelectContent>
                 </Select>
 
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="show-inactive"
+                    checked={showInactive}
+                    onCheckedChange={setShowInactive}
+                  />
+                  <Label htmlFor="show-inactive" className="text-sm">
+                    비활성화 상품 표시
+                  </Label>
+                </div>
+
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                   <Input
@@ -1262,7 +1380,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
               {finalFilteredProducts.map((product) => (
                 <Card
                   key={product.id}
-                  className="hover:shadow-md transition-shadow"
+                  className={`hover:shadow-md transition-shadow ${
+                    !product.isActive ? "opacity-60 border-gray-300" : ""
+                  }`}
                 >
                   <CardContent className="p-6">
                     <div className="space-y-4">
@@ -1280,15 +1400,21 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                           </div>
                         )}
                         <div className="absolute top-2 right-2 flex space-x-1">
-                          {product.isActive ? (
-                            <Badge className="bg-green-100 text-green-800">
-                              활성
-                            </Badge>
-                          ) : (
-                            <Badge className="bg-gray-100 text-gray-800">
-                              비활성
-                            </Badge>
-                          )}
+                          {(() => {
+                            console.log(`상품 ${product.id} 배지 렌더링:`, {
+                              isActive: product.isActive,
+                              name: product.name,
+                            });
+                            return product.isActive ? (
+                              <Badge className="bg-green-100 text-green-800">
+                                활성
+                              </Badge>
+                            ) : (
+                              <Badge className="bg-gray-100 text-gray-800">
+                                비활성
+                              </Badge>
+                            );
+                          })()}
                           {product.isFeatured && (
                             <Badge className="bg-purple-100 text-purple-800">
                               피처드
