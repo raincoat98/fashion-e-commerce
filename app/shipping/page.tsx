@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -65,7 +67,9 @@ export default function ShippingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <div className="py-12">
       <div className="container mx-auto px-4">
         {/* 헤더 */}
         <div className="text-center mb-12">
@@ -86,7 +90,19 @@ export default function ShippingPage() {
                 <Tabs value={selectedShippingTab} onValueChange={setSelectedShippingTab}>
                   <TabsList className="grid w-full grid-cols-3 mb-6">
                     {shippingMethods.map((method) => {
-                      const Icon = method.icon;
+                      const getIcon = (id: string) => {
+                        switch (id) {
+                          case 'standard':
+                            return Truck;
+                          case 'express':
+                            return Clock;
+                          case 'premium':
+                            return Shield;
+                          default:
+                            return Package;
+                        }
+                      };
+                      const Icon = getIcon(method.id);
                       return (
                         <TabsTrigger key={method.id} value={method.id} className="flex items-center space-x-2">
                           <Icon className="w-4 h-4" />
@@ -97,7 +113,19 @@ export default function ShippingPage() {
                   </TabsList>
 
                   {shippingMethods.map((method) => {
-                    const Icon = method.icon;
+                    const getIcon = (id: string) => {
+                      switch (id) {
+                        case 'standard':
+                          return Truck;
+                        case 'express':
+                          return Clock;
+                        case 'premium':
+                          return Shield;
+                        default:
+                          return Package;
+                      }
+                    };
+                    const Icon = getIcon(method.id);
                     return (
                       <TabsContent key={method.id} value={method.id}>
                         <div className="space-y-6">
@@ -293,6 +321,8 @@ export default function ShippingPage() {
           </div>
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

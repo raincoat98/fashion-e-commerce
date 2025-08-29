@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -153,350 +155,361 @@ export default function ReturnPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4">
-        {/* 헤더 */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">교환/반품</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            고객님의 만족을 위해 신속하고 정확한 교환/반품 서비스를 제공합니다.
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <div className="py-12">
+        <div className="container mx-auto px-4">
+          {/* 헤더 */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">교환/반품</h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              고객님의 만족을 위해 신속하고 정확한 교환/반품 서비스를
+              제공합니다.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* 메인 콘텐츠 */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold">
-                  교환/반품 안내
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Tabs
-                  value={selectedReturnTab}
-                  onValueChange={setSelectedReturnTab}
-                >
-                  <TabsList className="grid w-full grid-cols-3 mb-6">
-                    <TabsTrigger value="policy">정책</TabsTrigger>
-                    <TabsTrigger value="process">절차</TabsTrigger>
-                    <TabsTrigger value="refund">환불</TabsTrigger>
-                  </TabsList>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* 메인 콘텐츠 */}
+            <div className="lg:col-span-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-2xl font-bold">
+                    교환/반품 안내
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Tabs
+                    value={selectedReturnTab}
+                    onValueChange={setSelectedReturnTab}
+                  >
+                    <TabsList className="grid w-full grid-cols-3 mb-6">
+                      <TabsTrigger value="policy">정책</TabsTrigger>
+                      <TabsTrigger value="process">절차</TabsTrigger>
+                      <TabsTrigger value="refund">환불</TabsTrigger>
+                    </TabsList>
 
-                  {/* 정책 탭 */}
-                  <TabsContent value="policy" className="space-y-6">
-                    <div className="bg-blue-50 p-6 rounded-lg">
-                      <div className="flex items-center space-x-3 mb-4">
-                        <Clock className="w-6 h-6 text-blue-600" />
-                        <h3 className="text-xl font-semibold text-blue-900">
-                          교환/반품 기간: {returnPolicy.period}
-                        </h3>
-                      </div>
-                      <p className="text-blue-800">
-                        상품 수령 후 7일 이내에 교환/반품 신청이 가능합니다.
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                          <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                          교환/반품 가능 조건
-                        </h4>
-                        <ul className="space-y-2">
-                          {returnPolicy.conditions.map((condition, index) => (
-                            <li
-                              key={index}
-                              className="flex items-start space-x-2"
-                            >
-                              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                              <span className="text-gray-700">{condition}</span>
-                            </li>
-                          ))}
-                        </ul>
+                    {/* 정책 탭 */}
+                    <TabsContent value="policy" className="space-y-6">
+                      <div className="bg-blue-50 p-6 rounded-lg">
+                        <div className="flex items-center space-x-3 mb-4">
+                          <Clock className="w-6 h-6 text-blue-600" />
+                          <h3 className="text-xl font-semibold text-blue-900">
+                            교환/반품 기간: {returnPolicy.period}
+                          </h3>
+                        </div>
+                        <p className="text-blue-800">
+                          상품 수령 후 7일 이내에 교환/반품 신청이 가능합니다.
+                        </p>
                       </div>
 
-                      <div>
-                        <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                          <XCircle className="w-5 h-5 text-red-500 mr-2" />
-                          교환/반품 불가 조건
-                        </h4>
-                        <ul className="space-y-2">
-                          {returnPolicy.exceptions.map((exception, index) => (
-                            <li
-                              key={index}
-                              className="flex items-start space-x-2"
-                            >
-                              <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                              <span className="text-gray-700">{exception}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  {/* 절차 탭 */}
-                  <TabsContent value="process" className="space-y-6">
-                    <div className="space-y-4">
-                      {returnProcess.map((process, index) => {
-                        const Icon = process.icon;
-                        return (
-                          <div
-                            key={index}
-                            className="flex items-start space-x-4"
-                          >
-                            <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <span className="text-sm font-semibold text-yellow-600">
-                                {process.step}
-                              </span>
-                            </div>
-                            <div className="flex-1">
-                              <div className="flex items-center space-x-2 mb-1">
-                                <Icon className="w-4 h-4 text-green-500" />
-                                <h4 className="font-semibold text-gray-900">
-                                  {process.title}
-                                </h4>
-                              </div>
-                              <p className="text-gray-600 mb-1">
-                                {process.description}
-                              </p>
-                              <p className="text-sm text-gray-500">
-                                {process.time}
-                              </p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    <div className="bg-yellow-50 p-4 rounded-lg">
-                      <div className="flex items-start space-x-3">
-                        <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <h4 className="font-semibold text-yellow-900 mb-1">
-                            주의사항
+                          <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                            교환/반품 가능 조건
                           </h4>
-                          <ul className="text-sm text-yellow-800 space-y-1">
-                            <li>
-                              • 교환/반품 신청 전 상품 상태를 확인해주세요
-                            </li>
-                            <li>• 배송비는 상품 수령 후 별도 청구됩니다</li>
-                            <li>
-                              • 교환 시 원하는 사이즈의 재고를 확인해주세요
-                            </li>
-                            <li>
-                              • 반품 상품은 지정된 주소로만 발송 가능합니다
-                            </li>
+                          <ul className="space-y-2">
+                            {returnPolicy.conditions.map((condition, index) => (
+                              <li
+                                key={index}
+                                className="flex items-start space-x-2"
+                              >
+                                <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                                <span className="text-gray-700">
+                                  {condition}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <div>
+                          <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <XCircle className="w-5 h-5 text-red-500 mr-2" />
+                            교환/반품 불가 조건
+                          </h4>
+                          <ul className="space-y-2">
+                            {returnPolicy.exceptions.map((exception, index) => (
+                              <li
+                                key={index}
+                                className="flex items-start space-x-2"
+                              >
+                                <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                                <span className="text-gray-700">
+                                  {exception}
+                                </span>
+                              </li>
+                            ))}
                           </ul>
                         </div>
                       </div>
-                    </div>
-                  </TabsContent>
+                    </TabsContent>
 
-                  {/* 환불 탭 */}
-                  <TabsContent value="refund" className="space-y-6">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        환불 처리 시간
-                      </h3>
-                      <div className="overflow-x-auto">
-                        <table className="w-full border-collapse border border-gray-200">
-                          <thead>
-                            <tr className="bg-gray-50">
-                              <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
-                                결제 수단
-                              </th>
-                              <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
-                                처리 시간
-                              </th>
-                              <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
-                                비고
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {refundInfo.methods.map((method, index) => (
-                              <tr key={index} className="hover:bg-gray-50">
-                                <td className="border border-gray-200 px-4 py-3 font-medium">
-                                  {method.method}
-                                </td>
-                                <td className="border border-gray-200 px-4 py-3">
-                                  <Badge variant="outline">{method.time}</Badge>
-                                </td>
-                                <td className="border border-gray-200 px-4 py-3 text-sm text-gray-600">
-                                  {method.note}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                    {/* 절차 탭 */}
+                    <TabsContent value="process" className="space-y-6">
+                      <div className="space-y-4">
+                        {returnProcess.map((process, index) => {
+                          const Icon = process.icon;
+                          return (
+                            <div
+                              key={index}
+                              className="flex items-start space-x-4"
+                            >
+                              <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span className="text-sm font-semibold text-yellow-600">
+                                  {process.step}
+                                </span>
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center space-x-2 mb-1">
+                                  <Icon className="w-4 h-4 text-green-500" />
+                                  <h4 className="font-semibold text-gray-900">
+                                    {process.title}
+                                  </h4>
+                                </div>
+                                <p className="text-gray-600 mb-1">
+                                  {process.description}
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                  {process.time}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
-                    </div>
 
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        배송비 안내
-                      </h3>
-                      <div className="overflow-x-auto">
-                        <table className="w-full border-collapse border border-gray-200">
-                          <thead>
-                            <tr className="bg-gray-50">
-                              <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
-                                구분
-                              </th>
-                              <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
-                                교환
-                              </th>
-                              <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
-                                반품
-                              </th>
-                              <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
-                                비고
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {refundInfo.fees.map((fee, index) => (
-                              <tr key={index} className="hover:bg-gray-50">
-                                <td className="border border-gray-200 px-4 py-3 font-medium">
-                                  {fee.type}
-                                </td>
-                                <td className="border border-gray-200 px-4 py-3">
-                                  <Badge
-                                    variant={
-                                      fee.exchange === "무료"
-                                        ? "default"
-                                        : "outline"
-                                    }
-                                  >
-                                    {fee.exchange}
-                                  </Badge>
-                                </td>
-                                <td className="border border-gray-200 px-4 py-3">
-                                  <Badge
-                                    variant={
-                                      fee.return === "무료"
-                                        ? "default"
-                                        : "outline"
-                                    }
-                                  >
-                                    {fee.return}
-                                  </Badge>
-                                </td>
-                                <td className="border border-gray-200 px-4 py-3 text-sm text-gray-600">
-                                  {fee.note}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                      <div className="bg-yellow-50 p-4 rounded-lg">
+                        <div className="flex items-start space-x-3">
+                          <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <h4 className="font-semibold text-yellow-900 mb-1">
+                              주의사항
+                            </h4>
+                            <ul className="text-sm text-yellow-800 space-y-1">
+                              <li>
+                                • 교환/반품 신청 전 상품 상태를 확인해주세요
+                              </li>
+                              <li>• 배송비는 상품 수령 후 별도 청구됩니다</li>
+                              <li>
+                                • 교환 시 원하는 사이즈의 재고를 확인해주세요
+                              </li>
+                              <li>
+                                • 반품 상품은 지정된 주소로만 발송 가능합니다
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
-          </div>
+                    </TabsContent>
 
-          {/* 사이드바 */}
-          <div className="space-y-6">
-            {/* 빠른 신청 */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">
-                  교환/반품 신청
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button className="w-full lumina-gradient text-white">
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  신청하기
-                </Button>
-                <Button variant="outline" className="w-full">
-                  <Truck className="w-4 h-4 mr-2" />
-                  배송 조회
-                </Button>
-              </CardContent>
-            </Card>
+                    {/* 환불 탭 */}
+                    <TabsContent value="refund" className="space-y-6">
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                          환불 처리 시간
+                        </h3>
+                        <div className="overflow-x-auto">
+                          <table className="w-full border-collapse border border-gray-200">
+                            <thead>
+                              <tr className="bg-gray-50">
+                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                  결제 수단
+                                </th>
+                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                  처리 시간
+                                </th>
+                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                  비고
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {refundInfo.methods.map((method, index) => (
+                                <tr key={index} className="hover:bg-gray-50">
+                                  <td className="border border-gray-200 px-4 py-3 font-medium">
+                                    {method.method}
+                                  </td>
+                                  <td className="border border-gray-200 px-4 py-3">
+                                    <Badge variant="outline">
+                                      {method.time}
+                                    </Badge>
+                                  </td>
+                                  <td className="border border-gray-200 px-4 py-3 text-sm text-gray-600">
+                                    {method.note}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
 
-            {/* FAQ */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">
-                  자주 묻는 질문
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Accordion type="single" collapsible className="space-y-2">
-                  {faqData.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="border-none"
-                    >
-                      <AccordionTrigger className="text-left text-sm font-medium hover:no-underline">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-sm text-gray-600 pt-2">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </CardContent>
-            </Card>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                          배송비 안내
+                        </h3>
+                        <div className="overflow-x-auto">
+                          <table className="w-full border-collapse border border-gray-200">
+                            <thead>
+                              <tr className="bg-gray-50">
+                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                  구분
+                                </th>
+                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                  교환
+                                </th>
+                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                  반품
+                                </th>
+                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                  비고
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {refundInfo.fees.map((fee, index) => (
+                                <tr key={index} className="hover:bg-gray-50">
+                                  <td className="border border-gray-200 px-4 py-3 font-medium">
+                                    {fee.type}
+                                  </td>
+                                  <td className="border border-gray-200 px-4 py-3">
+                                    <Badge
+                                      variant={
+                                        fee.exchange === "무료"
+                                          ? "default"
+                                          : "outline"
+                                      }
+                                    >
+                                      {fee.exchange}
+                                    </Badge>
+                                  </td>
+                                  <td className="border border-gray-200 px-4 py-3">
+                                    <Badge
+                                      variant={
+                                        fee.return === "무료"
+                                          ? "default"
+                                          : "outline"
+                                      }
+                                    >
+                                      {fee.return}
+                                    </Badge>
+                                  </td>
+                                  <td className="border border-gray-200 px-4 py-3 text-sm text-gray-600">
+                                    {fee.note}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </CardContent>
+              </Card>
+            </div>
 
-            {/* 고객센터 */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">고객센터</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
-                  <Phone className="w-4 h-4 mr-2" />
-                  1588-1234
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Mail className="w-4 h-4 mr-2" />
-                  cs@lumina.com
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <ArrowRight className="w-4 h-4 mr-2" />
-                  문의하기
-                </Button>
-              </CardContent>
-            </Card>
+            {/* 사이드바 */}
+            <div className="space-y-6">
+              {/* 빠른 신청 */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold">
+                    교환/반품 신청
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Button className="w-full lumina-gradient text-white">
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    신청하기
+                  </Button>
+                  <Button variant="outline" className="w-full">
+                    <Truck className="w-4 h-4 mr-2" />
+                    배송 조회
+                  </Button>
+                </CardContent>
+              </Card>
 
-            {/* 주의사항 */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">주의사항</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-start space-x-2">
-                  <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-gray-700">
-                    교환/반품 신청 후 상품 발송 전까지 취소 가능
-                  </span>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-gray-700">
-                    교환 시 원하는 사이즈 재고 확인 필요
-                  </span>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-gray-700">
-                    반품 상품은 지정된 주소로만 발송
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
+              {/* FAQ */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold">
+                    자주 묻는 질문
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Accordion type="single" collapsible className="space-y-2">
+                    {faqData.map((faq, index) => (
+                      <AccordionItem
+                        key={index}
+                        value={`item-${index}`}
+                        className="border-none"
+                      >
+                        <AccordionTrigger className="text-left text-sm font-medium hover:no-underline">
+                          {faq.question}
+                        </AccordionTrigger>
+                        <AccordionContent className="text-sm text-gray-600 pt-2">
+                          {faq.answer}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </CardContent>
+              </Card>
+
+              {/* 고객센터 */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold">고객센터</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button variant="outline" className="w-full justify-start">
+                    <Phone className="w-4 h-4 mr-2" />
+                    1588-1234
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start">
+                    <Mail className="w-4 h-4 mr-2" />
+                    cs@lumina.com
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start">
+                    <ArrowRight className="w-4 h-4 mr-2" />
+                    문의하기
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* 주의사항 */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold">주의사항</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-start space-x-2">
+                    <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">
+                      교환/반품 신청 후 상품 발송 전까지 취소 가능
+                    </span>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">
+                      교환 시 원하는 사이즈 재고 확인 필요
+                    </span>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">
+                      반품 상품은 지정된 주소로만 발송
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
