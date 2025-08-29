@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -42,55 +42,16 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
-
-interface ShippingAddress {
-  id: string;
-  name: string;
-  recipient: string;
-  phone: string;
-  postcode: string;
-  address: string;
-  detailAddress: string;
-  memo?: string;
-  isDefault: boolean;
-  type: "home" | "work" | "other";
-  createdAt: string;
-  updatedAt: string;
-}
-
-const mockAddresses: ShippingAddress[] = [
-  {
-    id: "addr-001",
-    name: "집",
-    recipient: "김미영",
-    phone: "010-1234-5678",
-    postcode: "06123",
-    address: "서울시 강남구 테헤란로 123",
-    detailAddress: "456호",
-    memo: "문 앞에 놓아주세요",
-    isDefault: true,
-    type: "home",
-    createdAt: "2023-01-15",
-    updatedAt: "2024-01-20",
-  },
-  {
-    id: "addr-002",
-    name: "회사",
-    recipient: "김미영",
-    phone: "010-1234-5678",
-    postcode: "06142",
-    address: "서울시 강남구 삼성로 456",
-    detailAddress: "789호",
-    memo: "경비실에 맡겨주세요",
-    isDefault: false,
-    type: "work",
-    createdAt: "2023-03-10",
-    updatedAt: "2024-01-15",
-  },
-];
+import { useAddressStore, ShippingAddress } from "@/stores/useAddressStore";
 
 export default function AddressManager() {
-  const [addresses, setAddresses] = useState<ShippingAddress[]>(mockAddresses);
+  const {
+    addresses,
+    addAddress,
+    updateAddress,
+    deleteAddress,
+    setDefaultAddress,
+  } = useAddressStore();
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] =
@@ -134,8 +95,7 @@ export default function AddressManager() {
       return;
     }
 
-    const address: ShippingAddress = {
-      id: `addr-${Date.now()}`,
+    addAddress({
       name: newAddress.name!,
       recipient: newAddress.recipient!,
       phone: newAddress.phone!,
@@ -145,18 +105,8 @@ export default function AddressManager() {
       memo: newAddress.memo || "",
       isDefault: newAddress.isDefault || false,
       type: newAddress.type || "home",
-      createdAt: new Date().toISOString().split("T")[0],
-      updatedAt: new Date().toISOString().split("T")[0],
-    };
+    });
 
-    // 기본 배송지로 설정하는 경우 기존 기본 배송지 해제
-    if (address.isDefault) {
-      setAddresses((prev) =>
-        prev.map((addr) => ({ ...addr, isDefault: false }))
-      );
-    }
-
-    setAddresses((prev) => [...prev, address]);
     setNewAddress({
       name: "",
       recipient: "",
@@ -184,8 +134,7 @@ export default function AddressManager() {
       return;
     }
 
-    const updatedAddress: ShippingAddress = {
-      ...selectedAddress,
+    updateAddress(selectedAddress.id, {
       name: newAddress.name!,
       recipient: newAddress.recipient!,
       phone: newAddress.phone!,
@@ -195,23 +144,7 @@ export default function AddressManager() {
       memo: newAddress.memo || "",
       isDefault: newAddress.isDefault || false,
       type: newAddress.type || "home",
-      updatedAt: new Date().toISOString().split("T")[0],
-    };
-
-    // 기본 배송지로 설정하는 경우 기존 기본 배송지 해제
-    if (updatedAddress.isDefault) {
-      setAddresses((prev) =>
-        prev.map((addr) =>
-          addr.id !== selectedAddress.id ? { ...addr, isDefault: false } : addr
-        )
-      );
-    }
-
-    setAddresses((prev) =>
-      prev.map((addr) =>
-        addr.id === selectedAddress.id ? updatedAddress : addr
-      )
-    );
+    });
 
     setSelectedAddress(null);
     setNewAddress({
@@ -230,17 +163,12 @@ export default function AddressManager() {
 
   const handleDeleteAddress = (addressId: string) => {
     if (confirm("정말로 이 배송지를 삭제하시겠습니까?")) {
-      setAddresses((prev) => prev.filter((addr) => addr.id !== addressId));
+      deleteAddress(addressId);
     }
   };
 
   const handleSetDefault = (addressId: string) => {
-    setAddresses((prev) =>
-      prev.map((addr) => ({
-        ...addr,
-        isDefault: addr.id === addressId,
-      }))
-    );
+    setDefaultAddress(addressId);
   };
 
   const openEditDialog = (address: ShippingAddress) => {

@@ -33,6 +33,8 @@ import {
   Clock,
   Download,
   Receipt,
+  Plus,
+  Edit,
 } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
@@ -40,6 +42,7 @@ import { useToast } from "@/hooks/use-toast";
 import PaymentSystem from "@/components/checkout/PaymentSystem";
 import CouponInput from "@/components/checkout/CouponInput";
 import AddressManager from "@/components/shipping/AddressManager";
+import { useAddressStore, ShippingAddress } from "@/stores/useAddressStore";
 
 interface ShippingInfo {
   name: string;
@@ -65,6 +68,8 @@ export default function CheckoutPage() {
   const { state: cartState, clearCart } = useCart();
   const { toast } = useToast();
   const searchParams = useSearchParams();
+  const { addresses, getDefaultAddress, getAddressById, initializeAddresses } =
+    useAddressStore();
 
   // URL 파라미터에서 모드 확인
   const mode = searchParams.get("mode");
@@ -72,6 +77,23 @@ export default function CheckoutPage() {
 
   // 바로 구매하기 상품 데이터
   const [buyNowProduct, setBuyNowProduct] = useState<any>(null);
+
+  // 배송지 데이터 초기화 및 기본 배송지 설정
+  useEffect(() => {
+    initializeAddresses();
+    const defaultAddress = getDefaultAddress();
+    if (defaultAddress) {
+      setSelectedAddressId(defaultAddress.id);
+      setShippingInfo({
+        name: defaultAddress.recipient,
+        phone: defaultAddress.phone,
+        postcode: defaultAddress.postcode,
+        address: defaultAddress.address,
+        detailAddress: defaultAddress.detailAddress,
+        memo: defaultAddress.memo || "",
+      });
+    }
+  }, [initializeAddresses, getDefaultAddress]);
 
   // 바로 구매하기 모드일 때 세션 스토리지에서 상품 데이터 가져오기
   useEffect(() => {
@@ -101,6 +123,9 @@ export default function CheckoutPage() {
     memo: "",
   });
   const [showAddressManager, setShowAddressManager] = useState(false);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
+    null
+  );
   const [agreements, setAgreements] = useState({
     terms: false,
     privacy: false,
@@ -185,6 +210,33 @@ export default function CheckoutPage() {
 
   const handleBackToPayment = () => {
     setCurrentStep("payment");
+  };
+
+  const handleAddressSelect = (addressId: string) => {
+    const address = getAddressById(addressId);
+    if (address) {
+      setSelectedAddressId(addressId);
+      setShippingInfo({
+        name: address.recipient,
+        phone: address.phone,
+        postcode: address.postcode,
+        address: address.address,
+        detailAddress: address.detailAddress,
+        memo: address.memo || "",
+      });
+    }
+  };
+
+  const handleManualAddressToggle = () => {
+    setSelectedAddressId(null);
+    setShippingInfo({
+      name: "",
+      phone: "",
+      postcode: "",
+      address: "",
+      detailAddress: "",
+      memo: "",
+    });
   };
 
   if (currentItems.length === 0 && currentStep !== "complete") {
@@ -316,6 +368,75 @@ export default function CheckoutPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
+                  {/* 등록된 배송지 선택 */}
+                  {addresses.length > 0 && (
+                    <div className="mb-6">
+                      <Label className="text-sm font-medium">
+                        등록된 배송지
+                      </Label>
+                      <div className="mt-2 space-y-2 max-h-60 overflow-y-auto">
+                        {addresses.map((address) => (
+                          <div
+                            key={address.id}
+                            className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                              selectedAddressId === address.id
+                                ? "border-blue-500 bg-blue-50"
+                                : "border-gray-200 hover:border-gray-300"
+                            }`}
+                            onClick={() => handleAddressSelect(address.id)}
+                          >
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center space-x-2">
+                                <span className="font-medium">
+                                  {address.name}
+                                </span>
+                                {address.isDefault && (
+                                  <Badge className="bg-yellow-100 text-yellow-800 text-xs">
+                                    기본
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              <p>
+                                {address.recipient} | {address.phone}
+                              </p>
+                              <p>
+                                [{address.postcode}] {address.address}{" "}
+                                {address.detailAddress}
+                              </p>
+                              {address.memo && (
+                                <p className="text-gray-500 mt-1">
+                                  📝 {address.memo}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="mt-4 flex space-x-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setShowAddressManager(true)}
+                          size="sm"
+                        >
+                          <Plus className="w-4 h-4 mr-2" />새 배송지 추가
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleManualAddressToggle}
+                          size="sm"
+                        >
+                          <Edit className="w-4 h-4 mr-2" />
+                          직접 입력
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
                   <form onSubmit={handleShippingSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
@@ -332,6 +453,7 @@ export default function CheckoutPage() {
                           placeholder="이름을 입력하세요"
                           spellCheck={false}
                           required
+                          disabled={selectedAddressId !== null}
                         />
                       </div>
                       <div>
@@ -349,6 +471,7 @@ export default function CheckoutPage() {
                           placeholder="010-0000-0000"
                           spellCheck={false}
                           required
+                          disabled={selectedAddressId !== null}
                         />
                       </div>
                     </div>
@@ -368,8 +491,13 @@ export default function CheckoutPage() {
                           placeholder="우편번호"
                           className="w-32"
                           required
+                          disabled={selectedAddressId !== null}
                         />
-                        <Button type="button" variant="outline">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          disabled={selectedAddressId !== null}
+                        >
                           주소 검색
                         </Button>
                       </div>
@@ -384,6 +512,7 @@ export default function CheckoutPage() {
                         placeholder="기본 주소"
                         className="mb-2"
                         required
+                        disabled={selectedAddressId !== null}
                       />
                       <Input
                         value={shippingInfo.detailAddress}
@@ -395,6 +524,7 @@ export default function CheckoutPage() {
                         }
                         placeholder="상세 주소"
                         required
+                        disabled={selectedAddressId !== null}
                       />
                     </div>
 
@@ -783,6 +913,27 @@ export default function CheckoutPage() {
           </div>
         )}
       </main>
+
+      {/* 배송지 관리 다이얼로그 */}
+      {showAddressManager && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg max-w-4xl max-h-[90vh] overflow-y-auto m-4 w-full">
+            <div className="p-6 border-b flex items-center justify-between">
+              <h2 className="text-xl font-bold">배송지 관리</h2>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAddressManager(false)}
+              >
+                ✕
+              </Button>
+            </div>
+            <div className="p-6">
+              <AddressManager />
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
