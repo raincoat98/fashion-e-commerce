@@ -143,7 +143,7 @@ function getCategoryProducts(categorySlug: string) {
       image:
         "https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=800",
       hoverImage:
-        "https://images.pexels.com/photos/2065196/pexels-photo-2065196.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/2703907/pexels-photo-2703907.jpeg?auto=compress&cs=tinysrgb&w=800",
       badge: "SALE",
       rating: 4.7,
       reviewCount: 178,

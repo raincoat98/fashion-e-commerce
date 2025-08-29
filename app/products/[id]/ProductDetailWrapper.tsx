@@ -87,6 +87,24 @@ export default function ProductDetailWrapper({
         helpful: 12,
         date: "2024-01-15",
         verified: true,
+        comments: [
+          {
+            id: 1,
+            userId: "user3",
+            userName: "박**",
+            content: "저도 같은 생각이에요! 정말 편해요.",
+            date: "2024-01-16",
+            helpful: 3,
+          },
+          {
+            id: 2,
+            userId: "user4",
+            userName: "최**",
+            content: "사이즈 정보 감사합니다. M 사이즈로 주문할게요!",
+            date: "2024-01-17",
+            helpful: 1,
+          },
+        ],
       },
       {
         id: 2,
@@ -100,6 +118,7 @@ export default function ProductDetailWrapper({
         helpful: 8,
         date: "2024-01-10",
         verified: true,
+        comments: [],
       },
     ],
     averageRating: storeProduct.rating,

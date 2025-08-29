@@ -154,7 +154,7 @@ const mockOrders: Order[] = [
         size: "L",
         color: "그레이",
         image:
-          "https://images.pexels.com/photos/2065196/pexels-photo-2065196.jpeg?auto=compress&cs=tinysrgb&w=800",
+          "https://images.pexels.com/photos/2703907/pexels-photo-2703907.jpeg?auto=compress&cs=tinysrgb&w=800",
       },
       {
         id: "4",
@@ -164,7 +164,7 @@ const mockOrders: Order[] = [
         size: "M",
         color: "베이지",
         image:
-          "https://images.pexels.com/photos/1805412/pexels-photo-1805412.jpeg?auto=compress&cs=tinysrgb&w=800",
+          "https://images.pexels.com/photos/6811705/pexels-photo-6811705.jpeg?auto=compress&cs=tinysrgb&w=800",
       },
     ],
     shippingAddress: "서울시 강남구 테헤란로 123, 456호",
@@ -246,7 +246,7 @@ const mockReviews: Review[] = [
     productId: "3",
     productName: "베이직 후드 집업",
     productImage:
-      "https://images.pexels.com/photos/2065196/pexels-photo-2065196.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/2703907/pexels-photo-2703907.jpeg?auto=compress&cs=tinysrgb&w=800",
     rating: 5,
     title: "따뜻하고 편해요",
     content:
@@ -260,7 +260,7 @@ const mockReviews: Review[] = [
     productId: "4",
     productName: "크롭 니트 가디건",
     productImage:
-      "https://images.pexels.com/photos/1805412/pexels-photo-1805412.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/6811705/pexels-photo-6811705.jpeg?auto=compress&cs=tinysrgb&w=800",
     rating: 4,
     title: "세련된 디자인",
     content:
