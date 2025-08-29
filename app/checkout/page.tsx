@@ -407,7 +407,13 @@ export default function CheckoutPage() {
                       <Label className="text-sm font-medium">
                         등록된 배송지
                       </Label>
-                      <div className="mt-2 space-y-2 max-h-60 overflow-y-auto">
+                      <div
+                        className={`mt-2 space-y-2 ${
+                          addresses.length >= 3
+                            ? "max-h-60 overflow-y-auto pr-1"
+                            : ""
+                        }`}
+                      >
                         {addresses.map((address) => (
                           <div
                             key={address.id}
