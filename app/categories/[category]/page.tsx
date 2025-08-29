@@ -36,12 +36,13 @@ export default function CategoryPage({
         </div>
 
         {/* Page Header */}
-        <div className="mb-8">
+        <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             {categoryInfo.name}
           </h1>
-          <p className="text-gray-600 mb-2">{categoryInfo.description}</p>
-          <p className="text-gray-600">총 {categoryProducts.length}개의 상품</p>
+          {categoryInfo.description && (
+            <p className="text-gray-600 mb-2">{categoryInfo.description}</p>
+          )}
         </div>
 
         <CategoryClient
@@ -69,7 +70,10 @@ function getCategoryInfo(categorySlug: string) {
       description: "고객들이 가장 사랑하는 베스트 상품",
     };
   } else if (categorySlug === "sale") {
-    return { name: "세일", description: "특별한 할인 혜택을 받아보세요" };
+    return {
+      name: "세일",
+      description: "특별한 할인 혜택을 받아보세요",
+    };
   } else {
     // 실제로는 데이터베이스에서 가져와야 함
     const categoryMap: {
@@ -79,12 +83,26 @@ function getCategoryInfo(categorySlug: string) {
         name: "상의",
         description: "티셔츠, 블라우스, 니트 등 다양한 상의",
       },
-      bottom: { name: "하의", description: "팬츠, 스커트 등 다양한 하의" },
-      dress: { name: "원피스", description: "우아하고 세련된 원피스 컬렉션" },
-      outer: { name: "아우터", description: "자켓, 코트 등 다양한 아우터" },
+      bottom: {
+        name: "하의",
+        description: "팬츠, 스커트 등 다양한 하의",
+      },
+      dress: {
+        name: "원피스",
+        description: "우아하고 세련된 원피스 컬렉션",
+      },
+      outer: {
+        name: "아우터",
+        description: "자켓, 코트 등 다양한 아우터",
+      },
     };
 
-    return categoryMap[categorySlug] || { name: categorySlug, description: "" };
+    return (
+      categoryMap[categorySlug] || {
+        name: categorySlug,
+        description: `${categorySlug} 카테고리의 다양한 상품을 만나보세요`,
+      }
+    );
   }
 }
 
@@ -98,66 +116,97 @@ function getCategoryProducts(categorySlug: string) {
       name: "LUMINA 클래식 블라우스",
       price: 89000,
       originalPrice: 120000,
-      image:
+      images: [
         "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=800",
-      hoverImage:
         "https://images.pexels.com/photos/1805411/pexels-photo-1805411.jpeg?auto=compress&cs=tinysrgb&w=800",
-      badge: "SALE",
+      ],
+      category: "상의",
+      brand: "LUMINA",
       rating: 4.8,
       reviewCount: 156,
       sizes: ["XS", "S", "M", "L", "XL"],
+      colors: ["white", "black"],
+      tags: ["블라우스", "클래식"],
+      isNew: false,
+      isSale: true,
+      isBest: false,
+      inStock: true,
+      description: "세련된 클래식 블라우스",
     },
     {
       id: "2",
       name: "LUMINA 베이직 티셔츠",
       price: 29000,
       originalPrice: 49000,
-      image:
+      images: [
         "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
-      hoverImage:
         "https://images.pexels.com/photos/852860/pexels-photo-852860.jpeg?auto=compress&cs=tinysrgb&w=800",
-      badge: "NEW",
+      ],
+      category: "상의",
+      brand: "LUMINA",
       rating: 4.6,
       reviewCount: 89,
       sizes: ["S", "M", "L", "XL"],
+      colors: ["white", "black", "gray"],
+      tags: ["티셔츠", "베이직"],
+      isNew: true,
+      isSale: false,
+      isBest: false,
+      inStock: true,
+      description: "편안한 베이직 티셔츠",
     },
     {
       id: "3",
       name: "LUMINA 와이드 팬츠",
       price: 79000,
       originalPrice: 99000,
-      image:
+      images: [
         "https://images.pexels.com/photos/2584269/pexels-photo-2584269.jpeg?auto=compress&cs=tinysrgb&w=800",
-      hoverImage:
         "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
-      badge: "BEST",
+      ],
+      category: "하의",
+      brand: "LUMINA",
       rating: 4.9,
       reviewCount: 234,
       sizes: ["S", "M", "L", "XL"],
+      colors: ["black", "navy"],
+      tags: ["팬츠", "와이드"],
+      isNew: false,
+      isSale: false,
+      isBest: true,
+      inStock: true,
+      description: "편안한 와이드 팬츠",
     },
     {
       id: "4",
       name: "LUMINA 플로럴 원피스",
       price: 129000,
       originalPrice: 159000,
-      image:
+      images: [
         "https://images.pexels.com/photos/2703907/pexels-photo-2703907.jpeg?auto=compress&cs=tinysrgb&w=800",
-      hoverImage:
-        "https://images.pexels.com/photos/2703907/pexels-photo-2703907.jpeg?auto=compress&cs=tinysrgb&w=800",
-      badge: "SALE",
+      ],
+      category: "원피스",
+      brand: "LUMINA",
       rating: 4.7,
       reviewCount: 178,
       sizes: ["XS", "S", "M", "L"],
+      colors: ["pink", "white"],
+      tags: ["원피스", "플로럴"],
+      isNew: false,
+      isSale: true,
+      isBest: false,
+      inStock: true,
+      description: "우아한 플로럴 원피스",
     },
   ];
 
   // 카테고리별 필터링 (실제로는 데이터베이스 쿼리)
   if (categorySlug === "new") {
-    return sampleProducts.filter((product) => product.badge === "NEW");
+    return sampleProducts.filter((product) => product.isNew);
   } else if (categorySlug === "best") {
-    return sampleProducts.filter((product) => product.badge === "BEST");
+    return sampleProducts.filter((product) => product.isBest);
   } else if (categorySlug === "sale") {
-    return sampleProducts.filter((product) => product.badge === "SALE");
+    return sampleProducts.filter((product) => product.isSale);
   } else {
     return sampleProducts; // 모든 상품 반환
   }

@@ -1,24 +1,13 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import React from "react";
 import { useProductStore } from "@/stores/useProductStore";
 import ProductGrid from "@/components/product/ProductGrid";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
-export default function SearchPage() {
-  const searchParams = useSearchParams();
-  const query = searchParams.get("q") || "";
-
-  const { products, setSearchTerm } = useProductStore();
-
-  // 검색어가 URL에서 변경되면 스토어 업데이트
-  useEffect(() => {
-    if (query) {
-      setSearchTerm(query);
-    }
-  }, [query, setSearchTerm]);
+export default function ProductsPage() {
+  const { products } = useProductStore();
 
   // 상품 데이터를 ProductGrid에 맞는 형태로 변환
   const formattedProducts = products.map((product) => ({
@@ -35,12 +24,10 @@ export default function SearchPage() {
         {/* 페이지 헤더 */}
         <div className="text-center space-y-2 mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-            {query ? `"${query}" 검색 결과` : "상품 검색"}
+            전체 상품
           </h1>
           <p className="text-gray-600">
-            {query
-              ? `검색어 "${query}"에 대한 결과입니다`
-              : "원하는 상품을 검색해보세요"}
+            다양한 카테고리의 상품을 한 번에 만나보세요
           </p>
         </div>
 
@@ -48,6 +35,7 @@ export default function SearchPage() {
           products={formattedProducts}
           showSearchBar={true}
           defaultViewMode="grid"
+          itemsPerPage={24}
         />
       </main>
 
