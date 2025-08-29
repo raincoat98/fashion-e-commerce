@@ -43,8 +43,8 @@ export default function Home() {
           <PromotionBanner />
         </div>
 
-        {/* 프로모션 상품 섹션 */}
-        <PromoSection />
+        {/* 추천 상품 섹션 */}
+        <FeaturedProducts />
 
         {/* 신상품 드래그 슬라이드 */}
         {!productsLoading && (
@@ -99,11 +99,11 @@ export default function Home() {
           </>
         )}
 
+        {/* 프로모션 상품 섹션 */}
+        <PromoSection />
+
         {/* 카테고리 섹션 */}
         <CategorySection />
-
-        {/* 추천 상품 섹션 */}
-        <FeaturedProducts />
 
         {/* 최근 본 상품 섹션 */}
         <RecentlyViewed />
