@@ -148,7 +148,7 @@ export default function ProductGrid({
       result = result.filter(
         (product) =>
           product.colors &&
-          filters.colors.some((color) => product.colors.includes(color))
+          filters.colors.some((color) => product.colors!.includes(color))
       );
     }
 

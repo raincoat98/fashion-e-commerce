@@ -136,6 +136,14 @@ export default function ProductFilter({
     updateFilter(key, newArray);
   };
 
+  const toggleNumberArrayItem = (key: keyof FilterOptions, item: number) => {
+    const currentArray = filters[key] as number[];
+    const newArray = currentArray.includes(item)
+      ? currentArray.filter((i) => i !== item)
+      : [...currentArray, item];
+    updateFilter(key, newArray);
+  };
+
   const clearAllFilters = () => {
     onFiltersChange({
       categories: [],
@@ -385,7 +393,7 @@ export default function ProductFilter({
               <Checkbox
                 id={`rating-${rating}`}
                 checked={filters.ratings.includes(rating)}
-                onCheckedChange={() => toggleArrayItem("ratings", rating)}
+                onCheckedChange={() => toggleNumberArrayItem("ratings", rating)}
               />
               <Label
                 htmlFor={`rating-${rating}`}

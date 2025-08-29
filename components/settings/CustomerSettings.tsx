@@ -218,13 +218,21 @@ export default function CustomerSettings() {
     category: string,
     value: boolean
   ) => {
-    setSettings((prev) => ({
-      ...prev,
-      [`${type}Notifications`]: {
-        ...prev[`${type}Notifications` as keyof typeof prev],
-        [category]: value,
-      },
-    }));
+    setSettings((prev) => {
+      const notificationKey = `${type}Notifications` as keyof typeof prev;
+      const currentNotifications = prev[notificationKey] as Record<
+        string,
+        boolean
+      >;
+
+      return {
+        ...prev,
+        [notificationKey]: {
+          ...currentNotifications,
+          [category]: value,
+        },
+      };
+    });
   };
 
   const updateMarketingConsent = (type: string, value: boolean) => {

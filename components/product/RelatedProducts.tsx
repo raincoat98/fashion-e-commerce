@@ -80,7 +80,7 @@ export default function RelatedProducts({
   // - Similar price range
   const relatedProducts = [
     {
-      id: 101,
+      id: "101",
       name: "슬림핏 데님 자켓",
       price: 59000,
       originalPrice: 89000,
@@ -94,7 +94,7 @@ export default function RelatedProducts({
       sizes: ["S", "M", "L", "XL"],
     },
     {
-      id: 102,
+      id: "102",
       name: "와이드 슬랙스",
       price: 39000,
       originalPrice: 65000,
@@ -108,7 +108,7 @@ export default function RelatedProducts({
       sizes: ["S", "M", "L"],
     },
     {
-      id: 103,
+      id: "103",
       name: "크롭 니트 가디건",
       price: 45000,
       originalPrice: 75000,
@@ -122,7 +122,7 @@ export default function RelatedProducts({
       sizes: ["S", "M", "L"],
     },
     {
-      id: 104,
+      id: "104",
       name: "하이웨스트 스커트",
       price: 29000,
       originalPrice: 49000,
@@ -135,7 +135,7 @@ export default function RelatedProducts({
       reviewCount: 112,
       sizes: ["S", "M", "L"],
     },
-  ].filter((product) => product.id !== currentProductId);
+  ].filter((product) => product.id !== currentProductId.toString());
 
   return (
     <section ref={sectionRef}>
