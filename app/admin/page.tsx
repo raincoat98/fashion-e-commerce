@@ -28,6 +28,7 @@ import {
   Tag,
   RefreshCw,
   Plus,
+  Image,
 } from "lucide-react";
 import Link from "next/link";
 import CouponManager from "@/components/admin/CouponManager";
@@ -36,6 +37,7 @@ import CollectionManager from "@/components/admin/CollectionManager";
 import OrderStatusManager from "@/components/admin/OrderStatusManager";
 import ShippingManager from "@/components/admin/ShippingManager";
 import CustomerManager from "@/components/admin/CustomerManager";
+import BannerManager from "@/components/admin/BannerManager";
 
 import {
   Select,
@@ -282,7 +284,7 @@ export default function AdminPage() {
 
         {/* 메인 탭 */}
         <Tabs defaultValue="orders" className="w-full">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="orders" className="flex items-center space-x-2">
               <Package className="w-4 h-4" />
               <span>주문 관리</span>
@@ -321,6 +323,13 @@ export default function AdminPage() {
             >
               <Tag className="w-4 h-4" />
               <span>컬렉션 관리</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="banners"
+              className="flex items-center space-x-2"
+            >
+              <Image className="w-4 h-4" />
+              <span>배너 관리</span>
             </TabsTrigger>
             <TabsTrigger
               value="coupons"
@@ -539,6 +548,11 @@ export default function AdminPage() {
           {/* 컬렉션 관리 탭 */}
           <TabsContent value="collections" className="space-y-6">
             <CollectionManager />
+          </TabsContent>
+
+          {/* 배너 관리 탭 */}
+          <TabsContent value="banners" className="space-y-6">
+            <BannerManager />
           </TabsContent>
 
           {/* 쿠폰 관리 탭 */}

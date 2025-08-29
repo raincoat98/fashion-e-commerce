@@ -206,17 +206,17 @@ export default function PromoSection() {
                   size="lg"
                   className="lumina-gradient hover:opacity-90 text-white px-8 py-4 text-lg font-semibold lumina-shadow-lg transition-all duration-300 group"
                 >
-                  지금 쇼핑하기
+                  바로 구매하기
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Link href="/membership">
+              <Link href="/cart">
                 <Button
                   variant="outline"
                   size="lg"
                   className="border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/10 px-8 py-4 text-lg font-semibold transition-all duration-300"
                 >
-                  멤버십 가입
+                  장바구니 담기
                 </Button>
               </Link>
             </div>
