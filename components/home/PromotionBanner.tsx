@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 // GSAP 플러그인 등록
 gsap.registerPlugin(ScrollTrigger);
@@ -40,6 +42,8 @@ export default function PromotionBanner({
   onClose,
 }: PromotionBannerProps) {
   const [isCopied, setIsCopied] = useState(false);
+  const router = useRouter();
+  const { toast } = useToast();
   const bannerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const discountRef = useRef<HTMLDivElement>(null);
@@ -196,6 +200,42 @@ export default function PromotionBanner({
     }
   };
 
+  // 쿠폰 사용하기 클릭 핸들러
+  const handleUseCoupon = () => {
+    try {
+      // 쿠폰 정보를 세션 스토리지에 저장
+      const couponToSave = {
+        code: activeCoupon.code,
+        name: activeCoupon.name,
+        description: activeCoupon.description,
+        type: activeCoupon.type,
+        value: activeCoupon.value,
+        minOrderAmount: activeCoupon.minOrderAmount,
+        isActive: true,
+      };
+
+      sessionStorage.setItem("selectedCoupon", JSON.stringify(couponToSave));
+
+      // 성공 토스트 메시지
+      toast({
+        title: "쿠폰이 선택되었습니다",
+        description: `${activeCoupon.name} 쿠폰을 결제 시 사용할 수 있습니다.`,
+        duration: 3000,
+      });
+
+      // 체크아웃 페이지로 이동
+      router.push("/checkout?from=coupon");
+    } catch (error) {
+      console.error("쿠폰 저장 실패:", error);
+      toast({
+        title: "오류가 발생했습니다",
+        description: "쿠폰 선택에 실패했습니다. 다시 시도해주세요.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
+
   // 할인 값 표시
   const getDiscountDisplay = () => {
     switch (activeCoupon.type) {
@@ -335,6 +375,7 @@ export default function PromotionBanner({
 
                 <Button
                   ref={buttonRef}
+                  onClick={handleUseCoupon}
                   className="lumina-gradient hover:opacity-90 text-white px-6 py-3 font-semibold lumina-shadow-lg transition-all duration-300 group"
                 >
                   <Sparkles className="w-4 h-4 mr-2" />
@@ -427,6 +468,7 @@ export default function PromotionBanner({
 
               <Button
                 ref={buttonRef}
+                onClick={handleUseCoupon}
                 className="w-full lumina-gradient hover:opacity-90 text-white px-4 py-3 font-semibold lumina-shadow-lg transition-all duration-300 group"
               >
                 <Sparkles className="w-4 h-4 mr-2" />

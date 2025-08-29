@@ -105,6 +105,29 @@ export default function CheckoutPage() {
     }
   }, [isBuyNowMode]);
 
+  // 쿠폰 배너에서 온 경우 쿠폰 자동 적용
+  useEffect(() => {
+    const fromCoupon = searchParams.get("from") === "coupon";
+    if (fromCoupon) {
+      const storedCoupon = sessionStorage.getItem("selectedCoupon");
+      if (storedCoupon) {
+        try {
+          const coupon = JSON.parse(storedCoupon);
+          setAppliedCoupon(coupon);
+          toast({
+            title: "쿠폰이 적용되었습니다",
+            description: `${coupon.name} 쿠폰이 자동으로 적용되었습니다.`,
+            duration: 3000,
+          });
+          // 쿠폰 정보 삭제 (한 번만 사용)
+          sessionStorage.removeItem("selectedCoupon");
+        } catch (error) {
+          console.error("쿠폰 적용 실패:", error);
+        }
+      }
+    }
+  }, [searchParams, toast]);
+
   // cartState가 초기화되지 않았을 때를 대비한 안전한 처리
   const safeCartState = cartState || { items: [], total: 0, itemCount: 0 };
 
