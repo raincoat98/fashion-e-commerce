@@ -731,7 +731,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   <Badge variant="destructive">LIMITED</Badge>
                 )}
                 {formData.isHot && <Badge variant="destructive">HOT</Badge>}
-                {formData.isNew && <Badge variant="secondary">NEW</Badge>}
+                {formData.isNew && (
+                  <Badge className="bg-blue-100 text-blue-800">NEW</Badge>
+                )}
                 {formData.isBest && (
                   <Badge className="bg-yellow-500 text-white">BEST</Badge>
                 )}
@@ -847,7 +849,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                     }
                   />
                   <Label htmlFor="isNew" className="flex items-center gap-1">
-                    <Badge variant="secondary">NEW</Badge>
+                    <Badge className="bg-blue-100 text-blue-800">NEW</Badge>
                   </Label>
                 </div>
                 <div className="flex items-center space-x-1">
@@ -1427,7 +1429,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                             <Badge variant="destructive">HOT</Badge>
                           )}
                           {product.isNew && (
-                            <Badge variant="secondary">NEW</Badge>
+                            <Badge className="bg-blue-100 text-blue-800">
+                              NEW
+                            </Badge>
                           )}
                           {product.isBest && (
                             <Badge className="bg-yellow-500 text-white">

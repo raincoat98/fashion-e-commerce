@@ -119,7 +119,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Badges */}
         {product.badge && (
-          <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-md text-xs font-bold">
+          <div
+            className={`absolute top-3 left-3 px-2 py-1 rounded-md text-xs font-bold text-white ${
+              product.badge === "NEW" ? "bg-blue-500" : "bg-red-500"
+            }`}
+          >
             {product.badge}
           </div>
         )}
