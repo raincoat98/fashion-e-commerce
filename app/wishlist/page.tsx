@@ -12,12 +12,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 
 export default function WishlistPage() {
-  const { wishlist, removeFromWishlist } = useProductStore();
+  const { wishlist, removeFromWishlistByProductId } = useProductStore();
   const { addItem } = useCart();
   const { toast } = useToast();
 
-  const handleRemoveFromWishlist = (id: string) => {
-    removeFromWishlist(id);
+  const handleRemoveFromWishlist = (productId: string) => {
+    removeFromWishlistByProductId(productId);
     toast({
       title: "위시리스트에서 제거되었습니다",
       duration: 2000,
@@ -111,7 +111,9 @@ export default function WishlistPage() {
                         </Button>
 
                         <button
-                          onClick={() => handleRemoveFromWishlist(item.id)}
+                          onClick={() =>
+                            handleRemoveFromWishlist(item.productId)
+                          }
                           className="p-2 text-gray-400 hover:text-red-500 rounded"
                         >
                           <Trash2 className="h-4 w-4" />

@@ -169,6 +169,7 @@ interface ProductStore {
   // 위시리스트 관리
   addToWishlist: (item: Omit<WishlistItem, "id" | "addedAt">) => void;
   removeFromWishlist: (id: string) => void;
+  removeFromWishlistByProductId: (productId: string) => void;
   clearWishlist: () => void;
   getWishlistItemById: (id: string) => WishlistItem | undefined;
   isInWishlist: (productId: string) => boolean;
@@ -680,6 +681,14 @@ export const useProductStore = create<ProductStore>()(
           }));
         },
 
+        removeFromWishlistByProductId: (productId) => {
+          set((state) => ({
+            wishlist: state.wishlist.filter(
+              (item) => item.productId !== productId
+            ),
+          }));
+        },
+
         clearWishlist: () => {
           set({ wishlist: [] });
         },
@@ -821,7 +830,7 @@ export const useProductStore = create<ProductStore>()(
               products
                 .filter((product) => product.category === selectedCategory)
                 .map((product) => product.subCategory)
-                .filter(Boolean)
+                .filter((subCat): subCat is string => Boolean(subCat))
             )
           );
         },

@@ -31,7 +31,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [selectedColor, setSelectedColor] = useState("");
   const { toast } = useToast();
   const { addItem } = useCart();
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useProductStore();
+  const { addToWishlist, removeFromWishlistByProductId, isInWishlist } =
+    useProductStore();
   const isWishlisted = isInWishlist(product.id);
 
   const discountPercentage = product.originalPrice
@@ -69,7 +70,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const handleToggleWishlist = () => {
     if (isWishlisted) {
-      removeFromWishlist(product.id);
+      removeFromWishlistByProductId(product.id);
       toast({
         title: "위시리스트에서 제거되었습니다",
         description: `${product.name}이(가) 위시리스트에서 제거되었습니다.`,

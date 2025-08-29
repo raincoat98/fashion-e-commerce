@@ -31,7 +31,7 @@ export default function SalePage() {
     products,
     addToCart,
     addToWishlist,
-    removeFromWishlist,
+    removeFromWishlistByProductId,
     isInWishlist,
     cartItemCount,
   } = useProductStore();
@@ -209,18 +209,11 @@ export default function SalePage() {
                       }`}
                       onClick={() => {
                         if (isWishlisted) {
-                          const wishlistItem = useProductStore
-                            .getState()
-                            .wishlist.find(
-                              (item) => item.productId === product.id
-                            );
-                          if (wishlistItem) {
-                            removeFromWishlist(wishlistItem.id);
-                            toast({
-                              title: "위시리스트에서 제거됨",
-                              description: `${product.name}이(가) 위시리스트에서 제거되었습니다.`,
-                            });
-                          }
+                          removeFromWishlistByProductId(product.id);
+                          toast({
+                            title: "위시리스트에서 제거됨",
+                            description: `${product.name}이(가) 위시리스트에서 제거되었습니다.`,
+                          });
                         } else {
                           addToWishlist({
                             productId: product.id,

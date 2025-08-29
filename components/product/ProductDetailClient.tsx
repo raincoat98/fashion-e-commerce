@@ -78,7 +78,8 @@ export default function ProductDetailClient({
   const router = useRouter();
   const { addItem } = useCart();
   const { toast } = useToast();
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useProductStore();
+  const { addToWishlist, removeFromWishlistByProductId, isInWishlist } =
+    useProductStore();
   const [selectedVariant, setSelectedVariant] = useState({
     size: "M",
     color: "Black",
@@ -415,7 +416,7 @@ export default function ProductDetailClient({
                 variant="outline"
                 onClick={() => {
                   if (isWishlisted) {
-                    removeFromWishlist(product.id.toString());
+                    removeFromWishlistByProductId(product.id.toString());
                     toast({
                       title: "위시리스트에서 제거되었습니다",
                       description: `${product.name}이(가) 위시리스트에서 제거되었습니다.`,

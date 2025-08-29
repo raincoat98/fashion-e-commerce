@@ -100,7 +100,7 @@ export default function DraggableProductList({
   const {
     wishlist,
     addToWishlist,
-    removeFromWishlist,
+    removeFromWishlistByProductId,
     isInWishlist: storeIsInWishlist,
   } = useProductStore();
 
@@ -331,16 +331,7 @@ export default function DraggableProductList({
 
         if (alreadyInWishlist) {
           console.log("위시리스트에서 제거:", product.id);
-          // 위시리스트에서 제거 - wishlist에서 해당 productId를 가진 아이템 찾기
-          const wishlistItem = wishlist.find(
-            (item) => item.productId === product.id
-          );
-          if (wishlistItem) {
-            console.log("위시리스트 아이템 찾음:", wishlistItem);
-            removeFromWishlist(wishlistItem.id);
-          } else {
-            console.warn("위시리스트에서 상품을 찾을 수 없습니다:", product.id);
-          }
+          removeFromWishlistByProductId(product.id);
 
           toast({
             title: "위시리스트에서 제거되었습니다",
@@ -390,7 +381,13 @@ export default function DraggableProductList({
         }, 1000);
       }
     },
-    [storeIsInWishlist, wishlist, removeFromWishlist, addToWishlist, toast]
+    [
+      storeIsInWishlist,
+      wishlist,
+      removeFromWishlistByProductId,
+      addToWishlist,
+      toast,
+    ]
   );
 
   // 이미지 로딩 핸들러
