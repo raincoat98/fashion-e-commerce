@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -63,9 +64,31 @@ interface PaymentInfo {
 export default function CheckoutPage() {
   const { state: cartState, clearCart } = useCart();
   const { toast } = useToast();
+  const searchParams = useSearchParams();
+
+  // URL 파라미터에서 모드 확인
+  const mode = searchParams.get("mode");
+  const isBuyNowMode = mode === "buyNow";
+
+  // 바로 구매하기 상품 데이터
+  const [buyNowProduct, setBuyNowProduct] = useState<any>(null);
+
+  // 바로 구매하기 모드일 때 세션 스토리지에서 상품 데이터 가져오기
+  useEffect(() => {
+    if (isBuyNowMode) {
+      const storedProduct = sessionStorage.getItem("buyNowProduct");
+      if (storedProduct) {
+        setBuyNowProduct(JSON.parse(storedProduct));
+      }
+    }
+  }, [isBuyNowMode]);
 
   // cartState가 초기화되지 않았을 때를 대비한 안전한 처리
   const safeCartState = cartState || { items: [], total: 0, itemCount: 0 };
+
+  // 바로 구매하기 모드일 때는 buyNowProduct를 사용, 아니면 장바구니 사용
+  const currentItems =
+    isBuyNowMode && buyNowProduct ? [buyNowProduct] : safeCartState.items;
   const [currentStep, setCurrentStep] = useState<
     "shipping" | "payment" | "complete"
   >("shipping");
@@ -94,7 +117,7 @@ export default function CheckoutPage() {
   };
 
   // 주문 요약 계산
-  const subtotal = safeCartState.items.reduce(
+  const subtotal = currentItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
@@ -111,7 +134,7 @@ export default function CheckoutPage() {
     shippingFee,
     discountAmount,
     totalAmount,
-    items: safeCartState.items.map((item) => ({
+    items: currentItems.map((item) => ({
       id: item.id.toString(),
       name: item.name,
       price: item.price,
@@ -140,7 +163,13 @@ export default function CheckoutPage() {
   const handlePaymentComplete = (result: any) => {
     setPaymentResult(result);
     setCurrentStep("complete");
-    clearCart();
+
+    // 장바구니 모드면 장바구니 비우기, 바로구매 모드면 세션 스토리지 정리
+    if (isBuyNowMode) {
+      sessionStorage.removeItem("buyNowProduct");
+    } else {
+      clearCart();
+    }
 
     toast({
       title: "주문 완료!",
@@ -158,7 +187,7 @@ export default function CheckoutPage() {
     setCurrentStep("payment");
   };
 
-  if (safeCartState.items.length === 0 && currentStep !== "complete") {
+  if (currentItems.length === 0 && currentStep !== "complete") {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
@@ -166,10 +195,14 @@ export default function CheckoutPage() {
           <div className="text-center py-12">
             <ShoppingCart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              장바구니가 비어있습니다
+              {isBuyNowMode
+                ? "구매할 상품이 없습니다"
+                : "장바구니가 비어있습니다"}
             </h1>
             <p className="text-gray-600 mb-6">
-              상품을 추가한 후 주문을 진행해주세요.
+              {isBuyNowMode
+                ? "상품을 선택한 후 다시 시도해주세요."
+                : "상품을 추가한 후 주문을 진행해주세요."}
             </p>
             <Link href="/">
               <Button>쇼핑 계속하기</Button>
@@ -406,11 +439,13 @@ export default function CheckoutPage() {
             <div className="lg:col-span-1">
               <Card className="sticky top-6">
                 <CardHeader>
-                  <CardTitle>주문 상품</CardTitle>
+                  <CardTitle>
+                    {isBuyNowMode ? "구매 상품" : "주문 상품"}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4 mb-6">
-                    {(cartState.items || []).map((item) => (
+                    {currentItems.map((item) => (
                       <div key={item.id} className="flex space-x-3">
                         <img
                           src={item.image}
@@ -591,11 +626,13 @@ export default function CheckoutPage() {
             <div className="lg:col-span-1">
               <Card className="sticky top-6">
                 <CardHeader>
-                  <CardTitle>주문 요약</CardTitle>
+                  <CardTitle>
+                    {isBuyNowMode ? "구매 요약" : "주문 요약"}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4 mb-6">
-                    {(cartState.items || []).map((item) => (
+                    {currentItems.map((item) => (
                       <div key={item.id} className="flex space-x-3">
                         <img
                           src={item.image}

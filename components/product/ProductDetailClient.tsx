@@ -308,7 +308,9 @@ export default function ProductDetailClient({
   const handleBuyNow = () => {
     if (!isInStock) return;
 
-    addItem({
+    // 바로 구매하기: 장바구니에 추가하지 않고 결제 페이지로 직접 이동
+    // 결제 페이지에서 사용할 임시 상품 데이터를 세션 스토리지에 저장
+    const buyNowProduct = {
       id: product.id,
       name: product.name,
       price: product.price,
@@ -316,15 +318,18 @@ export default function ProductDetailClient({
       image: product.images[0],
       size: selectedVariant.size,
       color: selectedVariant.color,
-    });
+      quantity: quantity,
+    };
+
+    sessionStorage.setItem("buyNowProduct", JSON.stringify(buyNowProduct));
 
     toast({
-      title: "장바구니에 추가되었습니다",
-      description: `${product.name}이(가) 장바구니에 추가되어 결제 페이지로 이동합니다.`,
+      title: "결제 페이지로 이동합니다",
+      description: `${product.name} (${selectedVariant.size}, ${selectedVariant.color})`,
       duration: 2000,
     });
 
-    router.push("/checkout");
+    router.push("/checkout?mode=buyNow");
   };
 
   return (
