@@ -574,50 +574,6 @@ export default function DraggableProductList({
                         </Badge>
                       )}
                     </div>
-
-                    {/* 액션 버튼들 */}
-                    <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
-                      <Button
-                        size="icon"
-                        variant="secondary"
-                        className={cn(
-                          "w-8 h-8 transition-all duration-200",
-                          isInWishlist(product.id)
-                            ? "bg-red-500 hover:bg-red-600 text-white"
-                            : "bg-white/90 hover:bg-white"
-                        )}
-                        onClick={() => handleToggleWishlist(product)}
-                        disabled={wishlistAddingItems.has(product.id)}
-                      >
-                        {wishlistAddingItems.has(product.id) ? (
-                          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                        ) : isInWishlist(product.id) ? (
-                          <Heart className="w-4 h-4 fill-current" />
-                        ) : (
-                          <Heart className="w-4 h-4" />
-                        )}
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="secondary"
-                        className={cn(
-                          "w-8 h-8 transition-all duration-200",
-                          isInCart(product.id)
-                            ? "bg-green-500 hover:bg-green-600 text-white"
-                            : "bg-white/90 hover:bg-white"
-                        )}
-                        onClick={() => handleAddToCart(product)}
-                        disabled={cartAddingItems.has(product.id)}
-                      >
-                        {cartAddingItems.has(product.id) ? (
-                          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                        ) : isInCart(product.id) ? (
-                          <Check className="w-4 h-4" />
-                        ) : (
-                          <ShoppingCart className="w-4 h-4" />
-                        )}
-                      </Button>
-                    </div>
                   </div>
 
                   <div className="space-y-2">
@@ -656,6 +612,51 @@ export default function DraggableProductList({
                         <span>({product.reviewCount})</span>
                       </div>
                       <span className="text-gray-500">{product.category}</span>
+                    </div>
+
+                    {/* 액션 버튼들 */}
+                    <div className="flex items-center justify-center gap-2 mt-3">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className={cn(
+                          "flex-1 h-8 text-xs transition-all duration-200",
+                          isInWishlist(product.id)
+                            ? "bg-red-50 border-red-200 text-red-600 hover:bg-red-100"
+                            : "hover:bg-gray-50"
+                        )}
+                        onClick={() => handleToggleWishlist(product)}
+                        disabled={wishlistAddingItems.has(product.id)}
+                      >
+                        {wishlistAddingItems.has(product.id) ? (
+                          <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin mr-1" />
+                        ) : isInWishlist(product.id) ? (
+                          <Heart className="w-3 h-3 fill-current mr-1" />
+                        ) : (
+                          <Heart className="w-3 h-3 mr-1" />
+                        )}
+                        위시리스트
+                      </Button>
+                      <Button
+                        size="sm"
+                        className={cn(
+                          "flex-1 h-8 text-xs transition-all duration-200",
+                          isInCart(product.id)
+                            ? "bg-green-600 hover:bg-green-700"
+                            : "bg-gray-900 hover:bg-gray-800"
+                        )}
+                        onClick={() => handleAddToCart(product)}
+                        disabled={cartAddingItems.has(product.id)}
+                      >
+                        {cartAddingItems.has(product.id) ? (
+                          <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin mr-1" />
+                        ) : isInCart(product.id) ? (
+                          <Check className="w-3 h-3 mr-1" />
+                        ) : (
+                          <ShoppingCart className="w-3 h-3 mr-1" />
+                        )}
+                        {isInCart(product.id) ? "추가됨" : "장바구니"}
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
