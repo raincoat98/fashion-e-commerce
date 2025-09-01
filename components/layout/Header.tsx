@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ShoppingBag, Menu, X, User, Heart, Truck } from "lucide-react";
+import {
+  ShoppingBag,
+  Menu,
+  X,
+  User,
+  Heart,
+  Truck,
+  Settings,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -57,17 +65,32 @@ export default function Header() {
       <div className="container mx-auto">
         {/* Main Header */}
         <div className="flex items-center justify-between py-4">
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
+          {/* Mobile Menu Button and Admin Button */}
+          <div className="lg:hidden flex items-center space-x-2">
+            <button className="p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+
+            {/* Mobile Admin Button (Small) */}
+            <Link href="/admin">
+              <Button
+                variant="outline"
+                size="sm"
+                className={`flex items-center space-x-1 border-2 transition-all duration-300 ${
+                  pathname === "/admin"
+                    ? "border-yellow-500 bg-yellow-50 text-yellow-700"
+                    : "border-gray-300 hover:border-yellow-400 hover:bg-yellow-50 text-gray-700 hover:text-yellow-700"
+                }`}
+              >
+                <Settings className="h-4 w-4" />
+                <span className="text-xs font-medium">관리자</span>
+              </Button>
+            </Link>
+          </div>
 
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold lumina-text-gradient">
@@ -95,16 +118,6 @@ export default function Header() {
               }`}
             >
               베스트
-            </Link>
-            <Link
-              href="/admin"
-              className={`transition-colors ${
-                pathname === "/admin"
-                  ? "text-gray-900 font-bold"
-                  : "text-gray-700 hover:text-gray-900"
-              }`}
-            >
-              관리자
             </Link>
             <Link
               href="/categories/outer"
@@ -164,6 +177,22 @@ export default function Header() {
             <div className="hidden sm:block w-64">
               <Search placeholder="상품명, 브랜드를 검색하세요" />
             </div>
+
+            {/* Admin Button */}
+            <Link href="/admin">
+              <Button
+                variant="outline"
+                size="sm"
+                className={`hidden lg:flex items-center space-x-2 border-2 transition-all duration-300 ${
+                  pathname === "/admin"
+                    ? "border-yellow-500 bg-yellow-50 text-yellow-700"
+                    : "border-gray-300 hover:border-yellow-400 hover:bg-yellow-50 text-gray-700 hover:text-yellow-700"
+                }`}
+              >
+                <Settings className="h-4 w-4" />
+                <span className="font-medium">관리자</span>
+              </Button>
+            </Link>
 
             {/* User */}
             <Link href="/profile">
@@ -295,17 +324,22 @@ export default function Header() {
               >
                 SALE
               </Link>
-              <Link
-                href="/admin"
-                className={`block transition-colors ${
-                  pathname === "/admin"
-                    ? "text-gray-900 font-bold"
-                    : "text-gray-700 hover:text-gray-900"
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                관리자
-              </Link>
+
+              {/* Mobile Admin Button */}
+              <div className="pt-4 border-t border-gray-200">
+                <Link
+                  href="/admin"
+                  className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-300 ${
+                    pathname === "/admin"
+                      ? "bg-yellow-50 text-yellow-700 border-2 border-yellow-500"
+                      : "bg-gray-50 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700 hover:border-yellow-400 border-2 border-gray-200"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Settings className="h-5 w-5" />
+                  <span className="font-medium">관리자</span>
+                </Link>
+              </div>
             </nav>
           </div>
         )}
