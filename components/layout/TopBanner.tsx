@@ -5,6 +5,24 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 
+// 모바일 감지 훅
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
+
+  return isMobile;
+};
+
 interface TopBanner {
   id: string;
   title: string;
@@ -30,6 +48,7 @@ export default function TopBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const pathname = usePathname();
   const isAdminPage = pathname.startsWith("/admin");
+  const isMobile = useIsMobile();
 
   const loadBanners = useCallback(() => {
     // localStorage에서 저장된 배너 데이터를 가져옴
@@ -279,8 +298,8 @@ export default function TopBanner() {
     }
   };
 
-  // 관리자 페이지에서는 탑배너를 표시하지 않음
-  if (isAdminPage || !isVisible || topBanners.length === 0) {
+  // 관리자 페이지나 모바일에서는 탑배너를 표시하지 않음
+  if (isAdminPage || isMobile || !isVisible || topBanners.length === 0) {
     return null;
   }
 

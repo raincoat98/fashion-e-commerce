@@ -5,6 +5,24 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 
+// 모바일 감지 훅
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
+
+  return isMobile;
+};
+
 interface Popup {
   id: string;
   title: string;
@@ -36,6 +54,7 @@ export default function Popup() {
   const [scrollPercentage, setScrollPercentage] = useState(0);
   const pathname = usePathname();
   const isAdminPage = pathname.startsWith("/admin");
+  const isMobile = useIsMobile();
 
   // 팝업 데이터를 로드하고 필터링하는 함수
   const loadAndFilterPopups = () => {
@@ -320,8 +339,8 @@ export default function Popup() {
     }
   };
 
-  // 관리자 페이지에서는 팝업을 표시하지 않음
-  if (isAdminPage || popups.length === 0) return null;
+  // 관리자 페이지나 모바일에서는 팝업을 표시하지 않음
+  if (isAdminPage || isMobile || popups.length === 0) return null;
 
   return (
     <>
