@@ -30,7 +30,10 @@ export default function Header() {
   const wishlistCount = wishlist.length;
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <header
+      className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-sm transition-all duration-300"
+      data-header="true"
+    >
       <div className="container mx-auto">
         {/* Main Header */}
         <div className="flex items-center justify-between py-4">

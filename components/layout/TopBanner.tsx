@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
@@ -31,7 +31,7 @@ export default function TopBanner() {
   const pathname = usePathname();
   const isAdminPage = pathname.startsWith("/admin");
 
-  const loadBanners = () => {
+  const loadBanners = useCallback(() => {
     // localStorage에서 저장된 배너 데이터를 가져옴
     const savedBanners = localStorage.getItem("topBanners");
     let banners: TopBanner[] = [];
@@ -64,8 +64,8 @@ export default function TopBanner() {
           linkUrl: "/signup",
           order: 1,
           isActive: true,
-          startDate: "2025-01-01",
-          endDate: "2025-12-31",
+          startDate: "2023-01-01",
+          endDate: "2024-12-31",
           bannerType: "custom",
         },
         {
@@ -77,8 +77,8 @@ export default function TopBanner() {
           linkUrl: "/products",
           order: 2,
           isActive: true,
-          startDate: "2025-01-01",
-          endDate: "2025-12-31",
+          startDate: "2023-01-01",
+          endDate: "2024-12-31",
           bannerType: "custom",
         },
         {
@@ -90,8 +90,8 @@ export default function TopBanner() {
           linkUrl: "/products",
           order: 3,
           isActive: true,
-          startDate: "2025-01-01",
-          endDate: "2025-12-31",
+          startDate: "2023-01-01",
+          endDate: "2024-12-31",
           bannerType: "lumina-gradient",
           isFullWidth: true,
           links: [
@@ -109,8 +109,8 @@ export default function TopBanner() {
           linkUrl: "/sale",
           order: 4,
           isActive: false,
-          startDate: "2025-01-01",
-          endDate: "2025-12-31",
+          startDate: "2023-01-01",
+          endDate: "2024-12-31",
           bannerType: "custom",
           isFullWidth: false,
           links: [
@@ -175,10 +175,42 @@ export default function TopBanner() {
       isAdminPage,
       banners: activeBanners,
     });
-  };
+  }, [isAdminPage]);
 
   useEffect(() => {
     loadBanners();
+  }, [loadBanners]);
+
+  // 배너 상태가 변경될 때마다 body padding 업데이트
+  useEffect(() => {
+    // 배너가 표시될 때 body에 padding 추가
+    const updateBodyPadding = () => {
+      // setTimeout을 사용하여 DOM이 업데이트된 후 높이를 계산
+      setTimeout(() => {
+        const bannerHeight =
+          document.querySelector('[data-topbanner="true"]')?.clientHeight || 0;
+        const header = document.querySelector(
+          '[data-header="true"]'
+        ) as HTMLElement;
+
+        if (header) {
+          header.style.top = isVisible ? `${bannerHeight}px` : "0";
+        }
+        // 헤더 높이를 고려하여 body padding 계산
+        const headerHeight = header?.clientHeight || 0;
+        const totalTopSpace = isVisible
+          ? bannerHeight + headerHeight
+          : headerHeight;
+        document.body.style.paddingTop = `${totalTopSpace}px`;
+        console.log("Updating positions:", { bannerHeight, isVisible });
+      }, 0);
+    };
+
+    // 초기 padding 설정
+    updateBodyPadding();
+
+    // resize 이벤트에서 padding 업데이트
+    window.addEventListener("resize", updateBodyPadding);
 
     // localStorage 변경 이벤트 리스너 추가
     const handleStorageChange = (event: StorageEvent) => {
@@ -200,13 +232,37 @@ export default function TopBanner() {
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("topBannerUpdate", handleBannerUpdate);
+      window.removeEventListener("resize", updateBodyPadding);
+      // 헤더 높이만큼만 padding 유지
+      const header = document.querySelector(
+        '[data-header="true"]'
+      ) as HTMLElement;
+      if (header) {
+        header.style.top = "0";
+        const headerHeight = header.clientHeight || 0;
+        document.body.style.paddingTop = `${headerHeight}px`;
+      } else {
+        document.body.style.paddingTop = "0";
+      }
     };
-  }, []);
+  }, [isVisible, loadBanners]);
 
   const handleClose = () => {
     setIsVisible(false);
     // 닫힌 탑배너를 localStorage에 저장
     localStorage.setItem("topBannerClosed", "true");
+
+    // 배너가 닫힐 때 헤더 위치와 body padding 조정
+    setTimeout(() => {
+      const header = document.querySelector(
+        '[data-header="true"]'
+      ) as HTMLElement;
+      if (header) {
+        header.style.top = "0";
+        const headerHeight = header.clientHeight || 0;
+        document.body.style.paddingTop = `${headerHeight}px`;
+      }
+    }, 0);
   };
 
   const handleNext = () => {
@@ -232,7 +288,8 @@ export default function TopBanner() {
 
   return (
     <div
-      className={`relative w-full py-3 px-4 text-center text-sm font-medium transition-all duration-300 ${
+      data-topbanner="true"
+      className={`fixed top-0 left-0 right-0 z-[100] w-full py-3 px-4 text-center text-sm font-medium transition-all duration-300 ${
         currentBanner.bannerType === "lumina-gradient" ? "lumina-gradient" : ""
       } ${currentBanner.isFullWidth ? "w-full" : ""}`}
       style={{

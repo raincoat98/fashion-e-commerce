@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${inter.className} ${notoSansKR.variable} font-sans`}
+        className={`${inter.className} ${notoSansKR.variable} font-sans relative`}
         suppressHydrationWarning={true}
       >
         <CartProvider>
