@@ -4,6 +4,8 @@ import { Inter, Noto_Sans_KR } from "next/font/google";
 import { CartProvider } from "@/contexts/CartContext";
 import { Toaster } from "@/components/ui/toaster";
 import TopButton from "@/components/ui/top-button";
+import TopBanner from "@/components/layout/TopBanner";
+import Popup from "@/components/layout/Popup";
 
 const inter = Inter({ subsets: ["latin"] });
 const notoSansKR = Noto_Sans_KR({
@@ -30,7 +32,9 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <CartProvider>
+          <TopBanner />
           {children}
+          <Popup />
           <TopButton />
           <Toaster />
         </CartProvider>

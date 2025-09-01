@@ -19,7 +19,6 @@ import Search from "@/components/ui/search";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isTopBannerVisible, setIsTopBannerVisible] = useState(true);
   const { wishlist } = useProductStore();
   const { state: cartState } = useCart();
   const pathname = usePathname();
@@ -30,38 +29,8 @@ export default function Header() {
   // 위시리스트 아이템 수 계산
   const wishlistCount = wishlist.length;
 
-  // localStorage에서 탑 배너 상태 확인
-  useEffect(() => {
-    const bannerHidden = localStorage.getItem("lumina-top-banner-hidden");
-    if (bannerHidden === "true") {
-      setIsTopBannerVisible(false);
-    }
-  }, []);
-
-  // 탑 배너 닫기 함수
-  const closeTopBanner = () => {
-    setIsTopBannerVisible(false);
-    localStorage.setItem("lumina-top-banner-hidden", "true");
-  };
-
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-      {/* Top Banner */}
-      {isTopBannerVisible && (
-        <div className="lumina-gradient text-white text-center py-3 text-sm font-medium relative">
-          <div className="flex items-center justify-center">
-            <span>✨ NEW ARRIVAL: 봄 시즌 컬렉션 출시! 첫 구매 20% 할인</span>
-            <button
-              onClick={closeTopBanner}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/80 hover:text-white transition-colors p-1"
-              aria-label="배너 닫기"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      )}
-
       <div className="container mx-auto">
         {/* Main Header */}
         <div className="flex items-center justify-between py-4">

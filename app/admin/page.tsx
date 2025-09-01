@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -40,6 +40,7 @@ import {
   ArrowUpRight,
   Activity,
   Star,
+  Monitor,
 } from "lucide-react";
 import Link from "next/link";
 import CouponManager from "@/components/admin/CouponManager";
@@ -49,6 +50,8 @@ import OrderStatusManager from "@/components/admin/OrderStatusManager";
 import ShippingManager from "@/components/admin/ShippingManager";
 import CustomerManager from "@/components/admin/CustomerManager";
 import BannerManager from "@/components/admin/BannerManager";
+import TopBannerManager from "@/components/admin/TopBannerManager";
+import PopupManager from "@/components/admin/PopupManager";
 
 import {
   Select,
@@ -164,6 +167,13 @@ export default function AdminPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // 개발 환경에서는 인증을 우회
+  useEffect(() => {
+    // 실제 프로덕션에서는 여기서 인증 체크를 수행
+    setIsAuthenticated(true);
+  }, []);
 
   // 주문 관리 상태
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
@@ -267,6 +277,22 @@ export default function AdminPage() {
       description: "할인 쿠폰",
       color: "text-yellow-600",
       bgColor: "bg-yellow-50",
+    },
+    {
+      id: "top-banners",
+      name: "탑배너 관리",
+      icon: Image,
+      description: "상단 고정 배너",
+      color: "text-cyan-600",
+      bgColor: "bg-cyan-50",
+    },
+    {
+      id: "popups",
+      name: "팝업 관리",
+      icon: Monitor,
+      description: "팝업 및 모달",
+      color: "text-violet-600",
+      bgColor: "bg-violet-50",
     },
   ];
 
@@ -475,6 +501,18 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
     link.click();
     document.body.removeChild(link);
   };
+
+  // 인증되지 않은 경우 로딩 표시
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">인증 확인 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -1325,6 +1363,20 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
             {activeTab === "coupons" && (
               <div className="space-y-6">
                 <CouponManager />
+              </div>
+            )}
+
+            {/* 탑배너 관리 탭 */}
+            {activeTab === "top-banners" && (
+              <div className="space-y-6">
+                <TopBannerManager />
+              </div>
+            )}
+
+            {/* 팝업 관리 탭 */}
+            {activeTab === "popups" && (
+              <div className="space-y-6">
+                <PopupManager />
               </div>
             )}
           </main>
