@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import {
   useProductStore,
   Product as StoreProduct,
 } from "@/stores/useProductStore";
+import { useLoading } from "./useLoading";
 
 export interface Product {
   id: string;
@@ -50,18 +51,23 @@ const convertStoreProductToProduct = (storeProduct: StoreProduct): Product => {
 };
 
 export function useProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    loading,
+    error,
+    data: products,
+    execute,
+    setData,
+  } = useLoading({
+    delay: 300,
+    onError: (error) => console.error("Failed to load products:", error),
+  });
 
   // useProductStore에서 상품 데이터 가져오기
   const storeProducts = useProductStore((state) => state.products);
 
-  // 상품 데이터 로드
+  // 상품 데이터 로드 (필요시 사용)
   const loadProducts = useCallback(async () => {
-    try {
-      setLoading(true);
-
+    return await execute(async () => {
       console.log("useProducts - storeProducts:", storeProducts);
 
       // useProductStore의 활성화된 상품들만 필터링 후 Product 형식으로 변환
@@ -75,29 +81,32 @@ export function useProducts() {
       console.log("useProducts - convertedProducts:", convertedProducts);
 
       // 로딩 시뮬레이션
-      await new Promise((resolve) => setTimeout(resolve, 100)); // 시간 단축
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
-      setProducts(convertedProducts);
-      setError(null);
-    } catch (err) {
-      setError("상품을 불러오는데 실패했습니다.");
-      console.error("Failed to load products:", err);
-    } finally {
-      setLoading(false);
-    }
-  }, [storeProducts]);
+      return convertedProducts;
+    });
+  }, [storeProducts, execute]);
 
-  // 초기 로딩 및 storeProducts 변경 시 상품 목록 업데이트
+  // storeProducts가 변경될 때마다 products 업데이트
   useEffect(() => {
-    // 무한 렌더링 방지를 위해 storeProducts만 의존성으로 사용
-    if (storeProducts.length > 0 && products.length === 0) {
-      console.log("초기 상품 데이터 로드 시작");
-      loadProducts();
+    if (storeProducts.length > 0) {
+      const activeProducts = storeProducts.filter(
+        (product) => product.isActive
+      );
+      const convertedProducts = activeProducts.map(
+        convertStoreProductToProduct
+      );
+      setData(convertedProducts);
+    } else {
+      setData([]);
     }
-  }, [storeProducts, products.length, loadProducts]);
+  }, [storeProducts, setData]);
 
   // 카테고리별 상품 필터링
   const getProductsByCategory = (category: string) => {
+    if (!products || !Array.isArray(products)) {
+      return [];
+    }
     const categoryProducts = products.filter(
       (product) => product.category === category
     );
@@ -107,6 +116,9 @@ export function useProducts() {
 
   // 신상품 필터링
   const getNewProducts = () => {
+    if (!products || !Array.isArray(products)) {
+      return [];
+    }
     const newProducts = products.filter((product) => product.isNew);
     console.log("신상품 필터링 결과:", newProducts);
     return newProducts;
@@ -114,6 +126,9 @@ export function useProducts() {
 
   // 할인 상품 필터링
   const getSaleProducts = () => {
+    if (!products || !Array.isArray(products)) {
+      return [];
+    }
     const saleProducts = products.filter((product) => product.isSale);
     console.log("할인 상품 필터링 결과:", saleProducts);
     return saleProducts;
@@ -121,6 +136,9 @@ export function useProducts() {
 
   // 인기 상품 필터링 (평점 기준)
   const getPopularProducts = (limit: number = 8) => {
+    if (!products || !Array.isArray(products)) {
+      return [];
+    }
     return products.sort((a, b) => b.rating - a.rating).slice(0, limit);
   };
 
@@ -137,6 +155,9 @@ export function useProducts() {
 
   // 상품 검색
   const searchProducts = (query: string) => {
+    if (!products || !Array.isArray(products)) {
+      return [];
+    }
     const lowercaseQuery = query.toLowerCase();
     return products.filter(
       (product) =>
@@ -147,7 +168,7 @@ export function useProducts() {
   };
 
   return {
-    products,
+    products: products || [],
     loading,
     error,
     getProductsByCategory,
@@ -156,5 +177,8 @@ export function useProducts() {
     getPopularProducts,
     searchProducts,
     reloadProducts: loadProducts,
+    // 안전한 getter 함수들
+    getProductsSafely: () => products || [],
+    hasProducts: () => !!(products && products.length > 0),
   };
 }

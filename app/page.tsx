@@ -47,57 +47,49 @@ export default function Home() {
         <FeaturedProducts />
 
         {/* 신상품 드래그 슬라이드 */}
-        {!productsLoading && (
-          <DraggableProductList
-            title="신상품"
-            subtitle="새롭게 출시된 LUMINA 컬렉션을 만나보세요"
-            products={getNewProducts()}
-            viewAllLink="/categories/new"
-          />
-        )}
+        <DraggableProductList
+          title="신상품"
+          subtitle="새롭게 출시된 LUMINA 컬렉션을 만나보세요"
+          products={getNewProducts()}
+          viewAllLink="/categories/new"
+        />
 
         {/* 할인 상품 드래그 슬라이드 */}
-        {!productsLoading && (
-          <DraggableProductList
-            title="특가 할인"
-            subtitle="한정 시간 특별 할인 상품들을 놓치지 마세요"
-            products={getSaleProducts()}
-            viewAllLink="/sale"
-            className="bg-gray-50"
-          />
-        )}
+        <DraggableProductList
+          title="특가 할인"
+          subtitle="한정 시간 특별 할인 상품들을 놓치지 마세요"
+          products={getSaleProducts()}
+          viewAllLink="/sale"
+          className="bg-gray-50"
+        />
 
         {/* 카테고리별 상품 드래그 슬라이드 */}
-        {!productsLoading && (
-          <>
-            <DraggableProductList
-              title="상의"
-              subtitle="트렌디한 상의 컬렉션을 만나보세요"
-              products={getProductsByCategory("상의")}
-              viewAllLink="/categories/tops"
-            />
-            <DraggableProductList
-              title="하의"
-              subtitle="편안하고 스타일리시한 하의 컬렉션"
-              products={getProductsByCategory("하의")}
-              viewAllLink="/categories/bottoms"
-              className="bg-gray-50"
-            />
-            <DraggableProductList
-              title="원피스"
-              subtitle="우아하고 여성스러운 원피스 컬렉션"
-              products={getProductsByCategory("원피스")}
-              viewAllLink="/categories/dresses"
-            />
-            <DraggableProductList
-              title="아우터"
-              subtitle="계절을 완성하는 아우터 컬렉션"
-              products={getProductsByCategory("아우터")}
-              viewAllLink="/categories/outerwear"
-              className="bg-gray-50"
-            />
-          </>
-        )}
+        <DraggableProductList
+          title="상의"
+          subtitle="트렌디한 상의 컬렉션을 만나보세요"
+          products={getProductsByCategory("상의")}
+          viewAllLink="/categories/tops"
+        />
+        <DraggableProductList
+          title="하의"
+          subtitle="편안하고 스타일리시한 하의 컬렉션"
+          products={getProductsByCategory("하의")}
+          viewAllLink="/categories/bottoms"
+          className="bg-gray-50"
+        />
+        <DraggableProductList
+          title="원피스"
+          subtitle="우아하고 여성스러운 원피스 컬렉션"
+          products={getProductsByCategory("원피스")}
+          viewAllLink="/categories/dresses"
+        />
+        <DraggableProductList
+          title="아우터"
+          subtitle="계절을 완성하는 아우터 컬렉션"
+          products={getProductsByCategory("아우터")}
+          viewAllLink="/categories/outerwear"
+          className="bg-gray-50"
+        />
 
         {/* 프로모션 상품 섹션 */}
         <PromoSection />
