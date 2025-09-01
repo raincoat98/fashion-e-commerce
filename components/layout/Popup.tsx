@@ -306,17 +306,17 @@ export default function Popup() {
   const getPositionStyles = (position: string) => {
     switch (position) {
       case "center":
-        return "fixed inset-0 flex items-center justify-center z-50";
+        return "fixed inset-0 flex items-center justify-center z-[250]";
       case "top-left":
-        return "fixed top-4 left-4 z-50";
+        return "fixed top-4 left-4 z-[250]";
       case "top-right":
-        return "fixed top-4 right-4 z-50";
+        return "fixed top-4 right-4 z-[250]";
       case "bottom-left":
-        return "fixed bottom-4 left-4 z-50";
+        return "fixed bottom-4 left-4 z-[250]";
       case "bottom-right":
-        return "fixed bottom-4 right-4 z-50";
+        return "fixed bottom-4 right-4 z-[250]";
       default:
-        return "fixed inset-0 flex items-center justify-center z-50";
+        return "fixed inset-0 flex items-center justify-center z-[250]";
     }
   };
 
@@ -333,14 +333,14 @@ export default function Popup() {
             {/* 배경 오버레이 */}
             {popup.position === "center" && (
               <div
-                className="fixed inset-0 bg-black/50"
+                className="fixed inset-0 bg-black/50 z-[250]"
                 onClick={() => handleClose(popup.id)}
               />
             )}
 
             {/* 팝업 컨테이너 */}
             <div
-              className="bg-white rounded-lg shadow-2xl overflow-hidden relative"
+              className="bg-white rounded-lg shadow-2xl overflow-hidden relative z-[251]"
               style={{
                 width: popup.width,
                 height: popup.height,
