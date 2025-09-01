@@ -204,7 +204,7 @@ const sampleProducts: Product[] = [
       "세련된 디자인의 클래식 블라우스로 어떤 자리에서도 우아함을 연출합니다.",
     price: 89000,
     originalPrice: 120000,
-    category: "상의",
+    category: "top",
     subCategory: "블라우스",
     images: [
       "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -233,7 +233,7 @@ const sampleProducts: Product[] = [
     name: "LUMINA 슬림 팬츠",
     description: "편안하면서도 세련된 실루엣의 슬림 팬츠입니다.",
     price: 129000,
-    category: "하의",
+    category: "bottom",
     subCategory: "팬츠",
     images: [
       "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -262,7 +262,7 @@ const sampleProducts: Product[] = [
     description: "우아한 플로럴 패턴의 원피스로 봄날의 로맨스를 완성합니다.",
     price: 159000,
     originalPrice: 199000,
-    category: "원피스",
+    category: "dress",
     subCategory: "미니원피스",
     images: [
       "https://images.pexels.com/photos/2584269/pexels-photo-2584269.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -292,7 +292,7 @@ const sampleProducts: Product[] = [
     description:
       "부드러운 니트 소재의 카디건으로 따뜻함과 스타일을 동시에 만족합니다.",
     price: 99000,
-    category: "상의",
+    category: "top",
     subCategory: "니트",
     images: [
       "https://images.pexels.com/photos/2703907/pexels-photo-2703907.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -322,7 +322,7 @@ const sampleProducts: Product[] = [
       "클래식한 데님 스커트로 캐주얼하면서도 세련된 룩을 완성합니다.",
     price: 79000,
     originalPrice: 99000,
-    category: "하의",
+    category: "bottom",
     subCategory: "스커트",
     images: [
       "https://images.pexels.com/photos/1021694/pexels-photo-1021694.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -490,7 +490,10 @@ export const useProductStore = create<ProductStore>()(
     persist(
       (set, get) => ({
         // 초기 상태
-        products: sampleProducts,
+        products: (() => {
+          console.log("상품 스토어 초기화 - 샘플 상품:", sampleProducts);
+          return sampleProducts;
+        })(),
         orders: sampleOrders,
         categories: sampleCategories,
         cart: [],
@@ -506,7 +509,7 @@ export const useProductStore = create<ProductStore>()(
         selectedColors: [],
         sortBy: "createdAt",
         sortOrder: "desc",
-        showInactive: false, // 기본적으로 활성화된 상품만 보기 (관리자는 수동으로 설정)
+        showInactive: true, // 관리자 페이지에서는 기본적으로 모든 상품 표시
 
         // 페이지네이션
         currentPage: 1,
@@ -560,6 +563,7 @@ export const useProductStore = create<ProductStore>()(
 
             const updatedProduct = newProducts.find((p) => p.id === id);
             console.log("업데이트 후 상품:", updatedProduct);
+            console.log("전체 상품 목록 업데이트 후:", newProducts);
 
             return {
               products: newProducts,
@@ -579,17 +583,24 @@ export const useProductStore = create<ProductStore>()(
         },
 
         // 필터링 및 검색 액션들
-        setSearchTerm: (term) => set({ searchTerm: term, currentPage: 1 }),
-        setSelectedCategory: (category) =>
+        setSearchTerm: (term) => {
+          console.log("setSearchTerm 호출:", term);
+          set({ searchTerm: term, currentPage: 1 });
+        },
+        setSelectedCategory: (category) => {
+          console.log("setSelectedCategory 호출:", category);
           set({
             selectedCategory: category,
             selectedSubCategory: "",
             currentPage: 1,
-          }),
+          });
+        },
         setSelectedSubCategory: (subCategory) =>
           set({ selectedSubCategory: subCategory, currentPage: 1 }),
-        setSelectedCollection: (collection) =>
-          set({ selectedCollection: collection, currentPage: 1 }),
+        setSelectedCollection: (collection) => {
+          console.log("setSelectedCollection 호출:", collection);
+          set({ selectedCollection: collection, currentPage: 1 });
+        },
         setPriceRange: (range) => set({ priceRange: range, currentPage: 1 }),
         setSelectedSizes: (sizes) =>
           set({ selectedSizes: sizes, currentPage: 1 }),
@@ -597,9 +608,13 @@ export const useProductStore = create<ProductStore>()(
           set({ selectedColors: colors, currentPage: 1 }),
         setSortBy: (sortBy) => set({ sortBy, currentPage: 1 }),
         setSortOrder: (order) => set({ sortOrder: order, currentPage: 1 }),
-        setShowInactive: (show) => set({ showInactive: show, currentPage: 1 }),
+        setShowInactive: (show) => {
+          console.log("setShowInactive 호출:", show);
+          set({ showInactive: show, currentPage: 1 });
+        },
 
-        resetFilters: () =>
+        resetFilters: () => {
+          console.log("resetFilters 호출");
           set({
             searchTerm: "",
             selectedCategory: "",
@@ -610,9 +625,10 @@ export const useProductStore = create<ProductStore>()(
             selectedColors: [],
             sortBy: "createdAt",
             sortOrder: "desc",
-            showInactive: false,
+            showInactive: true, // 관리자 페이지에서는 기본적으로 모든 상품 표시
             currentPage: 1,
-          }),
+          });
+        },
 
         // 페이지네이션 액션들
         setCurrentPage: (page) => set({ currentPage: page }),
@@ -763,7 +779,6 @@ export const useProductStore = create<ProductStore>()(
             searchTerm,
             selectedCategory,
             selectedSubCategory,
-            selectedCollection,
             priceRange,
             selectedSizes,
             selectedColors,
@@ -772,15 +787,26 @@ export const useProductStore = create<ProductStore>()(
             showInactive,
           } = get();
 
+          console.log("filteredProducts 계산 시작:", {
+            productsLength: products.length,
+            searchTerm,
+            selectedCategory,
+            showInactive,
+          });
+
           let filtered = products;
 
           // 활성화 상품 필터링 (showInactive가 false인 경우만)
           if (!showInactive) {
+            console.log("활성화 상품만 필터링");
             filtered = filtered.filter((product) => product.isActive);
+          } else {
+            console.log("모든 상품 표시 (비활성화 포함)");
           }
 
           // 검색어 필터링
           if (searchTerm) {
+            console.log("검색어 필터링:", searchTerm);
             filtered = filtered.filter(
               (product) =>
                 product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -791,13 +817,16 @@ export const useProductStore = create<ProductStore>()(
                   tag.toLowerCase().includes(searchTerm.toLowerCase())
                 )
             );
+            console.log("검색어 필터링 후 상품 수:", filtered.length);
           }
 
           // 카테고리 필터링
           if (selectedCategory) {
+            console.log("카테고리 필터링:", selectedCategory);
             filtered = filtered.filter(
               (product) => product.category === selectedCategory
             );
+            console.log("카테고리 필터링 후 상품 수:", filtered.length);
           }
 
           // 서브카테고리 필터링
@@ -807,12 +836,12 @@ export const useProductStore = create<ProductStore>()(
             );
           }
 
-          // 컬렉션 필터링
-          if (selectedCollection) {
-            filtered = filtered.filter(
-              (product) => product.collection === selectedCollection
-            );
-          }
+          // 컬렉션 필터링은 ProductManager에서 처리
+          // if (selectedCollection && selectedCollection !== "all") {
+          //   filtered = filtered.filter(
+          //     (product) => product.collection === selectedCollection
+          //   );
+          // }
 
           // 가격 범위 필터링
           filtered = filtered.filter(
@@ -865,6 +894,12 @@ export const useProductStore = create<ProductStore>()(
             } else {
               return aValue < bValue ? 1 : -1;
             }
+          });
+
+          console.log("filteredProducts 계산 완료:", {
+            originalLength: products.length,
+            filteredLength: filtered.length,
+            firstProduct: filtered[0],
           });
 
           return filtered;

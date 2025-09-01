@@ -304,45 +304,16 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     }
   }, [formData.category]);
 
-  // 필터링된 상품 (컬렉션 필터 추가)
+  // 컬렉션 필터링을 위한 추가 필터링
   const finalFilteredProducts = React.useMemo(() => {
     console.log("finalFilteredProducts 계산 시작:", {
-      productsLength: products.length,
-      showInactive,
-      searchTerm,
-      selectedCategory,
+      filteredProductsLength: filteredProducts.length,
       selectedCollection,
     });
 
-    let filtered = products;
+    let filtered = filteredProducts;
 
-    // 활성화 상품 필터링 (showInactive가 false인 경우만)
-    if (!showInactive) {
-      filtered = filtered.filter((product) => product.isActive);
-    }
-
-    // 검색어 필터링
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (product) =>
-          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          product.description
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          product.tags.some((tag) =>
-            tag.toLowerCase().includes(searchTerm.toLowerCase())
-          )
-      );
-    }
-
-    // 카테고리 필터링
-    if (selectedCategory && selectedCategory !== "all") {
-      filtered = filtered.filter(
-        (product) => product.category === selectedCategory
-      );
-    }
-
-    // 컬렉션 필터링
+    // 컬렉션 필터링 (스토어의 filteredProducts에 컬렉션 필터가 없으므로 추가)
     if (selectedCollection !== "all") {
       const collection = collections.find((c) => c.id === selectedCollection);
       if (collection) {
@@ -353,19 +324,13 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     }
 
     console.log("finalFilteredProducts 계산 완료:", {
-      originalLength: products.length,
+      originalLength: filteredProducts.length,
       filteredLength: filtered.length,
       firstProduct: filtered[0],
     });
 
     return filtered;
-  }, [
-    products,
-    showInactive,
-    searchTerm,
-    selectedCategory,
-    selectedCollection,
-  ]);
+  }, [filteredProducts, selectedCollection, collections]);
 
   // 상품 수정 다이얼로그 열기
   const openEditDialog = (product: Product) => {
@@ -1427,6 +1392,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
             {/* 상품 목록 */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+              {console.log("렌더링할 상품 목록:", finalFilteredProducts)}
               {finalFilteredProducts.map((product) => (
                 <Card
                   key={product.id}
