@@ -1,18 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import {
-  Grid,
-  List,
-  Filter,
-  SortAsc,
-  Heart,
-  Star,
-  ShoppingBag,
-  Eye,
-  Search,
-  X,
-} from "lucide-react";
+import { Filter, Heart, Star, ShoppingBag, Eye, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -47,7 +36,6 @@ interface Product {
 interface ProductGridProps {
   products: Product[];
   showSearchBar?: boolean;
-  defaultViewMode?: "grid" | "list";
   itemsPerPage?: number;
   className?: string;
   saleTheme?: boolean; // 할인 페이지 테마
@@ -56,12 +44,10 @@ interface ProductGridProps {
 export default function ProductGrid({
   products = [],
   showSearchBar = true,
-  defaultViewMode = "grid",
   itemsPerPage = 20,
   className,
   saleTheme = false,
 }: ProductGridProps) {
-  const [viewMode, setViewMode] = useState<"grid" | "list">(defaultViewMode);
   const [showFilters, setShowFilters] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -259,44 +245,6 @@ export default function ProductGrid({
     }
   };
 
-  // 그리드 뷰 렌더링
-  const renderGridView = () => (
-    <div
-      className={cn(
-        "grid gap-4 md:gap-6",
-        isMobile
-          ? "grid-cols-2"
-          : "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-      )}
-    >
-      {paginatedProducts.map((product) => (
-        <ProductGridItem
-          key={product.id}
-          product={product}
-          onAddToCart={handleAddToCart}
-          onToggleWishlist={handleToggleWishlist}
-          isMobile={isMobile}
-          saleTheme={saleTheme}
-        />
-      ))}
-    </div>
-  );
-
-  // 리스트 뷰 렌더링
-  const renderListView = () => (
-    <div className="space-y-4">
-      {paginatedProducts.map((product) => (
-        <ProductListItem
-          key={product.id}
-          product={product}
-          onAddToCart={handleAddToCart}
-          onToggleWishlist={handleToggleWishlist}
-          saleTheme={saleTheme}
-        />
-      ))}
-    </div>
-  );
-
   return (
     <div className={cn("w-full", className)}>
       {/* 검색바 */}
@@ -356,28 +304,6 @@ export default function ProductGrid({
                   filteredCount={filteredProducts.length}
                 />
               )}
-
-              {/* 뷰 모드 토글 */}
-              <div className="flex items-center border rounded-lg">
-                <Button
-                  variant={viewMode === "grid" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setViewMode("grid")}
-                  className="rounded-r-none"
-                >
-                  <Grid className="w-4 h-4" />
-                  {!isMobile && <span className="ml-1">그리드</span>}
-                </Button>
-                <Button
-                  variant={viewMode === "list" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setViewMode("list")}
-                  className="rounded-l-none"
-                >
-                  <List className="w-4 h-4" />
-                  {!isMobile && <span className="ml-1">리스트</span>}
-                </Button>
-              </div>
             </div>
 
             {/* 결과 요약 */}
@@ -387,10 +313,27 @@ export default function ProductGrid({
             </div>
           </div>
 
-          {/* 상품 목록 */}
+          {/* 상품 그리드 */}
           {paginatedProducts.length > 0 ? (
             <>
-              {viewMode === "grid" ? renderGridView() : renderListView()}
+              <div
+                className={cn(
+                  "grid gap-4 md:gap-6",
+                  // 반응형 그리드: 모바일에서 3개, 태블릿에서 4개, 데스크톱에서 5개
+                  "grid-cols-3 sm:grid-cols-4 lg:grid-cols-5"
+                )}
+              >
+                {paginatedProducts.map((product) => (
+                  <ProductGridItem
+                    key={product.id}
+                    product={product}
+                    onAddToCart={handleAddToCart}
+                    onToggleWishlist={handleToggleWishlist}
+                    isMobile={isMobile}
+                    saleTheme={saleTheme}
+                  />
+                ))}
+              </div>
 
               {/* 페이지네이션 */}
               {totalPages > 1 && (
@@ -501,7 +444,7 @@ function ProductGridItem({
 
   return (
     <Card
-      className="group hover:shadow-lg transition-all duration-300 overflow-hidden"
+      className="group hover:shadow-lg transition-all duration-300 overflow-hidden h-full cursor-pointer"
       onMouseEnter={() => !isMobile && setIsHovered(true)}
       onMouseLeave={() => !isMobile && setIsHovered(false)}
     >
@@ -515,28 +458,41 @@ function ProductGridItem({
         </Link>
 
         {/* 배지들 */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1">
+        <div className="absolute top-1 left-1 flex flex-col gap-0.5">
           {product.isNew && (
-            <Badge className="bg-blue-500 text-white text-xs">NEW</Badge>
-          )}
-          {discountPercentage > 0 && (
-            <Badge className="bg-red-500 text-white text-xs">
-              -{discountPercentage}%
+            <Badge
+              className={cn(
+                "bg-blue-500 text-white",
+                isMobile ? "text-[10px] px-1 py-0.5" : "text-xs px-2 py-1"
+              )}
+            >
+              NEW
             </Badge>
           )}
           {product.isBest && (
-            <Badge className="bg-purple-500 text-white text-xs">BEST</Badge>
+            <Badge
+              className={cn(
+                "bg-red-500 text-white",
+                isMobile ? "text-[10px] px-1 py-0.5" : "text-xs px-2 py-1"
+              )}
+            >
+              BEST
+            </Badge>
           )}
         </div>
 
         {/* 위시리스트 버튼 */}
         <button
           onClick={() => onToggleWishlist(product)}
-          className="absolute top-2 right-2 p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
+          className={cn(
+            "absolute top-1 right-1 rounded-full bg-white shadow-md hover:shadow-lg transition-all",
+            isMobile ? "p-1" : "p-2"
+          )}
         >
           <Heart
             className={cn(
-              "w-4 h-4 transition-colors",
+              "transition-colors",
+              isMobile ? "w-3 h-3" : "w-4 h-4",
               isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400"
             )}
           />
@@ -568,178 +524,104 @@ function ProductGridItem({
         )}
       </div>
 
-      <CardContent className="p-3 space-y-2">
-        <Link href={`/products/${product.id}`}>
-          <h3 className="font-medium text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
+      <CardContent className={cn("space-y-2", isMobile ? "p-2" : "p-3")}>
+        <Link href={`/products/${product.id}`} className="block">
+          <h3
+            className={cn(
+              "font-medium leading-tight line-clamp-2 hover:text-blue-600 transition-colors",
+              isMobile ? "text-xs" : "text-sm"
+            )}
+          >
             {product.name}
           </h3>
         </Link>
 
         {/* 평점 */}
         <div className="flex items-center space-x-1">
-          <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-          <span className="text-xs font-medium">{product.rating}</span>
-          <span className="text-xs text-gray-500">({product.reviewCount})</span>
+          <Star
+            className={cn(
+              "fill-yellow-400 text-yellow-400",
+              isMobile ? "w-2.5 h-2.5" : "w-3 h-3"
+            )}
+          />
+          <span
+            className={cn("font-medium", isMobile ? "text-[10px]" : "text-xs")}
+          >
+            {product.rating}
+          </span>
+          <span
+            className={cn(
+              "text-gray-500",
+              isMobile ? "text-[10px]" : "text-xs"
+            )}
+          >
+            ({product.reviewCount})
+          </span>
         </div>
 
         {/* 가격 */}
         <div className="space-y-1">
-          <div className="flex items-center space-x-2">
-            <span
-              className={cn(
-                "font-bold",
-                saleTheme ? "text-red-600" : "text-gray-900"
-              )}
-            >
-              {product.price.toLocaleString()}원
-            </span>
-            {product.originalPrice && (
-              <span className="text-xs text-gray-400 line-through">
-                {product.originalPrice.toLocaleString()}원
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* 모바일 액션 버튼들 */}
-        {isMobile && (
-          <div className="flex gap-2 pt-2">
-            <Button
-              size="sm"
-              className="flex-1"
-              onClick={() => onAddToCart(product)}
-            >
-              <ShoppingBag className="w-3 h-3 mr-1" />
-              담기
-            </Button>
-            <Link href={`/products/${product.id}`} className="flex-1">
-              <Button size="sm" variant="outline" className="w-full">
-                보기
-              </Button>
-            </Link>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  );
-}
-
-// 리스트 아이템 컴포넌트
-function ProductListItem({
-  product,
-  onAddToCart,
-  onToggleWishlist,
-  saleTheme = false,
-}: {
-  product: Product;
-  onAddToCart: (product: Product) => void;
-  onToggleWishlist: (product: Product) => void;
-  saleTheme?: boolean;
-}) {
-  const { isInWishlist } = useProductStore();
-  const isWishlisted = isInWishlist(product.id);
-
-  const discountPercentage = product.originalPrice
-    ? Math.round(
-        ((product.originalPrice - product.price) / product.originalPrice) * 100
-      )
-    : 0;
-
-  return (
-    <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-4">
-        <div className="flex gap-4">
-          {/* 상품 이미지 */}
-          <div className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0">
-            <Link href={`/products/${product.id}`}>
-              <img
-                src={product.images[0] || "/images/placeholder.jpg"}
-                alt={product.name}
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </Link>
-
-            {/* 배지들 */}
-            <div className="absolute top-1 left-1 flex flex-col gap-1">
-              {product.isNew && (
-                <Badge className="bg-blue-500 text-white text-xs">NEW</Badge>
-              )}
-              {discountPercentage > 0 && (
-                <Badge className="bg-red-500 text-white text-xs">
-                  -{discountPercentage}%
-                </Badge>
-              )}
-            </div>
-          </div>
-
-          {/* 상품 정보 */}
-          <div className="flex-1 space-y-2">
-            <Link href={`/products/${product.id}`}>
-              <h3 className="font-semibold text-gray-900 hover:text-blue-600 transition-colors line-clamp-2">
-                {product.name}
-              </h3>
-            </Link>
-
-            <div className="flex items-center space-x-2">
-              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              <span className="text-sm font-medium">{product.rating}</span>
-              <span className="text-sm text-gray-500">
-                ({product.reviewCount})
-              </span>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <span
-                className={cn(
-                  "text-lg font-bold",
-                  saleTheme ? "text-red-600" : "text-gray-900"
-                )}
-              >
-                {product.price.toLocaleString()}원
-              </span>
-              {product.originalPrice && (
-                <span className="text-sm text-gray-400 line-through">
-                  {product.originalPrice.toLocaleString()}원
+          {isMobile ? (
+            // 모바일: 할인율과 최종금액 표시
+            <div>
+              {product.originalPrice ? (
+                <div className="flex items-center space-x-1">
+                  <span className="text-[10px] text-red-500 font-medium">
+                    {discountPercentage}%
+                  </span>
+                  <span
+                    className={cn(
+                      "font-bold",
+                      saleTheme ? "text-red-600" : "text-gray-900",
+                      "text-xs"
+                    )}
+                  >
+                    {product.price.toLocaleString()}원
+                  </span>
+                </div>
+              ) : (
+                <span
+                  className={cn(
+                    "font-bold block",
+                    saleTheme ? "text-red-600" : "text-gray-900",
+                    "text-xs"
+                  )}
+                >
+                  {product.price.toLocaleString()}원
                 </span>
               )}
             </div>
-
-            {product.description && (
-              <p className="text-sm text-gray-600 line-clamp-2">
-                {product.description}
-              </p>
-            )}
-
-            <div className="flex items-center space-x-2 pt-2">
-              <Button
-                size="sm"
-                onClick={() => onAddToCart(product)}
-                className="flex items-center space-x-1"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                <span>장바구니</span>
-              </Button>
-
-              <button
-                onClick={() => onToggleWishlist(product)}
-                className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-600 hover:text-red-500 transition-colors"
-              >
-                <Heart
+          ) : (
+            // 데스크톱: 할인율과 최종금액 표시
+            <div>
+              {product.originalPrice ? (
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs text-red-500 font-medium">
+                    {discountPercentage}%
+                  </span>
+                  <span
+                    className={cn(
+                      "font-bold",
+                      saleTheme ? "text-red-600" : "text-gray-900",
+                      "text-sm"
+                    )}
+                  >
+                    {product.price.toLocaleString()}원
+                  </span>
+                </div>
+              ) : (
+                <span
                   className={cn(
-                    "w-4 h-4 transition-colors",
-                    isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400"
+                    "font-bold",
+                    saleTheme ? "text-red-600" : "text-gray-900",
+                    "text-sm"
                   )}
-                />
-                <span>위시리스트</span>
-              </button>
-
-              <Link href={`/products/${product.id}`}>
-                <Button size="sm" variant="outline">
-                  상세보기
-                </Button>
-              </Link>
+                >
+                  {product.price.toLocaleString()}원
+                </span>
+              )}
             </div>
-          </div>
+          )}
         </div>
       </CardContent>
     </Card>
