@@ -310,7 +310,7 @@ export default function TopBanner() {
             <div>
               <span className="font-semibold">{currentBanner.title}</span>
               {currentBanner.content && (
-                <span className="ml-2 opacity-90">
+                <span className="ml-2 opacity-90 hidden sm:inline">
                   - {currentBanner.content}
                 </span>
               )}
