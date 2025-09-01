@@ -43,7 +43,7 @@ export default function ContactPage() {
           {/* 헤더 */}
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">문의하기</h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto word-break-keep">
               궁금한 점이나 문의사항이 있으시면 언제든 연락주세요. 빠른 시일
               내에 답변드리겠습니다.
             </p>
@@ -65,7 +65,7 @@ export default function ContactPage() {
                       <h3 className="text-xl font-semibold text-gray-900 mb-2">
                         문의가 성공적으로 접수되었습니다!
                       </h3>
-                      <p className="text-gray-600 mb-6">
+                      <p className="text-gray-600 mb-6 word-break-keep">
                         빠른 시일 내에 답변드리겠습니다.
                       </p>
                       <Button

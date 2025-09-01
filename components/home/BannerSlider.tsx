@@ -153,10 +153,10 @@ export default function BannerSlider({
             <div className="relative z-10 h-full flex items-center">
               <div className="container mx-auto px-4 md:px-8">
                 <div className="max-w-2xl text-white">
-                  <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
+                  <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight word-break-keep">
                     {banner.title}
                   </h2>
-                  <p className="text-lg md:text-xl mb-8 text-gray-200 leading-relaxed">
+                  <p className="text-lg md:text-xl mb-8 text-gray-200 leading-relaxed word-break-keep">
                     {banner.description}
                   </p>
                   <Link href={banner.linkUrl}>

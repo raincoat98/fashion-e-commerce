@@ -304,8 +304,10 @@ export default function PromotionBanner({
                   {getDiscountIcon()}
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">{activeCoupon.name}</h3>
-                  <p className="text-white/80 text-sm">
+                  <h3 className="text-xl font-bold word-break-keep">
+                    {activeCoupon.name}
+                  </h3>
+                  <p className="text-white/80 text-sm word-break-keep">
                     {activeCoupon.description}
                   </p>
                 </div>
@@ -396,7 +398,7 @@ export default function PromotionBanner({
                     {getDiscountIcon()}
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold leading-tight">
+                    <h3 className="text-lg font-bold leading-tight word-break-keep">
                       {activeCoupon.name}
                     </h3>
                     <p className="text-white/80 text-xs">

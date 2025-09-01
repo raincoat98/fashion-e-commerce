@@ -33,7 +33,7 @@ export default function Footer() {
               </h3>
             </div>
 
-            <p className="text-gray-300 leading-relaxed max-w-md">
+            <p className="text-gray-300 leading-relaxed max-w-md word-break-keep">
               "빛나는 당신을 위한 디자인" LUMINA는 단순한 의류가 아닌, 당신의
               개성과 아름다움을 빛나게 하는 스타일을 제안합니다. 세련된 디자인과
               최고급 소재로 완성된 프리미엄 브랜드입니다.

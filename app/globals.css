@@ -75,6 +75,91 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* 모바일에서 단어 단위 줄바꿈 설정 */
+  html {
+    word-break: keep-all;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* 모든 텍스트 요소에 단어 단위 줄바꿈 적용 */
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  span,
+  div,
+  a,
+  button,
+  label,
+  input,
+  textarea,
+  select {
+    word-break: keep-all;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* 모바일에서 특히 중요한 요소들 */
+  @media (max-width: 768px) {
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    span,
+    div,
+    a,
+    button,
+    label {
+      word-break: keep-all !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      hyphens: auto;
+    }
+
+    /* 모바일에서 긴 텍스트가 있는 요소들 */
+    .card,
+    .banner,
+    .product-description,
+    .faq-content,
+    .contact-form {
+      word-break: keep-all !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+    }
+
+    /* 모바일에서 테이블 셀 내용 */
+    td,
+    th {
+      word-break: keep-all !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+    }
+
+    /* 모바일에서 버튼 텍스트 */
+    button,
+    .btn {
+      word-break: keep-all !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+    }
+  }
+
+  /* 매우 작은 화면에서 추가 최적화 */
+  @media (max-width: 480px) {
+    body {
+      word-break: keep-all !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+    }
+  }
 }
 
 /* LUMINA 브랜드 스타일 */
