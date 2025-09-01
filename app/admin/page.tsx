@@ -903,7 +903,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                           variant="default"
                                           className="bg-blue-600 text-xs"
                                         >
-                                          새
+                                          NEW
                                         </Badge>
                                       )}
                                     </div>
