@@ -35,7 +35,6 @@ export default function ProductsPage() {
           products={formattedProducts}
           showSearchBar={true}
           defaultViewMode="grid"
-          itemsPerPage={24}
         />
       </main>
 

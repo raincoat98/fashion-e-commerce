@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Filter, Heart, Star, ShoppingBag, Eye, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 import { useProductStore } from "@/stores/useProductStore";
@@ -39,6 +40,9 @@ interface ProductGridProps {
   itemsPerPage?: number;
   className?: string;
   saleTheme?: boolean; // 할인 페이지 테마
+  defaultCategory?: string; // 기본 카테고리
+  defaultViewMode?: "grid" | "list"; // 기본 뷰 모드
+  specialFilter?: { isNew?: boolean; isBest?: boolean; onSale?: boolean }; // 특별 필터
 }
 
 export default function ProductGrid({
@@ -47,31 +51,260 @@ export default function ProductGrid({
   itemsPerPage = 20,
   className,
   saleTheme = false,
+  defaultCategory,
+  defaultViewMode = "grid",
+  specialFilter,
 }: ProductGridProps) {
   const [showFilters, setShowFilters] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
+  const [isFiltering, setIsFiltering] = useState(false);
 
   const { toast } = useToast();
   const { addItem } = useCart();
   const { addToWishlist, removeFromWishlistByProductId, isInWishlist } =
     useProductStore();
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // URL 파라미터에서 필터 상태 읽기
+  const getInitialFilters = useCallback((): FilterOptions => {
+    let categories =
+      searchParams.get("categories")?.split(",").filter(Boolean) || [];
+    const brands = searchParams.get("brands")?.split(",").filter(Boolean) || [];
+    const sizes = searchParams.get("sizes")?.split(",").filter(Boolean) || [];
+    const colors = searchParams.get("colors")?.split(",").filter(Boolean) || [];
+    const priceMin = parseInt(searchParams.get("priceMin") || "0");
+    const priceMax = parseInt(searchParams.get("priceMax") || "1000000");
+    const ratings =
+      searchParams.get("ratings")?.split(",").map(Number).filter(Boolean) || [];
+    const sortBy = searchParams.get("sortBy") || "popular";
+    const inStock = searchParams.get("inStock") === "true";
+    const onSale =
+      searchParams.get("onSale") === "true" ||
+      saleTheme ||
+      !!specialFilter?.onSale;
+    const isNew =
+      searchParams.get("isNew") === "true" || !!specialFilter?.isNew;
+    const isBest =
+      searchParams.get("isBest") === "true" || !!specialFilter?.isBest;
+
+    // 기본 카테고리가 설정되어 있고 URL에 카테고리가 없을 때만 기본 카테고리 설정
+    // 단, 특별 필터(신상품, 베스트, 세일)가 있을 때는 카테고리 필터를 설정하지 않음
+    if (defaultCategory && categories.length === 0 && !specialFilter) {
+      categories = [defaultCategory];
+    }
+
+    return {
+      categories,
+      brands,
+      sizes,
+      colors,
+      priceRange: [priceMin, priceMax],
+      ratings,
+      tags: [],
+      sortBy,
+      inStock,
+      onSale,
+      isNew,
+      isBest,
+    };
+  }, [searchParams, defaultCategory, saleTheme]);
+
   // 필터 초기 상태
-  const [filters, setFilters] = useState<FilterOptions>({
-    categories: [],
-    brands: [],
-    sizes: [],
-    colors: [],
-    priceRange: [0, 1000000],
-    ratings: [],
-    tags: [],
-    sortBy: "popular",
-    inStock: false,
-    onSale: false,
-    isNew: false,
-  });
+  const [filters, setFilters] = useState<FilterOptions>(getInitialFilters);
+
+  // URL 파라미터나 defaultCategory가 변경되면 필터 상태 업데이트
+  useEffect(() => {
+    const newFilters = getInitialFilters();
+    setFilters(newFilters);
+
+    // defaultCategory가 변경되었고 URL에 카테고리가 없을 때만 URL 업데이트
+    // 단, 특별 필터(신상품, 베스트, 세일)가 있을 때는 카테고리 필터를 설정하지 않음
+    if (defaultCategory && !specialFilter) {
+      const currentCategories =
+        searchParams.get("categories")?.split(",").filter(Boolean) || [];
+      if (currentCategories.length === 0) {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("categories", defaultCategory);
+        const newURL = `${window.location.pathname}?${params.toString()}`;
+        router.replace(newURL, { scroll: false });
+      }
+    }
+
+    // 특별 필터가 있을 때 URL에 해당 필터 파라미터 추가
+    if (specialFilter) {
+      const params = new URLSearchParams(searchParams.toString());
+      let hasChanges = false;
+
+      if (specialFilter.isNew && !searchParams.get("isNew")) {
+        params.set("isNew", "true");
+        hasChanges = true;
+      }
+      if (specialFilter.isBest && !searchParams.get("isBest")) {
+        params.set("isBest", "true");
+        hasChanges = true;
+      }
+      if (specialFilter.onSale && !searchParams.get("onSale")) {
+        params.set("onSale", "true");
+        hasChanges = true;
+      }
+
+      if (hasChanges) {
+        const newURL = `${window.location.pathname}?${params.toString()}`;
+        router.replace(newURL, { scroll: false });
+      }
+    }
+  }, [getInitialFilters, defaultCategory, searchParams, router, specialFilter]);
+
+  // 필터 변경 시 URL 업데이트
+  const updateFiltersAndURL = (newFilters: FilterOptions) => {
+    // 필터링 상태 시작
+    setIsFiltering(true);
+
+    // 필터 상태 즉시 업데이트
+    setFilters(newFilters);
+
+    // 현재 페이지를 1페이지로 리셋
+    setCurrentPage(1);
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    // 카테고리
+    if (newFilters.categories.length > 0) {
+      params.set("categories", newFilters.categories.join(","));
+    } else {
+      params.delete("categories");
+    }
+
+    // 브랜드
+    if (newFilters.brands.length > 0) {
+      params.set("brands", newFilters.brands.join(","));
+    } else {
+      params.delete("brands");
+    }
+
+    // 사이즈
+    if (newFilters.sizes.length > 0) {
+      params.set("sizes", newFilters.sizes.join(","));
+    } else {
+      params.delete("sizes");
+    }
+
+    // 색상
+    if (newFilters.colors.length > 0) {
+      params.set("colors", newFilters.colors.join(","));
+    } else {
+      params.delete("colors");
+    }
+
+    // 가격 범위
+    if (newFilters.priceRange[0] > 0) {
+      params.set("priceMin", newFilters.priceRange[0].toString());
+    } else {
+      params.delete("priceMin");
+    }
+
+    if (newFilters.priceRange[1] < 1000000) {
+      params.set("priceMax", newFilters.priceRange[1].toString());
+    } else {
+      params.delete("priceMax");
+    }
+
+    // 평점
+    if (newFilters.ratings.length > 0) {
+      params.set("ratings", newFilters.ratings.join(","));
+    } else {
+      params.delete("ratings");
+    }
+
+    // 정렬
+    if (newFilters.sortBy !== "popular") {
+      params.set("sortBy", newFilters.sortBy);
+    } else {
+      params.delete("sortBy");
+    }
+
+    // 기타 옵션
+    if (newFilters.inStock) {
+      params.set("inStock", "true");
+    } else {
+      params.delete("inStock");
+    }
+
+    if (newFilters.onSale) {
+      params.set("onSale", "true");
+    } else {
+      params.delete("onSale");
+    }
+
+    if (newFilters.isNew) {
+      params.set("isNew", "true");
+    } else {
+      params.delete("isNew");
+    }
+
+    if (newFilters.isBest) {
+      params.set("isBest", "true");
+    } else {
+      params.delete("isBest");
+    }
+
+    // 페이지 리셋
+    params.delete("page");
+
+    // URL 업데이트 (replace 사용하여 히스토리 추가하지 않음)
+    const newURL = `${window.location.pathname}${
+      params.toString() ? `?${params.toString()}` : ""
+    }`;
+    router.replace(newURL, { scroll: false });
+
+    // 필터링 완료 후 상태 리셋
+    setTimeout(() => {
+      setIsFiltering(false);
+    }, 100);
+  };
+
+  // 검색어 변경 시 URL 업데이트
+  const updateSearchAndURL = (newSearchTerm: string) => {
+    // 필터링 상태 시작
+    setIsFiltering(true);
+
+    // 검색어 즉시 업데이트
+    setSearchTerm(newSearchTerm);
+
+    // 현재 페이지를 1페이지로 리셋
+    setCurrentPage(1);
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (newSearchTerm.trim()) {
+      params.set("q", newSearchTerm);
+    } else {
+      params.delete("q");
+    }
+
+    // 페이지 리셋
+    params.delete("page");
+
+    const newURL = `${window.location.pathname}${
+      params.toString() ? `?${params.toString()}` : ""
+    }`;
+    router.replace(newURL, { scroll: false });
+
+    // 필터링 완료 후 상태 리셋
+    setTimeout(() => {
+      setIsFiltering(false);
+    }, 100);
+  };
+
+  // URL에서 검색어 읽기
+  useEffect(() => {
+    const urlSearchTerm = searchParams.get("q") || "";
+    setSearchTerm(urlSearchTerm);
+  }, [searchParams]);
 
   // 모바일 감지
   useEffect(() => {
@@ -103,8 +336,24 @@ export default function ProductGrid({
 
     // 카테고리 필터링
     if (filters.categories.length > 0) {
+      // 카테고리 매핑 (한글 -> 영어)
+      const categoryMapping: { [key: string]: string } = {
+        상의: "top",
+        하의: "bottom",
+        아우터: "outer",
+        드레스: "dress",
+        신발: "shoes",
+        가방: "bag",
+        액세서리: "accessory",
+        언더웨어: "underwear",
+      };
+
+      const mappedCategories = filters.categories.map(
+        (cat) => categoryMapping[cat] || cat
+      );
+
       result = result.filter((product) =>
-        filters.categories.includes(product.category)
+        mappedCategories.includes(product.category)
       );
     }
 
@@ -160,6 +409,10 @@ export default function ProductGrid({
       result = result.filter((product) => product.isNew);
     }
 
+    if (filters.isBest) {
+      result = result.filter((product) => product.isBest);
+    }
+
     // 정렬
     result.sort((a, b) => {
       switch (filters.sortBy) {
@@ -188,6 +441,33 @@ export default function ProductGrid({
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  // URL에서 페이지 읽기
+  useEffect(() => {
+    const urlPage = parseInt(searchParams.get("page") || "1");
+    if (urlPage !== currentPage && urlPage >= 1 && urlPage <= totalPages) {
+      setCurrentPage(urlPage);
+    }
+  }, [searchParams, totalPages]);
+
+  // 페이지 변경 시 URL 업데이트
+  const updatePageAndURL = (newPage: number) => {
+    // 페이지 즉시 업데이트
+    setCurrentPage(newPage);
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (newPage > 1) {
+      params.set("page", newPage.toString());
+    } else {
+      params.delete("page");
+    }
+
+    const newURL = `${window.location.pathname}${
+      params.toString() ? `?${params.toString()}` : ""
+    }`;
+    router.replace(newURL, { scroll: false });
+  };
 
   // 페이지 변경 시 스크롤 to top
   useEffect(() => {
@@ -254,12 +534,12 @@ export default function ProductGrid({
           <Input
             placeholder="상품명, 브랜드, 카테고리로 검색..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => updateSearchAndURL(e.target.value)}
             className="pl-10 pr-10"
           />
           {searchTerm && (
             <button
-              onClick={() => setSearchTerm("")}
+              onClick={() => updateSearchAndURL("")}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
               <X className="w-4 h-4" />
@@ -278,7 +558,7 @@ export default function ProductGrid({
                 isOpen={true}
                 onOpenChange={() => {}}
                 filters={filters}
-                onFiltersChange={setFilters}
+                onFiltersChange={updateFiltersAndURL}
                 isMobile={false}
                 totalProducts={products.length}
                 filteredCount={filteredProducts.length}
@@ -298,7 +578,7 @@ export default function ProductGrid({
                   isOpen={showFilters}
                   onOpenChange={setShowFilters}
                   filters={filters}
-                  onFiltersChange={setFilters}
+                  onFiltersChange={updateFiltersAndURL}
                   isMobile={true}
                   totalProducts={products.length}
                   filteredCount={filteredProducts.length}
@@ -307,7 +587,10 @@ export default function ProductGrid({
             </div>
 
             {/* 결과 요약 */}
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 flex items-center gap-2">
+              {isFiltering && (
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+              )}
               총 {filteredProducts.length}개 상품
               {searchTerm && ` (검색: "${searchTerm}")`}
             </div>
@@ -341,7 +624,9 @@ export default function ProductGrid({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    onClick={() =>
+                      updatePageAndURL(Math.max(1, currentPage - 1))
+                    }
                     disabled={currentPage === 1}
                   >
                     이전
@@ -355,7 +640,7 @@ export default function ProductGrid({
                           key={page}
                           variant={currentPage === page ? "default" : "outline"}
                           size="sm"
-                          onClick={() => setCurrentPage(page)}
+                          onClick={() => updatePageAndURL(page)}
                         >
                           {page}
                         </Button>
@@ -369,7 +654,7 @@ export default function ProductGrid({
                     variant="outline"
                     size="sm"
                     onClick={() =>
-                      setCurrentPage(Math.min(totalPages, currentPage + 1))
+                      updatePageAndURL(Math.min(totalPages, currentPage + 1))
                     }
                     disabled={currentPage === totalPages}
                   >
@@ -393,7 +678,7 @@ export default function ProductGrid({
                 variant="outline"
                 onClick={() => {
                   setSearchTerm("");
-                  setFilters({
+                  updateFiltersAndURL({
                     categories: [],
                     brands: [],
                     sizes: [],
@@ -405,6 +690,7 @@ export default function ProductGrid({
                     inStock: false,
                     onSale: false,
                     isNew: false,
+                    isBest: false,
                   });
                 }}
               >

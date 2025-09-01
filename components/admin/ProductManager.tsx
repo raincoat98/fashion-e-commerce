@@ -1392,7 +1392,6 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
             {/* 상품 목록 */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-              {console.log("렌더링할 상품 목록:", finalFilteredProducts)}
               {finalFilteredProducts.map((product) => (
                 <Card
                   key={product.id}
@@ -1416,21 +1415,15 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                           </div>
                         )}
                         <div className="absolute top-2 right-2 flex space-x-1">
-                          {(() => {
-                            console.log(`상품 ${product.id} 배지 렌더링:`, {
-                              isActive: product.isActive,
-                              name: product.name,
-                            });
-                            return product.isActive ? (
-                              <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                                활성
-                              </Badge>
-                            ) : (
-                              <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">
-                                비활성
-                              </Badge>
-                            );
-                          })()}
+                          {product.isActive ? (
+                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                              활성
+                            </Badge>
+                          ) : (
+                            <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">
+                              비활성
+                            </Badge>
+                          )}
                           {product.isFeatured && (
                             <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">
                               피처드

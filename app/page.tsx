@@ -68,26 +68,26 @@ export default function Home() {
           title="상의"
           subtitle="트렌디한 상의 컬렉션을 만나보세요"
           products={getProductsByCategory("상의")}
-          viewAllLink="/categories/tops"
+          viewAllLink="/categories/top?categories=상의"
         />
         <DraggableProductList
           title="하의"
           subtitle="편안하고 스타일리시한 하의 컬렉션"
           products={getProductsByCategory("하의")}
-          viewAllLink="/categories/bottoms"
+          viewAllLink="/categories/bottom?categories=하의"
           className="bg-gray-50"
         />
         <DraggableProductList
           title="원피스"
           subtitle="우아하고 여성스러운 원피스 컬렉션"
           products={getProductsByCategory("원피스")}
-          viewAllLink="/categories/dresses"
+          viewAllLink="/categories/dress?categories=드레스"
         />
         <DraggableProductList
           title="아우터"
           subtitle="계절을 완성하는 아우터 컬렉션"
           products={getProductsByCategory("아우터")}
-          viewAllLink="/categories/outerwear"
+          viewAllLink="/categories/outer?categories=아우터"
           className="bg-gray-50"
         />
 

@@ -120,7 +120,7 @@ export default function Header() {
               베스트
             </Link>
             <Link
-              href="/categories/outer"
+              href="/categories/outer?categories=아우터"
               className={`transition-colors ${
                 pathname === "/categories/outer"
                   ? "text-gray-900 font-bold"
@@ -130,7 +130,7 @@ export default function Header() {
               아우터
             </Link>
             <Link
-              href="/categories/top"
+              href="/categories/top?categories=상의"
               className={`transition-colors ${
                 pathname === "/categories/top"
                   ? "text-gray-900 font-bold"
@@ -140,7 +140,7 @@ export default function Header() {
               상의
             </Link>
             <Link
-              href="/categories/bottom"
+              href="/categories/bottom?categories=하의"
               className={`transition-colors ${
                 pathname === "/categories/bottom"
                   ? "text-gray-900 font-bold"
@@ -150,7 +150,7 @@ export default function Header() {
               하의
             </Link>
             <Link
-              href="/categories/dress"
+              href="/categories/dress?categories=드레스"
               className={`transition-colors ${
                 pathname === "/categories/dress"
                   ? "text-gray-900 font-bold"
@@ -270,7 +270,7 @@ export default function Header() {
                 베스트
               </Link>
               <Link
-                href="/categories/outer"
+                href="/categories/outer?categories=아우터"
                 className={`block transition-colors ${
                   pathname === "/categories/outer"
                     ? "text-gray-900 font-bold"
@@ -281,7 +281,7 @@ export default function Header() {
                 아우터
               </Link>
               <Link
-                href="/categories/top"
+                href="/categories/top?categories=상의"
                 className={`block transition-colors ${
                   pathname === "/categories/top"
                     ? "text-gray-900 font-bold"
@@ -292,7 +292,7 @@ export default function Header() {
                 상의
               </Link>
               <Link
-                href="/categories/bottom"
+                href="/categories/bottom?categories=하의"
                 className={`block transition-colors ${
                   pathname === "/categories/bottom"
                     ? "text-gray-900 font-bold"
@@ -303,7 +303,7 @@ export default function Header() {
                 하의
               </Link>
               <Link
-                href="/categories/dress"
+                href="/categories/dress?categories=드레스"
                 className={`block transition-colors ${
                   pathname === "/categories/dress"
                     ? "text-gray-900 font-bold"

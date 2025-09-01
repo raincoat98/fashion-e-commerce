@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Filter,
   X,
@@ -42,6 +43,7 @@ export interface FilterOptions {
   inStock: boolean;
   onSale: boolean;
   isNew: boolean;
+  isBest: boolean;
 }
 
 interface ProductFilterProps {
@@ -107,9 +109,40 @@ export default function ProductFilter({
   totalProducts = 0,
   filteredCount = 0,
 }: ProductFilterProps) {
+  const searchParams = useSearchParams();
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(["category", "price", "rating"])
   );
+
+  // URL 파라미터가 변경되면 확장된 섹션 업데이트
+  useEffect(() => {
+    const newExpanded = new Set<string>();
+
+    // URL에 필터가 있으면 해당 섹션을 확장
+    if (searchParams.get("categories")) newExpanded.add("category");
+    if (searchParams.get("brands")) newExpanded.add("brand");
+    if (searchParams.get("sizes")) newExpanded.add("size");
+    if (searchParams.get("colors")) newExpanded.add("color");
+    if (searchParams.get("priceMin") || searchParams.get("priceMax"))
+      newExpanded.add("price");
+    if (searchParams.get("ratings")) newExpanded.add("rating");
+    if (
+      searchParams.get("inStock") ||
+      searchParams.get("onSale") ||
+      searchParams.get("isNew") ||
+      searchParams.get("isBest")
+    )
+      newExpanded.add("other");
+
+    // 기본적으로 확장할 섹션들
+    if (newExpanded.size === 0) {
+      newExpanded.add("category");
+      newExpanded.add("price");
+      newExpanded.add("rating");
+    }
+
+    setExpandedSections(newExpanded);
+  }, [searchParams]);
 
   const toggleSection = (section: string) => {
     const newExpanded = new Set(expandedSections);
@@ -157,6 +190,7 @@ export default function ProductFilter({
       inStock: false,
       onSale: false,
       isNew: false,
+      isBest: false,
     });
   };
 
@@ -170,6 +204,7 @@ export default function ProductFilter({
       (filters.inStock ? 1 : 0) +
       (filters.onSale ? 1 : 0) +
       (filters.isNew ? 1 : 0) +
+      (filters.isBest ? 1 : 0) +
       (filters.priceRange[0] > 0 || filters.priceRange[1] < 1000000 ? 1 : 0)
     );
   };
@@ -452,6 +487,16 @@ export default function ProductFilter({
             />
             <Label htmlFor="is-new" className="text-sm cursor-pointer">
               신상품만
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="is-best"
+              checked={filters.isBest}
+              onCheckedChange={(checked) => updateFilter("isBest", checked)}
+            />
+            <Label htmlFor="is-best" className="text-sm cursor-pointer">
+              베스트 상품만
             </Label>
           </div>
         </div>
