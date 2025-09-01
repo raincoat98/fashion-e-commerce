@@ -229,15 +229,6 @@ export default function PromoSection() {
                   <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Link href="/cart" className="flex-1 sm:flex-none">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/10 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300"
-                >
-                  장바구니 담기
-                </Button>
-              </Link>
             </div>
 
             {/* Trust Indicators */}
