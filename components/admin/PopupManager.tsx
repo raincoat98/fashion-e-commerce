@@ -152,11 +152,16 @@ export default function PopupManager() {
     linkUrl: "",
     width: 400,
     height: 300,
-    position: "center" as const,
-    displayType: "delay" as const,
+    position: "center" as
+      | "center"
+      | "top-left"
+      | "top-right"
+      | "bottom-left"
+      | "bottom-right",
+    displayType: "delay" as "immediate" | "delay" | "scroll",
     delaySeconds: 3,
     scrollPercentage: 0,
-    targetAudience: "all" as const,
+    targetAudience: "all" as "all" | "new" | "returning" | "mobile" | "desktop",
     startDate: "",
     endDate: "",
     startTime: "09:00",
@@ -173,11 +178,21 @@ export default function PopupManager() {
       linkUrl: "",
       width: 400,
       height: 300,
-      position: "center",
-      displayType: "delay",
+      position: "center" as
+        | "center"
+        | "top-left"
+        | "top-right"
+        | "bottom-left"
+        | "bottom-right",
+      displayType: "delay" as "immediate" | "delay" | "scroll",
       delaySeconds: 3,
       scrollPercentage: 0,
-      targetAudience: "all",
+      targetAudience: "all" as
+        | "all"
+        | "new"
+        | "returning"
+        | "mobile"
+        | "desktop",
       startDate: "",
       endDate: "",
       startTime: "09:00",
@@ -640,7 +655,8 @@ export default function PopupManager() {
                   </Select>
                 </div>
               </div>
-              {formData.displayType === "delay" && (
+              {(formData.displayType === "delay" ||
+                formData.displayType === "immediate") && (
                 <div className="space-y-2">
                   <Label htmlFor="delaySeconds">지연 시간 (초)</Label>
                   <Input

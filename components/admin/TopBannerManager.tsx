@@ -48,6 +48,7 @@ import {
   ArrowUp,
   ArrowDown,
   ExternalLink,
+  X,
 } from "lucide-react";
 
 interface TopBanner {
@@ -175,7 +176,7 @@ export default function TopBannerManager() {
     isActive: true,
     startDate: "",
     endDate: "",
-    bannerType: "custom" as const,
+    bannerType: "custom" as "custom" | "lumina-gradient",
     isFullWidth: false,
     links: [] as Array<{ text: string; url: string }>,
   });
@@ -192,7 +193,7 @@ export default function TopBannerManager() {
       isActive: true,
       startDate: "",
       endDate: "",
-      bannerType: "custom",
+      bannerType: "custom" as "custom" | "lumina-gradient",
       isFullWidth: false,
       links: [],
     });
