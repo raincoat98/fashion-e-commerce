@@ -52,6 +52,7 @@ import CustomerManager from "@/components/admin/CustomerManager";
 import BannerManager from "@/components/admin/BannerManager";
 import TopBannerManager from "@/components/admin/TopBannerManager";
 import PopupManager from "@/components/admin/PopupManager";
+import NotificationManager from "@/components/admin/NotificationManager";
 
 import {
   Select,
@@ -70,6 +71,52 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+// Mock 알림 데이터
+const mockNotifications = [
+  {
+    id: "1",
+    type: "order",
+    title: "새로운 주문",
+    message: "ORD-2025-003 주문이 접수되었습니다. (총 189,000원)",
+    timestamp: "2025-01-15T14:30:00",
+    isRead: false,
+    priority: "high",
+    actionUrl: "/admin/orders/ORD-2025-003",
+  },
+  {
+    id: "2",
+    type: "inventory",
+    title: "재고 부족 알림",
+    message: "LUMINA 시그니처 티셔츠 재고가 5개 미만입니다.",
+    timestamp: "2025-01-15T13:45:00",
+    isRead: false,
+    priority: "medium",
+  },
+  {
+    id: "3",
+    type: "customer",
+    title: "고객 문의",
+    message: "새로운 고객 문의가 등록되었습니다. (배송 관련)",
+    timestamp: "2025-01-15T12:20:00",
+    isRead: true,
+    priority: "medium",
+  },
+  {
+    id: "4",
+    type: "payment",
+    title: "결제 오류",
+    message: "ORD-2025-002 주문의 결제 처리 중 오류가 발생했습니다.",
+    timestamp: "2025-01-15T11:15:00",
+    isRead: false,
+    priority: "high",
+  },
+];
 
 // Mock 데이터
 const mockOrders = [
@@ -173,6 +220,17 @@ export default function AdminPage() {
   useEffect(() => {
     // 실제 프로덕션에서는 여기서 인증 체크를 수행
     setIsAuthenticated(true);
+
+    // 컴포넌트 언마운트 시 정리 작업
+    return () => {
+      // 팝오버 닫기
+      setIsNotificationPopoverOpen(false);
+      setIsMobileMenuOpen(false);
+
+      // 다이얼로그 닫기
+      setIsStatusChangeDialogOpen(false);
+      setIsPartialCancelDialogOpen(false);
+    };
   }, []);
 
   // 주문 관리 상태
@@ -183,6 +241,11 @@ export default function AdminPage() {
     useState(false);
   const [newOrderStatus, setNewOrderStatus] = useState("");
   const [cancelItems, setCancelItems] = useState<{ [key: string]: number }>({});
+
+  // 알림 관련 상태
+  const [notifications, setNotifications] = useState(mockNotifications);
+  const [isNotificationPopoverOpen, setIsNotificationPopoverOpen] =
+    useState(false);
 
   // 통계 계산
   const totalOrders = mockOrders.length;
@@ -202,6 +265,85 @@ export default function AdminPage() {
     (sum, order) => sum + order.totalAmount,
     0
   );
+
+  // 알림 관련 함수들
+  const markNotificationAsRead = (id: string) => {
+    setNotifications((prev) =>
+      prev.map((notification) =>
+        notification.id === id
+          ? { ...notification, isRead: true }
+          : notification
+      )
+    );
+  };
+
+  const markAllNotificationsAsRead = () => {
+    setNotifications((prev) =>
+      prev.map((notification) => ({ ...notification, isRead: true }))
+    );
+  };
+
+  const deleteNotification = (id: string) => {
+    setNotifications((prev) =>
+      prev.filter((notification) => notification.id !== id)
+    );
+  };
+
+  // 컴포넌트 언마운트 시 알림 팝오버 닫기
+  useEffect(() => {
+    return () => {
+      setIsNotificationPopoverOpen(false);
+    };
+  }, []);
+
+  // 알림 타입별 아이콘
+  const getNotificationTypeIcon = (type: string) => {
+    switch (type) {
+      case "order":
+        return <ShoppingCart className="w-4 h-4" />;
+      case "inventory":
+        return <Package className="w-4 h-4" />;
+      case "customer":
+        return <Users className="w-4 h-4" />;
+      case "payment":
+        return <DollarSign className="w-4 h-4" />;
+      case "system":
+        return <AlertCircle className="w-4 h-4" />;
+      default:
+        return <Bell className="w-4 h-4" />;
+    }
+  };
+
+  // 우선순위별 배지 색상
+  const getPriorityBadge = (priority: string) => {
+    switch (priority) {
+      case "high":
+        return (
+          <Badge variant="destructive" className="text-xs">
+            높음
+          </Badge>
+        );
+      case "medium":
+        return (
+          <Badge variant="secondary" className="text-xs">
+            보통
+          </Badge>
+        );
+      case "low":
+        return (
+          <Badge variant="outline" className="text-xs">
+            낮음
+          </Badge>
+        );
+      default:
+        return null;
+    }
+  };
+
+  // 읽지 않은 알림 개수
+  const unreadNotificationsCount = notifications.filter(
+    (n) => !n.isRead
+  ).length;
 
   // 주문 플로우에 맞는 메뉴 아이템들
   const menuItems = [
@@ -294,6 +436,15 @@ export default function AdminPage() {
       color: "text-violet-600",
       bgColor: "bg-violet-50",
     },
+    {
+      id: "notifications",
+      name: "알림 관리",
+      icon: Bell,
+      description: "시스템 알림 관리",
+      color: "text-amber-600",
+      bgColor: "bg-amber-50",
+      badge: unreadNotificationsCount > 0 ? unreadNotificationsCount : null,
+    },
   ];
 
   // 필터링된 주문
@@ -378,10 +529,20 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
     const a = document.createElement("a");
     a.href = url;
     a.download = `receipt-${order.id}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    a.style.display = "none";
+
+    try {
+      document.body.appendChild(a);
+      a.click();
+    } catch (error) {
+      console.error("영수증 다운로드 중 오류:", error);
+    } finally {
+      // 안전하게 요소 제거
+      if (document.body.contains(a)) {
+        document.body.removeChild(a);
+      }
+      URL.revokeObjectURL(url);
+    }
   };
 
   // 엑셀 다운로드 함수들
@@ -496,10 +657,20 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
     link.setAttribute("download", filename);
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    link.style.display = "none";
+
+    try {
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("CSV 다운로드 중 오류:", error);
+    } finally {
+      // 안전하게 요소 제거
+      if (document.body.contains(link)) {
+        document.body.removeChild(link);
+      }
+      URL.revokeObjectURL(url);
+    }
   };
 
   // 인증되지 않은 경우 로딩 표시
@@ -519,8 +690,8 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
       {/* 모바일 사이드바 */}
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
         <SheetContent side="left" className="w-80 p-0">
-          <div className="h-full bg-white border-r">
-            <div className="p-6 border-b bg-gradient-to-r from-blue-600 to-indigo-600">
+          <div className="h-full bg-white border-r flex flex-col">
+            <div className="p-6 border-b bg-gradient-to-r from-blue-600 to-indigo-600 flex-shrink-0">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
                   <BarChart3 className="w-6 h-6 text-blue-600" />
@@ -531,7 +702,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                 </div>
               </div>
             </div>
-            <nav className="p-4">
+            <nav className="flex-1 overflow-y-auto p-4">
               {menuItems.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -571,8 +742,8 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
 
       <div className="flex min-h-screen">
         {/* 데스크톱 사이드바 */}
-        <div className="hidden lg:flex lg:flex-col lg:w-80 lg:flex-shrink-0 h-screen bg-white border-r border-gray-200 sticky top-0 overflow-y-auto">
-          <div className="p-6 border-b bg-gradient-to-r from-blue-600 to-indigo-600">
+        <div className="hidden lg:flex lg:flex-col lg:w-80 lg:flex-shrink-0 h-screen bg-white border-r border-gray-200 sticky top-0">
+          <div className="p-6 border-b bg-gradient-to-r from-blue-600 to-indigo-600 flex-shrink-0">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
                 <BarChart3 className="w-7 h-7 text-blue-600" />
@@ -587,7 +758,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
               </div>
             </div>
           </div>
-          <nav className="p-4 space-y-2">
+          <nav className="flex-1 overflow-y-auto p-4 space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -649,14 +820,171 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                   </div>
                 </div>
                 <div className="flex items-center space-x-2 lg:space-x-3 flex-shrink-0">
-                  <Button variant="ghost" size="sm" className="relative">
-                    <Bell className="w-4 h-4 lg:w-5 lg:h-5" />
-                    {pendingOrders > 0 && (
-                      <span className="absolute -top-1 -right-1 w-4 h-4 lg:w-5 lg:h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                        {pendingOrders}
-                      </span>
-                    )}
-                  </Button>
+                  <Popover
+                    open={isNotificationPopoverOpen}
+                    onOpenChange={setIsNotificationPopoverOpen}
+                  >
+                    <PopoverTrigger asChild>
+                      <Button variant="ghost" size="sm" className="relative">
+                        <Bell className="w-4 h-4 lg:w-5 lg:h-5" />
+                        {unreadNotificationsCount > 0 && (
+                          <span className="absolute -top-1 -right-1 w-4 h-4 lg:w-5 lg:h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                            {unreadNotificationsCount}
+                          </span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 p-0" align="end">
+                      <div className="flex items-center justify-between p-4 border-b">
+                        <h4 className="font-semibold">알림</h4>
+                        <div className="flex items-center space-x-2">
+                          {unreadNotificationsCount > 0 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={markAllNotificationsAsRead}
+                              className="text-xs"
+                            >
+                              모두 읽음
+                            </Button>
+                          )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setActiveTab("notifications");
+                              setIsNotificationPopoverOpen(false);
+                            }}
+                            className="text-xs"
+                          >
+                            모두 보기
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="max-h-96 overflow-y-auto">
+                        {notifications.length === 0 ? (
+                          <div className="p-4 text-center text-gray-500">
+                            <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                            <p className="text-sm">알림이 없습니다.</p>
+                          </div>
+                        ) : (
+                          <div className="divide-y">
+                            {notifications.slice(0, 5).map((notification) => (
+                              <div
+                                key={notification.id}
+                                className={`p-4 hover:bg-gray-50 transition-colors ${
+                                  !notification.isRead ? "bg-blue-50" : ""
+                                }`}
+                              >
+                                <div className="flex items-start space-x-3">
+                                  <div
+                                    className={`mt-1 ${
+                                      notification.isRead
+                                        ? "text-gray-400"
+                                        : "text-blue-600"
+                                    }`}
+                                  >
+                                    {getNotificationTypeIcon(notification.type)}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center space-x-2 mb-1">
+                                      <h5
+                                        className={`text-sm font-medium truncate ${
+                                          notification.isRead
+                                            ? "text-gray-600"
+                                            : "text-gray-900"
+                                        }`}
+                                      >
+                                        {notification.title}
+                                      </h5>
+                                      {getPriorityBadge(notification.priority)}
+                                      {!notification.isRead && (
+                                        <Badge
+                                          variant="default"
+                                          className="bg-blue-600 text-xs"
+                                        >
+                                          새
+                                        </Badge>
+                                      )}
+                                    </div>
+                                    <p
+                                      className={`text-xs truncate ${
+                                        notification.isRead
+                                          ? "text-gray-500"
+                                          : "text-gray-700"
+                                      }`}
+                                    >
+                                      {notification.message}
+                                    </p>
+                                    <div className="flex items-center justify-between mt-2">
+                                      <span className="text-xs text-gray-400">
+                                        {new Date(
+                                          notification.timestamp
+                                        ).toLocaleString("ko-KR", {
+                                          month: "short",
+                                          day: "numeric",
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                        })}
+                                      </span>
+                                      <div className="flex items-center space-x-1">
+                                        {!notification.isRead && (
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() =>
+                                              markNotificationAsRead(
+                                                notification.id
+                                              )
+                                            }
+                                            className="h-6 w-6 p-0"
+                                          >
+                                            <Eye className="w-3 h-3" />
+                                          </Button>
+                                        )}
+                                        {notification.actionUrl && (
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => {
+                                              try {
+                                                window.open(
+                                                  notification.actionUrl,
+                                                  "_blank"
+                                                );
+                                              } catch (error) {
+                                                console.error(
+                                                  "링크 열기 중 오류:",
+                                                  error
+                                                );
+                                              }
+                                            }}
+                                            className="h-6 w-6 p-0"
+                                          >
+                                            <ArrowUpRight className="w-3 h-3" />
+                                          </Button>
+                                        )}
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={() =>
+                                            deleteNotification(notification.id)
+                                          }
+                                          className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
+                                        >
+                                          <X className="w-3 h-3" />
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                   <Link href="/">
                     <Button
                       variant="outline"
@@ -1377,6 +1705,13 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
             {activeTab === "popups" && (
               <div className="space-y-6">
                 <PopupManager />
+              </div>
+            )}
+
+            {/* 알림 관리 탭 */}
+            {activeTab === "notifications" && (
+              <div className="space-y-6">
+                <NotificationManager />
               </div>
             )}
           </main>
