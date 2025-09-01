@@ -152,13 +152,13 @@ export default function CategorySection() {
         {/* Categories Grid */}
         <div
           ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-10 sm:mb-12 lg:mb-16"
+          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8 mb-10 sm:mb-12 lg:mb-16"
         >
           {categories.map((category) => (
             <Link key={category.id} href={`/categories/${category.id}`}>
               <div className="group relative overflow-hidden rounded-xl sm:rounded-2xl bg-white lumina-shadow-lg hover:lumina-shadow-xl transition-all duration-500 cursor-pointer">
                 {/* Background Image */}
-                <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
+                <div className="relative h-48 sm:h-72 lg:h-80 overflow-hidden">
                   <Image
                     src={category.image}
                     alt={category.name}
@@ -175,23 +175,23 @@ export default function CategorySection() {
 
                   {/* Category Badge */}
                   <div
-                    className={`absolute top-3 left-3 sm:top-4 sm:left-4 bg-gradient-to-r ${category.color} text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs font-bold`}
+                    className={`absolute top-2 left-2 sm:top-4 sm:left-4 bg-gradient-to-r ${category.color} text-white px-1.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold`}
                   >
                     {category.count} ITEMS
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white">
-                  <h3 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 group-hover:text-yellow-300 transition-colors">
+                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6 text-white">
+                  <h3 className="text-lg sm:text-2xl font-bold mb-1 sm:mb-2 group-hover:text-yellow-300 transition-colors">
                     {category.name}
                   </h3>
-                  <p className="text-gray-200 text-xs sm:text-sm mb-3 sm:mb-4 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 line-clamp-2">
+                  <p className="text-gray-200 text-xs sm:text-sm mb-2 sm:mb-4 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 line-clamp-2">
                     {category.description}
                   </p>
 
                   {/* Arrow Icon */}
-                  <div className="flex items-center space-x-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex items-center space-x-1 sm:space-x-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
                     <span className="text-xs sm:text-sm font-medium">
                       바로가기
                     </span>
