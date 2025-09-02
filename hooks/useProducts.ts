@@ -107,10 +107,24 @@ export function useProducts() {
     if (!products || !Array.isArray(products)) {
       return [];
     }
+
+    // 한글 카테고리명을 영문 카테고리명으로 매핑
+    const categoryMapping: { [key: string]: string } = {
+      상의: "top",
+      하의: "bottom",
+      원피스: "dress",
+      아우터: "outer",
+    };
+
+    const mappedCategory = categoryMapping[category] || category;
+
     const categoryProducts = products.filter(
-      (product) => product.category === category
+      (product) => product.category === mappedCategory
     );
-    console.log(`${category} 카테고리 필터링 결과:`, categoryProducts);
+    console.log(
+      `${category}(${mappedCategory}) 카테고리 필터링 결과:`,
+      categoryProducts
+    );
     return categoryProducts;
   };
 
