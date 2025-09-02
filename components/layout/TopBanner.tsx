@@ -83,188 +83,87 @@ export default function TopBanner() {
           linkUrl: "/signup",
           order: 1,
           isActive: true,
-          startDate: "2023-01-01",
-          endDate: "2024-12-31",
-          bannerType: "custom",
-        },
-        {
-          id: "2",
-          title: "무료 배송 이벤트",
-          content: "5만원 이상 구매 시 무료 배송!",
-          backgroundColor: "#4ecdc4",
-          textColor: "#ffffff",
-          linkUrl: "/products",
-          order: 2,
-          isActive: true,
-          startDate: "2023-01-01",
-          endDate: "2024-12-31",
-          bannerType: "custom",
-        },
-        {
-          id: "3",
-          title: "✨ NEW ARRIVAL: 봄 시즌 컬렉션 출시!",
-          content: "첫 구매 20% 할인",
-          backgroundColor: "",
-          textColor: "#ffffff",
-          linkUrl: "/products",
-          order: 3,
-          isActive: true,
-          startDate: "2023-01-01",
-          endDate: "2024-12-31",
-          bannerType: "lumina-gradient",
-          isFullWidth: true,
-          links: [
-            { text: "신상품 보기", url: "/products" },
-            { text: "할인 상품", url: "/sale" },
-            { text: "회원가입", url: "/signup" },
-          ],
-        },
-        {
-          id: "4",
-          title: "🎉 특별 이벤트",
-          content: "한정 수량 특가 상품",
-          backgroundColor: "#ff6b6b",
-          textColor: "#ffffff",
-          linkUrl: "/sale",
-          order: 4,
-          isActive: false,
-          startDate: "2023-01-01",
-          endDate: "2024-12-31",
-          bannerType: "custom",
+          startDate: "2025-01-01",
+          endDate: "2025-12-31",
+          bannerType: "custom" as "custom" | "lumina-gradient",
           isFullWidth: false,
-          links: [
-            { text: "이벤트 상품", url: "/sale" },
-            { text: "쿠폰 받기", url: "/coupons" },
-          ],
+          links: [],
         },
       ];
     }
 
-    // 활성화된 배너만 필터링하고 날짜 조건 확인
-    const activeBanners = banners.filter((banner) => {
-      console.log(`Checking banner ${banner.id}:`, {
-        title: banner.title,
-        isActive: banner.isActive,
-        startDate: banner.startDate,
-        endDate: banner.endDate,
-      });
-
-      // 활성화 상태 체크
-      if (!banner.isActive) {
-        console.log(`Banner ${banner.id} is inactive`);
-        return false;
-      }
-
-      const now = new Date();
-      const startDate = new Date(banner.startDate);
-      const endDate = new Date(banner.endDate);
-
-      // 날짜 범위 체크
-      if (now < startDate) {
-        console.log(
-          `Banner ${banner.id} not started yet (starts: ${banner.startDate})`
-        );
-        return false;
-      }
-
-      if (now > endDate) {
-        console.log(`Banner ${banner.id} expired (ended: ${banner.endDate})`);
-        return false;
-      }
-
-      console.log(`Banner ${banner.id} is active and in date range`);
-      return true;
-    });
-
+    // 활성화된 배너만 필터링
+    const activeBanners = banners.filter((banner) => banner.isActive);
     setTopBanners(activeBanners);
-
-    // 닫힌 배너가 아닌 경우에만 표시
-    const isBannerClosed = localStorage.getItem("topBannerClosed") === "true";
-    const shouldShow = activeBanners.length > 0 && !isBannerClosed;
-    setIsVisible(shouldShow);
-
-    // 개발 중에는 닫힌 상태를 리셋 (필요시 주석 해제)
-    localStorage.removeItem("topBannerClosed");
-
-    // 디버깅용 로그
-    console.log("TopBanner Debug:", {
-      activeBanners: activeBanners.length,
-      isBannerClosed,
-      shouldShow,
-      isAdminPage,
-      banners: activeBanners,
-    });
-  }, [isAdminPage]);
+    setIsVisible(activeBanners.length > 0);
+  }, []);
 
   useEffect(() => {
     loadBanners();
   }, [loadBanners]);
 
-  // 배너 상태가 변경될 때마다 body padding 업데이트
   useEffect(() => {
-    // 배너가 표시될 때 body에 padding 추가
-    const updateBodyPadding = () => {
-      // setTimeout을 사용하여 DOM이 업데이트된 후 높이를 계산
-      setTimeout(() => {
-        const bannerHeight =
-          document.querySelector('[data-topbanner="true"]')?.clientHeight || 0;
-        const header = document.querySelector(
-          '[data-header="true"]'
-        ) as HTMLElement;
+    // CSS 변수로 TopBanner 높이 설정
+    const setTopBannerHeight = () => {
+      if (isAdminPage || isMobile) {
+        // 관리자 페이지나 모바일에서는 높이를 0으로 설정
+        document.documentElement.style.setProperty(
+          "--top-banner-height",
+          "0px"
+        );
+        return;
+      }
 
-        if (header) {
-          header.style.top = isVisible ? `${bannerHeight}px` : "0";
-        }
-        // 헤더 높이를 고려하여 body padding 계산
-        const headerHeight = header?.clientHeight || 0;
-        const totalTopSpace = isVisible
-          ? bannerHeight + headerHeight
-          : headerHeight;
-        document.body.style.paddingTop = `${totalTopSpace}px`;
-        console.log("Updating positions:", { bannerHeight, isVisible });
-      }, 0);
-    };
-
-    // 초기 padding 설정
-    updateBodyPadding();
-
-    // resize 이벤트에서 padding 업데이트
-    window.addEventListener("resize", updateBodyPadding);
-
-    // localStorage 변경 이벤트 리스너 추가
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === "topBanners") {
-        console.log("TopBanner data changed, reloading...");
-        loadBanners();
+      const bannerElement = document.querySelector('[data-topbanner="true"]');
+      if (bannerElement) {
+        const height = bannerElement.getBoundingClientRect().height;
+        document.documentElement.style.setProperty(
+          "--top-banner-height",
+          `${height}px`
+        );
       }
     };
 
-    // 커스텀 이벤트 리스너 추가 (같은 탭에서의 변경사항을 위해)
-    const handleBannerUpdate = () => {
-      console.log("TopBanner update event received, reloading...");
-      loadBanners();
-    };
+    // 초기 설정
+    setTopBannerHeight();
 
-    window.addEventListener("storage", handleStorageChange);
-    window.addEventListener("topBannerUpdate", handleBannerUpdate);
+    // 리사이즈 시 재설정
+    window.addEventListener("resize", setTopBannerHeight);
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("topBannerUpdate", handleBannerUpdate);
-      window.removeEventListener("resize", updateBodyPadding);
-      // 헤더 높이만큼만 padding 유지
-      const header = document.querySelector(
-        '[data-header="true"]'
-      ) as HTMLElement;
-      if (header) {
-        header.style.top = "0";
-        const headerHeight = header.clientHeight || 0;
-        document.body.style.paddingTop = `${headerHeight}px`;
-      } else {
-        document.body.style.paddingTop = "0";
+      window.removeEventListener("resize", setTopBannerHeight);
+    };
+  }, [topBanners, currentBannerIndex, isAdminPage, isMobile]);
+
+  // 배너 상태가 변경될 때마다 body padding 업데이트
+  useEffect(() => {
+    if (isAdminPage || isMobile) {
+      // 관리자 페이지나 모바일에서는 body padding 제거
+      document.body.style.paddingTop = "0px";
+      return;
+    }
+
+    const updateBodyPadding = () => {
+      const bannerElement = document.querySelector('[data-topbanner="true"]');
+      if (bannerElement) {
+        const height = bannerElement.getBoundingClientRect().height;
+        document.body.style.paddingTop = `${height}px`;
       }
     };
-  }, [isVisible, loadBanners]);
+
+    updateBodyPadding();
+    window.addEventListener("resize", updateBodyPadding);
+
+    return () => {
+      window.removeEventListener("resize", updateBodyPadding);
+      document.body.style.paddingTop = "0px";
+    };
+  }, [topBanners, currentBannerIndex, isAdminPage, isMobile]);
+
+  // 관리자 페이지에서는 TopBanner를 표시하지 않음
+  if (isAdminPage) {
+    return null;
+  }
 
   const handleClose = () => {
     setIsVisible(false);
@@ -308,7 +207,7 @@ export default function TopBanner() {
   return (
     <div
       data-topbanner="true"
-      className={`fixed top-0 left-0 right-0 z-[100] w-full py-3 px-4 text-center text-sm font-medium transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 w-full py-3 px-4 text-center text-sm font-medium transition-all duration-300 z-30 ${
         currentBanner.bannerType === "lumina-gradient" ? "lumina-gradient" : ""
       } ${currentBanner.isFullWidth ? "w-full" : ""}`}
       style={{
