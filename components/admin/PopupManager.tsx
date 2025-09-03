@@ -372,20 +372,27 @@ export default function PopupManager() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">팝업 관리</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            팝업 관리
+          </h2>
+          <p className="text-muted-foreground dark:text-gray-400">
             웹사이트에 표시되는 팝업을 관리합니다.
           </p>
         </div>
-        <Button onClick={handleAddPopup}>
+        <Button
+          onClick={handleAddPopup}
+          className="bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white"
+        >
           <Plus className="w-4 h-4 mr-2" />새 팝업 추가
         </Button>
       </div>
 
-      <Card>
+      <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardHeader>
-          <CardTitle>팝업 목록</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-gray-900 dark:text-gray-100">
+            팝업 목록
+          </CardTitle>
+          <CardDescription className="text-gray-600 dark:text-gray-400">
             현재 등록된 팝업 목록입니다. 표시 조건과 상태를 관리할 수 있습니다.
           </CardDescription>
         </CardHeader>
@@ -409,46 +416,56 @@ export default function PopupManager() {
                 <TableRow key={popup.id}>
                   <TableCell>
                     <div>
-                      <div className="font-medium">{popup.title}</div>
-                      <div className="text-sm text-muted-foreground max-w-xs truncate">
+                      <div className="font-medium text-gray-900 dark:text-gray-100">
+                        {popup.title}
+                      </div>
+                      <div className="text-sm text-muted-foreground dark:text-gray-400 max-w-xs truncate">
                         {popup.content}
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-gray-900 dark:text-gray-100">
                     {popup.width} × {popup.height}
                   </TableCell>
-                  <TableCell>{getPositionText(popup.position)}</TableCell>
+                  <TableCell className="text-gray-900 dark:text-gray-100">
+                    {getPositionText(popup.position)}
+                  </TableCell>
                   <TableCell>
                     <div className="text-sm">
-                      <div>{getDisplayTypeText(popup.displayType)}</div>
+                      <div className="text-gray-900 dark:text-gray-100">
+                        {getDisplayTypeText(popup.displayType)}
+                      </div>
                       {popup.displayType === "delay" && (
-                        <div className="text-muted-foreground">
+                        <div className="text-muted-foreground dark:text-gray-400">
                           {popup.delaySeconds}초 후
                         </div>
                       )}
                       {popup.displayType === "scroll" && (
-                        <div className="text-muted-foreground">
+                        <div className="text-muted-foreground dark:text-gray-400">
                           {popup.scrollPercentage}% 스크롤 시
                         </div>
                       )}
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-gray-900 dark:text-gray-100">
                     {getTargetAudienceText(popup.targetAudience)}
                   </TableCell>
                   <TableCell>
                     <div className="text-sm">
-                      <div>{popup.startDate}</div>
-                      <div className="text-muted-foreground">
+                      <div className="text-gray-900 dark:text-gray-100">
+                        {popup.startDate}
+                      </div>
+                      <div className="text-muted-foreground dark:text-gray-400">
                         ~ {popup.endDate}
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="text-sm">
-                      <div>{popup.startTime}</div>
-                      <div className="text-muted-foreground">
+                      <div className="text-gray-900 dark:text-gray-100">
+                        {popup.startTime}
+                      </div>
+                      <div className="text-muted-foreground dark:text-gray-400">
                         ~ {popup.endTime}
                       </div>
                     </div>
@@ -460,6 +477,7 @@ export default function PopupManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleToggleStatus(popup.id)}
+                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         {popup.isActive ? (
                           <EyeOff className="w-4 h-4" />
@@ -471,6 +489,7 @@ export default function PopupManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleEditPopup(popup)}
+                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -478,6 +497,7 @@ export default function PopupManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDeletePopup(popup.id)}
+                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -491,22 +511,29 @@ export default function PopupManager() {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-gray-900 dark:text-gray-100">
               {editingPopup ? "팝업 수정" : "새 팝업 추가"}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-gray-600 dark:text-gray-400">
               팝업의 정보와 표시 조건을 설정하세요.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-6 py-4">
             {/* 기본 정보 */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">기본 정보</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                기본 정보
+              </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="title">제목</Label>
+                  <Label
+                    htmlFor="title"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    제목
+                  </Label>
                   <Input
                     id="title"
                     value={formData.title}
@@ -514,10 +541,16 @@ export default function PopupManager() {
                       setFormData({ ...formData, title: e.target.value })
                     }
                     placeholder="팝업 제목을 입력하세요"
+                    className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="linkUrl">링크 URL</Label>
+                  <Label
+                    htmlFor="linkUrl"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    링크 URL
+                  </Label>
                   <Input
                     id="linkUrl"
                     value={formData.linkUrl}
@@ -525,11 +558,17 @@ export default function PopupManager() {
                       setFormData({ ...formData, linkUrl: e.target.value })
                     }
                     placeholder="클릭 시 이동할 URL을 입력하세요 (선택사항)"
+                    className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="content">내용</Label>
+                <Label
+                  htmlFor="content"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  내용
+                </Label>
                 <Textarea
                   id="content"
                   value={formData.content}
@@ -538,10 +577,16 @@ export default function PopupManager() {
                   }
                   placeholder="팝업에 표시할 내용을 입력하세요"
                   rows={3}
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="imageUrl">이미지 URL</Label>
+                <Label
+                  htmlFor="imageUrl"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  이미지 URL
+                </Label>
                 <Input
                   id="imageUrl"
                   value={formData.imageUrl}
@@ -549,16 +594,24 @@ export default function PopupManager() {
                     setFormData({ ...formData, imageUrl: e.target.value })
                   }
                   placeholder="팝업 이미지 URL을 입력하세요 (선택사항)"
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
             </div>
 
             {/* 표시 설정 */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">표시 설정</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                표시 설정
+              </h3>
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="width">너비 (px)</Label>
+                  <Label
+                    htmlFor="width"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    너비 (px)
+                  </Label>
                   <Input
                     id="width"
                     type="number"
@@ -571,10 +624,16 @@ export default function PopupManager() {
                     }
                     min="200"
                     max="800"
+                    className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="height">높이 (px)</Label>
+                  <Label
+                    htmlFor="height"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    높이 (px)
+                  </Label>
                   <Input
                     id="height"
                     type="number"
@@ -587,25 +646,56 @@ export default function PopupManager() {
                     }
                     min="200"
                     max="600"
+                    className="border-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="position">위치</Label>
+                  <Label
+                    htmlFor="position"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    위치
+                  </Label>
                   <Select
                     value={formData.position}
                     onValueChange={(value: any) =>
                       setFormData({ ...formData, position: value })
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="center">중앙</SelectItem>
-                      <SelectItem value="top-left">좌상단</SelectItem>
-                      <SelectItem value="top-right">우상단</SelectItem>
-                      <SelectItem value="bottom-left">좌하단</SelectItem>
-                      <SelectItem value="bottom-right">우하단</SelectItem>
+                    <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                      <SelectItem
+                        value="center"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        중앙
+                      </SelectItem>
+                      <SelectItem
+                        value="top-left"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        좌상단
+                      </SelectItem>
+                      <SelectItem
+                        value="top-right"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        우상단
+                      </SelectItem>
+                      <SelectItem
+                        value="bottom-left"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        좌하단
+                      </SelectItem>
+                      <SelectItem
+                        value="bottom-right"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        우하단
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -614,43 +704,95 @@ export default function PopupManager() {
 
             {/* 표시 조건 */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">표시 조건</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                표시 조건
+              </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="displayType">표시 방식</Label>
+                  <Label
+                    htmlFor="displayType"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    표시 방식
+                  </Label>
                   <Select
                     value={formData.displayType}
                     onValueChange={(value: any) =>
                       setFormData({ ...formData, displayType: value })
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="immediate">즉시 표시</SelectItem>
-                      <SelectItem value="delay">지연 표시</SelectItem>
-                      <SelectItem value="scroll">스크롤 시</SelectItem>
+                    <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                      <SelectItem
+                        value="immediate"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        즉시 표시
+                      </SelectItem>
+                      <SelectItem
+                        value="delay"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        지연 표시
+                      </SelectItem>
+                      <SelectItem
+                        value="scroll"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        스크롤 시
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="targetAudience">대상 사용자</Label>
+                  <Label
+                    htmlFor="targetAudience"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    대상 사용자
+                  </Label>
                   <Select
                     value={formData.targetAudience}
                     onValueChange={(value: any) =>
                       setFormData({ ...formData, targetAudience: value })
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">전체</SelectItem>
-                      <SelectItem value="new">신규 사용자</SelectItem>
-                      <SelectItem value="returning">재방문자</SelectItem>
-                      <SelectItem value="mobile">모바일</SelectItem>
-                      <SelectItem value="desktop">데스크톱</SelectItem>
+                    <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                      <SelectItem
+                        value="all"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        전체
+                      </SelectItem>
+                      <SelectItem
+                        value="new"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        신규 사용자
+                      </SelectItem>
+                      <SelectItem
+                        value="returning"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        재방문자
+                      </SelectItem>
+                      <SelectItem
+                        value="mobile"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        모바일
+                      </SelectItem>
+                      <SelectItem
+                        value="desktop"
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        데스크톱
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -658,7 +800,12 @@ export default function PopupManager() {
               {(formData.displayType === "delay" ||
                 formData.displayType === "immediate") && (
                 <div className="space-y-2">
-                  <Label htmlFor="delaySeconds">지연 시간 (초)</Label>
+                  <Label
+                    htmlFor="delaySeconds"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    지연 시간 (초)
+                  </Label>
                   <Input
                     id="delaySeconds"
                     type="number"
@@ -671,12 +818,18 @@ export default function PopupManager() {
                     }
                     min="1"
                     max="60"
+                    className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
               )}
               {formData.displayType === "scroll" && (
                 <div className="space-y-2">
-                  <Label htmlFor="scrollPercentage">스크롤 비율 (%)</Label>
+                  <Label
+                    htmlFor="scrollPercentage"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    스크롤 비율 (%)
+                  </Label>
                   <Input
                     id="scrollPercentage"
                     type="number"
@@ -689,6 +842,7 @@ export default function PopupManager() {
                     }
                     min="0"
                     max="100"
+                    className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
               )}
@@ -696,10 +850,17 @@ export default function PopupManager() {
 
             {/* 기간 설정 */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">기간 설정</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                기간 설정
+              </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="startDate">시작일</Label>
+                  <Label
+                    htmlFor="startDate"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    시작일
+                  </Label>
                   <Input
                     id="startDate"
                     type="date"
@@ -707,10 +868,16 @@ export default function PopupManager() {
                     onChange={(e) =>
                       setFormData({ ...formData, startDate: e.target.value })
                     }
+                    className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="endDate">종료일</Label>
+                  <Label
+                    htmlFor="endDate"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    종료일
+                  </Label>
                   <Input
                     id="endDate"
                     type="date"
@@ -718,12 +885,18 @@ export default function PopupManager() {
                     onChange={(e) =>
                       setFormData({ ...formData, endDate: e.target.value })
                     }
+                    className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="startTime">시작 시간</Label>
+                  <Label
+                    htmlFor="startTime"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    시작 시간
+                  </Label>
                   <Input
                     id="startTime"
                     type="time"
@@ -731,10 +904,16 @@ export default function PopupManager() {
                     onChange={(e) =>
                       setFormData({ ...formData, startTime: e.target.value })
                     }
+                    className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="endTime">종료 시간</Label>
+                  <Label
+                    htmlFor="endTime"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    종료 시간
+                  </Label>
                   <Input
                     id="endTime"
                     type="time"
@@ -742,6 +921,7 @@ export default function PopupManager() {
                     onChange={(e) =>
                       setFormData({ ...formData, endTime: e.target.value })
                     }
+                    className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
               </div>
@@ -755,14 +935,26 @@ export default function PopupManager() {
                   setFormData({ ...formData, isActive: checked })
                 }
               />
-              <Label htmlFor="isActive">활성화</Label>
+              <Label
+                htmlFor="isActive"
+                className="text-gray-900 dark:text-gray-100"
+              >
+                활성화
+              </Label>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsDialogOpen(false)}
+              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+            >
               취소
             </Button>
-            <Button onClick={handleSavePopup}>
+            <Button
+              onClick={handleSavePopup}
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+            >
               {editingPopup ? "수정" : "추가"}
             </Button>
           </DialogFooter>

@@ -698,9 +698,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     <div className="space-y-6">
       {/* 상품 등록 모달 */}
       <Dialog open={showProductForm} onOpenChange={setShowProductForm}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle className="flex items-center justify-between">
+            <DialogTitle className="flex items-center justify-between text-gray-900 dark:text-gray-100">
               <span>{editingProduct ? "상품 수정" : "상품 등록"}</span>
               <div className="flex gap-2">
                 {formData.isLimited && (
@@ -708,16 +708,18 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                 )}
                 {formData.isHot && <Badge variant="destructive">HOT</Badge>}
                 {formData.isNew && (
-                  <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+                  <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900 dark:text-blue-200">
                     NEW
                   </Badge>
                 )}
                 {formData.isBest && (
-                  <Badge className="bg-yellow-500 text-white">BEST</Badge>
+                  <Badge className="bg-yellow-500 text-white dark:bg-yellow-600">
+                    BEST
+                  </Badge>
                 )}
               </div>
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-gray-600 dark:text-gray-400">
               {editingProduct
                 ? "상품 정보를 수정하세요"
                 : "새로운 상품을 등록하세요"}
@@ -727,50 +729,100 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
             {/* 기본 정보 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="name">상품명 *</Label>
+                <Label
+                  htmlFor="name"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  상품명 *
+                </Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => handleInputChange("name", e.target.value)}
                   placeholder="상품명을 입력하세요"
                   required
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
               <div>
-                <Label htmlFor="category">카테고리 *</Label>
+                <Label
+                  htmlFor="category"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  카테고리 *
+                </Label>
                 <Select
                   value={formData.category}
                   onValueChange={(value) =>
                     handleInputChange("category", value)
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                     <SelectValue placeholder="카테고리를 선택하세요" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="top">상의</SelectItem>
-                    <SelectItem value="bottom">하의</SelectItem>
-                    <SelectItem value="dress">원피스</SelectItem>
-                    <SelectItem value="outer">아우터</SelectItem>
-                    <SelectItem value="accessory">액세서리</SelectItem>
+                  <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                    <SelectItem
+                      value="top"
+                      className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      상의
+                    </SelectItem>
+                    <SelectItem
+                      value="bottom"
+                      className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      하의
+                    </SelectItem>
+                    <SelectItem
+                      value="dress"
+                      className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      원피스
+                    </SelectItem>
+                    <SelectItem
+                      value="outer"
+                      className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      아우터
+                    </SelectItem>
+                    <SelectItem
+                      value="accessory"
+                      className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      액세서리
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <Label htmlFor="collection">컬렉션</Label>
+                <Label
+                  htmlFor="collection"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  컬렉션
+                </Label>
                 <Select
                   value={formData.collection || ""}
                   onValueChange={(value) =>
                     handleInputChange("collection", value)
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                     <SelectValue placeholder="컬렉션을 선택하세요" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">선택 안함</SelectItem>
+                  <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                    <SelectItem
+                      value="none"
+                      className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      선택 안함
+                    </SelectItem>
                     {activeCollections.map((collection) => (
-                      <SelectItem key={collection.id} value={collection.id}>
+                      <SelectItem
+                        key={collection.id}
+                        value={collection.id}
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
                         {collection.name}
                       </SelectItem>
                     ))}
@@ -782,7 +834,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
             {/* 가격 정보 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="price">정가 *</Label>
+                <Label
+                  htmlFor="price"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  정가 *
+                </Label>
                 <Input
                   id="price"
                   type="number"
@@ -792,10 +849,16 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   }
                   placeholder="정가를 입력하세요"
                   required
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
               <div>
-                <Label htmlFor="originalPrice">할인가</Label>
+                <Label
+                  htmlFor="originalPrice"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  할인가
+                </Label>
                 <Input
                   id="originalPrice"
                   type="number"
@@ -804,13 +867,16 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                     handleInputChange("originalPrice", parseInt(e.target.value))
                   }
                   placeholder="할인가를 입력하세요 (선택사항)"
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
             </div>
 
             {/* 배지 설정 */}
             <div>
-              <Label className="text-base font-medium">상품 배지 설정</Label>
+              <Label className="text-base font-medium text-gray-900 dark:text-gray-100">
+                상품 배지 설정
+              </Label>
               <div className="flex flex-wrap gap-3 mt-2">
                 <div className="flex items-center space-x-1">
                   <Checkbox
@@ -822,7 +888,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   />
                   <Label
                     htmlFor="isLimited"
-                    className="flex items-center gap-1"
+                    className="flex items-center gap-1 text-gray-900 dark:text-gray-100"
                   >
                     <Badge variant="destructive">LIMITED</Badge>
                   </Label>
@@ -835,7 +901,10 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                       handleInputChange("isHot", checked)
                     }
                   />
-                  <Label htmlFor="isHot" className="flex items-center gap-1">
+                  <Label
+                    htmlFor="isHot"
+                    className="flex items-center gap-1 text-gray-900 dark:text-gray-100"
+                  >
                     <Badge variant="destructive">HOT</Badge>
                   </Label>
                 </div>
@@ -847,8 +916,11 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                       handleInputChange("isNew", checked)
                     }
                   />
-                  <Label htmlFor="isNew" className="flex items-center gap-1">
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+                  <Label
+                    htmlFor="isNew"
+                    className="flex items-center gap-1 text-gray-900 dark:text-gray-100"
+                  >
+                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900 dark:text-blue-200">
                       NEW
                     </Badge>
                   </Label>
@@ -861,12 +933,17 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                       handleInputChange("isBest", checked)
                     }
                   />
-                  <Label htmlFor="isBest" className="flex items-center gap-1">
-                    <Badge className="bg-yellow-500 text-white">BEST</Badge>
+                  <Label
+                    htmlFor="isBest"
+                    className="flex items-center gap-1 text-gray-900 dark:text-gray-100"
+                  >
+                    <Badge className="bg-yellow-500 text-white dark:bg-yellow-600">
+                      BEST
+                    </Badge>
                   </Label>
                 </div>
               </div>
-              <p className="text-sm text-gray-500 mt-2">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                 * 배지는 우선순위에 따라 하나만 표시됩니다: LIMITED &gt; HOT
                 &gt; NEW &gt; BEST
               </p>
@@ -876,14 +953,16 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
             {/* 이미지 관리 */}
             <div>
-              <Label className="text-base font-medium">상품 이미지</Label>
+              <Label className="text-base font-medium text-gray-900 dark:text-gray-100">
+                상품 이미지
+              </Label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
                 {formData.images.map((image, index) => (
                   <div key={index} className="relative group">
                     <img
                       src={image}
                       alt={`상품 이미지 ${index + 1}`}
-                      className="w-full h-32 object-cover rounded-lg"
+                      className="w-full h-32 object-cover rounded-lg border border-gray-200 dark:border-gray-600"
                     />
                     <button
                       type="button"
@@ -900,8 +979,14 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   value={newImage}
                   onChange={(e) => setNewImage(e.target.value)}
                   placeholder="이미지 URL을 입력하세요"
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
-                <Button type="button" onClick={addImage} size="sm">
+                <Button
+                  type="button"
+                  onClick={addImage}
+                  size="sm"
+                  className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+                >
                   <ImagePlus className="w-4 h-4" />
                 </Button>
               </div>
@@ -911,7 +996,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
             {/* 사이즈 관리 */}
             <div>
-              <Label className="text-base font-medium">사이즈 관리</Label>
+              <Label className="text-base font-medium text-gray-900 dark:text-gray-100">
+                사이즈 관리
+              </Label>
               <div className="space-y-2 mt-2">
                 {sizes.map((size, index) => (
                   <div key={index} className="flex gap-2 items-center">
@@ -921,37 +1008,137 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                         handleSizeChange(index, "name", value)
                       }
                     >
-                      <SelectTrigger className="w-24">
+                      <SelectTrigger className="w-24 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                         <SelectValue placeholder="사이즈" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
                         {formData.category === "bottom" ? (
                           // 하의: 숫자 사이즈
                           <>
-                            <SelectItem value="21">21</SelectItem>
-                            <SelectItem value="22">22</SelectItem>
-                            <SelectItem value="23">23</SelectItem>
-                            <SelectItem value="24">24</SelectItem>
-                            <SelectItem value="25">25</SelectItem>
-                            <SelectItem value="26">26</SelectItem>
-                            <SelectItem value="27">27</SelectItem>
-                            <SelectItem value="28">28</SelectItem>
-                            <SelectItem value="29">29</SelectItem>
-                            <SelectItem value="30">30</SelectItem>
-                            <SelectItem value="31">31</SelectItem>
-                            <SelectItem value="32">32</SelectItem>
-                            <SelectItem value="33">33</SelectItem>
-                            <SelectItem value="34">34</SelectItem>
+                            <SelectItem
+                              value="21"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              21
+                            </SelectItem>
+                            <SelectItem
+                              value="22"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              22
+                            </SelectItem>
+                            <SelectItem
+                              value="23"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              23
+                            </SelectItem>
+                            <SelectItem
+                              value="24"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              24
+                            </SelectItem>
+                            <SelectItem
+                              value="25"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              25
+                            </SelectItem>
+                            <SelectItem
+                              value="26"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              26
+                            </SelectItem>
+                            <SelectItem
+                              value="27"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              27
+                            </SelectItem>
+                            <SelectItem
+                              value="28"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              28
+                            </SelectItem>
+                            <SelectItem
+                              value="29"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              29
+                            </SelectItem>
+                            <SelectItem
+                              value="30"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              30
+                            </SelectItem>
+                            <SelectItem
+                              value="31"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              31
+                            </SelectItem>
+                            <SelectItem
+                              value="32"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              32
+                            </SelectItem>
+                            <SelectItem
+                              value="33"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              33
+                            </SelectItem>
+                            <SelectItem
+                              value="34"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              34
+                            </SelectItem>
                           </>
                         ) : (
                           // 상의/기타: 문자 사이즈
                           <>
-                            <SelectItem value="XS">XS</SelectItem>
-                            <SelectItem value="S">S</SelectItem>
-                            <SelectItem value="M">M</SelectItem>
-                            <SelectItem value="L">L</SelectItem>
-                            <SelectItem value="XL">XL</SelectItem>
-                            <SelectItem value="XXL">XXL</SelectItem>
+                            <SelectItem
+                              value="XS"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              XS
+                            </SelectItem>
+                            <SelectItem
+                              value="S"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              S
+                            </SelectItem>
+                            <SelectItem
+                              value="M"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              M
+                            </SelectItem>
+                            <SelectItem
+                              value="L"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-100"
+                            >
+                              L
+                            </SelectItem>
+                            <SelectItem
+                              value="XL"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              XL
+                            </SelectItem>
+                            <SelectItem
+                              value="XXL"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              XXL
+                            </SelectItem>
                           </>
                         )}
                       </SelectContent>
@@ -962,7 +1149,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                         handleSizeChange(index, "available", checked)
                       }
                     />
-                    <Label className="text-sm">재고 있음</Label>
+                    <Label className="text-sm text-gray-900 dark:text-gray-100">
+                      재고 있음
+                    </Label>
                     <Input
                       type="number"
                       value={size.stock}
@@ -974,13 +1163,14 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                         )
                       }
                       placeholder="재고"
-                      className="w-20"
+                      className="w-20 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     />
                     <Button
                       type="button"
                       onClick={() => removeSize(index)}
                       size="sm"
                       variant="outline"
+                      className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                       <X className="w-4 h-4" />
                     </Button>
@@ -991,6 +1181,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   onClick={addSize}
                   size="sm"
                   variant="outline"
+                  className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <Plus className="w-4 h-4 mr-1" />
                   사이즈 추가
@@ -1002,7 +1193,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
             {/* 색상 관리 */}
             <div>
-              <Label className="text-base font-medium">색상 관리</Label>
+              <Label className="text-base font-medium text-gray-900 dark:text-gray-100">
+                색상 관리
+              </Label>
               <div className="space-y-2 mt-2">
                 {colors.map((color, index) => (
                   <div key={index} className="flex gap-2 items-center">
@@ -1012,7 +1205,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                         handleColorChange(index, "name", e.target.value)
                       }
                       placeholder="색상명"
-                      className="w-24"
+                      className="w-24 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                     />
                     <Input
                       type="color"
@@ -1020,7 +1213,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                       onChange={(e) =>
                         handleColorChange(index, "hex", e.target.value)
                       }
-                      className="w-16 h-10"
+                      className="w-16 h-10 border-gray-300 dark:border-gray-600"
                     />
                     <Checkbox
                       checked={color.available}
@@ -1028,12 +1221,15 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                         handleColorChange(index, "available", checked)
                       }
                     />
-                    <Label className="text-sm">재고 있음</Label>
+                    <Label className="text-sm text-gray-900 dark:text-gray-100">
+                      재고 있음
+                    </Label>
                     <Button
                       type="button"
                       onClick={() => removeColor(index)}
                       size="sm"
                       variant="outline"
+                      className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                       <X className="w-4 h-4" />
                     </Button>
@@ -1044,6 +1240,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   onClick={addColor}
                   size="sm"
                   variant="outline"
+                  className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <Plus className="w-4 h-4 mr-1" />
                   색상 추가
@@ -1055,7 +1252,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
             {/* 상품 설명 */}
             <div>
-              <Label htmlFor="description">상품 설명</Label>
+              <Label
+                htmlFor="description"
+                className="text-gray-900 dark:text-gray-100"
+              >
+                상품 설명
+              </Label>
               <Textarea
                 id="description"
                 value={formData.description}
@@ -1064,12 +1266,15 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                 }
                 placeholder="상품에 대한 자세한 설명을 입력하세요"
                 rows={4}
+                className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               />
             </div>
 
             {/* 상품 특징 */}
             <div>
-              <Label className="text-base font-medium">상품 특징</Label>
+              <Label className="text-base font-medium text-gray-900 dark:text-gray-100">
+                상품 특징
+              </Label>
               <div className="space-y-2 mt-2">
                 {formData.features.map((feature, index) => (
                   <div key={index} className="flex gap-2">
@@ -1081,12 +1286,14 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                         handleInputChange("features", newFeatures);
                       }}
                       placeholder="상품 특징을 입력하세요"
+                      className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                     />
                     <Button
                       type="button"
                       onClick={() => removeFeature(index)}
                       size="sm"
                       variant="outline"
+                      className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                       <X className="w-4 h-4" />
                     </Button>
@@ -1097,8 +1304,14 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                     value={newFeature}
                     onChange={(e) => setNewFeature(e.target.value)}
                     placeholder="새로운 특징을 입력하세요"
+                    className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                   />
-                  <Button type="button" onClick={addFeature} size="sm">
+                  <Button
+                    type="button"
+                    onClick={addFeature}
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+                  >
                     <Plus className="w-4 h-4" />
                   </Button>
                 </div>
@@ -1108,7 +1321,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
             {/* 소재 및 세탁 정보 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="materials">소재</Label>
+                <Label
+                  htmlFor="materials"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  소재
+                </Label>
                 <Input
                   id="materials"
                   value={formData.materials}
@@ -1116,27 +1334,40 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                     handleInputChange("materials", e.target.value)
                   }
                   placeholder="예: 코튼 100%"
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
               <div>
-                <Label htmlFor="care">세탁 방법</Label>
+                <Label
+                  htmlFor="care"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  세탁 방법
+                </Label>
                 <Input
                   id="care"
                   value={formData.care}
                   onChange={(e) => handleInputChange("care", e.target.value)}
                   placeholder="예: 찬물 단독 세탁"
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
             </div>
 
             {/* 모델 정보 */}
             <div>
-              <Label htmlFor="modelInfo">모델 착용 정보</Label>
+              <Label
+                htmlFor="modelInfo"
+                className="text-gray-900 dark:text-gray-100"
+              >
+                모델 착용 정보
+              </Label>
               <Input
                 id="modelInfo"
                 value={formData.modelInfo}
                 onChange={(e) => handleInputChange("modelInfo", e.target.value)}
                 placeholder="예: 모델 착용 사이즈: M / 키 168cm"
+                className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               />
             </div>
 
@@ -1156,10 +1387,14 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                     duration: 2000,
                   });
                 }}
+                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 취소
               </Button>
-              <Button type="submit" className="lumina-gradient">
+              <Button
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+              >
                 <Save className="w-4 h-4 mr-2" />
                 {editingProduct ? "수정하기" : "등록하기"}
               </Button>
@@ -1172,72 +1407,72 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
       <div>
         {/* 통계 카드 */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6 mb-6">
-          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+          <Card className="bg-white dark:bg-gray-800 border-2 border-blue-300 dark:border-blue-600 shadow-lg">
             <CardContent className="p-4 lg:p-6">
               <div className="flex flex-col space-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-blue-200 rounded-xl flex items-center justify-center">
-                    <Package className="w-5 h-5 lg:w-6 lg:h-6 text-blue-700" />
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center border-2 border-blue-300 dark:border-blue-600">
+                    <Package className="w-5 h-5 lg:w-6 lg:h-6 text-blue-700 dark:text-blue-400" />
                   </div>
-                  <p className="text-xl lg:text-2xl font-bold text-blue-900">
+                  <p className="text-xl lg:text-2xl font-bold text-blue-700 dark:text-blue-400">
                     {activeProducts}
                   </p>
                 </div>
-                <p className="text-xs lg:text-sm font-medium text-blue-700 truncate">
+                <p className="text-xs lg:text-sm font-medium text-blue-600 dark:text-blue-300 truncate">
                   활성 상품
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+          <Card className="bg-white dark:bg-gray-800 border-2 border-purple-300 dark:border-purple-600 shadow-lg">
             <CardContent className="p-4 lg:p-6">
               <div className="flex flex-col space-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-purple-200 rounded-xl flex items-center justify-center">
-                    <Star className="w-5 h-5 lg:w-6 lg:h-6 text-purple-700" />
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center border-2 border-purple-300 dark:border-purple-600">
+                    <Star className="w-5 h-5 lg:w-6 lg:h-6 text-purple-700 dark:text-purple-400" />
                   </div>
-                  <p className="text-xl lg:text-2xl font-bold text-purple-900">
+                  <p className="text-xl lg:text-2xl font-bold text-purple-700 dark:text-purple-400">
                     {featuredProducts}
                   </p>
                 </div>
-                <p className="text-xs lg:text-sm font-medium text-purple-700 truncate">
+                <p className="text-xs lg:text-sm font-medium text-purple-600 dark:text-purple-300 truncate">
                   피처드 상품
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+          <Card className="bg-white dark:bg-gray-800 border-2 border-green-300 dark:border-green-600 shadow-lg">
             <CardContent className="p-4 lg:p-6">
               <div className="flex flex-col space-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-green-200 rounded-xl flex items-center justify-center">
-                    <ShoppingCart className="w-5 h-5 lg:w-6 lg:h-6 text-green-700" />
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center border-2 border-green-300 dark:border-green-600">
+                    <ShoppingCart className="w-5 h-5 lg:w-6 lg:h-6 text-green-700 dark:text-green-400" />
                   </div>
-                  <p className="text-xl lg:text-2xl font-bold text-green-900">
+                  <p className="text-lg lg:text-2xl font-bold text-green-700 dark:text-green-400">
                     {totalStock}
                   </p>
                 </div>
-                <p className="text-xs lg:text-sm font-medium text-green-700 truncate">
+                <p className="text-xs lg:text-sm font-medium text-green-600 dark:text-green-300 truncate">
                   총 재고
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
+          <Card className="bg-white dark:bg-gray-800 border-2 border-orange-300 dark:border-orange-600 shadow-lg">
             <CardContent className="p-4 lg:p-6">
               <div className="flex flex-col space-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-orange-200 rounded-xl flex items-center justify-center">
-                    <DollarSign className="w-5 h-5 lg:w-6 lg:h-6 text-orange-700" />
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center border-2 border-orange-300 dark:border-orange-600">
+                    <DollarSign className="w-5 h-5 lg:w-6 lg:h-6 text-orange-700 dark:text-orange-400" />
                   </div>
-                  <p className="text-xl lg:text-2xl font-bold text-orange-900">
+                  <p className="text-xl lg:text-2xl font-bold text-orange-700 dark:text-orange-400">
                     {Math.floor(totalValue / 10000)}만
                   </p>
                 </div>
-                <p className="text-xs lg:text-sm font-medium text-orange-700 truncate">
+                <p className="text-xs lg:text-sm font-medium text-orange-600 dark:text-orange-300 truncate">
                   총 재고 가치
                 </p>
               </div>
@@ -1246,19 +1481,23 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         </div>
 
         {/* 상품 관리 */}
-        <Card className="bg-gradient-to-br from-white to-gray-50 border-gray-200">
+        <Card className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border-gray-200 dark:border-gray-700">
           <CardHeader>
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
-                <CardTitle className="text-lg lg:text-xl">상품 관리</CardTitle>
-                <CardDescription>상품을 등록하고 관리하세요</CardDescription>
+                <CardTitle className="text-lg lg:text-xl text-gray-900 dark:text-gray-100">
+                  상품 관리
+                </CardTitle>
+                <CardDescription className="text-gray-600 dark:text-gray-400">
+                  상품을 등록하고 관리하세요
+                </CardDescription>
               </div>
               <div className="flex flex-wrap items-center gap-2 lg:gap-4">
                 <Link href="/">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     <Home className="w-4 h-4" />
                     <span className="hidden sm:inline">홈으로 가기</span>
@@ -1268,7 +1507,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                 <Button
                   onClick={() => setShowProductForm(true)}
                   size="sm"
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
+                  className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">상품 등록</span>
@@ -1277,7 +1516,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex items-center space-x-2"
+                  className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <Download className="w-4 h-4" />
                   <span className="hidden sm:inline">엑셀 다운로드</span>
@@ -1291,23 +1530,30 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="flex items-center space-x-2"
+                      className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                       <Upload className="w-4 h-4" />
                       <span className="hidden sm:inline">대량 업로드</span>
                       <span className="sm:hidden">업로드</span>
                     </Button>
                   </DialogTrigger>
-                  <DialogContent>
+                  <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                     <DialogHeader>
-                      <DialogTitle>대량 상품 업로드</DialogTitle>
-                      <DialogDescription>
+                      <DialogTitle className="text-gray-900 dark:text-gray-100">
+                        대량 상품 업로드
+                      </DialogTitle>
+                      <DialogDescription className="text-gray-600 dark:text-gray-400">
                         CSV 파일을 업로드하여 상품을 대량으로 등록하세요
                       </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4">
                       <div>
-                        <Label htmlFor="bulk-upload">CSV 파일 선택</Label>
+                        <Label
+                          htmlFor="bulk-upload"
+                          className="text-gray-900 dark:text-gray-100"
+                        >
+                          CSV 파일 선택
+                        </Label>
                         <Input
                           id="bulk-upload"
                           type="file"
@@ -1316,9 +1562,10 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                             e.target.files &&
                             handleBulkUpload(e.target.files[0])
                           }
+                          className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                         />
                       </div>
-                      <div className="text-sm text-gray-600">
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
                         <p>CSV 파일 형식:</p>
                         <p>
                           상품명,설명,가격,할인가격,카테고리,컬렉션,색상,사이즈,재고,태그
@@ -1337,13 +1584,22 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   value={selectedCategory}
                   onValueChange={setSelectedCategory}
                 >
-                  <SelectTrigger className="w-40">
+                  <SelectTrigger className="w-40 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                     <SelectValue placeholder="카테고리" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">전체</SelectItem>
+                  <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                    <SelectItem
+                      value="all"
+                      className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      전체
+                    </SelectItem>
                     {categoryOptions.map((category) => (
-                      <SelectItem key={category.value} value={category.value}>
+                      <SelectItem
+                        key={category.value}
+                        value={category.value}
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
                         {category.label}
                       </SelectItem>
                     ))}
@@ -1354,13 +1610,22 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   value={selectedCollection}
                   onValueChange={setSelectedCollection}
                 >
-                  <SelectTrigger className="w-40">
+                  <SelectTrigger className="w-40 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                     <SelectValue placeholder="컬렉션" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">전체</SelectItem>
+                  <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                    <SelectItem
+                      value="all"
+                      className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      전체
+                    </SelectItem>
                     {collections.map((collection) => (
-                      <SelectItem key={collection.id} value={collection.id}>
+                      <SelectItem
+                        key={collection.id}
+                        value={collection.id}
+                        className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
                         {collection.name}
                       </SelectItem>
                     ))}
@@ -1373,18 +1638,21 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                     checked={showInactive}
                     onCheckedChange={setShowInactive}
                   />
-                  <Label htmlFor="show-inactive" className="text-sm">
+                  <Label
+                    htmlFor="show-inactive"
+                    className="text-sm text-gray-900 dark:text-gray-100"
+                  >
                     비활성화 상품 표시
                   </Label>
                 </div>
 
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
                   <Input
                     placeholder="상품명, 설명 검색..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 w-64"
+                    className="pl-10 w-64 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                   />
                 </div>
               </div>
@@ -1395,14 +1663,16 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
               {finalFilteredProducts.map((product) => (
                 <Card
                   key={product.id}
-                  className={`hover:shadow-md transition-shadow ${
-                    !product.isActive ? "opacity-60 border-gray-300" : ""
+                  className={`hover:shadow-md transition-shadow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 ${
+                    !product.isActive
+                      ? "opacity-60 border-gray-300 dark:border-gray-600"
+                      : ""
                   }`}
                 >
                   <CardContent className="p-6">
                     <div className="space-y-4">
                       {/* 상품 이미지 */}
-                      <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                      <div className="relative aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
                         {product.images.length > 0 ? (
                           <img
                             src={product.images[0]}
@@ -1411,21 +1681,21 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
-                            <Image className="w-12 h-12 text-gray-400" />
+                            <Image className="w-12 h-12 text-gray-400 dark:text-gray-500" />
                           </div>
                         )}
                         <div className="absolute top-2 right-2 flex space-x-1">
                           {product.isActive ? (
-                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-900 dark:text-green-200">
                               활성
                             </Badge>
                           ) : (
-                            <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">
+                            <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300">
                               비활성
                             </Badge>
                           )}
                           {product.isFeatured && (
-                            <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">
+                            <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100 dark:bg-purple-900 dark:text-purple-200">
                               피처드
                             </Badge>
                           )}
@@ -1436,12 +1706,12 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                             <Badge variant="destructive">HOT</Badge>
                           )}
                           {product.isNew && (
-                            <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+                            <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900 dark:text-blue-200">
                               NEW
                             </Badge>
                           )}
                           {product.isBest && (
-                            <Badge className="bg-yellow-500 text-white">
+                            <Badge className="bg-yellow-500 text-white dark:bg-yellow-600">
                               BEST
                             </Badge>
                           )}
@@ -1450,10 +1720,10 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
                       {/* 상품 정보 */}
                       <div className="space-y-2">
-                        <h3 className="font-medium text-gray-900">
+                        <h3 className="font-medium text-gray-900 dark:text-gray-100">
                           {product.name}
                         </h3>
-                        <p className="text-sm text-gray-600 line-clamp-2">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                           {product.description}
                         </p>
 
@@ -1461,21 +1731,21 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                           {product.originalPrice &&
                           product.originalPrice > product.price ? (
                             <>
-                              <span className="text-lg font-bold text-red-600">
+                              <span className="text-lg font-bold text-red-600 dark:text-red-400">
                                 {product.price.toLocaleString()}원
                               </span>
-                              <span className="text-sm text-gray-500 line-through">
+                              <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
                                 {product.originalPrice.toLocaleString()}원
                               </span>
                             </>
                           ) : (
-                            <span className="text-lg font-bold text-gray-900">
+                            <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
                               {product.price.toLocaleString()}원
                             </span>
                           )}
                         </div>
 
-                        <div className="space-y-1 text-sm text-gray-600">
+                        <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
                           <div className="flex items-center justify-between">
                             <span>재고: {product.stock}개</span>
                             <span>{product.category}</span>
@@ -1486,8 +1756,8 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                             return (
                               productCollections.length > 0 && (
                                 <div className="flex items-center gap-1">
-                                  <Tag className="w-3 h-3" />
-                                  <span className="text-xs">
+                                  <Tag className="w-3 h-3 text-gray-600 dark:text-gray-400" />
+                                  <span className="text-xs text-gray-600 dark:text-gray-400">
                                     {productCollections
                                       .map((c) => c.name)
                                       .join(", ")}
@@ -1505,13 +1775,16 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                               <Badge
                                 key={color}
                                 variant="outline"
-                                className="text-xs"
+                                className="text-xs border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
                               >
                                 {color}
                               </Badge>
                             ))}
                             {product.colors.length > 3 && (
-                              <Badge variant="outline" className="text-xs">
+                              <Badge
+                                variant="outline"
+                                className="text-xs border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
+                              >
                                 +{product.colors.length - 3}
                               </Badge>
                             )}
@@ -1521,13 +1794,16 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                               <Badge
                                 key={size}
                                 variant="outline"
-                                className="text-xs"
+                                className="text-xs border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
                               >
                                 {size}
                               </Badge>
                             ))}
                             {product.sizes.length > 3 && (
-                              <Badge variant="outline" className="text-xs">
+                              <Badge
+                                variant="outline"
+                                className="text-xs border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
+                              >
                                 +{product.sizes.length - 3}
                               </Badge>
                             )}
@@ -1542,6 +1818,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                             size="sm"
                             variant="outline"
                             onClick={() => openEditDialog(product)}
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                           >
                             <Edit className="w-4 h-4" />
                           </Button>
@@ -1549,6 +1826,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                             size="sm"
                             variant="outline"
                             onClick={() => toggleProductStatus(product.id)}
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                           >
                             {product.isActive ? (
                               <EyeOff className="w-4 h-4" />
@@ -1560,6 +1838,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                             size="sm"
                             variant="outline"
                             onClick={() => toggleProductFeatured(product.id)}
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                           >
                             <Star
                               className={`w-4 h-4 ${
@@ -1574,7 +1853,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                           size="sm"
                           variant="outline"
                           onClick={() => handleDeleteProduct(product.id)}
-                          className="text-red-600 hover:text-red-700"
+                          className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 border-red-300 dark:border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>

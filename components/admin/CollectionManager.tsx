@@ -291,70 +291,70 @@ export default function CollectionManager() {
     <div className="space-y-6">
       {/* 통계 카드 */}
       <div className="grid grid-cols-3 gap-2 lg:gap-6">
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 hover:shadow-md transition-shadow">
+        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-700 hover:shadow-md transition-shadow">
           <CardContent className="p-3 lg:p-6">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-2 lg:space-y-0">
               <div className="flex items-center space-x-2 lg:space-x-0 lg:block">
-                <div className="w-8 h-8 lg:hidden bg-blue-200 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Tag className="w-4 h-4 text-blue-700" />
+                <div className="w-8 h-8 lg:hidden bg-blue-200 dark:bg-blue-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Tag className="w-4 h-4 text-blue-700 dark:text-blue-300" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-medium text-blue-700 truncate">
+                  <p className="text-xs font-medium text-blue-700 dark:text-blue-300 truncate">
                     활성 컬렉션
                   </p>
-                  <p className="text-lg lg:text-2xl font-bold text-blue-900">
+                  <p className="text-lg lg:text-2xl font-bold text-blue-900 dark:text-blue-100">
                     {activeCollectionsCount}
                   </p>
                 </div>
               </div>
-              <div className="hidden lg:flex w-12 h-12 bg-blue-200 rounded-xl items-center justify-center">
-                <Tag className="w-6 h-6 text-blue-700" />
+              <div className="hidden lg:flex w-12 h-12 bg-blue-200 dark:bg-blue-700 rounded-xl items-center justify-center">
+                <Tag className="w-6 h-6 text-blue-700 dark:text-blue-300" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200 hover:shadow-md transition-shadow">
+        <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-700 hover:shadow-md transition-shadow">
           <CardContent className="p-3 lg:p-6">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-2 lg:space-y-0">
               <div className="flex items-center space-x-2 lg:space-x-0 lg:block">
-                <div className="w-8 h-8 lg:hidden bg-green-200 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Package className="w-4 h-4 text-green-700" />
+                <div className="w-8 h-8 lg:hidden bg-green-200 dark:bg-green-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Package className="w-4 h-4 text-green-700 dark:text-green-300" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-medium text-green-700 truncate">
+                  <p className="text-xs font-medium text-green-700 dark:text-green-300 truncate">
                     총 상품 수
                   </p>
-                  <p className="text-lg lg:text-2xl font-bold text-green-900">
+                  <p className="text-lg lg:text-2xl font-bold text-green-900 dark:text-green-100">
                     {totalProducts}
                   </p>
                 </div>
               </div>
-              <div className="hidden lg:flex w-12 h-12 bg-green-200 rounded-xl items-center justify-center">
-                <Package className="w-6 h-6 text-green-700" />
+              <div className="hidden lg:flex w-12 h-12 bg-green-200 dark:bg-green-700 rounded-xl items-center justify-center">
+                <Package className="w-6 h-6 text-green-700 dark:text-green-300" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 hover:shadow-md transition-shadow">
+        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 border-purple-200 dark:border-purple-700 hover:shadow-md transition-shadow">
           <CardContent className="p-3 lg:p-6">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-2 lg:space-y-0">
               <div className="flex items-center space-x-2 lg:space-x-0 lg:block">
-                <div className="w-8 h-8 lg:hidden bg-purple-200 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Tag className="w-4 h-4 text-purple-700" />
+                <div className="w-8 h-8 lg:hidden bg-purple-200 dark:bg-purple-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Tag className="w-4 h-4 text-purple-700 dark:text-purple-300" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-medium text-purple-700 truncate">
+                  <p className="text-xs font-medium text-purple-700 dark:text-purple-300 truncate">
                     평균 상품 수
                   </p>
-                  <p className="text-lg lg:text-2xl font-bold text-purple-900">
+                  <p className="text-lg lg:text-2xl font-bold text-purple-900 dark:text-purple-100">
                     {averageProductsPerCollection}
                   </p>
                 </div>
               </div>
-              <div className="hidden lg:flex w-12 h-12 bg-purple-200 rounded-xl items-center justify-center">
-                <Tag className="w-6 h-6 text-purple-700" />
+              <div className="hidden lg:flex w-12 h-12 bg-purple-200 dark:bg-purple-700 rounded-xl items-center justify-center">
+                <Tag className="w-6 h-6 text-purple-700 dark:text-purple-300" />
               </div>
             </div>
           </CardContent>
@@ -362,28 +362,34 @@ export default function CollectionManager() {
       </div>
 
       {/* 컬렉션 관리 */}
-      <Card className="bg-gradient-to-br from-white to-gray-50 border-gray-200">
+      <Card className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border-gray-200 dark:border-gray-700">
         <CardHeader>
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
-              <CardTitle className="text-lg lg:text-xl">컬렉션 관리</CardTitle>
-              <CardDescription>컬렉션을 생성하고 관리하세요</CardDescription>
+              <CardTitle className="text-lg lg:text-xl text-gray-900 dark:text-gray-100">
+                컬렉션 관리
+              </CardTitle>
+              <CardDescription className="text-gray-600 dark:text-gray-400">
+                컬렉션을 생성하고 관리하세요
+              </CardDescription>
             </div>
             <Dialog
               open={isCreateDialogOpen}
               onOpenChange={setIsCreateDialogOpen}
             >
               <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white w-fit">
+                <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 text-white w-fit">
                   <Plus className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">컬렉션 생성</span>
                   <span className="sm:hidden">생성</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-2xl">
+              <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                 <DialogHeader>
-                  <DialogTitle>새 컬렉션 생성</DialogTitle>
-                  <DialogDescription>
+                  <DialogTitle className="text-gray-900 dark:text-gray-100">
+                    새 컬렉션 생성
+                  </DialogTitle>
+                  <DialogDescription className="text-gray-600 dark:text-gray-400">
                     새로운 컬렉션을 생성하세요
                   </DialogDescription>
                 </DialogHeader>
@@ -484,6 +490,7 @@ export default function CollectionManager() {
                     <Button
                       variant="outline"
                       onClick={() => setIsCreateDialogOpen(false)}
+                      className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                       취소
                     </Button>
@@ -500,10 +507,12 @@ export default function CollectionManager() {
 
             {/* 컬렉션 수정 다이얼로그 */}
             <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-              <DialogContent className="max-w-2xl">
+              <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                 <DialogHeader>
-                  <DialogTitle>컬렉션 수정</DialogTitle>
-                  <DialogDescription>
+                  <DialogTitle className="text-gray-900 dark:text-gray-100">
+                    컬렉션 수정
+                  </DialogTitle>
+                  <DialogDescription className="text-gray-600 dark:text-gray-400">
                     컬렉션 정보를 수정하세요
                   </DialogDescription>
                 </DialogHeader>
@@ -620,6 +629,7 @@ export default function CollectionManager() {
                       <Button
                         variant="outline"
                         onClick={() => setIsEditDialogOpen(false)}
+                        className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                       >
                         취소
                       </Button>
@@ -639,12 +649,12 @@ export default function CollectionManager() {
         <CardContent>
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
             <div className="relative flex-1 lg:max-w-xs">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
               <Input
                 placeholder="컬렉션명, 설명 검색..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-full"
+                className="pl-10 w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               />
             </div>
           </div>
@@ -654,15 +664,17 @@ export default function CollectionManager() {
             {collections.map((collection) => (
               <Card
                 key={collection.id}
-                className={`hover:shadow-md transition-shadow ${
-                  !collection.isActive ? "border-gray-300" : ""
+                className={`hover:shadow-md transition-shadow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 ${
+                  !collection.isActive
+                    ? "border-gray-300 dark:border-gray-600"
+                    : ""
                 }`}
               >
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     {/* 컬렉션 이미지 */}
                     <div
-                      className={`relative aspect-video bg-gray-100 rounded-lg overflow-hidden ${
+                      className={`relative aspect-video bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden ${
                         !collection.isActive ? "opacity-70" : ""
                       }`}
                     >
@@ -674,7 +686,7 @@ export default function CollectionManager() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Image className="w-12 h-12 text-gray-400" />
+                          <Image className="w-12 h-12 text-gray-400 dark:text-gray-500" />
                         </div>
                       )}
                       <div className="absolute top-2 right-2 flex flex-col gap-1">
@@ -688,17 +700,17 @@ export default function CollectionManager() {
                             }
                           );
                           return collection.isActive ? (
-                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                            <Badge className="bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-200 hover:bg-green-100 dark:hover:bg-green-700">
                               활성
                             </Badge>
                           ) : (
-                            <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">
+                            <Badge className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                               비활성
                             </Badge>
                           );
                         })()}
                         {collection.isFeature && (
-                          <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">
+                          <Badge className="bg-purple-100 dark:bg-purple-700 text-purple-800 dark:text-purple-200 hover:bg-purple-100 dark:hover:bg-purple-700">
                             피처
                           </Badge>
                         )}
@@ -711,14 +723,14 @@ export default function CollectionManager() {
                         !collection.isActive ? "opacity-70" : ""
                       }`}
                     >
-                      <h3 className="font-medium text-gray-900">
+                      <h3 className="font-medium text-gray-900 dark:text-gray-100">
                         {collection.name}
                       </h3>
-                      <p className="text-sm text-gray-600 line-clamp-2">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                         {collection.description}
                       </p>
 
-                      <div className="flex items-center justify-between text-sm text-gray-600">
+                      <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
                         <span>상품 수: {collection.productCount}개</span>
                         <span>{collection.createdAt}</span>
                       </div>
@@ -732,7 +744,7 @@ export default function CollectionManager() {
                           variant="outline"
                           onClick={() => openEditDialog(collection)}
                           title="컬렉션 수정"
-                          className="hover:bg-blue-50 hover:border-blue-300"
+                          className="hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-600 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
@@ -741,7 +753,7 @@ export default function CollectionManager() {
                           variant="outline"
                           onClick={() => openProductManageDialog(collection)}
                           title="상품 관리"
-                          className="hover:bg-green-50 hover:border-green-300"
+                          className="hover:bg-green-50 dark:hover:bg-green-900/20 hover:border-green-300 dark:hover:border-green-600 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
                         >
                           <Package className="w-4 h-4" />
                         </Button>
@@ -750,10 +762,10 @@ export default function CollectionManager() {
                           variant="outline"
                           onClick={() => toggleCollectionStatus(collection.id)}
                           title={collection.isActive ? "비활성화" : "활성화"}
-                          className={`${
+                          className={`border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 ${
                             collection.isActive
-                              ? "hover:bg-orange-50 hover:border-orange-300"
-                              : "hover:bg-green-50 hover:border-green-300"
+                              ? "hover:bg-orange-50 dark:hover:bg-orange-900/20 hover:border-orange-300 dark:hover:border-orange-600"
+                              : "hover:bg-green-50 dark:hover:bg-green-900/20 hover:border-green-300 dark:hover:border-green-600"
                           }`}
                         >
                           {collection.isActive ? (
@@ -767,7 +779,7 @@ export default function CollectionManager() {
                         size="sm"
                         variant="outline"
                         onClick={() => handleDeleteCollection(collection.id)}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300"
+                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-300 dark:hover:border-red-600 border-gray-300 dark:border-gray-600"
                         title="삭제"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -786,15 +798,15 @@ export default function CollectionManager() {
         open={isProductManageDialogOpen}
         onOpenChange={setIsProductManageDialogOpen}
       >
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle className="flex items-center space-x-2">
+            <DialogTitle className="flex items-center space-x-2 text-gray-900 dark:text-gray-100">
               <Package className="w-5 h-5" />
               <span className="truncate">
                 {managingCollection?.name} 상품 관리
               </span>
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-gray-600 dark:text-gray-400">
               이 컬렉션에 포함할 상품을 선택하세요.
             </DialogDescription>
           </DialogHeader>
@@ -803,18 +815,18 @@ export default function CollectionManager() {
             {/* 상품 검색 및 전체 선택 */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
                 <Input
                   placeholder="상품명으로 검색..."
                   value={productSearchTerm}
                   onChange={(e) => setProductSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
               <Button
                 variant="outline"
                 onClick={toggleAllProducts}
-                className="whitespace-nowrap w-full sm:w-auto"
+                className="whitespace-nowrap w-full sm:w-auto border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 size="sm"
               >
                 {filteredProductsForDialog.every((p) =>
@@ -882,7 +894,7 @@ export default function CollectionManager() {
             </div>
 
             {/* 선택된 상품 수 표시 */}
-            <div className="text-sm text-gray-600 text-center py-2 bg-gray-50 rounded">
+            <div className="text-sm text-gray-600 dark:text-gray-400 text-center py-2 bg-gray-50 dark:bg-gray-700 rounded">
               선택된 상품: {managingCollection?.productIds.length || 0}개
             </div>
 
@@ -891,7 +903,7 @@ export default function CollectionManager() {
               <Button
                 variant="outline"
                 onClick={() => setIsProductManageDialogOpen(false)}
-                className="w-full sm:w-auto"
+                className="w-full sm:w-auto border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 닫기
               </Button>

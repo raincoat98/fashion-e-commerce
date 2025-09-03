@@ -208,8 +208,10 @@ const NotificationManager: React.FC = () => {
       {/* 헤더 */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">알림 관리</h2>
-          <p className="text-gray-600">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            알림 관리
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
             총 {notifications.length}개의 알림, {unreadCount}개 읽지 않음
           </p>
         </div>
@@ -218,6 +220,7 @@ const NotificationManager: React.FC = () => {
             variant="outline"
             onClick={markAllAsRead}
             disabled={unreadCount === 0}
+            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
           >
             <CheckCircle className="w-4 h-4 mr-2" />
             모두 읽음 처리
@@ -226,28 +229,34 @@ const NotificationManager: React.FC = () => {
       </div>
 
       {/* 필터 및 검색 */}
-      <Card>
+      <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="text-lg">필터 및 검색</CardTitle>
+          <CardTitle className="text-lg text-gray-900 dark:text-gray-100">
+            필터 및 검색
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="text-sm font-medium">검색</label>
+              <label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                검색
+              </label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
                 <Input
                   placeholder="알림 검색..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
             </div>
             <div>
-              <label className="text-sm font-medium">타입</label>
+              <label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                타입
+              </label>
               <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger>
+                <SelectTrigger className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                   <SelectValue placeholder="모든 타입" />
                 </SelectTrigger>
                 <SelectContent>
@@ -261,9 +270,11 @@ const NotificationManager: React.FC = () => {
               </Select>
             </div>
             <div>
-              <label className="text-sm font-medium">우선순위</label>
+              <label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                우선순위
+              </label>
               <Select value={filterPriority} onValueChange={setFilterPriority}>
-                <SelectTrigger>
+                <SelectTrigger className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                   <SelectValue placeholder="모든 우선순위" />
                 </SelectTrigger>
                 <SelectContent>
@@ -275,9 +286,11 @@ const NotificationManager: React.FC = () => {
               </Select>
             </div>
             <div>
-              <label className="text-sm font-medium">읽음 상태</label>
+              <label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                읽음 상태
+              </label>
               <Select value={filterRead} onValueChange={setFilterRead}>
-                <SelectTrigger>
+                <SelectTrigger className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                   <SelectValue placeholder="모든 상태" />
                 </SelectTrigger>
                 <SelectContent>
@@ -292,17 +305,17 @@ const NotificationManager: React.FC = () => {
       </Card>
 
       {/* 알림 목록 */}
-      <Card>
+      <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="text-lg">
+          <CardTitle className="text-lg text-gray-900 dark:text-gray-100">
             알림 목록 ({filteredNotifications.length}개)
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {filteredNotifications.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <Bell className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <Bell className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-500" />
                 <p>표시할 알림이 없습니다.</p>
               </div>
             ) : (
@@ -311,8 +324,8 @@ const NotificationManager: React.FC = () => {
                   key={notification.id}
                   className={`border rounded-lg p-4 transition-colors ${
                     notification.isRead
-                      ? "bg-gray-50 border-gray-200"
-                      : "bg-white border-blue-200 shadow-sm"
+                      ? "bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+                      : "bg-white dark:bg-gray-800 border-blue-200 dark:border-blue-600 shadow-sm"
                   }`}
                 >
                   <div className="flex items-start justify-between">
@@ -320,8 +333,8 @@ const NotificationManager: React.FC = () => {
                       <div
                         className={`mt-1 ${
                           notification.isRead
-                            ? "text-gray-400"
-                            : "text-blue-600"
+                            ? "text-gray-400 dark:text-gray-500"
+                            : "text-blue-600 dark:text-blue-400"
                         }`}
                       >
                         {getTypeIcon(notification.type)}
@@ -331,8 +344,8 @@ const NotificationManager: React.FC = () => {
                           <h4
                             className={`font-medium ${
                               notification.isRead
-                                ? "text-gray-600"
-                                : "text-gray-900"
+                                ? "text-gray-600 dark:text-gray-400"
+                                : "text-gray-900 dark:text-gray-100"
                             }`}
                           >
                             {notification.title}
@@ -341,7 +354,7 @@ const NotificationManager: React.FC = () => {
                           {!notification.isRead && (
                             <Badge
                               variant="default"
-                              className="bg-blue-600 text-xs"
+                              className="bg-blue-600 dark:bg-blue-700 text-xs"
                             >
                               NEW
                             </Badge>
@@ -350,13 +363,13 @@ const NotificationManager: React.FC = () => {
                         <p
                           className={`text-sm ${
                             notification.isRead
-                              ? "text-gray-500"
-                              : "text-gray-700"
+                              ? "text-gray-500 dark:text-gray-400"
+                              : "text-gray-700 dark:text-gray-300"
                           }`}
                         >
                           {notification.message}
                         </p>
-                        <div className="flex items-center space-x-4 mt-2 text-xs text-gray-400">
+                        <div className="flex items-center space-x-4 mt-2 text-xs text-gray-400 dark:text-gray-500">
                           <div className="flex items-center space-x-1">
                             <Clock className="w-3 h-3" />
                             <span>
@@ -375,6 +388,7 @@ const NotificationManager: React.FC = () => {
                           size="sm"
                           onClick={() => markAsRead(notification.id)}
                           title="읽음 처리"
+                          className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
                           <Eye className="w-4 h-4" />
                         </Button>
@@ -387,6 +401,7 @@ const NotificationManager: React.FC = () => {
                             window.open(notification.actionUrl, "_blank")
                           }
                           title="상세 보기"
+                          className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
                           <ArrowUpRight className="w-4 h-4" />
                         </Button>
@@ -396,7 +411,7 @@ const NotificationManager: React.FC = () => {
                         size="sm"
                         onClick={() => deleteNotification(notification.id)}
                         title="삭제"
-                        className="text-red-500 hover:text-red-700"
+                        className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

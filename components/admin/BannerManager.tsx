@@ -203,12 +203,14 @@ export default function BannerManager() {
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardHeader>
           <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
             <div>
-              <CardTitle>배너 관리</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-gray-900 dark:text-gray-100">
+                배너 관리
+              </CardTitle>
+              <CardDescription className="text-gray-600 dark:text-gray-400">
                 메인 페이지 배너를 등록, 수정, 삭제할 수 있습니다
               </CardDescription>
             </div>
@@ -216,7 +218,7 @@ export default function BannerManager() {
               <Link href="/">
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto flex items-center justify-center space-x-2"
+                  className="w-full sm:w-auto flex items-center justify-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <Home className="w-4 h-4" />
                   <span className="hidden sm:inline">홈으로 가기</span>
@@ -225,7 +227,7 @@ export default function BannerManager() {
               </Link>
               <Button
                 onClick={handleAddBanner}
-                className="w-full sm:w-auto flex items-center justify-center space-x-2"
+                className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
               >
                 <Plus className="w-4 h-4" />
                 <span className="hidden sm:inline">배너 추가</span>
@@ -239,18 +241,18 @@ export default function BannerManager() {
           <div className="block md:hidden space-y-4">
             {banners.length === 0 ? (
               <div className="text-center py-12">
-                <div className="text-gray-400 mb-4">
+                <div className="text-gray-400 dark:text-gray-500 mb-4">
                   <Package className="w-16 h-16 mx-auto" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                   등록된 배너가 없습니다
                 </h3>
-                <p className="text-gray-500 mb-4">
+                <p className="text-gray-500 dark:text-gray-400 mb-4">
                   첫 번째 배너를 추가해보세요
                 </p>
                 <Button
                   onClick={handleAddBanner}
-                  className="inline-flex items-center"
+                  className="inline-flex items-center bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   배너 추가
@@ -258,7 +260,10 @@ export default function BannerManager() {
               </div>
             ) : (
               banners.map((banner) => (
-                <Card key={banner.id} className="border shadow-sm">
+                <Card
+                  key={banner.id}
+                  className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800"
+                >
                   <CardContent className="p-4">
                     <div className="flex items-start space-x-4">
                       {/* 이미지 */}
@@ -274,10 +279,10 @@ export default function BannerManager() {
                       <div className="flex-1 space-y-2">
                         <div className="flex items-start justify-between">
                           <div>
-                            <h3 className="font-medium text-sm">
+                            <h3 className="font-medium text-sm text-gray-900 dark:text-gray-100">
                               {banner.title}
                             </h3>
-                            <p className="text-xs text-gray-600 line-clamp-2">
+                            <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
                               {banner.description}
                             </p>
                           </div>
@@ -331,7 +336,7 @@ export default function BannerManager() {
                                 </>
                               )}
                             </Badge>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
                               #{banner.order}
                             </span>
                           </div>
@@ -340,7 +345,7 @@ export default function BannerManager() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="p-2"
+                              className="p-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                               onClick={() => handleEditBanner(banner)}
                             >
                               <Edit className="w-3 h-3" />
@@ -348,7 +353,7 @@ export default function BannerManager() {
                             <Button
                               size="sm"
                               variant="destructive"
-                              className="p-2"
+                              className="p-2 bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white"
                               onClick={() => handleDeleteBanner(banner.id)}
                             >
                               <Trash2 className="w-3 h-3" />
@@ -356,12 +361,12 @@ export default function BannerManager() {
                           </div>
                         </div>
 
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
                           등록일: {banner.createdAt}
                         </div>
 
                         {banner.linkUrl && (
-                          <div className="text-xs text-blue-600 truncate">
+                          <div className="text-xs text-blue-600 dark:text-blue-400 truncate">
                             {banner.linkUrl}
                           </div>
                         )}
@@ -377,18 +382,18 @@ export default function BannerManager() {
           <div className="hidden md:block overflow-x-auto">
             {banners.length === 0 ? (
               <div className="text-center py-16">
-                <div className="text-gray-400 mb-4">
+                <div className="text-gray-400 dark:text-gray-500 mb-4">
                   <Package className="w-20 h-20 mx-auto" />
                 </div>
-                <h3 className="text-xl font-medium text-gray-900 mb-2">
+                <h3 className="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">
                   등록된 배너가 없습니다
                 </h3>
-                <p className="text-gray-500 mb-6">
+                <p className="text-gray-500 dark:text-gray-400 mb-6">
                   첫 번째 배너를 추가하여 메인 페이지를 꾸며보세요
                 </p>
                 <Button
                   onClick={handleAddBanner}
-                  className="inline-flex items-center"
+                  className="inline-flex items-center bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   배너 추가
@@ -446,14 +451,16 @@ export default function BannerManager() {
                       </TableCell>
                       <TableCell>
                         <div>
-                          <p className="font-medium">{banner.title}</p>
-                          <p className="text-sm text-gray-600">
+                          <p className="font-medium text-gray-900 dark:text-gray-100">
+                            {banner.title}
+                          </p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
                             {banner.description}
                           </p>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className="text-sm text-blue-600">
+                        <span className="text-sm text-blue-600 dark:text-blue-400">
                           {banner.linkUrl}
                         </span>
                       </TableCell>
@@ -483,7 +490,7 @@ export default function BannerManager() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className="text-sm text-gray-600">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
                           {banner.createdAt}
                         </span>
                       </TableCell>
@@ -493,6 +500,7 @@ export default function BannerManager() {
                             size="sm"
                             variant="outline"
                             onClick={() => handleEditBanner(banner)}
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                           >
                             <Edit className="w-3 h-3 mr-1" />
                             수정
@@ -501,6 +509,7 @@ export default function BannerManager() {
                             size="sm"
                             variant="destructive"
                             onClick={() => handleDeleteBanner(banner.id)}
+                            className="bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white"
                           >
                             <Trash2 className="w-3 h-3 mr-1" />
                             삭제
@@ -518,12 +527,12 @@ export default function BannerManager() {
 
       {/* 배너 추가/수정 다이얼로그 */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-gray-900 dark:text-gray-100">
               {editingBanner ? "배너 수정" : "새 배너 추가"}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-gray-600 dark:text-gray-400">
               배너 정보를 입력하고 저장하세요
             </DialogDescription>
           </DialogHeader>
@@ -629,11 +638,14 @@ export default function BannerManager() {
             <Button
               variant="outline"
               onClick={() => setIsDialogOpen(false)}
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               취소
             </Button>
-            <Button onClick={handleSaveBanner} className="w-full sm:w-auto">
+            <Button
+              onClick={handleSaveBanner}
+              className="w-full sm:w-auto bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
+            >
               {editingBanner ? "수정" : "추가"}
             </Button>
           </DialogFooter>

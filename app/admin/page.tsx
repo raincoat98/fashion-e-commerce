@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import {
   Card,
   CardContent,
@@ -184,27 +185,32 @@ const mockOrders = [
 const statusConfig = {
   pending: {
     label: "결제 대기",
-    color: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
+    color:
+      "bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 hover:bg-yellow-100 dark:hover:bg-yellow-900/30",
     icon: Clock,
   },
   processing: {
     label: "처리 중",
-    color: "bg-blue-100 text-blue-800 hover:bg-blue-100",
+    color:
+      "bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 hover:bg-blue-100 dark:hover:bg-blue-900/30",
     icon: Package,
   },
   shipped: {
     label: "배송 중",
-    color: "bg-purple-100 text-purple-800 hover:bg-purple-100",
+    color:
+      "bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-200 hover:bg-purple-100 dark:hover:bg-purple-900/30",
     icon: Truck,
   },
   delivered: {
     label: "배송 완료",
-    color: "bg-green-100 text-green-800 hover:bg-green-100",
+    color:
+      "bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 hover:bg-green-100 dark:hover:bg-green-900/30",
     icon: CheckCircle,
   },
   cancelled: {
     label: "주문 취소",
-    color: "bg-red-100 text-red-800 hover:bg-red-100",
+    color:
+      "bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200 hover:bg-red-100 dark:hover:bg-red-900/30",
     icon: AlertCircle,
   },
 };
@@ -319,19 +325,28 @@ export default function AdminPage() {
     switch (priority) {
       case "high":
         return (
-          <Badge variant="destructive" className="text-xs">
+          <Badge
+            variant="destructive"
+            className="text-xs bg-red-600 dark:bg-red-700 text-white"
+          >
             높음
           </Badge>
         );
       case "medium":
         return (
-          <Badge variant="secondary" className="text-xs">
+          <Badge
+            variant="secondary"
+            className="text-xs bg-gray-600 dark:bg-gray-700 text-white"
+          >
             보통
           </Badge>
         );
       case "low":
         return (
-          <Badge variant="outline" className="text-xs">
+          <Badge
+            variant="outline"
+            className="text-xs border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
+          >
             낮음
           </Badge>
         );
@@ -352,16 +367,16 @@ export default function AdminPage() {
       name: "대시보드",
       icon: BarChart3,
       description: "전체 현황 보기",
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
+      color: "text-blue-600 dark:text-blue-400",
+      bgColor: "bg-blue-50 dark:bg-blue-900/20",
     },
     {
       id: "orders",
       name: "주문 관리",
       icon: ShoppingCart,
       description: "신규 주문 및 처리",
-      color: "text-green-600",
-      bgColor: "bg-green-50",
+      color: "text-green-600 dark:text-green-400",
+      bgColor: "bg-green-50 dark:bg-green-900/20",
       badge: pendingOrders > 0 ? pendingOrders : null,
     },
     {
@@ -369,80 +384,80 @@ export default function AdminPage() {
       name: "주문 상태",
       icon: RefreshCw,
       description: "주문 상태 업데이트",
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
+      color: "text-purple-600 dark:text-purple-400",
+      bgColor: "bg-purple-50 dark:bg-purple-900/20",
     },
     {
       id: "shipping",
       name: "배송 관리",
       icon: Truck,
       description: "배송 및 물류",
-      color: "text-orange-600",
-      bgColor: "bg-orange-50",
+      color: "text-orange-600 dark:text-orange-400",
+      bgColor: "bg-orange-50 dark:bg-orange-900/20",
     },
     {
       id: "products",
       name: "상품 관리",
       icon: Package,
       description: "재고 및 상품 정보",
-      color: "text-indigo-600",
-      bgColor: "bg-indigo-50",
+      color: "text-indigo-600 dark:text-indigo-400",
+      bgColor: "bg-indigo-50 dark:bg-indigo-900/20",
     },
     {
       id: "collections",
       name: "컬렉션",
       icon: Tag,
       description: "상품 카테고리",
-      color: "text-pink-600",
-      bgColor: "bg-pink-50",
+      color: "text-pink-600 dark:text-pink-400",
+      bgColor: "bg-pink-50 dark:bg-pink-900/20",
     },
     {
       id: "customers",
       name: "고객 관리",
       icon: Users,
       description: "고객 정보 및 분석",
-      color: "text-teal-600",
-      bgColor: "bg-teal-50",
+      color: "text-teal-600 dark:text-teal-400",
+      bgColor: "bg-teal-50 dark:bg-teal-900/20",
     },
     {
       id: "banners",
       name: "배너 관리",
       icon: Image,
       description: "홈페이지 배너",
-      color: "text-red-600",
-      bgColor: "bg-red-50",
+      color: "text-red-600 dark:text-red-400",
+      bgColor: "bg-red-50 dark:bg-red-900/20",
     },
     {
       id: "coupons",
       name: "쿠폰 관리",
       icon: Gift,
       description: "할인 쿠폰",
-      color: "text-yellow-600",
-      bgColor: "bg-yellow-50",
+      color: "text-yellow-600 dark:text-yellow-400",
+      bgColor: "bg-yellow-50 dark:bg-yellow-900/20",
     },
     {
       id: "top-banners",
       name: "탑배너 관리",
       icon: Image,
       description: "상단 고정 배너",
-      color: "text-cyan-600",
-      bgColor: "bg-cyan-50",
+      color: "text-cyan-600 dark:text-cyan-400",
+      bgColor: "bg-cyan-50 dark:bg-cyan-900/20",
     },
     {
       id: "popups",
       name: "팝업 관리",
       icon: Monitor,
       description: "팝업 및 모달",
-      color: "text-violet-600",
-      bgColor: "bg-violet-50",
+      color: "text-violet-600 dark:text-violet-400",
+      bgColor: "bg-violet-50 dark:bg-violet-900/20",
     },
     {
       id: "notifications",
       name: "알림 관리",
       icon: Bell,
       description: "시스템 알림 관리",
-      color: "text-amber-600",
-      bgColor: "bg-amber-50",
+      color: "text-amber-600 dark:text-amber-400",
+      bgColor: "bg-amber-50 dark:bg-amber-900/20",
       badge: unreadNotificationsCount > 0 ? unreadNotificationsCount : null,
     },
   ];
@@ -676,25 +691,25 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
   // 인증되지 않은 경우 로딩 표시
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">인증 확인 중...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">인증 확인 중...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* 모바일 사이드바 */}
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
         <SheetContent side="left" className="w-80 p-0">
-          <div className="h-full bg-white border-r flex flex-col">
-            <div className="h-24 border-b bg-gradient-to-r from-blue-600 to-indigo-600 flex-shrink-0 flex items-center px-10">
+          <div className="h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+            <div className="h-24 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-600 to-indigo-600 flex-shrink-0 flex items-center px-10">
               <div className="flex items-center space-x-6">
-                <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center">
-                  <BarChart3 className="w-8 h-8 text-blue-600" />
+                <div className="w-14 h-14 bg-white dark:bg-gray-700 rounded-xl flex items-center justify-center">
+                  <BarChart3 className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-white">LUMINA</h2>
@@ -716,8 +731,8 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                     }}
                     className={`w-full p-4 rounded-xl mb-2 text-left transition-all duration-200 ${
                       activeTab === item.id
-                        ? `${item.bgColor} ${item.color} border-2 border-current/20`
-                        : "hover:bg-gray-50 text-gray-600"
+                        ? `${item.bgColor} ${item.color} border-2 border-current/20 dark:bg-opacity-20 dark:border-opacity-30`
+                        : "hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300"
                     }`}
                   >
                     <div className="flex items-center space-x-3">
@@ -744,11 +759,11 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
 
       <div className="flex min-h-screen">
         {/* 데스크톱 사이드바 */}
-        <div className="hidden lg:flex lg:flex-col lg:w-80 lg:flex-shrink-0 h-screen bg-white border-r border-gray-200 sticky top-0">
-          <div className="h-24 border-b bg-gradient-to-r from-blue-600 to-indigo-600 flex-shrink-0 flex items-center px-10">
+        <div className="hidden lg:flex lg:flex-col lg:w-80 lg:flex-shrink-0 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 sticky top-0">
+          <div className="h-24 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-600 to-indigo-600 flex-shrink-0 flex items-center px-10">
             <div className="flex items-center space-x-6">
-              <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center">
-                <BarChart3 className="w-8 h-8 text-blue-600" />
+              <div className="w-14 h-14 bg-white dark:bg-gray-700 rounded-xl flex items-center justify-center">
+                <BarChart3 className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="min-w-0 flex-1">
                 <h2 className="text-2xl font-bold text-white truncate">
@@ -769,8 +784,8 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                   onClick={() => setActiveTab(item.id)}
                   className={`w-full p-4 rounded-xl text-left transition-all duration-200 ${
                     activeTab === item.id
-                      ? `${item.bgColor} ${item.color} border-2 border-current/20 shadow-lg`
-                      : "hover:bg-gray-50 text-gray-600"
+                      ? `${item.bgColor} ${item.color} border-2 border-current/20 shadow-lg dark:bg-opacity-20 dark:border-opacity-30`
+                      : "hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300"
                   }`}
                 >
                   <div className="flex items-center space-x-3">
@@ -796,7 +811,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
         {/* 메인 콘텐츠 */}
         <div className="flex-1 min-w-0">
           {/* 헤더 */}
-          <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+          <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
             <div className="h-24 px-8 lg:px-12 flex items-center">
               <div className="flex items-center justify-between w-full">
                 <div className="flex items-center space-x-6 lg:space-x-8 min-w-0 flex-1">
@@ -809,11 +824,11 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                     <Menu className="w-5 h-5" />
                   </Button>
                   <div className="min-w-0 flex-1">
-                    <h1 className="text-xl lg:text-3xl font-bold text-gray-900 truncate">
+                    <h1 className="text-xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 truncate">
                       {menuItems.find((item) => item.id === activeTab)?.name ||
                         "대시보드"}
                     </h1>
-                    <p className="text-gray-600 text-base lg:text-lg truncate mt-1">
+                    <p className="text-gray-600 dark:text-gray-400 text-base lg:text-lg truncate mt-1">
                       {
                         menuItems.find((item) => item.id === activeTab)
                           ?.description
@@ -822,6 +837,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                   </div>
                 </div>
                 <div className="flex items-center space-x-2 lg:space-x-3 flex-shrink-0">
+                  <ThemeToggle />
                   <Popover
                     open={isNotificationPopoverOpen}
                     onOpenChange={setIsNotificationPopoverOpen}
@@ -836,16 +852,21 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                         )}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-80 p-0" align="end">
-                      <div className="flex items-center justify-between p-4 border-b">
-                        <h4 className="font-semibold">알림</h4>
+                    <PopoverContent
+                      className="w-80 p-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+                      align="end"
+                    >
+                      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                          알림
+                        </h4>
                         <div className="flex items-center space-x-2">
                           {unreadNotificationsCount > 0 && (
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={markAllNotificationsAsRead}
-                              className="text-xs"
+                              className="text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
                               모두 읽음
                             </Button>
@@ -857,7 +878,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                               setActiveTab("notifications");
                               setIsNotificationPopoverOpen(false);
                             }}
-                            className="text-xs"
+                            className="text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                           >
                             모두 보기
                           </Button>
@@ -865,25 +886,27 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                       </div>
                       <div className="max-h-96 overflow-y-auto">
                         {notifications.length === 0 ? (
-                          <div className="p-4 text-center text-gray-500">
-                            <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                          <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+                            <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300 dark:text-gray-500" />
                             <p className="text-sm">알림이 없습니다.</p>
                           </div>
                         ) : (
-                          <div className="divide-y">
+                          <div className="divide-y divide-gray-200 dark:divide-gray-700">
                             {notifications.slice(0, 5).map((notification) => (
                               <div
                                 key={notification.id}
-                                className={`p-4 hover:bg-gray-50 transition-colors ${
-                                  !notification.isRead ? "bg-blue-50" : ""
+                                className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                                  !notification.isRead
+                                    ? "bg-blue-50 dark:bg-blue-900/20"
+                                    : ""
                                 }`}
                               >
                                 <div className="flex items-start space-x-3">
                                   <div
                                     className={`mt-1 ${
                                       notification.isRead
-                                        ? "text-gray-400"
-                                        : "text-blue-600"
+                                        ? "text-gray-400 dark:text-gray-500"
+                                        : "text-blue-600 dark:text-blue-400"
                                     }`}
                                   >
                                     {getNotificationTypeIcon(notification.type)}
@@ -893,8 +916,8 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                       <h5
                                         className={`text-sm font-medium truncate ${
                                           notification.isRead
-                                            ? "text-gray-600"
-                                            : "text-gray-900"
+                                            ? "text-gray-600 dark:text-gray-400"
+                                            : "text-gray-900 dark:text-gray-100"
                                         }`}
                                       >
                                         {notification.title}
@@ -903,7 +926,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                       {!notification.isRead && (
                                         <Badge
                                           variant="default"
-                                          className="bg-blue-600 text-xs"
+                                          className="bg-blue-600 dark:bg-blue-700 text-xs text-white"
                                         >
                                           NEW
                                         </Badge>
@@ -912,14 +935,14 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                     <p
                                       className={`text-xs truncate ${
                                         notification.isRead
-                                          ? "text-gray-500"
-                                          : "text-gray-700"
+                                          ? "text-gray-500 dark:text-gray-400"
+                                          : "text-gray-700 dark:text-gray-300"
                                       }`}
                                     >
                                       {notification.message}
                                     </p>
                                     <div className="flex items-center justify-between mt-2">
-                                      <span className="text-xs text-gray-400">
+                                      <span className="text-xs text-gray-400 dark:text-gray-500">
                                         {new Date(
                                           notification.timestamp
                                         ).toLocaleString("ko-KR", {
@@ -939,7 +962,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                                 notification.id
                                               )
                                             }
-                                            className="h-6 w-6 p-0"
+                                            className="h-6 w-6 p-0 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                                           >
                                             <Eye className="w-3 h-3" />
                                           </Button>
@@ -961,7 +984,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                                 );
                                               }
                                             }}
-                                            className="h-6 w-6 p-0"
+                                            className="h-6 w-6 p-0 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                                           >
                                             <ArrowUpRight className="w-3 h-3" />
                                           </Button>
@@ -972,7 +995,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                           onClick={() =>
                                             deleteNotification(notification.id)
                                           }
-                                          className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
+                                          className="h-6 w-6 p-0 text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
                                         >
                                           <X className="w-3 h-3" />
                                         </Button>
@@ -991,7 +1014,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                     <Button
                       variant="outline"
                       size="sm"
-                      className="flex items-center space-x-2"
+                      className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                       <Home className="w-4 h-4" />
                       <span className="hidden sm:inline">쇼핑몰로</span>
@@ -1009,105 +1032,105 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
               <div className="space-y-4 lg:space-y-6">
                 {/* 상단 통계 카드 */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
-                  <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 hover:shadow-md transition-shadow">
+                  <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-700 hover:shadow-md transition-shadow">
                     <CardContent className="p-4 lg:p-6">
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
                         <div className="flex items-center space-x-3 lg:space-x-0 lg:block">
-                          <div className="w-10 h-10 lg:hidden bg-blue-200 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <ShoppingCart className="w-5 h-5 text-blue-700" />
+                          <div className="w-10 h-10 lg:hidden bg-blue-200 dark:bg-blue-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <ShoppingCart className="w-5 h-5 text-blue-700 dark:text-blue-300" />
                           </div>
                           <div className="min-w-0">
-                            <p className="text-xs lg:text-sm font-medium text-blue-700 truncate">
+                            <p className="text-xs lg:text-sm font-medium text-blue-700 dark:text-blue-300 truncate">
                               총 주문
                             </p>
-                            <p className="text-xl lg:text-3xl font-bold text-blue-900">
+                            <p className="text-xl lg:text-3xl font-bold text-blue-900 dark:text-blue-100">
                               {totalOrders}
                             </p>
-                            <p className="text-xs text-blue-600 mt-0 lg:mt-1">
+                            <p className="text-xs text-blue-600 dark:text-blue-400 mt-0 lg:mt-1">
                               +12% 이번 달
                             </p>
                           </div>
                         </div>
-                        <div className="hidden lg:flex w-14 h-14 bg-blue-200 rounded-2xl items-center justify-center">
-                          <ShoppingCart className="w-7 h-7 text-blue-700" />
+                        <div className="hidden lg:flex w-14 h-14 bg-blue-200 dark:bg-blue-700 rounded-2xl items-center justify-center">
+                          <ShoppingCart className="w-7 h-7 text-blue-700 dark:text-blue-300" />
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200 hover:shadow-md transition-shadow">
+                  <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 border-emerald-200 dark:border-emerald-700 hover:shadow-md transition-shadow">
                     <CardContent className="p-4 lg:p-6">
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
                         <div className="flex items-center space-x-3 lg:space-x-0 lg:block">
-                          <div className="w-10 h-10 lg:hidden bg-emerald-200 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <TrendingUp className="w-5 h-5 text-emerald-700" />
+                          <div className="w-10 h-10 lg:hidden bg-emerald-200 dark:bg-emerald-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <TrendingUp className="w-5 h-5 text-emerald-700 dark:text-emerald-300" />
                           </div>
                           <div className="min-w-0">
-                            <p className="text-xs lg:text-sm font-medium text-emerald-700 truncate">
+                            <p className="text-xs lg:text-sm font-medium text-emerald-700 dark:text-emerald-300 truncate">
                               총 매출
                             </p>
-                            <p className="text-xl lg:text-3xl font-bold text-emerald-900">
+                            <p className="text-xl lg:text-3xl font-bold text-emerald-900 dark:text-emerald-100">
                               {Math.floor(totalRevenue / 10000)}만원
                             </p>
-                            <p className="text-xs text-emerald-600 mt-0 lg:mt-1">
+                            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0 lg:mt-1">
                               +8% 이번 달
                             </p>
                           </div>
                         </div>
-                        <div className="hidden lg:flex w-14 h-14 bg-emerald-200 rounded-2xl items-center justify-center">
-                          <TrendingUp className="w-7 h-7 text-emerald-700" />
+                        <div className="hidden lg:flex w-14 h-14 bg-emerald-200 dark:bg-emerald-700 rounded-2xl items-center justify-center">
+                          <TrendingUp className="w-7 h-7 text-emerald-700 dark:text-emerald-300" />
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200 hover:shadow-md transition-shadow">
+                  <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 border-orange-200 dark:border-orange-700 hover:shadow-md transition-shadow">
                     <CardContent className="p-4 lg:p-6">
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
                         <div className="flex items-center space-x-3 lg:space-x-0 lg:block">
-                          <div className="w-10 h-10 lg:hidden bg-orange-200 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <Activity className="w-5 h-5 text-orange-700" />
+                          <div className="w-10 h-10 lg:hidden bg-orange-200 dark:bg-orange-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Activity className="w-5 h-5 text-orange-700 dark:text-orange-300" />
                           </div>
                           <div className="min-w-0">
-                            <p className="text-xs lg:text-sm font-medium text-orange-700 truncate">
+                            <p className="text-xs lg:text-sm font-medium text-orange-700 dark:text-orange-300 truncate">
                               처리 중
                             </p>
-                            <p className="text-xl lg:text-3xl font-bold text-orange-900">
+                            <p className="text-xl lg:text-3xl font-bold text-orange-900 dark:text-orange-100">
                               {processingOrders + pendingOrders}
                             </p>
-                            <p className="text-xs text-orange-600 mt-0 lg:mt-1">
+                            <p className="text-xs text-orange-600 dark:text-orange-400 mt-0 lg:mt-1">
                               확인 필요
                             </p>
                           </div>
                         </div>
-                        <div className="hidden lg:flex w-14 h-14 bg-orange-200 rounded-2xl items-center justify-center">
-                          <Activity className="w-7 h-7 text-orange-700" />
+                        <div className="hidden lg:flex w-14 h-14 bg-orange-200 dark:bg-orange-700 rounded-2xl items-center justify-center">
+                          <Activity className="w-7 h-7 text-orange-700 dark:text-orange-300" />
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 hover:shadow-md transition-shadow">
+                  <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 border-purple-200 dark:border-purple-700 hover:shadow-md transition-shadow">
                     <CardContent className="p-4 lg:p-6">
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
                         <div className="flex items-center space-x-3 lg:space-x-0 lg:block">
-                          <div className="w-10 h-10 lg:hidden bg-purple-200 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <Star className="w-5 h-5 text-purple-700" />
+                          <div className="w-10 h-10 lg:hidden bg-purple-200 dark:bg-purple-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Star className="w-5 h-5 text-purple-700 dark:text-purple-300" />
                           </div>
                           <div className="min-w-0">
-                            <p className="text-xs lg:text-sm font-medium text-purple-700 truncate">
+                            <p className="text-xs lg:text-sm font-medium text-purple-700 dark:text-purple-300 truncate">
                               고객 만족도
                             </p>
-                            <p className="text-xl lg:text-3xl font-bold text-purple-900">
+                            <p className="text-xl lg:text-3xl font-bold text-purple-900 dark:text-purple-100">
                               4.8
                             </p>
-                            <p className="text-xs text-purple-600 mt-0 lg:mt-1">
+                            <p className="text-xs text-purple-600 dark:text-purple-400 mt-0 lg:mt-1">
                               5점 만점
                             </p>
                           </div>
                         </div>
-                        <div className="hidden lg:flex w-14 h-14 bg-purple-200 rounded-2xl items-center justify-center">
-                          <Star className="w-7 h-7 text-purple-700" />
+                        <div className="hidden lg:flex w-14 h-14 bg-purple-200 dark:bg-purple-700 rounded-2xl items-center justify-center">
+                          <Star className="w-7 h-7 text-purple-700 dark:text-purple-300" />
                         </div>
                       </div>
                     </CardContent>
@@ -1117,79 +1140,81 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                 {/* 빠른 액션 카드 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                   <Card
-                    className="hover:shadow-lg transition-all duration-200 cursor-pointer bg-gradient-to-br from-white to-green-50 border-green-200"
+                    className="hover:shadow-lg transition-all duration-200 cursor-pointer bg-gradient-to-br from-white to-green-50 dark:from-gray-800 dark:to-green-900/20 border-green-200 dark:border-green-700"
                     onClick={() => setActiveTab("orders")}
                   >
                     <CardContent className="p-4 lg:p-6">
                       <div className="flex items-center space-x-3 lg:space-x-4">
-                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                          <ShoppingCart className="w-5 h-5 lg:w-6 lg:h-6 text-green-600" />
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-green-100 dark:bg-green-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <ShoppingCart className="w-5 h-5 lg:w-6 lg:h-6 text-green-600 dark:text-green-400" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 text-sm lg:text-base truncate">
+                          <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm lg:text-base truncate">
                             신규 주문 처리
                           </h3>
-                          <p className="text-xs lg:text-sm text-gray-600 truncate">
+                          <p className="text-xs lg:text-sm text-gray-600 dark:text-gray-400 truncate">
                             {pendingOrders}개의 새로운 주문
                           </p>
                         </div>
-                        <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 flex-shrink-0" />
+                        <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 dark:text-gray-500 flex-shrink-0" />
                       </div>
                     </CardContent>
                   </Card>
 
                   <Card
-                    className="hover:shadow-lg transition-all duration-200 cursor-pointer bg-gradient-to-br from-white to-orange-50 border-orange-200"
+                    className="hover:shadow-lg transition-all duration-200 cursor-pointer bg-gradient-to-br from-white to-orange-50 dark:from-gray-800 dark:to-orange-900/20 border-orange-200 dark:border-orange-700"
                     onClick={() => setActiveTab("shipping")}
                   >
                     <CardContent className="p-4 lg:p-6">
                       <div className="flex items-center space-x-3 lg:space-x-4">
-                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                          <Truck className="w-5 h-5 lg:w-6 lg:h-6 text-orange-600" />
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-orange-100 dark:bg-orange-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <Truck className="w-5 h-5 lg:w-6 lg:h-6 text-orange-600 dark:text-orange-400" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 text-sm lg:text-base truncate">
+                          <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm lg:text-base truncate">
                             배송 관리
                           </h3>
-                          <p className="text-xs lg:text-sm text-gray-600 truncate">
+                          <p className="text-xs lg:text-sm text-gray-600 dark:text-gray-400 truncate">
                             {shippedOrders}개 상품 배송 중
                           </p>
                         </div>
-                        <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 flex-shrink-0" />
+                        <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 dark:text-gray-500 flex-shrink-0" />
                       </div>
                     </CardContent>
                   </Card>
 
                   <Card
-                    className="hover:shadow-lg transition-all duration-200 cursor-pointer bg-gradient-to-br from-white to-indigo-50 border-indigo-200"
+                    className="hover:shadow-lg transition-all duration-200 cursor-pointer bg-gradient-to-br from-white to-indigo-50 dark:from-gray-800 dark:to-indigo-900/20 border-indigo-200 dark:border-indigo-700"
                     onClick={() => setActiveTab("products")}
                   >
                     <CardContent className="p-4 lg:p-6">
                       <div className="flex items-center space-x-3 lg:space-x-4">
-                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                          <Package className="w-5 h-5 lg:w-6 lg:h-6 text-indigo-600" />
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-indigo-100 dark:bg-indigo-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <Package className="w-5 h-5 lg:w-6 lg:h-6 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 text-sm lg:text-base truncate">
+                          <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm lg:text-base truncate">
                             재고 관리
                           </h3>
-                          <p className="text-xs lg:text-sm text-gray-600 truncate">
+                          <p className="text-xs lg:text-sm text-gray-600 dark:text-gray-400 truncate">
                             상품 재고 확인 및 관리
                           </p>
                         </div>
-                        <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 flex-shrink-0" />
+                        <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 dark:text-gray-500 flex-shrink-0" />
                       </div>
                     </CardContent>
                   </Card>
                 </div>
 
                 {/* 최근 주문 요약 */}
-                <Card>
+                <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle>최근 주문</CardTitle>
-                        <CardDescription>
+                        <CardTitle className="text-gray-900 dark:text-gray-100">
+                          최근 주문
+                        </CardTitle>
+                        <CardDescription className="text-gray-600 dark:text-gray-400">
                           오늘 들어온 주문을 확인하세요
                         </CardDescription>
                       </div>
@@ -1197,7 +1222,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                         variant="outline"
                         size="sm"
                         onClick={() => setActiveTab("orders")}
-                        className="flex items-center space-x-2"
+                        className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                       >
                         <Eye className="w-4 h-4" />
                         <span>전체 보기</span>
@@ -1214,23 +1239,23 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                         return (
                           <div
                             key={order.id}
-                            className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
+                            className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600"
                           >
                             <div className="flex items-center space-x-4">
-                              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                                <StatusIcon className="w-5 h-5 text-gray-600" />
+                              <div className="w-10 h-10 bg-white dark:bg-gray-600 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-500">
+                                <StatusIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                               </div>
                               <div>
-                                <p className="font-medium text-gray-900">
+                                <p className="font-medium text-gray-900 dark:text-gray-100">
                                   {order.id}
                                 </p>
-                                <p className="text-sm text-gray-600">
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
                                   {order.customerName}
                                 </p>
                               </div>
                             </div>
                             <div className="text-right">
-                              <p className="font-medium text-gray-900">
+                              <p className="font-medium text-gray-900 dark:text-gray-100">
                                 {order.totalAmount.toLocaleString()}원
                               </p>
                               <Badge
@@ -1259,19 +1284,21 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
             {/* 주문 관리 탭 */}
             {activeTab === "orders" && (
               <div className="space-y-6">
-                <Card>
+                <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle>주문 관리</CardTitle>
-                        <CardDescription>
+                        <CardTitle className="text-gray-900 dark:text-gray-100">
+                          주문 관리
+                        </CardTitle>
+                        <CardDescription className="text-gray-600 dark:text-gray-400">
                           주문 상태를 관리하고 배송 정보를 업데이트하세요
                         </CardDescription>
                       </div>
                       <div className="flex items-center space-x-4">
                         <Button
                           variant="outline"
-                          className="flex items-center space-x-2"
+                          className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                           onClick={() => handleExportOrders()}
                         >
                           <Download className="w-4 h-4" />
@@ -1287,26 +1314,51 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                           value={selectedStatus}
                           onValueChange={setSelectedStatus}
                         >
-                          <SelectTrigger className="w-full sm:w-40">
+                          <SelectTrigger className="w-full sm:w-40 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                             <SelectValue placeholder="상태" />
                           </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="all">전체</SelectItem>
-                            <SelectItem value="pending">결제 대기</SelectItem>
-                            <SelectItem value="processing">처리 중</SelectItem>
-                            <SelectItem value="shipped">배송 중</SelectItem>
-                            <SelectItem value="delivered">배송 완료</SelectItem>
+                          <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                            <SelectItem
+                              value="all"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              전체
+                            </SelectItem>
+                            <SelectItem
+                              value="pending"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              결제 대기
+                            </SelectItem>
+                            <SelectItem
+                              value="processing"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              처리 중
+                            </SelectItem>
+                            <SelectItem
+                              value="shipped"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              배송 중
+                            </SelectItem>
+                            <SelectItem
+                              value="delivered"
+                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                              배송 완료
+                            </SelectItem>
                           </SelectContent>
                         </Select>
 
                         <div className="relative flex-1 sm:max-w-xs">
-                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
                           <input
                             type="text"
                             placeholder="주문번호, 고객명 검색..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                           />
                         </div>
                       </div>
@@ -1322,13 +1374,13 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                         return (
                           <Card
                             key={order.id}
-                            className="bg-white border-gray-200"
+                            className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                           >
                             <CardContent className="p-4">
                               <div className="space-y-3">
                                 {/* 주문 번호와 상태 */}
                                 <div className="flex items-center justify-between">
-                                  <h3 className="font-semibold text-gray-900">
+                                  <h3 className="font-semibold text-gray-900 dark:text-gray-100">
                                     {order.id}
                                   </h3>
                                   <Badge
@@ -1349,27 +1401,27 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
 
                                 {/* 고객 정보 */}
                                 <div>
-                                  <p className="font-medium text-gray-900">
+                                  <p className="font-medium text-gray-900 dark:text-gray-100">
                                     {order.customerName}
                                   </p>
-                                  <p className="text-sm text-gray-600">
+                                  <p className="text-sm text-gray-600 dark:text-gray-400">
                                     {order.customerEmail}
                                   </p>
-                                  <p className="text-sm text-gray-600">
+                                  <p className="text-sm text-gray-600 dark:text-gray-400">
                                     {order.customerPhone}
                                   </p>
                                 </div>
 
                                 {/* 상품 정보 */}
                                 <div>
-                                  <p className="text-sm font-medium text-gray-900 mb-1">
+                                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
                                     주문 상품
                                   </p>
                                   <div className="space-y-1">
                                     {order.products.map((product, index) => (
                                       <div
                                         key={index}
-                                        className="text-sm text-gray-600"
+                                        className="text-sm text-gray-600 dark:text-gray-400"
                                       >
                                         <span className="font-medium">
                                           {product.name}
@@ -1383,18 +1435,18 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                 {/* 금액과 날짜 */}
                                 <div className="flex justify-between items-center">
                                   <div>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">
                                       주문일
                                     </p>
-                                    <p className="text-sm font-medium">
+                                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                       {order.orderDate}
                                     </p>
                                   </div>
                                   <div className="text-right">
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">
                                       총액
                                     </p>
-                                    <p className="font-semibold text-gray-900">
+                                    <p className="font-semibold text-gray-900 dark:text-gray-100">
                                       {order.totalAmount.toLocaleString()}원
                                     </p>
                                   </div>
@@ -1403,17 +1455,17 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                 {/* 배송 정보 */}
                                 {order.trackingNumber && (
                                   <div>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">
                                       운송장: {order.trackingNumber}
                                     </p>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">
                                       예상 배송: {order.estimatedDelivery}
                                     </p>
                                   </div>
                                 )}
 
                                 {/* 액션 버튼 */}
-                                <div className="pt-3 border-t space-y-2">
+                                <div className="pt-3 border-t border-gray-200 dark:border-gray-600 space-y-2">
                                   <div className="grid grid-cols-2 gap-2">
                                     <Button
                                       size="sm"
@@ -1423,7 +1475,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                         setNewOrderStatus(order.status);
                                         setIsStatusChangeDialogOpen(true);
                                       }}
-                                      className="text-xs"
+                                      className="text-xs border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                                     >
                                       상태변경
                                     </Button>
@@ -1435,7 +1487,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                         setCancelItems({});
                                         setIsPartialCancelDialogOpen(true);
                                       }}
-                                      className="text-xs"
+                                      className="text-xs border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                                     >
                                       부분취소
                                     </Button>
@@ -1445,7 +1497,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                       size="sm"
                                       variant="outline"
                                       onClick={() => generateReceipt(order)}
-                                      className="text-xs"
+                                      className="text-xs border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                                     >
                                       영수증
                                     </Button>
@@ -1456,7 +1508,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                       <Button
                                         size="sm"
                                         variant="outline"
-                                        className="w-full text-xs"
+                                        className="w-full text-xs border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                                       >
                                         상세보기
                                       </Button>
@@ -1475,29 +1527,29 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-full">
                           <thead>
-                            <tr className="border-b border-gray-200">
-                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[120px]">
+                            <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100 min-w-[120px]">
                                 주문번호
                               </th>
-                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[200px]">
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100 min-w-[200px]">
                                 고객정보
                               </th>
-                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[200px]">
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100 min-w-[200px]">
                                 상품
                               </th>
-                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[100px]">
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100 min-w-[100px]">
                                 총액
                               </th>
-                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[120px]">
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100 min-w-[120px]">
                                 주문일
                               </th>
-                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[120px]">
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100 min-w-[120px]">
                                 상태
                               </th>
-                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[150px]">
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100 min-w-[150px]">
                                 배송정보
                               </th>
-                              <th className="text-left py-3 px-4 font-medium text-gray-900 min-w-[100px]">
+                              <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100 min-w-[100px]">
                                 액션
                               </th>
                             </tr>
@@ -1511,22 +1563,22 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                               return (
                                 <tr
                                   key={order.id}
-                                  className="border-b border-gray-100 hover:bg-gray-50"
+                                  className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
                                 >
                                   <td className="py-4 px-4 min-w-[120px]">
-                                    <span className="font-medium text-gray-900">
+                                    <span className="font-medium text-gray-900 dark:text-gray-100">
                                       {order.id}
                                     </span>
                                   </td>
                                   <td className="py-4 px-4 min-w-[200px]">
                                     <div>
-                                      <p className="font-medium text-gray-900">
+                                      <p className="font-medium text-gray-900 dark:text-gray-100">
                                         {order.customerName}
                                       </p>
-                                      <p className="text-sm text-gray-600">
+                                      <p className="text-sm text-gray-600 dark:text-gray-400">
                                         {order.customerEmail}
                                       </p>
-                                      <p className="text-sm text-gray-600">
+                                      <p className="text-sm text-gray-600 dark:text-gray-400">
                                         {order.customerPhone}
                                       </p>
                                     </div>
@@ -1535,10 +1587,10 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                     <div className="space-y-1">
                                       {order.products.map((product, index) => (
                                         <div key={index} className="text-sm">
-                                          <span className="font-medium">
+                                          <span className="font-medium text-gray-900 dark:text-gray-100">
                                             {product.name}
                                           </span>
-                                          <span className="text-gray-600">
+                                          <span className="text-gray-600 dark:text-gray-400">
                                             {" "}
                                             x{product.quantity}
                                           </span>
@@ -1547,12 +1599,12 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                     </div>
                                   </td>
                                   <td className="py-4 px-4 min-w-[100px]">
-                                    <span className="font-medium text-gray-900">
+                                    <span className="font-medium text-gray-900 dark:text-gray-100">
                                       {order.totalAmount.toLocaleString()}원
                                     </span>
                                   </td>
                                   <td className="py-4 px-4 min-w-[120px]">
-                                    <span className="text-sm text-gray-600">
+                                    <span className="text-sm text-gray-600 dark:text-gray-400">
                                       {order.orderDate}
                                     </span>
                                   </td>
@@ -1576,15 +1628,15 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                     <div className="text-sm">
                                       {order.trackingNumber ? (
                                         <div>
-                                          <p className="font-medium">
+                                          <p className="font-medium text-gray-900 dark:text-gray-100">
                                             운송장: {order.trackingNumber}
                                           </p>
-                                          <p className="text-gray-600">
+                                          <p className="text-gray-600 dark:text-gray-400">
                                             예상 배송: {order.estimatedDelivery}
                                           </p>
                                         </div>
                                       ) : (
-                                        <span className="text-gray-500">
+                                        <span className="text-gray-500 dark:text-gray-400">
                                           배송 정보 없음
                                         </span>
                                       )}
@@ -1600,7 +1652,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                           setNewOrderStatus(order.status);
                                           setIsStatusChangeDialogOpen(true);
                                         }}
-                                        className="text-xs px-2 py-1"
+                                        className="text-xs px-2 py-1 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                                       >
                                         상태변경
                                       </Button>
@@ -1612,7 +1664,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                           setCancelItems({});
                                           setIsPartialCancelDialogOpen(true);
                                         }}
-                                        className="text-xs px-2 py-1"
+                                        className="text-xs px-2 py-1 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                                       >
                                         부분취소
                                       </Button>
@@ -1620,7 +1672,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                         size="sm"
                                         variant="outline"
                                         onClick={() => generateReceipt(order)}
-                                        className="text-xs px-2 py-1"
+                                        className="text-xs px-2 py-1 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                                       >
                                         영수증
                                       </Button>
@@ -1628,7 +1680,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                                         <Button
                                           size="sm"
                                           variant="outline"
-                                          className="text-xs px-2 py-1"
+                                          className="text-xs px-2 py-1 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                                         >
                                           상세보기
                                         </Button>

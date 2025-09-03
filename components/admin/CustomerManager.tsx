@@ -210,41 +210,41 @@ export default function CustomerManager() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":
-        return "bg-green-100 text-green-800 hover:bg-green-100";
+        return "bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-200 hover:bg-green-100 dark:hover:bg-green-700";
       case "inactive":
-        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
+        return "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700";
       case "suspended":
-        return "bg-red-100 text-red-800 hover:bg-red-100";
+        return "bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-200 hover:bg-red-100 dark:hover:bg-red-700";
       default:
-        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
+        return "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700";
     }
   };
 
   const getMembershipColor = (level: string) => {
     switch (level) {
       case "bronze":
-        return "bg-orange-100 text-orange-800 hover:bg-orange-100";
+        return "bg-orange-100 dark:bg-orange-700 text-orange-800 dark:text-orange-200 hover:bg-orange-100 dark:hover:bg-orange-700";
       case "silver":
-        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
+        return "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700";
       case "gold":
-        return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
+        return "bg-yellow-100 dark:bg-yellow-700 text-yellow-800 dark:text-yellow-200 hover:bg-yellow-100 dark:hover:bg-yellow-700";
       case "platinum":
-        return "bg-purple-100 text-purple-800 hover:bg-purple-100";
+        return "bg-purple-100 dark:bg-purple-700 text-purple-800 dark:text-purple-200 hover:bg-purple-100 dark:hover:bg-purple-700";
       default:
-        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
+        return "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700";
     }
   };
 
   const getReviewStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
+        return "bg-yellow-100 dark:bg-yellow-700 text-yellow-800 dark:text-yellow-200 hover:bg-yellow-100 dark:hover:bg-yellow-700";
       case "approved":
-        return "bg-green-100 text-green-800 hover:bg-green-100";
+        return "bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-200 hover:bg-green-100 dark:hover:bg-green-700";
       case "rejected":
-        return "bg-red-100 text-red-800 hover:bg-red-100";
+        return "bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-200 hover:bg-red-100 dark:hover:bg-red-700";
       default:
-        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
+        return "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700";
     }
   };
 
@@ -252,61 +252,69 @@ export default function CustomerManager() {
     <div className="space-y-6">
       {/* 고객 통계 */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">전체 고객</p>
-                <p className="text-xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  전체 고객
+                </p>
+                <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                   {customerStats.total}
                 </p>
               </div>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-100 text-blue-800">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-400">
                 <Users className="w-4 h-4" />
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">활성 고객</p>
-                <p className="text-xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  활성 고객
+                </p>
+                <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                   {customerStats.active}
                 </p>
               </div>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green-100 text-green-800">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-400">
                 <CheckCircle className="w-4 h-4" />
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">VIP 고객</p>
-                <p className="text-xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  VIP 고객
+                </p>
+                <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                   {customerStats.gold + customerStats.platinum}
                 </p>
               </div>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-yellow-100 text-yellow-800">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400">
                 <Award className="w-4 h-4" />
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">승인 대기</p>
-                <p className="text-xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  승인 대기
+                </p>
+                <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                   {reviewStats.pending}
                 </p>
               </div>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-yellow-100 text-yellow-800">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400">
                 <Clock className="w-4 h-4" />
               </div>
             </div>
@@ -332,10 +340,12 @@ export default function CustomerManager() {
 
         {/* 고객 관리 탭 */}
         <TabsContent value="customers" className="space-y-6">
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <CardHeader>
-              <CardTitle>고객 목록</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-gray-900 dark:text-gray-100">
+                고객 목록
+              </CardTitle>
+              <CardDescription className="text-gray-600 dark:text-gray-400">
                 고객 정보를 관리하고 주문 이력을 확인하세요
               </CardDescription>
             </CardHeader>
@@ -347,6 +357,7 @@ export default function CustomerManager() {
                     placeholder="고객명, 이메일로 검색..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                   />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -367,22 +378,22 @@ export default function CustomerManager() {
                 {filteredCustomers.map((customer) => (
                   <Card
                     key={customer.id}
-                    className="hover:shadow-md transition-shadow"
+                    className="hover:shadow-md transition-shadow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   >
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                            <User className="w-6 h-6 text-gray-600" />
+                          <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                            <User className="w-6 h-6 text-gray-600 dark:text-gray-400" />
                           </div>
                           <div>
-                            <h3 className="font-medium text-gray-900">
+                            <h3 className="font-medium text-gray-900 dark:text-gray-100">
                               {customer.name}
                             </h3>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               {customer.email}
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               {customer.phone}
                             </p>
                           </div>
@@ -413,33 +424,41 @@ export default function CustomerManager() {
 
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                         <div className="text-center">
-                          <p className="text-sm text-gray-600">주문 수</p>
-                          <p className="font-medium">
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            주문 수
+                          </p>
+                          <p className="font-medium text-gray-900 dark:text-gray-100">
                             {customer.totalOrders}건
                           </p>
                         </div>
                         <div className="text-center">
-                          <p className="text-sm text-gray-600">총 구매액</p>
-                          <p className="font-medium">
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            총 구매액
+                          </p>
+                          <p className="font-medium text-gray-900 dark:text-gray-100">
                             {customer.totalSpent.toLocaleString()}원
                           </p>
                         </div>
                         <div className="text-center">
-                          <p className="text-sm text-gray-600">리뷰 수</p>
-                          <p className="font-medium">
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            리뷰 수
+                          </p>
+                          <p className="font-medium text-gray-900 dark:text-gray-100">
                             {customer.totalReviews}개
                           </p>
                         </div>
                         <div className="text-center">
-                          <p className="text-sm text-gray-600">평균 평점</p>
-                          <p className="font-medium">
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            평균 평점
+                          </p>
+                          <p className="font-medium text-gray-900 dark:text-gray-100">
                             {customer.averageRating}
                           </p>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                        <div className="text-sm text-gray-600">
+                      <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
                           가입일: {customer.joinDate} | 마지막 로그인:{" "}
                           {customer.lastLogin}
                         </div>
@@ -451,6 +470,7 @@ export default function CustomerManager() {
                               setSelectedCustomer(customer);
                               setIsCustomerDialogOpen(true);
                             }}
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                           >
                             <Eye className="w-4 h-4 mr-1" />
                             상세보기
@@ -467,10 +487,14 @@ export default function CustomerManager() {
 
         {/* 리뷰 관리 탭 */}
         <TabsContent value="reviews" className="space-y-6">
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <CardHeader>
-              <CardTitle>리뷰 관리</CardTitle>
-              <CardDescription>고객 리뷰를 승인하고 관리하세요</CardDescription>
+              <CardTitle className="text-gray-900 dark:text-gray-100">
+                리뷰 관리
+              </CardTitle>
+              <CardDescription className="text-gray-600 dark:text-gray-400">
+                고객 리뷰를 승인하고 관리하세요
+              </CardDescription>
             </CardHeader>
             <CardContent>
               {/* 리뷰 필터 */}
@@ -496,13 +520,13 @@ export default function CustomerManager() {
                 {filteredReviews.map((review) => (
                   <Card
                     key={review.id}
-                    className="hover:shadow-md transition-shadow"
+                    className="hover:shadow-md transition-shadow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   >
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center space-x-2 mb-2">
-                            <h3 className="font-medium text-gray-900">
+                            <h3 className="font-medium text-gray-900 dark:text-gray-100">
                               {review.customerName}
                             </h3>
                             <Badge
@@ -515,7 +539,7 @@ export default function CustomerManager() {
                                 : "거부됨"}
                             </Badge>
                           </div>
-                          <p className="text-sm text-gray-600 mb-2">
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                             {review.productName}
                           </p>
                           <div className="flex items-center space-x-2 mb-2">
@@ -526,20 +550,22 @@ export default function CustomerManager() {
                                   className={`w-4 h-4 ${
                                     star <= review.rating
                                       ? "text-yellow-400 fill-current"
-                                      : "text-gray-300"
+                                      : "text-gray-300 dark:text-gray-600"
                                   }`}
                                 />
                               ))}
                             </div>
-                            <span className="text-sm text-gray-600">
+                            <span className="text-sm text-gray-600 dark:text-gray-400">
                               {review.rating}/5
                             </span>
                           </div>
-                          <h4 className="font-medium mb-1">{review.title}</h4>
-                          <p className="text-sm text-gray-600 mb-2">
+                          <h4 className="font-medium mb-1 text-gray-900 dark:text-gray-100">
+                            {review.title}
+                          </h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                             {review.content}
                           </p>
-                          <div className="flex items-center space-x-4 text-sm text-gray-500">
+                          <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
                             <span>{review.createdAt}</span>
                             <span>도움됨 {review.helpfulCount}개</span>
                           </div>
@@ -553,6 +579,7 @@ export default function CustomerManager() {
                                 onClick={() =>
                                   updateReviewStatus(review.id, "approved")
                                 }
+                                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                               >
                                 <ThumbsUp className="w-4 h-4 mr-1" />
                                 승인
@@ -563,6 +590,7 @@ export default function CustomerManager() {
                                 onClick={() =>
                                   updateReviewStatus(review.id, "rejected")
                                 }
+                                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                               >
                                 <ThumbsDown className="w-4 h-4 mr-1" />
                                 거부
@@ -576,6 +604,7 @@ export default function CustomerManager() {
                               setSelectedReview(review);
                               setIsReviewDialogOpen(true);
                             }}
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                           >
                             <Eye className="w-4 h-4 mr-1" />
                             상세보기
@@ -596,10 +625,12 @@ export default function CustomerManager() {
         open={isCustomerDialogOpen}
         onOpenChange={setIsCustomerDialogOpen}
       >
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>고객 상세 정보</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-gray-900 dark:text-gray-100">
+              고객 상세 정보
+            </DialogTitle>
+            <DialogDescription className="text-gray-600 dark:text-gray-400">
               고객 정보와 주문 이력을 확인하세요
             </DialogDescription>
           </DialogHeader>
@@ -607,39 +638,69 @@ export default function CustomerManager() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-medium mb-2">기본 정보</h4>
+                  <h4 className="font-medium mb-2 text-gray-900 dark:text-gray-100">
+                    기본 정보
+                  </h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">이름</span>
-                      <span>{selectedCustomer.name}</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        이름
+                      </span>
+                      <span className="text-gray-900 dark:text-gray-100">
+                        {selectedCustomer.name}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">이메일</span>
-                      <span>{selectedCustomer.email}</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        이메일
+                      </span>
+                      <span className="text-gray-900 dark:text-gray-100">
+                        {selectedCustomer.email}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">전화번호</span>
-                      <span>{selectedCustomer.phone}</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        전화번호
+                      </span>
+                      <span className="text-gray-900 dark:text-gray-100">
+                        {selectedCustomer.phone}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">주소</span>
-                      <span>{selectedCustomer.address}</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        주소
+                      </span>
+                      <span className="text-gray-900 dark:text-gray-100">
+                        {selectedCustomer.address}
+                      </span>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2">계정 정보</h4>
+                  <h4 className="font-medium mb-2 text-gray-900 dark:text-gray-100">
+                    계정 정보
+                  </h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">가입일</span>
-                      <span>{selectedCustomer.joinDate}</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        가입일
+                      </span>
+                      <span className="text-gray-900 dark:text-gray-100">
+                        {selectedCustomer.joinDate}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">마지막 로그인</span>
-                      <span>{selectedCustomer.lastLogin}</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        마지막 로그인
+                      </span>
+                      <span className="text-gray-900 dark:text-gray-100">
+                        {selectedCustomer.lastLogin}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">상태</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        상태
+                      </span>
                       <Badge
                         className={getStatusColor(selectedCustomer.status)}
                       >
@@ -651,7 +712,9 @@ export default function CustomerManager() {
                       </Badge>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">멤버십</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        멤버십
+                      </span>
                       <Badge
                         className={getMembershipColor(
                           selectedCustomer.membershipLevel
@@ -671,27 +734,35 @@ export default function CustomerManager() {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-600">주문 수</p>
-                  <p className="text-xl font-bold">
+                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    주문 수
+                  </p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                     {selectedCustomer.totalOrders}건
                   </p>
                 </div>
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-600">총 구매액</p>
-                  <p className="text-xl font-bold">
+                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    총 구매액
+                  </p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                     {selectedCustomer.totalSpent.toLocaleString()}원
                   </p>
                 </div>
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-600">리뷰 수</p>
-                  <p className="text-xl font-bold">
+                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    리뷰 수
+                  </p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                     {selectedCustomer.totalReviews}개
                   </p>
                 </div>
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-600">평균 평점</p>
-                  <p className="text-xl font-bold">
+                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    평균 평점
+                  </p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                     {selectedCustomer.averageRating}
                   </p>
                 </div>
@@ -703,18 +774,22 @@ export default function CustomerManager() {
 
       {/* 리뷰 상세 다이얼로그 */}
       <Dialog open={isReviewDialogOpen} onOpenChange={setIsReviewDialogOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>리뷰 상세</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-gray-900 dark:text-gray-100">
+              리뷰 상세
+            </DialogTitle>
+            <DialogDescription className="text-gray-600 dark:text-gray-400">
               리뷰 내용을 확인하고 승인/거부를 결정하세요
             </DialogDescription>
           </DialogHeader>
           {selectedReview && (
             <div className="space-y-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
+              <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-medium">{selectedReview.customerName}</h4>
+                  <h4 className="font-medium text-gray-900 dark:text-gray-100">
+                    {selectedReview.customerName}
+                  </h4>
                   <Badge
                     className={getReviewStatusColor(selectedReview.status)}
                   >
@@ -725,7 +800,7 @@ export default function CustomerManager() {
                       : "거부됨"}
                   </Badge>
                 </div>
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                   {selectedReview.productName}
                 </p>
                 <div className="flex items-center space-x-2 mb-2">
@@ -736,20 +811,22 @@ export default function CustomerManager() {
                         className={`w-4 h-4 ${
                           star <= selectedReview.rating
                             ? "text-yellow-400 fill-current"
-                            : "text-gray-300"
+                            : "text-gray-300 dark:text-gray-600"
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
                     {selectedReview.rating}/5
                   </span>
                 </div>
-                <h5 className="font-medium mb-1">{selectedReview.title}</h5>
-                <p className="text-sm text-gray-600">
+                <h5 className="font-medium mb-1 text-gray-900 dark:text-gray-100">
+                  {selectedReview.title}
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   {selectedReview.content}
                 </p>
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                   작성일: {selectedReview.createdAt}
                 </p>
               </div>
@@ -761,6 +838,7 @@ export default function CustomerManager() {
                     onClick={() =>
                       updateReviewStatus(selectedReview.id, "approved")
                     }
+                    className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     <ThumbsUp className="w-4 h-4 mr-1" />
                     승인
@@ -770,6 +848,7 @@ export default function CustomerManager() {
                     onClick={() =>
                       updateReviewStatus(selectedReview.id, "rejected")
                     }
+                    className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     <ThumbsDown className="w-4 h-4 mr-1" />
                     거부

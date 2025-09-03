@@ -328,20 +328,27 @@ export default function TopBannerManager() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">탑배너 관리</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            탑배너 관리
+          </h2>
+          <p className="text-muted-foreground text-gray-600 dark:text-gray-400">
             웹사이트 상단에 표시되는 배너를 관리합니다.
           </p>
         </div>
-        <Button onClick={handleAddBanner}>
+        <Button
+          onClick={handleAddBanner}
+          className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+        >
           <Plus className="w-4 h-4 mr-2" />새 배너 추가
         </Button>
       </div>
 
-      <Card>
+      <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardHeader>
-          <CardTitle>탑배너 목록</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-gray-900 dark:text-gray-100">
+            탑배너 목록
+          </CardTitle>
+          <CardDescription className="text-gray-600 dark:text-gray-400">
             현재 등록된 탑배너 목록입니다. 순서를 변경하거나 상태를 관리할 수
             있습니다.
           </CardDescription>
@@ -349,29 +356,53 @@ export default function TopBannerManager() {
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>순서</TableHead>
-                <TableHead>제목</TableHead>
-                <TableHead>내용</TableHead>
-                <TableHead>타입</TableHead>
-                <TableHead>전체</TableHead>
-                <TableHead>색상</TableHead>
-                <TableHead>링크</TableHead>
-                <TableHead>기간</TableHead>
-                <TableHead>상태</TableHead>
-                <TableHead>작업</TableHead>
+              <TableRow className="bg-gray-50 dark:bg-gray-700">
+                <TableHead className="text-gray-900 dark:text-gray-100">
+                  순서
+                </TableHead>
+                <TableHead className="text-gray-900 dark:text-gray-100">
+                  제목
+                </TableHead>
+                <TableHead className="text-gray-900 dark:text-gray-100">
+                  내용
+                </TableHead>
+                <TableHead className="text-gray-900 dark:text-gray-100">
+                  타입
+                </TableHead>
+                <TableHead className="text-gray-900 dark:text-gray-100">
+                  전체
+                </TableHead>
+                <TableHead className="text-gray-900 dark:text-gray-100">
+                  색상
+                </TableHead>
+                <TableHead className="text-gray-900 dark:text-gray-100">
+                  링크
+                </TableHead>
+                <TableHead className="text-gray-900 dark:text-gray-100">
+                  기간
+                </TableHead>
+                <TableHead className="text-gray-900 dark:text-gray-100">
+                  상태
+                </TableHead>
+                <TableHead className="text-gray-900 dark:text-gray-100">
+                  작업
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {topBanners.map((banner) => (
-                <TableRow key={banner.id}>
-                  <TableCell>
+                <TableRow
+                  key={banner.id}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  <TableCell className="text-gray-900 dark:text-gray-100">
                     <div className="flex items-center space-x-1">
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => handleReorder(banner.id, "up")}
                         disabled={banner.order === 1}
+                        className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
                       >
                         <ArrowUp className="w-3 h-3" />
                       </Button>
@@ -381,13 +412,16 @@ export default function TopBannerManager() {
                         size="sm"
                         onClick={() => handleReorder(banner.id, "down")}
                         disabled={banner.order === topBanners.length}
+                        className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
                       >
                         <ArrowDown className="w-3 h-3" />
                       </Button>
                     </div>
                   </TableCell>
-                  <TableCell className="font-medium">{banner.title}</TableCell>
-                  <TableCell className="max-w-xs truncate">
+                  <TableCell className="font-medium text-gray-900 dark:text-gray-100">
+                    {banner.title}
+                  </TableCell>
+                  <TableCell className="max-w-xs truncate text-gray-700 dark:text-gray-300">
                     {banner.content}
                   </TableCell>
                   <TableCell>
@@ -413,23 +447,28 @@ export default function TopBannerManager() {
                       {banner.bannerType === "custom" ? (
                         <>
                           <div
-                            className="w-4 h-4 rounded border"
+                            className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600"
                             style={{ backgroundColor: banner.backgroundColor }}
                           />
                           <div
-                            className="w-4 h-4 rounded border"
+                            className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600"
                             style={{ backgroundColor: banner.textColor }}
                           />
                         </>
                       ) : (
-                        <div className="w-4 h-4 rounded border lumina-gradient"></div>
+                        <div className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600 lumina-gradient"></div>
                       )}
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col space-y-1">
                       {banner.linkUrl && (
-                        <Button variant="ghost" size="sm" asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          asChild
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                        >
                           <a
                             href={banner.linkUrl}
                             target="_blank"
@@ -440,16 +479,16 @@ export default function TopBannerManager() {
                         </Button>
                       )}
                       {banner.links && banner.links.length > 0 && (
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-xs text-muted-foreground text-gray-500 dark:text-gray-400">
                           +{banner.links.length}개 추가 링크
                         </div>
                       )}
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="text-sm">
+                    <div className="text-sm text-gray-700 dark:text-gray-300">
                       <div>{banner.startDate}</div>
-                      <div className="text-muted-foreground">
+                      <div className="text-muted-foreground text-gray-500 dark:text-gray-400">
                         ~ {banner.endDate}
                       </div>
                     </div>
@@ -461,6 +500,7 @@ export default function TopBannerManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleToggleStatus(banner.id)}
+                        className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
                       >
                         {banner.isActive ? (
                           <EyeOff className="w-4 h-4" />
@@ -472,6 +512,7 @@ export default function TopBannerManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleEditBanner(banner)}
+                        className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -479,6 +520,7 @@ export default function TopBannerManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDeleteBanner(banner.id)}
+                        className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -492,19 +534,24 @@ export default function TopBannerManager() {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-gray-900 dark:text-gray-100">
               {editingBanner ? "탑배너 수정" : "새 탑배너 추가"}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-gray-600 dark:text-gray-400">
               탑배너의 정보를 입력하세요. 이 배너는 웹사이트 상단에 표시됩니다.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="title">제목</Label>
+                <Label
+                  htmlFor="title"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  제목
+                </Label>
                 <Input
                   id="title"
                   value={formData.title}
@@ -512,10 +559,16 @@ export default function TopBannerManager() {
                     setFormData({ ...formData, title: e.target.value })
                   }
                   placeholder="배너 제목을 입력하세요"
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="order">순서</Label>
+                <Label
+                  htmlFor="order"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  순서
+                </Label>
                 <Input
                   id="order"
                   type="number"
@@ -527,31 +580,50 @@ export default function TopBannerManager() {
                     })
                   }
                   min="1"
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="bannerType">배너 타입</Label>
+                <Label
+                  htmlFor="bannerType"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  배너 타입
+                </Label>
                 <Select
                   value={formData.bannerType}
                   onValueChange={(value: "custom" | "lumina-gradient") =>
                     setFormData({ ...formData, bannerType: value })
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="custom">커스텀 색상</SelectItem>
-                    <SelectItem value="lumina-gradient">
+                  <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                    <SelectItem
+                      value="custom"
+                      className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      커스텀 색상
+                    </SelectItem>
+                    <SelectItem
+                      value="lumina-gradient"
+                      className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
                       LUMINA 그라데이션
                     </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="isFullWidth">전체 배너</Label>
+                <Label
+                  htmlFor="isFullWidth"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  전체 배너
+                </Label>
                 <div className="flex items-center space-x-2">
                   <Switch
                     id="isFullWidth"
@@ -560,14 +632,22 @@ export default function TopBannerManager() {
                       setFormData({ ...formData, isFullWidth: checked })
                     }
                   />
-                  <Label htmlFor="isFullWidth" className="text-sm">
+                  <Label
+                    htmlFor="isFullWidth"
+                    className="text-sm text-gray-900 dark:text-gray-100"
+                  >
                     전체 너비 사용
                   </Label>
                 </div>
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="content">내용</Label>
+              <Label
+                htmlFor="content"
+                className="text-gray-900 dark:text-gray-100"
+              >
+                내용
+              </Label>
               <Textarea
                 id="content"
                 value={formData.content}
@@ -576,12 +656,18 @@ export default function TopBannerManager() {
                 }
                 placeholder="배너에 표시할 내용을 입력하세요"
                 rows={3}
+                className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               />
             </div>
             {formData.bannerType === "custom" && (
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="backgroundColor">배경색</Label>
+                  <Label
+                    htmlFor="backgroundColor"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    배경색
+                  </Label>
                   <Input
                     id="backgroundColor"
                     type="color"
@@ -592,10 +678,16 @@ export default function TopBannerManager() {
                         backgroundColor: e.target.value,
                       })
                     }
+                    className="border-gray-300 dark:border-gray-600"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="textColor">텍스트색</Label>
+                  <Label
+                    htmlFor="textColor"
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    텍스트색
+                  </Label>
                   <Input
                     id="textColor"
                     type="color"
@@ -603,13 +695,19 @@ export default function TopBannerManager() {
                     onChange={(e) =>
                       setFormData({ ...formData, textColor: e.target.value })
                     }
+                    className="border-gray-300 dark:border-gray-600"
                   />
                 </div>
               </div>
             )}
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="linkUrl">기본 링크 URL</Label>
+                <Label
+                  htmlFor="linkUrl"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  기본 링크 URL
+                </Label>
                 <Input
                   id="linkUrl"
                   value={formData.linkUrl}
@@ -617,12 +715,15 @@ export default function TopBannerManager() {
                     setFormData({ ...formData, linkUrl: e.target.value })
                   }
                   placeholder="클릭 시 이동할 URL을 입력하세요 (선택사항)"
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label>추가 링크</Label>
+                  <Label className="text-gray-900 dark:text-gray-100">
+                    추가 링크
+                  </Label>
                   <Button
                     type="button"
                     variant="outline"
@@ -634,6 +735,7 @@ export default function TopBannerManager() {
                       ];
                       setFormData({ ...formData, links: newLinks });
                     }}
+                    className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     <Plus className="w-4 h-4 mr-1" />
                     링크 추가
@@ -650,7 +752,7 @@ export default function TopBannerManager() {
                         newLinks[index].text = e.target.value;
                         setFormData({ ...formData, links: newLinks });
                       }}
-                      className="flex-1"
+                      className="flex-1 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                     />
                     <Input
                       placeholder="URL"
@@ -660,7 +762,7 @@ export default function TopBannerManager() {
                         newLinks[index].url = e.target.value;
                         setFormData({ ...formData, links: newLinks });
                       }}
-                      className="flex-1"
+                      className="flex-1 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                     />
                     <Button
                       type="button"
@@ -672,6 +774,7 @@ export default function TopBannerManager() {
                         );
                         setFormData({ ...formData, links: newLinks });
                       }}
+                      className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                       <X className="w-4 h-4" />
                     </Button>
@@ -681,7 +784,12 @@ export default function TopBannerManager() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="startDate">시작일</Label>
+                <Label
+                  htmlFor="startDate"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  시작일
+                </Label>
                 <Input
                   id="startDate"
                   type="date"
@@ -689,10 +797,16 @@ export default function TopBannerManager() {
                   onChange={(e) =>
                     setFormData({ ...formData, startDate: e.target.value })
                   }
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="endDate">종료일</Label>
+                <Label
+                  htmlFor="endDate"
+                  className="text-gray-900 dark:text-gray-100"
+                >
+                  종료일
+                </Label>
                 <Input
                   id="endDate"
                   type="date"
@@ -700,6 +814,7 @@ export default function TopBannerManager() {
                   onChange={(e) =>
                     setFormData({ ...formData, endDate: e.target.value })
                   }
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
             </div>
@@ -711,14 +826,26 @@ export default function TopBannerManager() {
                   setFormData({ ...formData, isActive: checked })
                 }
               />
-              <Label htmlFor="isActive">활성화</Label>
+              <Label
+                htmlFor="isActive"
+                className="text-gray-900 dark:text-gray-100"
+              >
+                활성화
+              </Label>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsDialogOpen(false)}
+              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+            >
               취소
             </Button>
-            <Button onClick={handleSaveBanner}>
+            <Button
+              onClick={handleSaveBanner}
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+            >
               {editingBanner ? "수정" : "추가"}
             </Button>
           </DialogFooter>
