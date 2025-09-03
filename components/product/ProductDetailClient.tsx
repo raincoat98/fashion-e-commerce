@@ -337,23 +337,26 @@ export default function ProductDetailClient({
       {/* Breadcrumb */}
       <div
         ref={breadcrumbRef}
-        className="flex items-center space-x-2 text-sm text-gray-500 mb-6"
+        className="flex items-center space-x-2 text-sm text-gray-500 mb-4 lg:mb-6 px-4 lg:px-0"
       >
         <span>홈</span>
         <ChevronRight className="h-4 w-4" />
         <span>상의</span>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-gray-900">{product.name}</span>
+        <span className="text-gray-900 truncate">{product.name}</span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 px-4 lg:px-0">
         {/* Product Images */}
         <div ref={imageRef} className="order-1 lg:order-1">
           <ImageGallery images={product.images} productName={product.name} />
         </div>
 
         {/* Product Info */}
-        <div ref={infoRef} className="order-2 lg:order-2 space-y-6">
+        <div
+          ref={infoRef}
+          className="order-2 lg:order-2 space-y-4 lg:space-y-6"
+        >
           {/* Header */}
           <div>
             <div className="flex items-center space-x-2 mb-2">
@@ -366,7 +369,7 @@ export default function ProductDetailClient({
                 </Badge>
               )}
             </div>
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-xl lg:text-3xl font-bold text-gray-900 mb-2 leading-tight">
               {product.name}
             </h1>
             <p className="text-sm text-gray-600 mb-4 italic">
@@ -388,7 +391,7 @@ export default function ProductDetailClient({
                 </div>
                 <span className="font-medium">{product.rating}</span>
               </div>
-              <span className="text-gray-500">
+              <span className="text-gray-500 text-sm">
                 ({product.reviewCount}개 리뷰)
               </span>
             </div>
@@ -396,11 +399,11 @@ export default function ProductDetailClient({
 
           {/* Price */}
           <div className="space-y-2">
-            <div className="flex items-center space-x-3">
-              <span className="price-animation text-3xl font-bold text-gray-900">
+            <div className="flex items-center space-x-3 flex-wrap">
+              <span className="price-animation text-2xl lg:text-3xl font-bold text-gray-900">
                 {product.price.toLocaleString()}원
               </span>
-              <span className="price-animation text-lg text-gray-400 line-through">
+              <span className="price-animation text-base lg:text-lg text-gray-400 line-through">
                 {product.originalPrice.toLocaleString()}원
               </span>
               <Badge variant="destructive" className="price-animation text-sm">
@@ -430,15 +433,17 @@ export default function ProductDetailClient({
               <div className="flex items-center border border-gray-300 rounded-lg">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 hover:bg-gray-50 transition-colors"
+                  className="p-2 hover:bg-gray-50 transition-colors disabled:opacity-50"
                   disabled={quantity <= 1}
                 >
                   -
                 </button>
-                <span className="px-4 py-2 font-medium">{quantity}</span>
+                <span className="px-4 py-2 font-medium min-w-[3rem] text-center">
+                  {quantity}
+                </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="p-2 hover:bg-gray-50 transition-colors"
+                  className="p-2 hover:bg-gray-50 transition-colors disabled:opacity-50"
                   disabled={
                     !isInStock || quantity >= (selectedSize?.stock || 0)
                   }
@@ -456,10 +461,10 @@ export default function ProductDetailClient({
 
           {/* Actions */}
           <div className="space-y-3">
-            <div className="flex space-x-3">
+            <div className="flex space-x-2 lg:space-x-3">
               <Button
                 size="lg"
-                className="action-buttons flex-1 lumina-gradient hover:opacity-90 text-white py-3 font-medium transition-all duration-300 lumina-shadow"
+                className="action-buttons flex-1 lumina-gradient hover:opacity-90 text-white py-3 font-medium transition-all duration-300 lumina-shadow text-sm lg:text-base"
                 disabled={!isInStock}
                 onClick={handleAddToCart}
               >
@@ -496,7 +501,7 @@ export default function ProductDetailClient({
                     });
                   }
                 }}
-                className="action-buttons px-4"
+                className="action-buttons px-3 lg:px-4"
               >
                 <Heart
                   className={`h-5 w-5 ${
@@ -507,7 +512,7 @@ export default function ProductDetailClient({
               <Button
                 size="lg"
                 variant="outline"
-                className="action-buttons px-4"
+                className="action-buttons px-3 lg:px-4"
                 onClick={() => setShowShareOptions(!showShareOptions)}
               >
                 <Share2 className="h-5 w-5" />
@@ -518,7 +523,7 @@ export default function ProductDetailClient({
               <Button
                 size="lg"
                 variant="outline"
-                className="action-buttons w-full lumina-border-gradient text-gray-900 hover:lumina-gradient hover:text-white py-3 font-medium transition-all duration-300"
+                className="action-buttons w-full lumina-border-gradient text-gray-900 hover:lumina-gradient hover:text-white py-3 font-medium transition-all duration-300 text-sm lg:text-base"
                 onClick={handleBuyNow}
               >
                 💫 바로 구매하기
@@ -530,7 +535,7 @@ export default function ProductDetailClient({
           {showShareOptions && (
             <div ref={shareOptionsRef} className="space-y-3 overflow-hidden">
               <h4 className="text-sm font-medium text-gray-900">공유하기</h4>
-              <div className="flex space-x-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button
                   onClick={() => {
                     const shareText = product.name + " - LUMINA";
@@ -547,7 +552,7 @@ export default function ProductDetailClient({
 
                     setShowShareOptions(false);
                   }}
-                  className="flex-1 bg-[#1877F2] hover:bg-[#166FE5] text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
+                  className="bg-[#1877F2] hover:bg-[#166FE5] text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
                 >
                   📘 Facebook
                 </button>
@@ -566,7 +571,7 @@ export default function ProductDetailClient({
 
                     setShowShareOptions(false);
                   }}
-                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
                 >
                   📸 Instagram
                 </button>
@@ -595,7 +600,7 @@ export default function ProductDetailClient({
 
                     setShowShareOptions(false);
                   }}
-                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
+                  className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors"
                 >
                   📋 링크복사
                 </button>
@@ -603,66 +608,50 @@ export default function ProductDetailClient({
             </div>
           )}
 
-          {/* Mobile Sticky Actions */}
-          <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40">
-            <div className="flex space-x-3">
-              <Button
-                size="lg"
-                className="flex-1 lumina-gradient hover:opacity-90 text-white"
-                disabled={!isInStock}
-                onClick={handleAddToCart}
-              >
-                {isInStock ? "✨ 장바구니" : "품절"}
-              </Button>
-              {isInStock && (
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="flex-1 lumina-border-gradient text-gray-900 hover:lumina-gradient hover:text-white"
-                  onClick={handleBuyNow}
-                >
-                  💫 구매
-                </Button>
-              )}
-            </div>
-          </div>
-
           {/* Features */}
           <div
             ref={featuresRef}
-            className="grid grid-cols-3 gap-4 py-6 border-t border-gray-200"
+            className="grid grid-cols-3 gap-3 lg:gap-4 py-4 lg:py-6 border-t border-gray-200"
           >
             <div className="text-center">
-              <Truck className="h-6 w-6 mx-auto mb-2 text-green-600" />
-              <div className="text-sm font-medium">당일발송</div>
-              <div className="text-xs text-gray-500">
+              <Truck className="h-5 w-5 lg:h-6 lg:w-6 mx-auto mb-2 text-green-600" />
+              <div className="text-xs lg:text-sm font-medium">당일발송</div>
+              <div className="text-xs text-gray-500 hidden sm:block">
                 평일 오후 2시까지 주문시
               </div>
             </div>
             <div className="text-center">
-              <RotateCcw className="h-6 w-6 mx-auto mb-2 text-blue-600" />
-              <div className="text-sm font-medium">교환보장</div>
-              <div className="text-xs text-gray-500">7일 내 무료 교환</div>
+              <RotateCcw className="h-5 w-5 lg:h-6 lg:w-6 mx-auto mb-2 text-blue-600" />
+              <div className="text-xs lg:text-sm font-medium">교환보장</div>
+              <div className="text-xs text-gray-500 hidden sm:block">
+                7일 내 무료 교환
+              </div>
             </div>
             <div className="text-center">
-              <Shield className="h-6 w-6 mx-auto mb-2 text-purple-600" />
-              <div className="text-sm font-medium">품질보증</div>
-              <div className="text-xs text-gray-500">불량 시 즉시 교환</div>
+              <Shield className="h-5 w-5 lg:h-6 lg:w-6 mx-auto mb-2 text-purple-600" />
+              <div className="text-xs lg:text-sm font-medium">품질보증</div>
+              <div className="text-xs text-gray-500 hidden sm:block">
+                불량 시 즉시 교환
+              </div>
             </div>
           </div>
 
           {/* Brand Story */}
           <div
             ref={brandStoryRef}
-            className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl space-y-4"
+            className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 lg:p-6 rounded-2xl space-y-3 lg:space-y-4"
           >
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 lumina-gradient rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-bold">L</span>
+              <div className="w-6 h-6 lg:w-8 lg:h-8 lumina-gradient rounded-full flex items-center justify-center">
+                <span className="text-white text-xs lg:text-sm font-bold">
+                  L
+                </span>
               </div>
-              <h3 className="font-semibold text-gray-900">LUMINA Story</h3>
+              <h3 className="font-semibold text-gray-900 text-sm lg:text-base">
+                LUMINA Story
+              </h3>
             </div>
-            <p className="text-sm text-gray-700 leading-relaxed">
+            <p className="text-xs lg:text-sm text-gray-700 leading-relaxed">
               &ldquo;빛나는 당신을 위한 디자인&rdquo; LUMINA는 단순한 의류가
               아닌, 당신의 개성과 아름다움을 빛나게 하는 스타일을 제안합니다.
               세련된 디자인과 최고급 소재로 완성된 이 제품으로 특별한 순간을
@@ -671,20 +660,46 @@ export default function ProductDetailClient({
           </div>
 
           {/* Product Features */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-gray-900">상품 특징</h3>
+          <div className="space-y-3 lg:space-y-4">
+            <h3 className="font-semibold text-gray-900 text-sm lg:text-base">
+              상품 특징
+            </h3>
             <ul className="space-y-2">
               {product.features.map((feature, index) => (
                 <li
                   key={index}
-                  className="flex items-start space-x-2 text-sm text-gray-700"
+                  className="flex items-start space-x-2 text-xs lg:text-sm text-gray-700"
                 >
-                  <span className="text-gray-400 mt-1">•</span>
-                  <span>{feature}</span>
+                  <span className="text-gray-400 mt-1 flex-shrink-0">•</span>
+                  <span className="leading-relaxed">{feature}</span>
                 </li>
               ))}
             </ul>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Sticky Actions */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-40 shadow-lg">
+        <div className="flex space-x-2">
+          <Button
+            size="lg"
+            className="flex-1 lumina-gradient hover:opacity-90 text-white text-sm py-3"
+            disabled={!isInStock}
+            onClick={handleAddToCart}
+          >
+            {isInStock ? "✨ 장바구니" : "품절"}
+          </Button>
+          {isInStock && (
+            <Button
+              size="lg"
+              variant="outline"
+              className="flex-1 lumina-border-gradient text-gray-900 hover:lumina-gradient hover:text-white text-sm py-3"
+              onClick={handleBuyNow}
+            >
+              💫 구매
+            </Button>
+          )}
         </div>
       </div>
     </div>

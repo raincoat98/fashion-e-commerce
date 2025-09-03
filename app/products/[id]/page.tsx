@@ -57,7 +57,10 @@ export default function ProductDetailPage({
     <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="container mx-auto py-6" id="product-main">
+      <main
+        className="container mx-auto py-4 lg:py-6 px-4 lg:px-0"
+        id="product-main"
+      >
         {/* 페이지 로딩 애니메이션을 위한 wrapper */}
         <div className="product-page-wrapper">
           <ProductDetailWrapper productId={params.id} />
