@@ -1,0 +1,83 @@
+/* Admin 페이지 전용 CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Admin 페이지에서는 탑베너 관련 스타일 제거 */
+:root {
+  --top-banner-height: 0px;
+}
+
+/* Admin 페이지 전용 스타일 */
+.admin-page {
+  /* 탑베너가 없는 상태에서의 레이아웃 */
+  padding-top: 0;
+}
+
+/* Admin 헤더와 사이드바 높이 통일 */
+.admin-header-height {
+  height: 4rem; /* 64px, h-16과 동일 */
+}
+
+/* Admin 헤더 스타일 */
+.admin-header {
+  top: 0 !important;
+  position: sticky;
+}
+
+/* Admin 메인 콘텐츠 스타일 */
+.admin-main {
+  padding-top: 0;
+}
+
+/* Admin 사이드바 스타일 */
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 50;
+}
+
+/* Admin 모바일 메뉴 스타일 */
+.admin-mobile-menu {
+  z-index: 60;
+}
+
+/* Admin 페이지 전용 애니메이션 */
+@keyframes admin-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-fade-in {
+  animation: admin-fade-in 0.3s ease-out;
+}
+
+/* Admin 페이지 전용 그라데이션 */
+.admin-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Admin 페이지 전용 그림자 */
+.admin-shadow {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Admin 페이지 전용 호버 효과 */
+.admin-hover {
+  transition: all 0.2s ease-in-out;
+}
+
+.admin-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}

@@ -691,14 +691,16 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
         <SheetContent side="left" className="w-80 p-0">
           <div className="h-full bg-white border-r flex flex-col">
-            <div className="p-6 border-b bg-gradient-to-r from-blue-600 to-indigo-600 flex-shrink-0">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
-                  <BarChart3 className="w-6 h-6 text-blue-600" />
+            <div className="h-24 border-b bg-gradient-to-r from-blue-600 to-indigo-600 flex-shrink-0 flex items-center px-10">
+              <div className="flex items-center space-x-6">
+                <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center">
+                  <BarChart3 className="w-8 h-8 text-blue-600" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-white">LUMINA</h2>
-                  <p className="text-blue-100 text-sm">관리자 대시보드</p>
+                  <h2 className="text-2xl font-bold text-white">LUMINA</h2>
+                  <p className="text-blue-100 text-base mt-2">
+                    관리자 대시보드
+                  </p>
                 </div>
               </div>
             </div>
@@ -743,16 +745,16 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
       <div className="flex min-h-screen">
         {/* 데스크톱 사이드바 */}
         <div className="hidden lg:flex lg:flex-col lg:w-80 lg:flex-shrink-0 h-screen bg-white border-r border-gray-200 sticky top-0">
-          <div className="p-6 border-b bg-gradient-to-r from-blue-600 to-indigo-600 flex-shrink-0">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
-                <BarChart3 className="w-7 h-7 text-blue-600" />
+          <div className="h-24 border-b bg-gradient-to-r from-blue-600 to-indigo-600 flex-shrink-0 flex items-center px-10">
+            <div className="flex items-center space-x-6">
+              <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center">
+                <BarChart3 className="w-8 h-8 text-blue-600" />
               </div>
               <div className="min-w-0 flex-1">
-                <h2 className="text-xl font-bold text-white truncate">
+                <h2 className="text-2xl font-bold text-white truncate">
                   LUMINA
                 </h2>
-                <p className="text-blue-100 text-sm truncate">
+                <p className="text-blue-100 text-base truncate mt-2">
                   관리자 대시보드
                 </p>
               </div>
@@ -795,9 +797,9 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
         <div className="flex-1 min-w-0">
           {/* 헤더 */}
           <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-            <div className="px-4 lg:px-8 py-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3 lg:space-x-4 min-w-0 flex-1">
+            <div className="h-24 px-8 lg:px-12 flex items-center">
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center space-x-6 lg:space-x-8 min-w-0 flex-1">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -807,11 +809,11 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                     <Menu className="w-5 h-5" />
                   </Button>
                   <div className="min-w-0 flex-1">
-                    <h1 className="text-lg lg:text-2xl font-bold text-gray-900 truncate">
+                    <h1 className="text-xl lg:text-3xl font-bold text-gray-900 truncate">
                       {menuItems.find((item) => item.id === activeTab)?.name ||
                         "대시보드"}
                     </h1>
-                    <p className="text-gray-600 text-xs lg:text-sm truncate">
+                    <p className="text-gray-600 text-base lg:text-lg truncate mt-1">
                       {
                         menuItems.find((item) => item.id === activeTab)
                           ?.description
