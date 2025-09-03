@@ -148,6 +148,39 @@ export default function CheckoutPage() {
     detailAddress: "",
     memo: "",
   });
+
+  // 단계 변경 시 스크롤을 상단으로 이동 (모바일 최적화)
+  useEffect(() => {
+    const scrollToTop = () => {
+      // 모바일에서 부드러운 스크롤 지원 여부 확인
+      const supportsSmoothScroll =
+        "scrollBehavior" in document.documentElement.style;
+
+      if (supportsSmoothScroll) {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      } else {
+        // 구형 브라우저 지원
+        window.scrollTo(0, 0);
+      }
+
+      // 모바일에서 추가적인 스크롤 최적화
+      if ("ontouchstart" in window) {
+        // 터치 디바이스에서 스크롤 위치 조정
+        setTimeout(() => {
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        }, 100);
+      }
+    };
+
+    // 단계가 변경될 때마다 스크롤을 상단으로 이동
+    if (currentStep !== "shipping") {
+      scrollToTop();
+    }
+  }, [currentStep]);
   const [showAddressManager, setShowAddressManager] = useState(false);
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
     null
