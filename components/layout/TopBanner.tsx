@@ -92,9 +92,9 @@ export default function TopBanner() {
 
   // CSS 변수로 TopBanner 높이 설정
   useEffect(() => {
-    if (!isClient || isAdminPage || isMobile) {
-      if (isClient && (isAdminPage || isMobile)) {
-        // 관리자 페이지나 모바일에서는 높이를 0으로 설정
+    if (!isClient || isAdminPage) {
+      if (isClient && isAdminPage) {
+        // 관리자 페이지에서는 높이를 0으로 설정
         document.documentElement.style.setProperty(
           "--top-banner-height",
           "0px"
@@ -105,6 +105,17 @@ export default function TopBanner() {
 
     const setTopBannerHeight = () => {
       try {
+        // 모바일이거나 탑배너가 보이지 않으면 높이를 0으로 설정
+        if (isMobile || !isVisible) {
+          if (document.documentElement) {
+            document.documentElement.style.setProperty(
+              "--top-banner-height",
+              "0px"
+            );
+          }
+          return;
+        }
+
         const bannerElement = document.querySelector('[data-topbanner="true"]');
         if (bannerElement && document.documentElement) {
           const height = bannerElement.getBoundingClientRect().height;
@@ -137,13 +148,20 @@ export default function TopBanner() {
         console.warn("Error cleaning up top banner height:", error);
       }
     };
-  }, [topBanners, currentBannerIndex, isAdminPage, isMobile, isClient]);
+  }, [
+    topBanners,
+    currentBannerIndex,
+    isAdminPage,
+    isMobile,
+    isClient,
+    isVisible,
+  ]);
 
   // 배너 상태가 변경될 때마다 body padding 업데이트
   useEffect(() => {
-    if (!isClient || isAdminPage || isMobile) {
-      if (isClient && (isAdminPage || isMobile)) {
-        // 관리자 페이지나 모바일에서는 body padding 제거
+    if (!isClient || isAdminPage) {
+      if (isClient && isAdminPage) {
+        // 관리자 페이지에서는 body padding 제거
         document.body.style.paddingTop = "0px";
       }
       return;
@@ -151,10 +169,29 @@ export default function TopBanner() {
 
     const updateBodyPadding = () => {
       try {
+        // 모바일이거나 탑배너가 보이지 않으면 헤더 높이만큼만 padding 설정
+        if (isMobile || !isVisible) {
+          const header = document.querySelector(
+            '[data-header="true"]'
+          ) as HTMLElement;
+          if (header && document.body) {
+            const headerHeight = header.clientHeight || 0;
+            document.body.style.paddingTop = `${headerHeight}px`;
+          }
+          return;
+        }
+
+        // 탑배너가 보이면 헤더 + 탑배너 높이만큼 padding 설정
         const bannerElement = document.querySelector('[data-topbanner="true"]');
-        if (bannerElement && document.body) {
-          const height = bannerElement.getBoundingClientRect().height;
-          document.body.style.paddingTop = `${height}px`;
+        const header = document.querySelector(
+          '[data-header="true"]'
+        ) as HTMLElement;
+
+        if (bannerElement && header && document.body) {
+          const bannerHeight = bannerElement.getBoundingClientRect().height;
+          const headerHeight = header.clientHeight || 0;
+          const totalHeight = bannerHeight + headerHeight;
+          document.body.style.paddingTop = `${totalHeight}px`;
         }
       } catch (error) {
         console.warn("Error updating body padding:", error);
@@ -174,11 +211,18 @@ export default function TopBanner() {
         console.warn("Error cleaning up body padding:", error);
       }
     };
-  }, [topBanners, currentBannerIndex, isAdminPage, isMobile, isClient]);
+  }, [
+    topBanners,
+    currentBannerIndex,
+    isAdminPage,
+    isMobile,
+    isClient,
+    isVisible,
+  ]);
 
   // 스크롤 감지 및 탑베너 숨김/표시 로직
   const handleScroll = useCallback(() => {
-    if (!isClient || isAdminPage) return; // 클라이언트가 아니거나 admin 페이지에서는 스크롤 처리하지 않음
+    if (!isClient || isAdminPage || !isVisible) return; // 클라이언트가 아니거나 admin 페이지이거나 탑배너가 보이지 않으면 스크롤 처리하지 않음
 
     const currentScrollY = window.scrollY;
     const scrollDirection = currentScrollY > lastScrollY ? "down" : "up";
@@ -186,13 +230,22 @@ export default function TopBanner() {
     // 아래로 스크롤 시 탑베너 숨김
     if (scrollDirection === "down" && currentScrollY > 100) {
       setIsScrolled(true);
-      // 헤더를 맨 위로 이동
+      // 헤더를 맨 위로 이동하고 헤더 높이만큼만 padding 설정
       try {
         if (document.documentElement) {
           document.documentElement.style.setProperty(
             "--top-banner-height",
             "0px"
           );
+        }
+
+        // 헤더 높이만큼만 padding 설정
+        const header = document.querySelector(
+          '[data-header="true"]'
+        ) as HTMLElement;
+        if (header && document.body) {
+          const headerHeight = header.clientHeight || 0;
+          document.body.style.paddingTop = `${headerHeight}px`;
         }
       } catch (error) {
         console.warn("Error setting top banner height on scroll:", error);
@@ -201,15 +254,26 @@ export default function TopBanner() {
     // 위로 스크롤 시 탑베너 표시
     else if (scrollDirection === "up" || currentScrollY <= 100) {
       setIsScrolled(false);
-      // 헤더를 탑베너 아래로 이동
+      // 헤더를 탑베너 아래로 이동하고 헤더 + 탑배너 높이만큼 padding 설정
       try {
         const bannerElement = document.querySelector('[data-topbanner="true"]');
-        if (bannerElement && document.documentElement) {
-          const height = bannerElement.getBoundingClientRect().height;
+        const header = document.querySelector(
+          '[data-header="true"]'
+        ) as HTMLElement;
+
+        if (bannerElement && header && document.documentElement) {
+          const bannerHeight = bannerElement.getBoundingClientRect().height;
+          const headerHeight = header.clientHeight || 0;
+          const totalHeight = bannerHeight + headerHeight;
+
           document.documentElement.style.setProperty(
             "--top-banner-height",
-            `${height}px`
+            `${bannerHeight}px`
           );
+
+          if (document.body) {
+            document.body.style.paddingTop = `${totalHeight}px`;
+          }
         }
       } catch (error) {
         console.warn("Error setting top banner height on scroll:", error);
@@ -217,18 +281,18 @@ export default function TopBanner() {
     }
 
     setLastScrollY(currentScrollY);
-  }, [lastScrollY, isAdminPage, isClient]);
+  }, [lastScrollY, isAdminPage, isClient, isVisible]);
 
   // 스크롤 이벤트 리스너 등록
   useEffect(() => {
-    if (!isClient || isAdminPage) return; // 클라이언트가 아니거나 admin 페이지에서는 스크롤 이벤트 등록하지 않음
+    if (!isClient || isAdminPage || !isVisible) return; // 클라이언트가 아니거나 admin 페이지이거나 탑배너가 보이지 않으면 스크롤 이벤트 등록하지 않음
 
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [handleScroll, isAdminPage, isClient]);
+  }, [handleScroll, isAdminPage, isClient, isVisible]);
 
   const loadBanners = useCallback(() => {
     if (!isClient || isAdminPage) return; // 클라이언트가 아니거나 admin 페이지에서는 배너 로드하지 않음
@@ -299,23 +363,32 @@ export default function TopBanner() {
     // 닫힌 탑배너를 localStorage에 저장
     localStorage.setItem("topBannerClosed", "true");
 
-    // 배너가 닫힐 때 헤더 위치와 body padding 조정
-    setTimeout(() => {
-      try {
-        const header = document.querySelector(
-          '[data-header="true"]'
-        ) as HTMLElement;
-        if (header) {
-          header.style.top = "0";
-          const headerHeight = header.clientHeight || 0;
-          if (document.body) {
-            document.body.style.paddingTop = `${headerHeight}px`;
-          }
-        }
-      } catch (error) {
-        console.warn("Error adjusting header position on close:", error);
+    // 배너가 닫힐 때 즉시 CSS 변수와 body padding 조정
+    try {
+      // CSS 변수를 즉시 0으로 설정
+      if (document.documentElement) {
+        document.documentElement.style.setProperty(
+          "--top-banner-height",
+          "0px"
+        );
       }
-    }, 0);
+
+      // 헤더 높이만큼만 body padding 설정
+      const header = document.querySelector(
+        '[data-header="true"]'
+      ) as HTMLElement;
+      if (header && document.body) {
+        const headerHeight = header.clientHeight || 0;
+        document.body.style.paddingTop = `${headerHeight}px`;
+      }
+
+      // 헤더 위치를 즉시 top: 0으로 조정
+      if (header) {
+        header.style.top = "0px";
+      }
+    } catch (error) {
+      console.warn("Error adjusting layout on close:", error);
+    }
   };
 
   const handleNext = () => {

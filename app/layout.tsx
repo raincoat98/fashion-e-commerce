@@ -40,12 +40,7 @@ export default function RootLayout({
         >
           <CartProvider>
             <TopBanner />
-            <main
-              className="pt-0"
-              style={{ paddingTop: "var(--top-banner-height, 0px)" }}
-            >
-              {children}
-            </main>
+            <main className="pt-0">{children}</main>
             <Popup />
             <TopButton />
             <Toaster />
