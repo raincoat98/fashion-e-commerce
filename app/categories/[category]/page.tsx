@@ -25,23 +25,27 @@ export default function CategoryPage({
   const categoryProducts = getCategoryProducts(params.category);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
 
       <main className="container mx-auto py-8">
         {/* Breadcrumb */}
-        <div className="text-sm text-gray-500 mb-6">
+        <div className="text-sm text-gray-500 dark:text-gray-400 mb-6">
           <span>홈</span> /{" "}
-          <span className="text-gray-900">{categoryInfo.name}</span>
+          <span className="text-gray-900 dark:text-gray-100">
+            {categoryInfo.name}
+          </span>
         </div>
 
         {/* Page Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             {categoryInfo.name}
           </h1>
           {categoryInfo.description && (
-            <p className="text-gray-600 mb-2">{categoryInfo.description}</p>
+            <p className="text-gray-600 dark:text-gray-400 mb-2">
+              {categoryInfo.description}
+            </p>
           )}
         </div>
 

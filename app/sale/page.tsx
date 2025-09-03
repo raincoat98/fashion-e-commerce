@@ -20,16 +20,18 @@ export default function SalePage() {
     }));
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
 
       <main className="container mx-auto px-4 py-8">
         {/* 페이지 헤더 */}
         <div className="text-center space-y-2 mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">
             🎉 할인 상품
           </h1>
-          <p className="text-gray-600">특별한 가격으로 만나는 인기 상품들</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            특별한 가격으로 만나는 인기 상품들
+          </p>
         </div>
 
         {/* 세일 배너 */}
@@ -58,14 +60,16 @@ export default function SalePage() {
         />
 
         {/* 세일 안내 */}
-        <div className="mt-16 bg-white p-8 rounded-lg shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+        <div className="mt-16 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-sm">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
             세일 안내
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold text-gray-900 mb-3">할인 혜택</h3>
-              <ul className="text-gray-600 space-y-2">
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                할인 혜택
+              </h3>
+              <ul className="text-gray-600 dark:text-gray-400 space-y-2">
                 <li>• 최대 50% 할인 적용</li>
                 <li>• 중복 할인 불가</li>
                 <li>• 쿠폰 사용 가능</li>
@@ -73,8 +77,10 @@ export default function SalePage() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 mb-3">배송 안내</h3>
-              <ul className="text-gray-600 space-y-2">
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                배송 안내
+              </h3>
+              <ul className="text-gray-600 dark:text-gray-400 space-y-2">
                 <li>• 5만원 이상 구매 시 무료배송</li>
                 <li>• 1-2일 내 배송 시작</li>
                 <li>• 교환/반품 7일 이내 가능</li>

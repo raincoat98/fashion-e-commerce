@@ -36,14 +36,16 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
       <div className="py-12">
         <div className="container mx-auto px-4">
           {/* 헤더 */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">문의하기</h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto word-break-keep">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              문의하기
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto word-break-keep">
               궁금한 점이나 문의사항이 있으시면 언제든 연락주세요. 빠른 시일
               내에 답변드리겠습니다.
             </p>
@@ -62,10 +64,10 @@ export default function ContactPage() {
                   {isContactSubmitted ? (
                     <div className="text-center py-12">
                       <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                         문의가 성공적으로 접수되었습니다!
                       </h3>
-                      <p className="text-gray-600 mb-6 word-break-keep">
+                      <p className="text-gray-600 dark:text-gray-400 mb-6 word-break-keep">
                         빠른 시일 내에 답변드리겠습니다.
                       </p>
                       <Button
@@ -79,7 +81,7 @@ export default function ContactPage() {
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             이름 *
                           </label>
                           <Input
@@ -93,7 +95,7 @@ export default function ContactPage() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             이메일 *
                           </label>
                           <Input
@@ -109,7 +111,7 @@ export default function ContactPage() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           연락처
                         </label>
                         <Input
@@ -123,7 +125,7 @@ export default function ContactPage() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           문의 유형 *
                         </label>
                         <Select
@@ -148,7 +150,7 @@ export default function ContactPage() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           제목 *
                         </label>
                         <Input
@@ -163,7 +165,7 @@ export default function ContactPage() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           문의 내용 *
                         </label>
                         <Textarea
@@ -204,32 +206,44 @@ export default function ContactPage() {
                       <Phone className="w-5 h-5 text-yellow-600" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">고객센터</h4>
-                      <p className="text-gray-600">1588-1234</p>
-                      <p className="text-sm text-gray-500">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                        고객센터
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-400">
+                        1588-1234
+                      </p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
                         평일 09:00 - 18:00
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-4">
-                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-200 rounded-full flex items-center justify-center flex-shrink-0">
                       <Mail className="w-5 h-5 text-blue-600" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">이메일</h4>
-                      <p className="text-gray-600">cs@lumina.com</p>
-                      <p className="text-sm text-gray-500">24시간 접수 가능</p>
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                        이메일
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-400">
+                        cs@lumina.com
+                      </p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        24시간 접수 가능
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-4">
-                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-green-100 dark:bg-green-200 rounded-full flex items-center justify-center flex-shrink-0">
                       <MapPin className="w-5 h-5 text-green-600" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">본사 주소</h4>
-                      <p className="text-gray-600">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                        본사 주소
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-400">
                         서울특별시 강남구 테헤란로 123
                         <br />
                         LUMINA 빌딩 8층
@@ -238,12 +252,14 @@ export default function ContactPage() {
                   </div>
 
                   <div className="flex items-start space-x-4">
-                    <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-purple-100 dark:bg-purple-200 rounded-full flex items-center justify-center flex-shrink-0">
                       <Clock className="w-5 h-5 text-purple-600" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">운영시간</h4>
-                      <p className="text-gray-600">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                        운영시간
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-400">
                         평일: 09:00 - 18:00
                         <br />
                         토요일: 09:00 - 15:00

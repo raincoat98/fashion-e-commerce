@@ -17,6 +17,7 @@ import { usePathname } from "next/navigation";
 import { useProductStore } from "@/stores/useProductStore";
 import { useCart } from "@/contexts/CartContext";
 import Search from "@/components/ui/search";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -73,8 +74,10 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-b transition-all duration-300 ${
-        isScrolled ? "border-gray-300 shadow-lg" : "border-gray-200 shadow-sm"
+      className={`fixed top-0 left-0 right-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b transition-all duration-300 ${
+        isScrolled
+          ? "border-gray-300 dark:border-gray-600 shadow-lg"
+          : "border-gray-200 dark:border-gray-700 shadow-sm"
       }`}
       data-header="true"
       style={{
@@ -91,7 +94,7 @@ export default function Header() {
           <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Mobile Menu Button */}
             <button
-              className="p-2 lg:hidden hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="메뉴 열기"
             >
@@ -115,68 +118,68 @@ export default function Header() {
           <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             <Link
               href="/categories/new"
-              className={`text-sm xl:text-base transition-colors hover:text-gray-900 ${
+              className={`text-sm xl:text-base transition-colors hover:text-gray-900 dark:hover:text-gray-100 ${
                 pathname === "/categories/new"
-                  ? "text-gray-900 font-semibold"
-                  : "text-gray-700"
+                  ? "text-gray-900 dark:text-gray-100 font-semibold"
+                  : "text-gray-700 dark:text-gray-300"
               }`}
             >
               신상품
             </Link>
             <Link
               href="/categories/best"
-              className={`text-sm xl:text-base transition-colors hover:text-gray-900 ${
+              className={`text-sm xl:text-base transition-colors hover:text-gray-900 dark:hover:text-gray-100 ${
                 pathname === "/categories/best"
-                  ? "text-gray-900 font-semibold"
-                  : "text-gray-700"
+                  ? "text-gray-900 dark:text-gray-100 font-semibold"
+                  : "text-gray-700 dark:text-gray-300"
               }`}
             >
               베스트
             </Link>
             <Link
               href="/categories/outer?categories=아우터"
-              className={`text-sm xl:text-base transition-colors hover:text-gray-900 ${
+              className={`text-sm xl:text-base transition-colors hover:text-gray-900 dark:hover:text-gray-100 ${
                 pathname === "/categories/outer"
-                  ? "text-gray-900 font-semibold"
-                  : "text-gray-700"
+                  ? "text-gray-900 dark:text-gray-100 font-semibold"
+                  : "text-gray-700 dark:text-gray-300"
               }`}
             >
               아우터
             </Link>
             <Link
               href="/categories/top?categories=상의"
-              className={`text-sm xl:text-base transition-colors hover:text-gray-900 ${
+              className={`text-sm xl:text-base transition-colors hover:text-gray-900 dark:hover:text-gray-100 ${
                 pathname === "/categories/top"
-                  ? "text-gray-900 font-semibold"
-                  : "text-gray-700"
+                  ? "text-gray-900 dark:text-gray-100 font-semibold"
+                  : "text-gray-700 dark:text-gray-300"
               }`}
             >
               상의
             </Link>
             <Link
               href="/categories/bottom?categories=하의"
-              className={`text-sm xl:text-base transition-colors hover:text-gray-900 ${
+              className={`text-sm xl:text-base transition-colors hover:text-gray-900 dark:hover:text-gray-100 ${
                 pathname === "/categories/bottom"
-                  ? "text-gray-900 font-semibold"
-                  : "text-gray-700"
+                  ? "text-gray-900 dark:text-gray-100 font-semibold"
+                  : "text-gray-700 dark:text-gray-300"
               }`}
             >
               하의
             </Link>
             <Link
               href="/categories/dress?categories=드레스"
-              className={`text-sm xl:text-base transition-colors hover:text-gray-900 ${
+              className={`text-sm xl:text-base transition-colors hover:text-gray-900 dark:hover:text-gray-100 ${
                 pathname === "/categories/dress"
-                  ? "text-gray-900 font-semibold"
-                  : "text-gray-700"
+                  ? "text-gray-900 dark:text-gray-100 font-semibold"
+                  : "text-gray-700 dark:text-gray-300"
               }`}
             >
               원피스
             </Link>
             <Link
               href="/sale"
-              className={`text-sm xl:text-base font-medium transition-colors hover:text-red-700 ${
-                pathname === "/sale" ? "text-red-700" : "text-red-600"
+              className={`text-sm xl:text-base font-medium transition-colors hover:text-red-700 dark:hover:text-red-400 ${
+                pathname === "/sale" ? "text-red-700 dark:text-red-400" : "text-red-600 dark:text-red-400"
               }`}
             >
               SALE
@@ -192,7 +195,7 @@ export default function Header() {
 
             {/* Search Toggle - Mobile */}
             <button
-              className="p-2 lg:hidden hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               onClick={() => setIsSearchExpanded(!isSearchExpanded)}
               aria-label="검색 열기"
             >
@@ -206,8 +209,8 @@ export default function Header() {
                 size="sm"
                 className={`hidden sm:flex items-center space-x-2 border-2 transition-all duration-300 hover:scale-105 ${
                   pathname === "/admin"
-                    ? "border-yellow-500 bg-yellow-50 text-yellow-700"
-                    : "border-gray-300 hover:border-yellow-400 hover:bg-yellow-50 text-gray-700 hover:text-yellow-700"
+                    ? "border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400"
+                    : "border-gray-300 dark:border-gray-600 hover:border-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 text-gray-700 dark:text-gray-300 hover:text-yellow-700 dark:hover:text-yellow-400"
                 }`}
               >
                 <Settings className="h-4 w-4" />
@@ -217,12 +220,15 @@ export default function Header() {
 
             {/* User Actions */}
             <div className="flex items-center space-x-1 sm:space-x-2">
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
               {/* User Profile */}
               <Link href="/profile">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="hover:bg-gray-100 transition-colors"
+                  className="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <User className="h-5 w-5" />
                 </Button>
@@ -233,13 +239,13 @@ export default function Header() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="hidden sm:flex relative hover:bg-gray-100 transition-colors"
+                  className="hidden sm:flex relative hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <Heart
                     className={`h-5 w-5 transition-all duration-300 ${
                       wishlistCount > 0
                         ? "text-red-500 fill-current"
-                        : "text-gray-700 hover:text-gray-900"
+                        : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                     }`}
                   />
                   {wishlistCount > 0 && (
@@ -255,13 +261,13 @@ export default function Header() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="relative hover:bg-gray-100 transition-colors"
+                  className="relative hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <ShoppingBag
                     className={`h-5 w-5 transition-all duration-300 ${
                       cartItemCount > 0
                         ? "text-blue-600 fill-current"
-                        : "text-gray-700 hover:text-gray-900"
+                        : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                     }`}
                   />
                   {cartItemCount > 0 && (
@@ -284,14 +290,14 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200 py-4 animate-slide-down bg-white/95 backdrop-blur-sm">
+          <div className="lg:hidden border-t border-gray-200 dark:border-gray-700 py-4 animate-slide-down bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
             <nav className="space-y-3">
               <Link
                 href="/categories/new"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 ${
+                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/new"
-                    ? "text-gray-900 font-semibold bg-gray-100"
-                    : "text-gray-700"
+                    ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
+                    : "text-gray-700 dark:text-gray-300"
                 }`}
                 onClick={closeMobileMenu}
               >
@@ -299,10 +305,10 @@ export default function Header() {
               </Link>
               <Link
                 href="/categories/best"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 ${
+                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/best"
-                    ? "text-gray-900 font-semibold bg-gray-100"
-                    : "text-gray-700"
+                    ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
+                    : "text-gray-700 dark:text-gray-300"
                 }`}
                 onClick={closeMobileMenu}
               >
@@ -310,10 +316,10 @@ export default function Header() {
               </Link>
               <Link
                 href="/categories/outer?categories=아우터"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 ${
+                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/outer"
-                    ? "text-gray-900 font-semibold bg-gray-100"
-                    : "text-gray-700"
+                    ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
+                    : "text-gray-700 dark:text-gray-300"
                 }`}
                 onClick={closeMobileMenu}
               >
@@ -321,10 +327,10 @@ export default function Header() {
               </Link>
               <Link
                 href="/categories/top?categories=상의"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 ${
+                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/top"
-                    ? "text-gray-900 font-semibold bg-gray-100"
-                    : "text-gray-700"
+                    ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
+                    : "text-gray-700 dark:text-gray-300"
                 }`}
                 onClick={closeMobileMenu}
               >
@@ -332,10 +338,10 @@ export default function Header() {
               </Link>
               <Link
                 href="/categories/bottom?categories=하의"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 ${
+                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/bottom"
-                    ? "text-gray-900 font-semibold bg-gray-100"
-                    : "text-gray-700"
+                    ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
+                    : "text-gray-700 dark:text-gray-300"
                 }`}
                 onClick={closeMobileMenu}
               >
@@ -343,10 +349,10 @@ export default function Header() {
               </Link>
               <Link
                 href="/categories/dress?categories=드레스"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 ${
+                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/dress"
-                    ? "text-gray-900 font-semibold bg-gray-100"
-                    : "text-gray-700"
+                    ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
+                    : "text-gray-700 dark:text-gray-300"
                 }`}
                 onClick={closeMobileMenu}
               >
@@ -354,10 +360,10 @@ export default function Header() {
               </Link>
               <Link
                 href="/sale"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 ${
+                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/sale"
-                    ? "text-red-700 font-semibold bg-red-50"
-                    : "text-red-600"
+                    ? "text-red-700 dark:text-red-400 font-semibold bg-red-50 dark:bg-red-900/20"
+                    : "text-red-600 dark:text-red-400"
                 }`}
                 onClick={closeMobileMenu}
               >
@@ -365,13 +371,13 @@ export default function Header() {
               </Link>
 
               {/* Mobile Admin Button */}
-              <div className="pt-3 border-t border-gray-200">
+              <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
                 <Link
                   href="/admin"
                   className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                     pathname === "/admin"
-                      ? "bg-yellow-50 text-yellow-700 border-2 border-yellow-500"
-                      : "bg-gray-50 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700 hover:border-yellow-400 border-2 border-gray-200"
+                      ? "bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border-2 border-yellow-500"
+                      : "bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 hover:text-yellow-700 dark:hover:text-yellow-400 hover:border-yellow-400 border-2 border-gray-200 dark:border-gray-600"
                   }`}
                   onClick={closeMobileMenu}
                 >

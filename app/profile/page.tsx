@@ -345,15 +345,19 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
 
       <main className="container mx-auto py-8">
         <div className="max-w-6xl mx-auto space-y-6">
           {/* 프로필 헤더 */}
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">마이페이지</h1>
-            <p className="text-gray-600">내 정보와 주문 내역을 관리하세요</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+              마이페이지
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400">
+              내 정보와 주문 내역을 관리하세요
+            </p>
           </div>
 
           {/* 계정 요약 */}
@@ -369,19 +373,27 @@ export default function ProfilePage() {
                 <div className="space-y-4">
                   <div>
                     <Label>이름</Label>
-                    <p className="text-gray-900">{profile.name}</p>
+                    <p className="text-gray-900 dark:text-gray-100">
+                      {profile.name}
+                    </p>
                   </div>
                   <div>
                     <Label>이메일</Label>
-                    <p className="text-gray-900">{profile.email}</p>
+                    <p className="text-gray-900 dark:text-gray-100">
+                      {profile.email}
+                    </p>
                   </div>
                   <div>
                     <Label>전화번호</Label>
-                    <p className="text-gray-900">{profile.phone}</p>
+                    <p className="text-gray-900 dark:text-gray-100">
+                      {profile.phone}
+                    </p>
                   </div>
                   <div>
                     <Label>주소</Label>
-                    <p className="text-gray-900">{profile.address}</p>
+                    <p className="text-gray-900 dark:text-gray-100">
+                      {profile.address}
+                    </p>
                   </div>
                 </div>
                 <div className="space-y-4">
@@ -398,17 +410,21 @@ export default function ProfilePage() {
                   </div>
                   <div>
                     <Label>포인트</Label>
-                    <p className="text-gray-900">
+                    <p className="text-gray-900 dark:text-gray-100">
                       {profile.points.toLocaleString()}P
                     </p>
                   </div>
                   <div>
                     <Label>가입일</Label>
-                    <p className="text-gray-900">{profile.joinDate}</p>
+                    <p className="text-gray-900 dark:text-gray-100">
+                      {profile.joinDate}
+                    </p>
                   </div>
                   <div>
                     <Label>마지막 로그인</Label>
-                    <p className="text-gray-900">{profile.lastLogin}</p>
+                    <p className="text-gray-900 dark:text-gray-100">
+                      {profile.lastLogin}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -421,12 +437,14 @@ export default function ProfilePage() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">총 주문</p>
-                    <p className="text-xl font-bold text-gray-900">
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      총 주문
+                    </p>
+                    <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                       {profile.totalOrders}건
                     </p>
                   </div>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-100 text-blue-800">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-100 dark:bg-blue-200 text-blue-800 dark:text-blue-900">
                     <ShoppingBag className="w-4 h-4" />
                   </div>
                 </div>
@@ -436,14 +454,14 @@ export default function ProfilePage() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                       총 구매액
                     </p>
-                    <p className="text-xl font-bold text-gray-900">
+                    <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                       {profile.totalSpent.toLocaleString()}원
                     </p>
                   </div>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green-100 text-green-800">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green-100 dark:bg-green-200 text-green-800 dark:text-green-900">
                     <CheckCircle className="w-4 h-4" />
                   </div>
                 </div>
@@ -453,12 +471,14 @@ export default function ProfilePage() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">리뷰 수</p>
-                    <p className="text-xl font-bold text-gray-900">
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      리뷰 수
+                    </p>
+                    <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                       {profile.totalReviews}개
                     </p>
                   </div>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-purple-100 text-purple-800">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-purple-100 dark:bg-purple-200 text-purple-800 dark:text-purple-900">
                     <Star className="w-4 h-4" />
                   </div>
                 </div>
@@ -468,14 +488,14 @@ export default function ProfilePage() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                       평균 평점
                     </p>
-                    <p className="text-xl font-bold text-gray-900">
+                    <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                       {profile.averageRating}
                     </p>
                   </div>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-yellow-100 text-yellow-800">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-yellow-100 dark:bg-yellow-200 text-yellow-800 dark:text-yellow-900">
                     <Award className="w-4 h-4" />
                   </div>
                 </div>
@@ -544,11 +564,13 @@ export default function ProfilePage() {
                             className="w-16 h-16 object-cover rounded"
                           />
                           <div className="flex-1">
-                            <h4 className="font-medium">{item.name}</h4>
-                            <p className="text-sm text-gray-600">
+                            <h4 className="font-medium dark:text-gray-100">
+                              {item.name}
+                            </h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               {item.size} / {item.color} / {item.quantity}개
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               {(item.price * item.quantity).toLocaleString()}원
                             </p>
                           </div>
@@ -557,22 +579,28 @@ export default function ProfilePage() {
                       <div className="border-t pt-4">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm text-gray-600">총 결제금액</p>
-                            <p className="text-lg font-bold">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              총 결제금액
+                            </p>
+                            <p className="text-lg font-bold dark:text-gray-100">
                               {order.totalAmount.toLocaleString()}원
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm text-gray-600">결제수단</p>
-                            <p className="text-sm">{order.paymentMethod}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              결제수단
+                            </p>
+                            <p className="text-sm dark:text-gray-100">
+                              {order.paymentMethod}
+                            </p>
                           </div>
                         </div>
                         {order.trackingNumber && (
-                          <div className="mt-2 p-3 bg-blue-50 rounded-lg">
-                            <p className="text-sm font-medium text-blue-900">
+                          <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
                               송장번호
                             </p>
-                            <p className="text-sm text-blue-700">
+                            <p className="text-sm text-blue-700 dark:text-blue-200">
                               {order.trackingNumber}
                             </p>
                           </div>
@@ -614,11 +642,13 @@ export default function ProfilePage() {
                             {review.rating}/5
                           </span>
                         </div>
-                        <h5 className="font-medium mb-1">{review.title}</h5>
-                        <p className="text-sm text-gray-600 mb-2">
+                        <h5 className="font-medium mb-1 dark:text-gray-100">
+                          {review.title}
+                        </h5>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                           {review.content}
                         </p>
-                        <div className="flex items-center justify-between text-sm text-gray-500">
+                        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
                           <span>{review.createdAt}</span>
                           <span>도움됨 {review.helpfulCount}개</span>
                         </div>

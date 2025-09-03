@@ -91,11 +91,13 @@ export default function BannerSlider({
     return (
       <div
         className={cn(
-          "w-full h-96 bg-gray-100 flex items-center justify-center",
+          "w-full h-96 bg-gray-100 dark:bg-gray-800 flex items-center justify-center",
           className
         )}
       >
-        <p className="text-gray-500">등록된 배너가 없습니다.</p>
+        <p className="text-gray-500 dark:text-gray-400">
+          등록된 배너가 없습니다.
+        </p>
       </div>
     );
   }
@@ -138,9 +140,9 @@ export default function BannerSlider({
                 />
               ) : (
                 /* 에러 시 플레이스홀더 */
-                <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                <div className="w-full h-full bg-gray-800 dark:bg-gray-900 flex items-center justify-center">
                   <div className="text-center text-white">
-                    <ImageIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <ImageIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
                     <p className="text-lg">배너 이미지 없음</p>
                   </div>
                 </div>
@@ -156,13 +158,13 @@ export default function BannerSlider({
                   <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight word-break-keep">
                     {banner.title}
                   </h2>
-                  <p className="text-lg md:text-xl mb-8 text-gray-200 leading-relaxed word-break-keep">
+                  <p className="text-lg md:text-xl mb-8 text-gray-200 dark:text-gray-100 leading-relaxed word-break-keep">
                     {banner.description}
                   </p>
                   <Link href={banner.linkUrl}>
                     <Button
                       size="lg"
-                      className="bg-white text-gray-900 hover:bg-gray-100 px-8 py-3 text-lg font-semibold transition-all duration-300 group"
+                      className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 px-8 py-3 text-lg font-semibold transition-all duration-300 group"
                     >
                       자세히 보기
                       <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -181,7 +183,7 @@ export default function BannerSlider({
           <Button
             variant="ghost"
             size="icon"
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 text-white border-0 rounded-full w-12 h-12 transition-all duration-300 z-20"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 dark:bg-black/40 hover:bg-black/40 dark:hover:bg-black/60 text-white border-0 rounded-full w-12 h-12 transition-all duration-300 z-20"
             onClick={prevSlide}
           >
             <ChevronLeft className="w-6 h-6" />
@@ -189,7 +191,7 @@ export default function BannerSlider({
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 text-white border-0 rounded-full w-12 h-12 transition-all duration-300 z-20"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 dark:bg-black/40 hover:bg-black/40 dark:hover:bg-black/60 text-white border-0 rounded-full w-12 h-12 transition-all duration-300 z-20"
             onClick={nextSlide}
           >
             <ChevronRight className="w-6 h-6" />
@@ -217,7 +219,7 @@ export default function BannerSlider({
       )}
 
       {/* 슬라이드 인디케이터 */}
-      <div className="absolute top-4 right-4 bg-black/20 backdrop-blur-sm rounded-full px-3 py-1 text-white text-sm z-20">
+      <div className="absolute top-4 right-4 bg-black/20 dark:bg-black/40 backdrop-blur-sm rounded-full px-3 py-1 text-white text-sm z-20">
         {currentSlide + 1} / {activeBanners.length}
       </div>
 

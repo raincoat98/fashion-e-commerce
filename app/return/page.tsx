@@ -155,14 +155,16 @@ export default function ReturnPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
       <div className="py-12">
         <div className="container mx-auto px-4">
           {/* 헤더 */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">교환/반품</h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              교환/반품
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               고객님의 만족을 위해 신속하고 정확한 교환/반품 서비스를
               제공합니다.
             </p>
@@ -190,21 +192,21 @@ export default function ReturnPage() {
 
                     {/* 정책 탭 */}
                     <TabsContent value="policy" className="space-y-6">
-                      <div className="bg-blue-50 p-6 rounded-lg">
+                      <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg">
                         <div className="flex items-center space-x-3 mb-4">
                           <Clock className="w-6 h-6 text-blue-600" />
-                          <h3 className="text-xl font-semibold text-blue-900">
+                          <h3 className="text-xl font-semibold text-blue-900 dark:text-blue-100">
                             교환/반품 기간: {returnPolicy.period}
                           </h3>
                         </div>
-                        <p className="text-blue-800">
+                        <p className="text-blue-800 dark:text-blue-200">
                           상품 수령 후 7일 이내에 교환/반품 신청이 가능합니다.
                         </p>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                          <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
                             <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
                             교환/반품 가능 조건
                           </h4>
@@ -215,7 +217,7 @@ export default function ReturnPage() {
                                 className="flex items-start space-x-2"
                               >
                                 <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                <span className="text-gray-700">
+                                <span className="text-gray-700 dark:text-gray-300">
                                   {condition}
                                 </span>
                               </li>
@@ -224,7 +226,7 @@ export default function ReturnPage() {
                         </div>
 
                         <div>
-                          <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                          <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
                             <XCircle className="w-5 h-5 text-red-500 mr-2" />
                             교환/반품 불가 조건
                           </h4>
@@ -235,7 +237,7 @@ export default function ReturnPage() {
                                 className="flex items-start space-x-2"
                               >
                                 <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                                <span className="text-gray-700">
+                                <span className="text-gray-700 dark:text-gray-300">
                                   {exception}
                                 </span>
                               </li>
@@ -255,7 +257,7 @@ export default function ReturnPage() {
                               key={index}
                               className="flex items-start space-x-4"
                             >
-                              <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                              <div className="w-10 h-10 bg-yellow-100 dark:bg-yellow-200 rounded-full flex items-center justify-center flex-shrink-0">
                                 <span className="text-sm font-semibold text-yellow-600">
                                   {process.step}
                                 </span>
@@ -263,14 +265,14 @@ export default function ReturnPage() {
                               <div className="flex-1">
                                 <div className="flex items-center space-x-2 mb-1">
                                   <Icon className="w-4 h-4 text-green-500" />
-                                  <h4 className="font-semibold text-gray-900">
+                                  <h4 className="font-semibold text-gray-900 dark:text-gray-100">
                                     {process.title}
                                   </h4>
                                 </div>
-                                <p className="text-gray-600 mb-1">
+                                <p className="text-gray-600 dark:text-gray-400 mb-1">
                                   {process.description}
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
                                   {process.time}
                                 </p>
                               </div>
@@ -279,14 +281,14 @@ export default function ReturnPage() {
                         })}
                       </div>
 
-                      <div className="bg-yellow-50 p-4 rounded-lg">
+                      <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
                         <div className="flex items-start space-x-3">
                           <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
                           <div>
-                            <h4 className="font-semibold text-yellow-900 mb-1">
+                            <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-1">
                               주의사항
                             </h4>
-                            <ul className="text-sm text-yellow-800 space-y-1">
+                            <ul className="text-sm text-yellow-800 dark:text-yellow-200 space-y-1">
                               <li>
                                 • 교환/반품 신청 전 상품 상태를 확인해주세요
                               </li>
@@ -306,36 +308,39 @@ export default function ReturnPage() {
                     {/* 환불 탭 */}
                     <TabsContent value="refund" className="space-y-6">
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                           환불 처리 시간
                         </h3>
                         <div className="overflow-x-auto">
-                          <table className="w-full border-collapse border border-gray-200">
+                          <table className="w-full border-collapse border border-gray-200 dark:border-gray-700">
                             <thead>
-                              <tr className="bg-gray-50">
-                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                              <tr className="bg-gray-50 dark:bg-gray-800">
+                                <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold">
                                   결제 수단
                                 </th>
-                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold">
                                   처리 시간
                                 </th>
-                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold">
                                   비고
                                 </th>
                               </tr>
                             </thead>
                             <tbody>
                               {refundInfo.methods.map((method, index) => (
-                                <tr key={index} className="hover:bg-gray-50">
-                                  <td className="border border-gray-200 px-4 py-3 font-medium">
+                                <tr
+                                  key={index}
+                                  className="hover:bg-gray-50 dark:hover:bg-gray-800"
+                                >
+                                  <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 font-medium">
                                     {method.method}
                                   </td>
-                                  <td className="border border-gray-200 px-4 py-3">
+                                  <td className="border border-gray-200 dark:border-gray-700 px-4 py-3">
                                     <Badge variant="outline">
                                       {method.time}
                                     </Badge>
                                   </td>
-                                  <td className="border border-gray-200 px-4 py-3 text-sm text-gray-600">
+                                  <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                                     {method.note}
                                   </td>
                                 </tr>
@@ -346,34 +351,37 @@ export default function ReturnPage() {
                       </div>
 
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                           배송비 안내
                         </h3>
                         <div className="overflow-x-auto">
-                          <table className="w-full border-collapse border border-gray-200">
+                          <table className="w-full border-collapse border border-gray-200 dark:border-gray-700">
                             <thead>
-                              <tr className="bg-gray-50">
-                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                              <tr className="bg-gray-50 dark:bg-gray-800">
+                                <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold">
                                   구분
                                 </th>
-                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold">
                                   교환
                                 </th>
-                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold">
                                   반품
                                 </th>
-                                <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold">
                                   비고
                                 </th>
                               </tr>
                             </thead>
                             <tbody>
                               {refundInfo.fees.map((fee, index) => (
-                                <tr key={index} className="hover:bg-gray-50">
-                                  <td className="border border-gray-200 px-4 py-3 font-medium">
+                                <tr
+                                  key={index}
+                                  className="hover:bg-gray-50 dark:hover:bg-gray-800"
+                                >
+                                  <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 font-medium">
                                     {fee.type}
                                   </td>
-                                  <td className="border border-gray-200 px-4 py-3">
+                                  <td className="border border-gray-200 dark:border-gray-700 px-4 py-3">
                                     <Badge
                                       variant={
                                         fee.exchange === "무료"
@@ -384,7 +392,7 @@ export default function ReturnPage() {
                                       {fee.exchange}
                                     </Badge>
                                   </td>
-                                  <td className="border border-gray-200 px-4 py-3">
+                                  <td className="border border-gray-200 dark:border-gray-700 px-4 py-3">
                                     <Badge
                                       variant={
                                         fee.return === "무료"
@@ -395,7 +403,7 @@ export default function ReturnPage() {
                                       {fee.return}
                                     </Badge>
                                   </td>
-                                  <td className="border border-gray-200 px-4 py-3 text-sm text-gray-600">
+                                  <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                                     {fee.note}
                                   </td>
                                 </tr>
@@ -449,7 +457,7 @@ export default function ReturnPage() {
                         <AccordionTrigger className="text-left text-sm font-medium hover:no-underline">
                           {faq.question}
                         </AccordionTrigger>
-                        <AccordionContent className="text-sm text-gray-600 pt-2">
+                        <AccordionContent className="text-sm text-gray-600 dark:text-gray-400 pt-2">
                           {faq.answer}
                         </AccordionContent>
                       </AccordionItem>
@@ -487,19 +495,19 @@ export default function ReturnPage() {
                 <CardContent className="space-y-3">
                   <div className="flex items-start space-x-2">
                     <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
                       교환/반품 신청 후 상품 발송 전까지 취소 가능
                     </span>
                   </div>
                   <div className="flex items-start space-x-2">
                     <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
                       교환 시 원하는 사이즈 재고 확인 필요
                     </span>
                   </div>
                   <div className="flex items-start space-x-2">
                     <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
                       반품 상품은 지정된 주소로만 발송
                     </span>
                   </div>

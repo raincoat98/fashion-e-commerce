@@ -212,7 +212,7 @@ export default function HeroSection() {
           alt="LUMINA Collection"
           className="hero-bg w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-gray-900/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-gray-900/80 dark:from-gray-950/90 dark:via-gray-900/80 dark:to-gray-950/90"></div>
       </div>
 
       {/* Floating Elements */}
@@ -231,7 +231,7 @@ export default function HeroSection() {
       {/* Main Content */}
       <div className="relative z-20 text-center text-white px-4 max-w-4xl mx-auto">
         {/* Brand Badge */}
-        <div className="brand-badge inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 mb-8 border border-white/20">
+        <div className="brand-badge inline-flex items-center space-x-2 bg-white/10 dark:bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 mb-8 border border-white/20 dark:border-white/30">
           <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
           <span className="text-sm font-medium">NEW COLLECTION 2025</span>
         </div>
@@ -250,12 +250,14 @@ export default function HeroSection() {
         {/* Subtitle */}
         <p
           ref={subtitleRef}
-          className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed"
+          className="text-xl md:text-2xl text-gray-200 dark:text-gray-100 mb-8 max-w-2xl mx-auto leading-relaxed"
         >
           당신의 개성과 아름다움을 빛나게 하는
           <br />
-          <span className="text-yellow-300 font-medium">프리미엄 스타일</span>을
-          만나보세요
+          <span className="text-yellow-300 dark:text-yellow-400 font-medium">
+            프리미엄 스타일
+          </span>
+          을 만나보세요
         </p>
 
         {/* CTA Buttons */}
@@ -276,7 +278,7 @@ export default function HeroSection() {
             <Button
               variant="outline"
               size="lg"
-              className="border-white/50 text-white hover:bg-white/20 hover:border-white/70 px-8 py-4 text-lg font-semibold transition-all duration-300 bg-black/20"
+              className="border-white/50 dark:border-white/60 text-white hover:bg-white/20 dark:hover:bg-white/30 hover:border-white/70 dark:hover:border-white/80 px-8 py-4 text-lg font-semibold transition-all duration-300 bg-black/20 dark:bg-black/40"
             >
               베스트 셀러
             </Button>
@@ -286,7 +288,7 @@ export default function HeroSection() {
         {/* Trust Indicators */}
         <div
           ref={trustRef}
-          className="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-300"
+          className="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-300 dark:text-gray-200"
         >
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-green-400 rounded-full"></div>
@@ -305,8 +307,8 @@ export default function HeroSection() {
 
       {/* Scroll Indicator */}
       <div className="scroll-indicator absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/60 rounded-full mt-2"></div>
+        <div className="w-6 h-10 border-2 border-white/30 dark:border-white/40 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white/60 dark:bg-white/70 rounded-full mt-2"></div>
         </div>
       </div>
     </section>

@@ -63,16 +63,16 @@ export default function SizeGuidePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
       <div className="py-12">
         <div className="container mx-auto px-4">
           {/* 헤더 */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               사이즈 가이드
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               정확한 사이즈 선택을 위해 신체 치수를 측정해보세요. 완벽한 핏을
               위한 사이즈 가이드입니다.
             </p>
@@ -115,25 +115,25 @@ export default function SizeGuidePage() {
                         <TabsContent key={category.id} value={category.id}>
                           <div className="space-y-6">
                             <div>
-                              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                                 {data.title}
                               </h3>
-                              <p className="text-gray-600">
+                              <p className="text-gray-600 dark:text-gray-400">
                                 {data.description}
                               </p>
                             </div>
 
                             <div className="overflow-x-auto">
-                              <table className="w-full border-collapse border border-gray-200">
+                              <table className="w-full border-collapse border border-gray-200 dark:border-gray-700">
                                 <thead>
-                                  <tr className="bg-gray-50">
-                                    <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                                  <tr className="bg-gray-50 dark:bg-gray-800">
+                                    <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold dark:text-gray-100">
                                       사이즈
                                     </th>
                                     {data.measurements.map((measurement) => (
                                       <th
                                         key={measurement}
-                                        className="border border-gray-200 px-4 py-3 text-left font-semibold"
+                                        className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold dark:text-gray-100"
                                       >
                                         {measurement}
                                       </th>
@@ -144,9 +144,9 @@ export default function SizeGuidePage() {
                                   {data.sizes.map((size, index) => (
                                     <tr
                                       key={index}
-                                      className="hover:bg-gray-50"
+                                      className="hover:bg-gray-50 dark:hover:bg-gray-800"
                                     >
-                                      <td className="border border-gray-200 px-4 py-3 font-medium">
+                                      <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 font-medium dark:text-gray-100">
                                         <Badge variant="outline">
                                           {size.size}
                                         </Badge>
@@ -181,7 +181,7 @@ export default function SizeGuidePage() {
                                         return (
                                           <td
                                             key={measurement}
-                                            className="border border-gray-200 px-4 py-3"
+                                            className="border border-gray-200 dark:border-gray-700 px-4 py-3 dark:text-gray-100"
                                           >
                                             {size[key as keyof typeof size]}
                                           </td>
@@ -216,13 +216,15 @@ export default function SizeGuidePage() {
                       key={index}
                       className="border-l-4 border-yellow-400 pl-4"
                     >
-                      <h4 className="font-semibold text-gray-900 mb-1">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
                         {guide.title}
                       </h4>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
                         {guide.description}
                       </p>
-                      <p className="text-xs text-gray-500">{guide.tip}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {guide.tip}
+                      </p>
                     </div>
                   ))}
                 </CardContent>
@@ -236,14 +238,14 @@ export default function SizeGuidePage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="bg-blue-50 p-4 rounded-lg">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
                     <div className="flex items-start space-x-3">
                       <Info className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                       <div>
-                        <h4 className="font-semibold text-blue-900 mb-1">
+                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
                           정확한 사이즈 선택 팁
                         </h4>
-                        <ul className="text-sm text-blue-800 space-y-1">
+                        <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
                           <li>• 평소 입는 옷의 사이즈를 참고하세요</li>
                           <li>• 브랜드마다 사이즈가 다를 수 있어요</li>
                           <li>• 의류 소재에 따라 핏이 달라질 수 있어요</li>

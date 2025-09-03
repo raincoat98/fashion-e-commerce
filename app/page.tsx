@@ -24,7 +24,7 @@ export default function Home() {
   } = useProducts();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
       <main>
         {/* 메인 배너 슬라이드 */}
@@ -60,7 +60,7 @@ export default function Home() {
           subtitle="한정 시간 특별 할인 상품들을 놓치지 마세요"
           products={getSaleProducts()}
           viewAllLink="/sale"
-          className="bg-gray-50"
+          className="bg-gray-50 dark:bg-gray-800"
         />
 
         {/* 카테고리별 상품 드래그 슬라이드 */}
@@ -75,7 +75,7 @@ export default function Home() {
           subtitle="편안하고 스타일리시한 하의 컬렉션"
           products={getProductsByCategory("하의")}
           viewAllLink="/categories/bottom?categories=하의"
-          className="bg-gray-50"
+          className="bg-gray-50 dark:bg-gray-800"
         />
         <DraggableProductList
           title="원피스"

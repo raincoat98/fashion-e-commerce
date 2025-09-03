@@ -54,7 +54,7 @@ export default function ProductDetailPage({
   params: { id: string };
 }) {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       <Header />
 
       <main
@@ -62,7 +62,7 @@ export default function ProductDetailPage({
         id="product-main"
       >
         {/* 페이지 로딩 애니메이션을 위한 wrapper */}
-        <div className="product-page-wrapper">
+        <div className="product-page-wrapper bg-white dark:bg-gray-900">
           <ProductDetailWrapper productId={params.id} />
         </div>
       </main>

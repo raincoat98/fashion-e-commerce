@@ -207,8 +207,12 @@ export default function AddressManager() {
       {/* 헤더 */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">배송지 관리</h2>
-          <p className="text-gray-600">배송지를 추가하고 관리하세요</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            배송지 관리
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            배송지를 추가하고 관리하세요
+          </p>
         </div>
         <Button onClick={openAddDialog}>
           <Plus className="w-4 h-4 mr-2" />
@@ -228,10 +232,12 @@ export default function AddressManager() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <TypeIcon className="w-5 h-5 text-gray-600" />
-                    <CardTitle className="text-lg">{address.name}</CardTitle>
+                    <TypeIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <CardTitle className="text-lg text-gray-900 dark:text-gray-100">
+                      {address.name}
+                    </CardTitle>
                     {address.isDefault && (
-                      <Badge className="bg-yellow-100 text-yellow-800">
+                      <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900">
                         <Star className="w-3 h-3 mr-1" />
                         기본
                       </Badge>
@@ -259,25 +265,27 @@ export default function AddressManager() {
                 <div className="space-y-3">
                   <div>
                     <div className="flex items-center space-x-2">
-                      <User className="w-4 h-4 text-gray-500" />
-                      <span className="font-medium">{address.recipient}</span>
+                      <User className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                      <span className="font-medium text-gray-900 dark:text-gray-100">
+                        {address.recipient}
+                      </span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Phone className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">
+                      <Phone className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
                         {address.phone}
                       </span>
                     </div>
                   </div>
                   <div>
                     <div className="flex items-start space-x-2">
-                      <MapPin className="w-4 h-4 text-gray-500 mt-0.5" />
+                      <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-400 mt-0.5" />
                       <div className="flex-1">
-                        <p className="text-sm">
+                        <p className="text-sm text-gray-900 dark:text-gray-100">
                           [{address.postcode}] {address.address}
                         </p>
                         {address.detailAddress && (
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
                             {address.detailAddress}
                           </p>
                         )}
@@ -285,12 +293,12 @@ export default function AddressManager() {
                     </div>
                   </div>
                   {address.memo && (
-                    <div className="p-2 bg-gray-50 rounded text-sm text-gray-600">
+                    <div className="p-2 bg-gray-50 dark:bg-gray-700 rounded text-sm text-gray-600 dark:text-gray-400">
                       📝 {address.memo}
                     </div>
                   )}
-                  <div className="flex items-center justify-between pt-2 border-t">
-                    <span className="text-xs text-gray-500">
+                  <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
                       {getTypeLabel(address.type)} • {address.updatedAt}
                     </span>
                     {!address.isDefault && (
@@ -315,11 +323,11 @@ export default function AddressManager() {
       {addresses.length === 0 && (
         <Card>
           <CardContent className="p-12 text-center">
-            <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <MapPin className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
               등록된 배송지가 없습니다
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               배송지를 추가하여 편리하게 주문하세요
             </p>
             <Button onClick={openAddDialog}>

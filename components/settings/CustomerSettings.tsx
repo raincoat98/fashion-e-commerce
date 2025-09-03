@@ -313,8 +313,12 @@ export default function CustomerSettings() {
       {/* 헤더 */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">계정 설정</h2>
-          <p className="text-gray-600">프로필 정보와 알림 설정을 관리하세요</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            계정 설정
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            프로필 정보와 알림 설정을 관리하세요
+          </p>
         </div>
         <Button variant="outline" onClick={() => setIsEditing(!isEditing)}>
           <Edit className="w-4 h-4 mr-2" />
@@ -344,12 +348,16 @@ export default function CustomerSettings() {
                     }
                   />
                 ) : (
-                  <p className="text-gray-900">{settings.name}</p>
+                  <p className="text-gray-900 dark:text-gray-100">
+                    {settings.name}
+                  </p>
                 )}
               </div>
               <div>
                 <Label htmlFor="email">이메일</Label>
-                <p className="text-gray-900">{settings.email}</p>
+                <p className="text-gray-900 dark:text-gray-100">
+                  {settings.email}
+                </p>
               </div>
               <div>
                 <Label htmlFor="phone">전화번호</Label>
@@ -362,7 +370,9 @@ export default function CustomerSettings() {
                     }
                   />
                 ) : (
-                  <p className="text-gray-900">{settings.phone}</p>
+                  <p className="text-gray-900 dark:text-gray-100">
+                    {settings.phone}
+                  </p>
                 )}
               </div>
               <div>
@@ -377,7 +387,9 @@ export default function CustomerSettings() {
                     }
                   />
                 ) : (
-                  <p className="text-gray-900">{settings.birthDate}</p>
+                  <p className="text-gray-900 dark:text-gray-100">
+                    {settings.birthDate}
+                  </p>
                 )}
               </div>
               <div>
@@ -399,7 +411,7 @@ export default function CustomerSettings() {
                     </SelectContent>
                   </Select>
                 ) : (
-                  <p className="text-gray-900">
+                  <p className="text-gray-900 dark:text-gray-100">
                     {settings.gender === "female"
                       ? "여성"
                       : settings.gender === "male"
@@ -421,7 +433,9 @@ export default function CustomerSettings() {
                     }
                   />
                 ) : (
-                  <p className="text-gray-900">{settings.address}</p>
+                  <p className="text-gray-900 dark:text-gray-100">
+                    {settings.address}
+                  </p>
                 )}
               </div>
               <div>
@@ -437,17 +451,21 @@ export default function CustomerSettings() {
               </div>
               <div>
                 <Label>포인트</Label>
-                <p className="text-gray-900">
+                <p className="text-gray-900 dark:text-gray-100">
                   {settings.points.toLocaleString()}P
                 </p>
               </div>
               <div>
                 <Label>가입일</Label>
-                <p className="text-gray-900">{settings.joinDate}</p>
+                <p className="text-gray-900 dark:text-gray-100">
+                  {settings.joinDate}
+                </p>
               </div>
               <div>
                 <Label>마지막 로그인</Label>
-                <p className="text-gray-900">{settings.lastLogin}</p>
+                <p className="text-gray-900 dark:text-gray-100">
+                  {settings.lastLogin}
+                </p>
               </div>
             </div>
           </div>
@@ -631,7 +649,7 @@ export default function CustomerSettings() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="marketing-email">이메일 마케팅</Label>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 이메일을 통한 마케팅 정보 수신
               </p>
             </div>
@@ -646,7 +664,7 @@ export default function CustomerSettings() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="marketing-sms">SMS 마케팅</Label>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 문자메시지를 통한 마케팅 정보 수신
               </p>
             </div>
@@ -661,7 +679,7 @@ export default function CustomerSettings() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="marketing-push">푸시 마케팅</Label>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 앱 푸시를 통한 마케팅 정보 수신
               </p>
             </div>
@@ -676,12 +694,12 @@ export default function CustomerSettings() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="marketing-third">제3자 정보 제공</Label>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 제3자에게 개인정보 제공 동의
               </p>
             </div>
             <Switch
-              id="marketing-third"
+              id="marketing-sms"
               checked={settings.marketingConsent.thirdParty}
               onCheckedChange={(checked) =>
                 updateMarketingConsent("thirdParty", checked)
@@ -763,7 +781,9 @@ export default function CustomerSettings() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="2fa">2단계 인증</Label>
-              <p className="text-sm text-gray-600">로그인 시 추가 보안 인증</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                로그인 시 추가 보안 인증
+              </p>
             </div>
             <Switch
               id="2fa"
@@ -776,7 +796,7 @@ export default function CustomerSettings() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="login-alerts">로그인 알림</Label>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 새로운 기기 로그인 시 알림
               </p>
             </div>
@@ -791,7 +811,9 @@ export default function CustomerSettings() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="device-management">기기 관리</Label>
-              <p className="text-sm text-gray-600">로그인된 기기 관리</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                로그인된 기기 관리
+              </p>
             </div>
             <Switch
               id="device-management"
@@ -817,10 +839,10 @@ export default function CustomerSettings() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               탈퇴 시 다음 정보가 모두 삭제됩니다:
             </p>
-            <ul className="text-sm text-gray-600 space-y-1">
+            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
               <li>• 개인정보 및 프로필</li>
               <li>• 주문 내역 및 구매 기록</li>
               <li>• 리뷰 및 평점</li>

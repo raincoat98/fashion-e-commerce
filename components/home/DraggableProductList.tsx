@@ -417,17 +417,23 @@ export default function DraggableProductList({
   if (!products || products.length === 0) {
     console.log(`${title} 섹션에 상품이 없습니다.`);
     return (
-      <section className={cn("py-16 bg-white", className)}>
+      <section className={cn("py-16 bg-white dark:bg-gray-900", className)}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
-              {subtitle && <p className="text-gray-600">{subtitle}</p>}
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                {title}
+              </h2>
+              {subtitle && (
+                <p className="text-gray-600 dark:text-gray-400">{subtitle}</p>
+              )}
             </div>
           </div>
           <div className="text-center py-12">
-            <p className="text-gray-500">표시할 상품이 없습니다.</p>
-            <p className="text-sm text-gray-400 mt-2">
+            <p className="text-gray-500 dark:text-gray-400">
+              표시할 상품이 없습니다.
+            </p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
               관리자 페이지에서 상품을 추가해주세요.
             </p>
           </div>
@@ -437,17 +443,24 @@ export default function DraggableProductList({
   }
 
   return (
-    <section className={cn("py-16 bg-white", className)}>
+    <section className={cn("py-16 bg-white dark:bg-gray-900", className)}>
       <div className="container mx-auto px-4">
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
-            {subtitle && <p className="text-gray-600">{subtitle}</p>}
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+              {title}
+            </h2>
+            {subtitle && (
+              <p className="text-gray-600 dark:text-gray-400">{subtitle}</p>
+            )}
           </div>
           {showViewAll && (
             <Link href={viewAllLink}>
-              <Button variant="outline" className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
                 <span>전체 보기</span>
                 <ChevronRight className="w-4 h-4" />
               </Button>
@@ -462,7 +475,7 @@ export default function DraggableProductList({
             <Button
               variant="ghost"
               size="icon"
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-10 bg-white/90 hover:bg-white shadow-lg border rounded-full w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-10 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 shadow-lg border border-gray-200 dark:border-gray-600 rounded-full w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
               onClick={() => scrollToDirection("left")}
             >
               <ChevronLeft className="w-5 h-5" />
@@ -474,7 +487,7 @@ export default function DraggableProductList({
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-10 bg-white/90 hover:bg-white shadow-lg border rounded-full w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-10 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 shadow-lg border border-gray-200 dark:border-gray-600 rounded-full w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
               onClick={() => scrollToDirection("right")}
             >
               <ChevronRight className="w-5 h-5" />
@@ -501,7 +514,7 @@ export default function DraggableProductList({
             {products.map((product) => (
               <Card
                 key={product.id}
-                className="flex-shrink-0 w-72 group/card hover:shadow-lg transition-all duration-300"
+                className="flex-shrink-0 w-72 group/card hover:shadow-lg dark:hover:shadow-gray-800/50 transition-all duration-300 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 style={{
                   pointerEvents:
                     isDragging && dragDistance > 5 ? "none" : "auto",
@@ -520,7 +533,7 @@ export default function DraggableProductList({
                         }
                       }}
                     >
-                      <div className="aspect-square overflow-hidden rounded-lg bg-gray-100 relative">
+                      <div className="aspect-square overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700 relative">
                         {/* 로딩 스켈레톤 - 일시적으로 비활성화 */}
                         {/* {imageLoading.has(product.id) && (
                           <Skeleton className="w-full h-full absolute inset-0" />
@@ -543,13 +556,13 @@ export default function DraggableProductList({
                           />
                         ) : (
                           /* 에러 시 플레이스홀더 */
-                          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                          <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-700">
                             <div className="text-center">
-                              <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                              <p className="text-sm text-gray-500">
+                              <ImageIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-2" />
+                              <p className="text-sm text-gray-500 dark:text-gray-400">
                                 이미지 없음
                               </p>
-                              <p className="text-xs text-gray-400 mt-1">
+                              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                                 {product.id}:{" "}
                                 {imageErrors.has(product.id)
                                   ? "에러"
@@ -587,31 +600,33 @@ export default function DraggableProductList({
                         }
                       }}
                     >
-                      <h3 className="font-semibold text-gray-900 group-hover/card:text-blue-600 transition-colors line-clamp-2">
+                      <h3 className="font-semibold text-gray-900 dark:text-gray-100 group-hover/card:text-blue-600 dark:group-hover/card:text-blue-400 transition-colors line-clamp-2">
                         {product.name}
                       </h3>
                     </Link>
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <span className="font-bold text-lg text-gray-900">
+                        <span className="font-bold text-lg text-gray-900 dark:text-gray-100">
                           {product.price.toLocaleString()}원
                         </span>
                         {product.originalPrice && (
-                          <span className="text-sm text-gray-500 line-through">
+                          <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
                             {product.originalPrice.toLocaleString()}원
                           </span>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-sm text-gray-600">
+                    <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
                       <div className="flex items-center space-x-1">
                         <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                         <span>{product.rating}</span>
                         <span>({product.reviewCount})</span>
                       </div>
-                      <span className="text-gray-500">{product.category}</span>
+                      <span className="text-gray-500 dark:text-gray-400">
+                        {product.category}
+                      </span>
                     </div>
 
                     {/* 액션 버튼들 */}
@@ -620,10 +635,10 @@ export default function DraggableProductList({
                         size="sm"
                         variant="outline"
                         className={cn(
-                          "flex-1 h-8 text-xs transition-all duration-200",
+                          "flex-1 h-8 text-xs transition-all duration-200 border-gray-300 dark:border-gray-600",
                           isInWishlist(product.id)
-                            ? "bg-red-50 border-red-200 text-red-600 hover:bg-red-100"
-                            : "hover:bg-gray-50"
+                            ? "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30"
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100"
                         )}
                         onClick={() => handleToggleWishlist(product)}
                         disabled={wishlistAddingItems.has(product.id)}
@@ -640,10 +655,10 @@ export default function DraggableProductList({
                       <Button
                         size="sm"
                         className={cn(
-                          "flex-1 h-8 text-xs transition-all duration-200",
+                          "flex-1 h-8 text-xs transition-all duration-200 text-white",
                           isInCart(product.id)
-                            ? "bg-green-600 hover:bg-green-700"
-                            : "bg-gray-900 hover:bg-gray-800"
+                            ? "bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-800"
+                            : "bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600"
                         )}
                         onClick={() => handleAddToCart(product)}
                         disabled={cartAddingItems.has(product.id)}

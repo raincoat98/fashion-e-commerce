@@ -359,7 +359,7 @@ export default function Popup() {
 
             {/* 팝업 컨테이너 */}
             <div
-              className="bg-white rounded-lg shadow-2xl overflow-hidden relative z-[251]"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden relative z-[251]"
               style={{
                 width: popup.width,
                 height: popup.height,
@@ -368,10 +368,10 @@ export default function Popup() {
               {/* 닫기 버튼 */}
               <button
                 onClick={() => handleClose(popup.id)}
-                className="absolute top-2 right-2 z-10 p-1 bg-white/80 hover:bg-white rounded-full transition-colors"
+                className="absolute top-2 right-2 z-10 p-1 bg-white/80 dark:bg-gray-700/80 hover:bg-white dark:hover:bg-gray-700 rounded-full transition-colors"
                 aria-label="팝업 닫기"
               >
-                <X className="w-4 h-4 text-gray-600" />
+                <X className="w-4 h-4 text-gray-600 dark:text-gray-300" />
               </button>
 
               {/* 팝업 내용 */}
@@ -391,10 +391,12 @@ export default function Popup() {
                 )}
 
                 <div className="flex-1 p-4 flex flex-col justify-center">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
                     {popup.title}
                   </h3>
-                  <p className="text-sm text-gray-600 mb-4">{popup.content}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    {popup.content}
+                  </p>
 
                   <div className="space-y-3">
                     {popup.linkUrl && (

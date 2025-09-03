@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_KR } from "next/font/google";
 import { CartProvider } from "@/contexts/CartContext";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import TopButton from "@/components/ui/top-button";
 import TopBanner from "@/components/layout/TopBanner";
@@ -26,23 +27,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <body
         className={`${inter.className} ${notoSansKR.variable} font-sans relative`}
         suppressHydrationWarning={true}
       >
-        <CartProvider>
-          <TopBanner />
-          <main
-            className="pt-0"
-            style={{ paddingTop: "var(--top-banner-height, 0px)" }}
-          >
-            {children}
-          </main>
-          <Popup />
-          <TopButton />
-          <Toaster />
-        </CartProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <CartProvider>
+            <TopBanner />
+            <main
+              className="pt-0"
+              style={{ paddingTop: "var(--top-banner-height, 0px)" }}
+            >
+              {children}
+            </main>
+            <Popup />
+            <TopButton />
+            <Toaster />
+          </CartProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

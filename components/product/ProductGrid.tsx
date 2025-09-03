@@ -530,7 +530,7 @@ export default function ProductGrid({
       {/* 검색바 */}
       {showSearchBar && (
         <div className="relative mb-6">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
           <Input
             placeholder="상품명, 브랜드, 카테고리로 검색..."
             value={searchTerm}
@@ -540,7 +540,7 @@ export default function ProductGrid({
           {searchTerm && (
             <button
               onClick={() => updateSearchAndURL("")}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400"
             >
               <X className="w-4 h-4" />
             </button>
@@ -587,7 +587,7 @@ export default function ProductGrid({
             </div>
 
             {/* 결과 요약 */}
-            <div className="text-sm text-gray-600 flex items-center gap-2">
+            <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
               {isFiltering && (
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
               )}
@@ -665,13 +665,13 @@ export default function ProductGrid({
             </>
           ) : (
             <div className="text-center py-12">
-              <div className="text-gray-400 mb-4">
+              <div className="text-gray-400 dark:text-gray-500 mb-4">
                 <Search className="w-12 h-12 mx-auto mb-4" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                 검색 결과가 없습니다
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 다른 검색어나 필터를 시도해보세요
               </p>
               <Button
@@ -730,11 +730,11 @@ function ProductGridItem({
 
   return (
     <Card
-      className="group hover:shadow-lg transition-all duration-300 overflow-hidden h-full cursor-pointer"
+      className="group hover:shadow-lg dark:hover:shadow-gray-800/50 transition-all duration-300 overflow-hidden h-full cursor-pointer bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
       onMouseEnter={() => !isMobile && setIsHovered(true)}
       onMouseLeave={() => !isMobile && setIsHovered(false)}
     >
-      <div className="relative aspect-square overflow-hidden bg-gray-100">
+      <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700">
         <Link href={`/products/${product.id}`}>
           <img
             src={product.images[0] || "/images/placeholder.jpg"}
@@ -771,7 +771,7 @@ function ProductGridItem({
         <button
           onClick={() => onToggleWishlist(product)}
           className={cn(
-            "absolute top-1 right-1 rounded-full bg-white shadow-md hover:shadow-lg transition-all",
+            "absolute top-1 right-1 rounded-full bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all",
             isMobile ? "p-1" : "p-2"
           )}
         >
@@ -779,7 +779,9 @@ function ProductGridItem({
             className={cn(
               "transition-colors",
               isMobile ? "w-3 h-3" : "w-4 h-4",
-              isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400"
+              isWishlisted
+                ? "fill-red-500 text-red-500"
+                : "text-gray-400 dark:text-gray-300"
             )}
           />
         </button>
@@ -796,13 +798,17 @@ function ProductGridItem({
           >
             <Button
               size="sm"
-              className="flex-1 bg-white text-gray-900 hover:bg-gray-100"
+              className="flex-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
               onClick={() => onAddToCart(product)}
             >
               <ShoppingBag className="w-4 h-4" />
             </Button>
             <Link href={`/products/${product.id}`} className="flex-1">
-              <Button size="sm" variant="outline" className="w-full bg-white">
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+              >
                 <Eye className="w-4 h-4" />
               </Button>
             </Link>
@@ -814,7 +820,7 @@ function ProductGridItem({
         <Link href={`/products/${product.id}`} className="block">
           <h3
             className={cn(
-              "font-medium leading-tight line-clamp-2 hover:text-blue-600 transition-colors",
+              "font-medium leading-tight line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-gray-900 dark:text-gray-100",
               isMobile ? "text-xs" : "text-sm"
             )}
           >
@@ -831,13 +837,16 @@ function ProductGridItem({
             )}
           />
           <span
-            className={cn("font-medium", isMobile ? "text-[10px]" : "text-xs")}
+            className={cn(
+              "font-medium text-gray-900 dark:text-gray-100",
+              isMobile ? "text-[10px]" : "text-xs"
+            )}
           >
             {product.rating}
           </span>
           <span
             className={cn(
-              "text-gray-500",
+              "text-gray-500 dark:text-gray-400",
               isMobile ? "text-[10px]" : "text-xs"
             )}
           >
@@ -858,7 +867,9 @@ function ProductGridItem({
                   <span
                     className={cn(
                       "font-bold",
-                      saleTheme ? "text-red-600" : "text-gray-900",
+                      saleTheme
+                        ? "text-red-600 dark:text-red-400"
+                        : "text-gray-900 dark:text-gray-100",
                       "text-xs"
                     )}
                   >
@@ -869,7 +880,9 @@ function ProductGridItem({
                 <span
                   className={cn(
                     "font-bold block",
-                    saleTheme ? "text-red-600" : "text-gray-900",
+                    saleTheme
+                      ? "text-red-600 dark:text-red-400"
+                      : "text-gray-900 dark:text-gray-100",
                     "text-xs"
                   )}
                 >
@@ -888,7 +901,9 @@ function ProductGridItem({
                   <span
                     className={cn(
                       "font-bold",
-                      saleTheme ? "text-red-600" : "text-gray-900",
+                      saleTheme
+                        ? "text-red-600 dark:text-red-400"
+                        : "text-gray-900 dark:text-gray-100",
                       "text-sm"
                     )}
                   >
@@ -899,7 +914,9 @@ function ProductGridItem({
                 <span
                   className={cn(
                     "font-bold",
-                    saleTheme ? "text-red-600" : "text-gray-900",
+                    saleTheme
+                      ? "text-red-600 dark:text-red-400"
+                      : "text-gray-900 dark:text-gray-100",
                     "text-sm"
                   )}
                 >

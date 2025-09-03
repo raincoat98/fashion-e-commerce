@@ -55,16 +55,16 @@ export default function FAQPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
       <div className="py-12">
         <div className="container mx-auto px-4">
           {/* 헤더 */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               자주 묻는 질문
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto word-break-keep">
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto word-break-keep">
               고객님들이 자주 문의하시는 내용들을 모았습니다. 궁금한 점을 빠르게
               찾아보세요.
             </p>
@@ -80,7 +80,7 @@ export default function FAQPage() {
                   placeholder="궁금한 내용을 검색해보세요..."
                   value={faqSearchTerm}
                   onChange={(e) => setFaqSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 />
               </div>
               <Button
@@ -130,12 +130,12 @@ export default function FAQPage() {
                       className="border-none"
                     >
                       <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                        <div className="text-left font-semibold text-gray-900 word-break-keep">
+                        <div className="text-left font-semibold text-gray-900 dark:text-gray-100 word-break-keep">
                           {faq.question}
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="px-6 pb-4">
-                        <div className="text-gray-600 leading-relaxed word-break-keep">
+                        <div className="text-gray-600 dark:text-gray-400 leading-relaxed word-break-keep">
                           {faq.answer}
                         </div>
                       </AccordionContent>
@@ -147,10 +147,10 @@ export default function FAQPage() {
               <Card>
                 <CardContent className="text-center py-12">
                   <HelpCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                     검색 결과가 없습니다
                   </h3>
-                  <p className="text-gray-600 mb-6 word-break-keep">
+                  <p className="text-gray-600 dark:text-gray-400 mb-6 word-break-keep">
                     다른 키워드로 검색하거나 카테고리를 변경해보세요.
                   </p>
                   <Button
@@ -168,10 +168,10 @@ export default function FAQPage() {
           <div className="mt-12 text-center">
             <Card className="max-w-2xl mx-auto">
               <CardContent className="py-8">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
                   더 궁금한 점이 있으신가요?
                 </h3>
-                <p className="text-gray-600 mb-6 word-break-keep">
+                <p className="text-gray-600 dark:text-gray-400 mb-6 word-break-keep">
                   FAQ에서 답을 찾지 못하셨다면, 언제든 문의해주세요.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">

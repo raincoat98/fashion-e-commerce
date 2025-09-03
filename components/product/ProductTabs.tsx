@@ -148,50 +148,66 @@ export default function ProductTabs({
 
         <TabsContent value="description" className="tab-content mt-8 space-y-6">
           <div className="prose max-w-none">
-            <h3 className="text-lg font-semibold mb-4">상품 설명</h3>
-            <p className="text-gray-700 leading-relaxed mb-6 word-break-keep">
+            <h3 className="text-lg font-semibold mb-4 dark:text-gray-100">
+              상품 설명
+            </h3>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6 word-break-keep">
               {description}
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-medium mb-2">소재 정보</h4>
-                <p className="text-gray-600 word-break-keep">{materials}</p>
+                <h4 className="font-medium mb-2 dark:text-gray-100">
+                  소재 정보
+                </h4>
+                <p className="text-gray-600 dark:text-gray-400 word-break-keep">
+                  {materials}
+                </p>
               </div>
               <div>
-                <h4 className="font-medium mb-2">세탁 방법</h4>
-                <p className="text-gray-600 word-break-keep">{care}</p>
+                <h4 className="font-medium mb-2 dark:text-gray-100">
+                  세탁 방법
+                </h4>
+                <p className="text-gray-600 dark:text-gray-400 word-break-keep">
+                  {care}
+                </p>
               </div>
             </div>
 
-            <div className="bg-gray-50 p-4 rounded-lg mt-6">
-              <h4 className="font-medium mb-2">모델 착용 정보</h4>
-              <p className="text-gray-600 word-break-keep">{modelInfo}</p>
+            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mt-6">
+              <h4 className="font-medium mb-2 dark:text-gray-100">
+                모델 착용 정보
+              </h4>
+              <p className="text-gray-600 dark:text-gray-400 word-break-keep">
+                {modelInfo}
+              </p>
             </div>
           </div>
         </TabsContent>
 
         <TabsContent value="size" className="tab-content mt-8">
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold">상세 사이즈표</h3>
+            <h3 className="text-lg font-semibold dark:text-gray-100">
+              상세 사이즈표
+            </h3>
 
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
+              <table className="w-full border-collapse border border-gray-200 dark:border-gray-700">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-200 px-4 py-3 text-left font-medium">
+                  <tr className="bg-gray-50 dark:bg-gray-800">
+                    <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-medium">
                       사이즈
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center font-medium">
+                    <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-center font-medium">
                       가슴둘레
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center font-medium">
+                    <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-center font-medium">
                       어깨너비
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center font-medium">
+                    <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-center font-medium">
                       총길이
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center font-medium">
+                    <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-center font-medium">
                       소매길이
                     </th>
                   </tr>
@@ -199,19 +215,19 @@ export default function ProductTabs({
                 <tbody>
                   {Object.entries(measurements).map(([size, measures]) => (
                     <tr key={size}>
-                      <td className="border border-gray-200 px-4 py-3 font-medium">
+                      <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 font-medium">
                         {size}
                       </td>
-                      <td className="border border-gray-200 px-4 py-3 text-center">
+                      <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-center">
                         {measures.chest}cm
                       </td>
-                      <td className="border border-gray-200 px-4 py-3 text-center">
+                      <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-center">
                         {measures.shoulder}cm
                       </td>
-                      <td className="border border-gray-200 px-4 py-3 text-center">
+                      <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-center">
                         {measures.length}cm
                       </td>
-                      <td className="border border-gray-200 px-4 py-3 text-center">
+                      <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-center">
                         {measures.sleeve}cm
                       </td>
                     </tr>
@@ -220,11 +236,11 @@ export default function ProductTabs({
               </table>
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-medium mb-2 text-blue-900">
+            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+              <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">
                 사이즈 선택 가이드
               </h4>
-              <ul className="text-sm text-blue-800 space-y-1">
+              <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
                 <li className="word-break-keep">
                   • 평소 입으시는 사이즈를 선택하세요
                 </li>
@@ -242,23 +258,31 @@ export default function ProductTabs({
         <TabsContent value="shipping" className="tab-content mt-8">
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold mb-4">배송 정보</h3>
+              <h3 className="text-lg font-semibold mb-4 dark:text-gray-100">
+                배송 정보
+              </h3>
               <div className="space-y-3 text-sm">
                 <div className="flex">
-                  <span className="w-20 font-medium">배송비</span>
-                  <span className="word-break-keep">
+                  <span className="w-20 font-medium dark:text-gray-100">
+                    배송비
+                  </span>
+                  <span className="word-break-keep dark:text-gray-300">
                     3,000원 (5만원 이상 구매시 무료배송)
                   </span>
                 </div>
                 <div className="flex">
-                  <span className="w-20 font-medium">배송시간</span>
-                  <span className="word-break-keep">
+                  <span className="w-20 font-medium dark:text-gray-100">
+                    배송시간
+                  </span>
+                  <span className="word-break-keep dark:text-gray-300">
                     평일 오후 2시까지 주문시 당일발송
                   </span>
                 </div>
                 <div className="flex">
-                  <span className="w-20 font-medium">배송기간</span>
-                  <span className="word-break-keep">
+                  <span className="w-20 font-medium dark:text-gray-100">
+                    배송기간
+                  </span>
+                  <span className="word-break-keep dark:text-gray-300">
                     발송 후 1-2일 소요 (도서산간 지역 2-3일)
                   </span>
                 </div>
@@ -266,28 +290,40 @@ export default function ProductTabs({
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold mb-4">교환/반품 안내</h3>
+              <h3 className="text-lg font-semibold mb-4 dark:text-gray-100">
+                교환/반품 안내
+              </h3>
               <div className="space-y-3 text-sm">
                 <div>
-                  <h4 className="font-medium mb-2">교환/반품 가능 조건</h4>
+                  <h4 className="font-medium mb-2 dark:text-gray-100">
+                    교환/반품 가능 조건
+                  </h4>
                   <ul className="space-y-1 ml-4">
-                    <li className="word-break-keep">
+                    <li className="word-break-keep dark:text-gray-300">
                       • 상품 수령일로부터 7일 이내
                     </li>
-                    <li className="word-break-keep">
+                    <li className="word-break-keep dark:text-gray-300">
                       • 상품 택 제거하지 않은 새 상품
                     </li>
-                    <li className="word-break-keep">• 세탁하지 않은 상태</li>
+                    <li className="word-break-keep dark:text-gray-300">
+                      • 세탁하지 않은 상태
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2">교환/반품 불가 조건</h4>
+                  <h4 className="font-medium mb-2 dark:text-gray-100">
+                    교환/반품 불가 조건
+                  </h4>
                   <ul className="space-y-1 ml-4">
-                    <li className="word-break-keep">
+                    <li className="word-break-keep dark:text-gray-300">
                       • 고객의 단순 변심으로 인한 착용 후 반품
                     </li>
-                    <li className="word-break-keep">• 세탁 또는 수선한 상품</li>
-                    <li className="word-break-keep">• 상품 택이 제거된 상품</li>
+                    <li className="word-break-keep dark:text-gray-300">
+                      • 세탁 또는 수선한 상품
+                    </li>
+                    <li className="word-break-keep dark:text-gray-300">
+                      • 상품 택이 제거된 상품
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -346,11 +382,11 @@ export default function ProductTabs({
                 </div>
 
                 {!showReviewForm && (
-                  <div className="bg-gray-50 p-6 rounded-lg text-center">
-                    <p className="text-gray-600">
+                  <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg text-center">
+                    <p className="text-gray-600 dark:text-gray-400">
                       아직 작성된 리뷰가 없습니다.
                     </p>
-                    <p className="text-sm text-gray-500 mt-2">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                       첫 번째 리뷰를 작성해보세요!
                     </p>
                   </div>

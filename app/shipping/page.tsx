@@ -69,14 +69,16 @@ export default function ShippingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
       <div className="py-12">
         <div className="container mx-auto px-4">
           {/* 헤더 */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">배송 안내</h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              배송 안내
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               빠르고 안전한 배송 서비스로 고객님께 만족스러운 쇼핑 경험을
               제공합니다.
             </p>
@@ -146,10 +148,10 @@ export default function ShippingPage() {
                                 <Icon className="w-6 h-6 text-yellow-600" />
                               </div>
                               <div>
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                                   {method.name}
                                 </h3>
-                                <p className="text-gray-600 mb-4">
+                                <p className="text-gray-600 dark:text-gray-400 mb-4">
                                   {method.description}
                                 </p>
                                 <div className="flex flex-wrap gap-4">
@@ -180,8 +182,8 @@ export default function ShippingPage() {
                               </div>
                             </div>
 
-                            <div className="bg-gray-50 p-4 rounded-lg">
-                              <h4 className="font-semibold text-gray-900 mb-3">
+                            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
                                 서비스 특징
                               </h4>
                               <ul className="space-y-2">
@@ -191,7 +193,7 @@ export default function ShippingPage() {
                                     className="flex items-start space-x-2"
                                   >
                                     <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                    <span className="text-gray-700">
+                                    <span className="text-gray-700 dark:text-gray-300">
                                       {feature}
                                     </span>
                                   </li>
@@ -215,42 +217,45 @@ export default function ShippingPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="overflow-x-auto">
-                    <table className="w-full border-collapse border border-gray-200">
+                    <table className="w-full border-collapse border border-gray-200 dark:border-gray-700">
                       <thead>
-                        <tr className="bg-gray-50">
-                          <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                        <tr className="bg-gray-50 dark:bg-gray-800">
+                          <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold dark:text-gray-100">
                             지역
                           </th>
-                          <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                          <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold dark:text-gray-100">
                             일반 배송
                           </th>
-                          <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                          <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold dark:text-gray-100">
                             빠른 배송
                           </th>
-                          <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                          <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold dark:text-gray-100">
                             프리미엄 배송
                           </th>
-                          <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                          <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold dark:text-gray-100">
                             비고
                           </th>
                         </tr>
                       </thead>
                       <tbody>
                         {deliveryAreas.map((area, index) => (
-                          <tr key={index} className="hover:bg-gray-50">
-                            <td className="border border-gray-200 px-4 py-3 font-medium">
+                          <tr
+                            key={index}
+                            className="hover:bg-gray-50 dark:hover:bg-gray-800"
+                          >
+                            <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 font-medium dark:text-gray-100">
                               {area.region}
                             </td>
-                            <td className="border border-gray-200 px-4 py-3">
+                            <td className="border border-gray-200 dark:border-gray-700 px-4 py-3">
                               <Badge variant="outline">{area.standard}</Badge>
                             </td>
-                            <td className="border border-gray-200 px-4 py-3">
+                            <td className="border border-gray-200 dark:border-gray-700 px-4 py-3">
                               <Badge variant="outline">{area.express}</Badge>
                             </td>
-                            <td className="border border-gray-200 px-4 py-3">
+                            <td className="border border-gray-200 dark:border-gray-700 px-4 py-3">
                               <Badge variant="outline">{area.premium}</Badge>
                             </td>
-                            <td className="border border-gray-200 px-4 py-3 text-sm text-gray-600">
+                            <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                               {area.note}
                             </td>
                           </tr>
@@ -284,14 +289,14 @@ export default function ShippingPage() {
                         <div className="flex-1">
                           <div className="flex items-center space-x-2 mb-1">
                             <Icon className="w-4 h-4 text-green-500" />
-                            <h4 className="font-semibold text-gray-900">
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
                               {process.title}
                             </h4>
                           </div>
-                          <p className="text-sm text-gray-600 mb-1">
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
                             {process.description}
                           </p>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
                             {process.time}
                           </p>
                         </div>
@@ -307,14 +312,14 @@ export default function ShippingPage() {
                   <CardTitle className="text-xl font-bold">배송 추적</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="bg-blue-50 p-4 rounded-lg">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
                     <div className="flex items-start space-x-3">
                       <Search className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                       <div>
-                        <h4 className="font-semibold text-blue-900 mb-1">
+                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
                           배송 조회 방법
                         </h4>
-                        <ul className="text-sm text-blue-800 space-y-1">
+                        <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
                           <li>• 마이페이지 &gt; 주문내역에서 조회</li>
                           <li>• 송장번호로 직접 조회</li>
                           <li>• 고객센터로 문의</li>
@@ -339,25 +344,25 @@ export default function ShippingPage() {
                 <CardContent className="space-y-3">
                   <div className="flex items-start space-x-2">
                     <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
                       부재 시 2회 재시도 후 고객센터로 연락
                     </span>
                   </div>
                   <div className="flex items-start space-x-2">
                     <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
                       제주도 및 도서산간 추가 배송비 발생
                     </span>
                   </div>
                   <div className="flex items-start space-x-2">
                     <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
                       공휴일 및 주말은 배송 제외
                     </span>
                   </div>
                   <div className="flex items-start space-x-2">
                     <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
                       오후 2시 이후 주문은 다음날 출고
                     </span>
                   </div>

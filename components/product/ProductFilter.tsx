@@ -218,7 +218,7 @@ export default function ProductFilter({
       open={expandedSections.has(key)}
       onOpenChange={() => toggleSection(key)}
     >
-      <CollapsibleTrigger className="flex items-center justify-between w-full p-3 text-left font-medium hover:bg-gray-50 transition-colors">
+      <CollapsibleTrigger className="flex items-center justify-between w-full p-3 text-left font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
         <span>{title}</span>
         {expandedSections.has(key) ? (
           <ChevronUp className="w-4 h-4" />
@@ -255,7 +255,7 @@ export default function ProductFilter({
 
       {/* 정렬 */}
       <div className="p-3 border-b">
-        <Label className="text-sm font-medium text-gray-700 mb-3 block">
+        <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 block">
           정렬
         </Label>
         <div className="grid grid-cols-2 gap-2">

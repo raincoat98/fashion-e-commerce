@@ -99,12 +99,12 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div
-      className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
+      className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg dark:hover:shadow-gray-800/50 transition-all duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Product Image */}
-      <div className="relative aspect-square overflow-hidden bg-gray-100">
+      <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700">
         <Link href={`/products/${product.id}`}>
           <img
             src={
@@ -131,11 +131,13 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Wishlist Button */}
         <button
           onClick={handleToggleWishlist}
-          className="absolute top-3 right-3 p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-all duration-200"
+          className="absolute top-3 right-3 p-2 rounded-full bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-200"
         >
           <Heart
             className={`h-4 w-4 ${
-              isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400"
+              isWishlisted
+                ? "fill-red-500 text-red-500"
+                : "text-gray-400 dark:text-gray-300"
             } transition-colors`}
           />
         </button>
@@ -154,8 +156,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                 variant="secondary"
                 className={`text-xs px-3 py-1 transition-colors ${
                   selectedSize === size
-                    ? "bg-gray-900 text-white"
-                    : "bg-white hover:bg-gray-900 hover:text-white"
+                    ? "bg-gray-900 dark:bg-gray-700 text-white"
+                    : "bg-white dark:bg-gray-800 hover:bg-gray-900 dark:hover:bg-gray-600 hover:text-white"
                 }`}
                 onClick={() => setSelectedSize(size)}
               >
@@ -166,7 +168,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <Button
                 size="sm"
                 variant="secondary"
-                className="text-xs px-3 py-1 bg-white hover:bg-gray-900 hover:text-white"
+                className="text-xs px-3 py-1 bg-white dark:bg-gray-800 hover:bg-gray-900 dark:hover:bg-gray-600 hover:text-white"
               >
                 +{product.sizes.length - 3}
               </Button>
@@ -178,7 +180,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Product Info */}
       <div className="p-4 space-y-3">
         <Link href={`/products/${product.id}`}>
-          <h3 className="font-medium text-gray-900 hover:text-gray-700 transition-colors line-clamp-2">
+          <h3 className="font-medium text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 transition-colors line-clamp-2">
             {product.name}
           </h3>
         </Link>
@@ -187,23 +189,27 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-center space-x-2">
           <div className="flex items-center space-x-1">
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm font-medium">{product.rating}</span>
+            <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+              {product.rating}
+            </span>
           </div>
-          <span className="text-sm text-gray-500">({product.reviewCount})</span>
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            ({product.reviewCount})
+          </span>
         </div>
 
         {/* Price */}
         <div className="flex items-center space-x-2">
-          <span className="text-lg font-bold text-gray-900">
+          <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
             {product.price.toLocaleString()}원
           </span>
           {product.originalPrice && (
-            <span className="text-sm text-gray-400 line-through">
+            <span className="text-sm text-gray-400 dark:text-gray-500 line-through">
               {product.originalPrice.toLocaleString()}원
             </span>
           )}
           {discountPercentage > 0 && (
-            <span className="text-sm text-red-600 font-bold">
+            <span className="text-sm text-red-600 dark:text-red-400 font-bold">
               {discountPercentage}%
             </span>
           )}
@@ -212,7 +218,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Action Buttons */}
         <div className="flex space-x-2">
           <Button
-            className="flex-1 bg-gray-900 hover:bg-gray-800 text-white rounded-lg py-2 transition-colors"
+            className="flex-1 bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white rounded-lg py-2 transition-colors"
             onClick={handleAddToCart}
           >
             <ShoppingBag className="h-4 w-4 mr-2" />
@@ -222,7 +228,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <Link href={`/products/${product.id}`}>
             <Button
               variant="outline"
-              className="px-4 py-2 rounded-lg border-gray-300 hover:bg-gray-50 transition-colors"
+              className="px-4 py-2 rounded-lg border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               상세보기
             </Button>
