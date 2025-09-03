@@ -311,7 +311,7 @@ ${orderSummary.items
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
             {paymentMethods.map((method) => {
               const Icon = method.icon;
               return (
@@ -319,7 +319,7 @@ ${orderSummary.items
                   key={method.id}
                   className={`cursor-pointer transition-all ${
                     selectedMethod === method.id
-                      ? "ring-2 ring-blue-500 bg-blue-50"
+                      ? "ring-2 ring-blue-500 dark:ring-blue-400 bg-blue-50 dark:bg-blue-900/20"
                       : "hover:shadow-md"
                   } ${
                     !method.available ? "opacity-50 cursor-not-allowed" : ""
@@ -328,19 +328,19 @@ ${orderSummary.items
                     method.available && setSelectedMethod(method.id)
                   }
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <Icon className="w-5 h-5 text-gray-600" />
+                  <CardContent className="p-2 lg:p-4">
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-3 space-y-2 lg:space-y-0">
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0 mx-auto lg:mx-0">
+                        <Icon className="w-4 h-4 lg:w-5 lg:h-5 text-gray-600 dark:text-gray-400" />
                       </div>
-                      <div className="flex-1">
-                        <h3 className="font-medium text-gray-900">
+                      <div className="flex-1 min-w-0 text-center lg:text-left">
+                        <h3 className="font-medium text-xs lg:text-base text-gray-900 dark:text-gray-100">
                           {method.name}
                         </h3>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 hidden lg:block">
                           {method.description}
                         </p>
-                        <div className="flex items-center space-x-2 mt-1">
+                        <div className="flex items-center justify-center lg:justify-start space-x-1 lg:space-x-2 mt-1 lg:mt-2">
                           <Badge variant="outline" className="text-xs">
                             {method.processingTime}
                           </Badge>
@@ -371,11 +371,16 @@ ${orderSummary.items
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="space-y-3 lg:space-y-4">
               {selectedMethod === "card" && (
                 <>
                   <div>
-                    <Label htmlFor="cardNumber">카드 번호</Label>
+                    <Label
+                      htmlFor="cardNumber"
+                      className="text-sm lg:text-base"
+                    >
+                      카드 번호
+                    </Label>
                     <Input
                       id="cardNumber"
                       placeholder="1234 5678 9012 3456"
@@ -387,11 +392,17 @@ ${orderSummary.items
                         })
                       }
                       maxLength={19}
+                      className="h-10 lg:h-10 text-sm lg:text-base"
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
                     <div>
-                      <Label htmlFor="expiryDate">만료일</Label>
+                      <Label
+                        htmlFor="expiryDate"
+                        className="text-sm lg:text-base"
+                      >
+                        만료일
+                      </Label>
                       <Input
                         id="expiryDate"
                         placeholder="MM/YY"
@@ -403,10 +414,13 @@ ${orderSummary.items
                           })
                         }
                         maxLength={5}
+                        className="h-10 lg:h-10 text-sm lg:text-base"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="cvv">CVV</Label>
+                      <Label htmlFor="cvv" className="text-sm lg:text-base">
+                        CVV
+                      </Label>
                       <Input
                         id="cvv"
                         placeholder="123"
@@ -420,11 +434,17 @@ ${orderSummary.items
                           })
                         }
                         maxLength={3}
+                        className="h-10 lg:h-10 text-sm lg:text-base"
                       />
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="cardHolder">카드 소유자명</Label>
+                    <Label
+                      htmlFor="cardHolder"
+                      className="text-sm lg:text-base"
+                    >
+                      카드 소유자명
+                    </Label>
                     <Input
                       id="cardHolder"
                       placeholder="홍길동"
@@ -435,6 +455,7 @@ ${orderSummary.items
                           cardHolder: e.target.value,
                         })
                       }
+                      className="h-10 lg:h-10 text-sm lg:text-base"
                     />
                   </div>
                 </>
@@ -443,7 +464,9 @@ ${orderSummary.items
               {selectedMethod === "bank" && (
                 <>
                   <div>
-                    <Label htmlFor="bankCode">은행 선택</Label>
+                    <Label htmlFor="bankCode" className="text-sm lg:text-base">
+                      은행 선택
+                    </Label>
                     <Select
                       value={paymentInfo.bankCode}
                       onValueChange={(value) =>
@@ -453,7 +476,7 @@ ${orderSummary.items
                         })
                       }
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="h-10 lg:h-10 text-sm lg:text-base">
                         <SelectValue placeholder="은행을 선택하세요" />
                       </SelectTrigger>
                       <SelectContent>
@@ -466,7 +489,12 @@ ${orderSummary.items
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="accountNumber">계좌번호</Label>
+                    <Label
+                      htmlFor="accountNumber"
+                      className="text-sm lg:text-base"
+                    >
+                      계좌번호
+                    </Label>
                     <Input
                       id="accountNumber"
                       placeholder="계좌번호를 입력하세요"
@@ -477,6 +505,7 @@ ${orderSummary.items
                           accountNumber: e.target.value.replace(/\D/g, ""),
                         })
                       }
+                      className="h-10 lg:h-10 text-sm lg:text-base"
                     />
                   </div>
                 </>
@@ -486,7 +515,9 @@ ${orderSummary.items
                 selectedMethod === "naver" ||
                 selectedMethod === "payco") && (
                 <div>
-                  <Label htmlFor="phoneNumber">휴대폰 번호</Label>
+                  <Label htmlFor="phoneNumber" className="text-sm lg:text-base">
+                    휴대폰 번호
+                  </Label>
                   <Input
                     id="phoneNumber"
                     placeholder="010-1234-5678"
@@ -497,6 +528,7 @@ ${orderSummary.items
                         phoneNumber: e.target.value,
                       })
                     }
+                    className="h-10 lg:h-10 text-sm lg:text-base"
                   />
                 </div>
               )}
@@ -508,44 +540,62 @@ ${orderSummary.items
       {/* 주문 요약 */}
       <Card>
         <CardHeader>
-          <CardTitle>주문 요약</CardTitle>
+          <CardTitle className="text-base lg:text-lg">주문 요약</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
+          <div className="space-y-2 lg:space-y-3">
             {orderSummary.items.map((item) => (
               <div key={item.id} className="flex justify-between">
-                <span className="text-gray-600">
+                <span className="text-xs lg:text-sm text-gray-600 dark:text-gray-400 flex-1 mr-2">
                   {item.name} x{item.quantity}
                 </span>
-                <span>{(item.price * item.quantity).toLocaleString()}원</span>
+                <span className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">
+                  {(item.price * item.quantity).toLocaleString()}원
+                </span>
               </div>
             ))}
-            <div className="border-t pt-3 space-y-2">
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-2 lg:pt-3 space-y-1 lg:space-y-2">
               <div className="flex justify-between">
-                <span className="text-gray-600">상품금액</span>
-                <span>{orderSummary.subtotal.toLocaleString()}원</span>
+                <span className="text-xs lg:text-sm text-gray-600 dark:text-gray-400">
+                  상품금액
+                </span>
+                <span className="text-xs lg:text-sm text-gray-900 dark:text-gray-100">
+                  {orderSummary.subtotal.toLocaleString()}원
+                </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">배송비</span>
-                <span>{orderSummary.shippingFee.toLocaleString()}원</span>
+                <span className="text-xs lg:text-sm text-gray-600 dark:text-gray-400">
+                  배송비
+                </span>
+                <span className="text-xs lg:text-sm text-gray-900 dark:text-gray-100">
+                  {orderSummary.shippingFee.toLocaleString()}원
+                </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">할인금액</span>
-                <span className="text-red-600">
+                <span className="text-xs lg:text-sm text-gray-600 dark:text-gray-400">
+                  할인금액
+                </span>
+                <span className="text-xs lg:text-sm text-red-600 dark:text-red-400">
                   -{orderSummary.discountAmount.toLocaleString()}원
                 </span>
               </div>
               {orderSummary.pointDiscount > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-600">포인트 사용</span>
-                  <span className="text-blue-600">
+                  <span className="text-xs lg:text-sm text-gray-600 dark:text-gray-400">
+                    포인트 사용
+                  </span>
+                  <span className="text-xs lg:text-sm text-blue-600 dark:text-blue-400">
                     -{orderSummary.pointDiscount.toLocaleString()}P
                   </span>
                 </div>
               )}
-              <div className="flex justify-between text-lg font-semibold border-t pt-2">
-                <span>총 결제금액</span>
-                <span>{orderSummary.totalAmount.toLocaleString()}원</span>
+              <div className="flex justify-between text-base lg:text-lg font-semibold border-t border-gray-200 dark:border-gray-700 pt-2">
+                <span className="text-gray-900 dark:text-gray-100">
+                  총 결제금액
+                </span>
+                <span className="text-gray-900 dark:text-gray-100">
+                  {orderSummary.totalAmount.toLocaleString()}원
+                </span>
               </div>
             </div>
           </div>
@@ -553,28 +603,33 @@ ${orderSummary.items
       </Card>
 
       {/* 결제 버튼 */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2 text-sm text-gray-600">
+      <div className="space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between">
+        {/* 보안 정보 - 모바일에서는 상단에 표시 */}
+        <div className="flex items-center justify-center lg:justify-start space-x-2 text-xs lg:text-sm text-gray-600 dark:text-gray-400">
           <Lock className="w-4 h-4" />
           <span>SSL 보안 결제</span>
           <Shield className="w-4 h-4" />
           <span>개인정보 보호</span>
         </div>
+
+        {/* 결제 버튼 - 모바일에서는 하단에 전체 너비로 표시 */}
         <Button
           size="lg"
-          className="px-8"
+          className="w-full lg:w-auto px-6 lg:px-8 h-12 lg:h-11 text-base lg:text-lg font-semibold bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
           onClick={processPayment}
           disabled={!selectedMethod || isProcessing}
         >
           {isProcessing ? (
             <>
-              <Clock className="w-4 h-4 mr-2 animate-spin" />
-              결제 처리 중...
+              <Clock className="w-5 h-5 lg:w-4 lg:h-4 mr-2 animate-spin" />
+              <span className="text-sm lg:text-base">결제 처리 중...</span>
             </>
           ) : (
             <>
-              <Zap className="w-4 h-4 mr-2" />
-              {orderSummary.totalAmount.toLocaleString()}원 결제하기
+              <Zap className="w-5 h-5 lg:w-4 lg:h-4 mr-2" />
+              <span className="text-sm lg:text-base">
+                {orderSummary.totalAmount.toLocaleString()}원 결제하기
+              </span>
             </>
           )}
         </Button>

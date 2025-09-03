@@ -189,32 +189,32 @@ export default function CouponInput({
 
             {/* 사용 가능한 쿠폰 목록 */}
             <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 사용 가능한 쿠폰
               </p>
               <div className="space-y-2">
                 {availableCoupons.map((coupon) => (
                   <div
                     key={coupon.code}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
                   >
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                      <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center">
                         {getDiscountIcon(coupon.type)}
                       </div>
                       <div>
                         <div className="flex items-center space-x-2">
-                          <span className="font-medium text-sm">
+                          <span className="font-medium text-sm text-gray-900 dark:text-gray-100">
                             {coupon.name}
                           </span>
-                          <Badge className="bg-yellow-100 text-yellow-800 text-xs">
+                          <Badge className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 text-xs">
                             {getDiscountDisplay(coupon)}
                           </Badge>
                         </div>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
                           {coupon.description}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 dark:text-gray-500">
                           최소 주문 {coupon.minOrderAmount.toLocaleString()}원
                         </p>
                       </div>
@@ -254,19 +254,21 @@ export default function CouponInput({
         ) : (
           <div className="space-y-4">
             {/* 적용된 쿠폰 표시 */}
-            <div className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
+                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
                   <div className="flex items-center space-x-2">
-                    <span className="font-medium">{appliedCoupon.name}</span>
-                    <Badge className="bg-green-100 text-green-800">
+                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                      {appliedCoupon.name}
+                    </span>
+                    <Badge className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
                       {getDiscountDisplay(appliedCoupon)}
                     </Badge>
                   </div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     {appliedCoupon.description}
                   </p>
                 </div>
@@ -275,7 +277,7 @@ export default function CouponInput({
                 size="sm"
                 variant="outline"
                 onClick={removeCoupon}
-                className="text-red-600 hover:text-red-700"
+                className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
               >
                 <X className="w-4 h-4" />
               </Button>

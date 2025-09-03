@@ -108,10 +108,13 @@ export default function PointInput({
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Coins className="w-5 h-5 text-blue-600" />
-            <span>포인트</span>
+            <Coins className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <span className="text-gray-900 dark:text-gray-100">포인트</span>
           </div>
-          <Badge variant="outline" className="text-blue-600 border-blue-200">
+          <Badge
+            variant="outline"
+            className="text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-700"
+          >
             보유: {availablePoints.toLocaleString()}P
           </Badge>
         </CardTitle>
@@ -135,7 +138,7 @@ export default function PointInput({
                 <Button
                   onClick={applyPoints}
                   disabled={isLoading}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-blue-500 dark:to-indigo-500 dark:hover:from-blue-600 dark:hover:to-indigo-600 text-white"
                 >
                   {isLoading ? "적용 중..." : "적용"}
                 </Button>
@@ -183,10 +186,10 @@ export default function PointInput({
             </div>
 
             {/* 포인트 사용 안내 */}
-            <div className="p-3 bg-blue-50 rounded-lg">
+            <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-900/30">
               <div className="flex items-start space-x-2">
-                <AlertCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                <div className="text-sm text-blue-800 space-y-1">
+                <AlertCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
                   <p>• 주문 금액의 최대 50%까지 포인트 사용 가능</p>
                   <p>• 최대 사용 가능: {maxUsablePoints.toLocaleString()}P</p>
                   <p>• 1P = 1원으로 사용됩니다</p>
@@ -197,19 +200,21 @@ export default function PointInput({
         ) : (
           <div className="space-y-4">
             {/* 적용된 포인트 표시 */}
-            <div className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
+                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
                   <div className="flex items-center space-x-2">
-                    <span className="font-medium">포인트 사용</span>
-                    <Badge className="bg-green-100 text-green-800">
+                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                      포인트 사용
+                    </span>
+                    <Badge className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
                       -{usedPoints.toLocaleString()}P
                     </Badge>
                   </div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     {usedPoints.toLocaleString()}원 할인 적용
                   </p>
                 </div>
@@ -218,7 +223,7 @@ export default function PointInput({
                 size="sm"
                 variant="outline"
                 onClick={removePoints}
-                className="text-red-600 hover:text-red-700"
+                className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
               >
                 <X className="w-4 h-4" />
               </Button>
@@ -227,19 +232,19 @@ export default function PointInput({
         )}
 
         {/* 적립 예정 포인트 */}
-        <div className="border-t pt-4">
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Gift className="w-4 h-4 text-orange-500" />
-              <span className="text-sm font-medium text-gray-700">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 적립 예정 포인트
               </span>
             </div>
-            <span className="text-sm font-medium text-orange-600">
+            <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
               +{expectedEarnedPoints.toLocaleString()}P
             </span>
           </div>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             결제 완료 후 자동 적립 (결제 금액의 1%)
           </p>
         </div>
@@ -247,8 +252,10 @@ export default function PointInput({
         {/* 포인트 사용 후 잔여 포인트 */}
         {usedPoints > 0 && (
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">사용 후 보유 포인트</span>
-            <span className="font-medium">
+            <span className="text-gray-600 dark:text-gray-400">
+              사용 후 보유 포인트
+            </span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">
               {(availablePoints - usedPoints).toLocaleString()}P
             </span>
           </div>
