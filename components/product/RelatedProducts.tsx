@@ -144,7 +144,7 @@ export default function RelatedProducts({
         subtitle="이 상품과 함께 구매하면 좋은 상품들을 만나보세요"
         products={relatedProducts}
         showViewAll={false}
-        className="bg-gray-50"
+        className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 lg:p-8"
       />
     </section>
   );

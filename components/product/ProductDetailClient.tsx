@@ -337,13 +337,15 @@ export default function ProductDetailClient({
       {/* Breadcrumb */}
       <div
         ref={breadcrumbRef}
-        className="flex items-center space-x-2 text-sm text-gray-500 mb-4 lg:mb-6 px-4 lg:px-0"
+        className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-4 lg:mb-6 px-4 lg:px-0"
       >
         <span>홈</span>
         <ChevronRight className="h-4 w-4" />
         <span>상의</span>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-gray-900 truncate">{product.name}</span>
+        <span className="text-gray-900 dark:text-gray-100 truncate">
+          {product.name}
+        </span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 px-4 lg:px-0">
@@ -369,10 +371,10 @@ export default function ProductDetailClient({
                 </Badge>
               )}
             </div>
-            <h1 className="text-xl lg:text-3xl font-bold text-gray-900 mb-2 leading-tight">
+            <h1 className="text-xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 leading-tight">
               {product.name}
             </h1>
-            <p className="text-sm text-gray-600 mb-4 italic">
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 italic">
               &ldquo;당신만의 빛을 내는 스타일&rdquo;
             </p>
             <div className="flex items-center space-x-3 mb-4">
@@ -391,7 +393,7 @@ export default function ProductDetailClient({
                 </div>
                 <span className="font-medium">{product.rating}</span>
               </div>
-              <span className="text-gray-500 text-sm">
+              <span className="text-gray-500 dark:text-gray-400 text-sm">
                 ({product.reviewCount}개 리뷰)
               </span>
             </div>
@@ -400,18 +402,21 @@ export default function ProductDetailClient({
           {/* Price */}
           <div className="space-y-2">
             <div className="flex items-center space-x-3 flex-wrap">
-              <span className="price-animation text-2xl lg:text-3xl font-bold text-gray-900">
+              <span className="price-animation text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {product.price.toLocaleString()}원
               </span>
-              <span className="price-animation text-base lg:text-lg text-gray-400 line-through">
+              <span className="price-animation text-base lg:text-lg text-gray-400 dark:text-gray-500 line-through">
                 {product.originalPrice.toLocaleString()}원
               </span>
               <Badge variant="destructive" className="price-animation text-sm">
                 {discountPercentage}% 할인
               </Badge>
             </div>
-            <p className="text-sm text-gray-600">
-              5만원 이상 구매시 <strong>무료배송</strong>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              5만원 이상 구매시{" "}
+              <strong className="text-gray-900 dark:text-gray-100">
+                무료배송
+              </strong>
             </p>
           </div>
 
@@ -426,24 +431,24 @@ export default function ProductDetailClient({
 
           {/* Quantity */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-900">
+            <label className="block text-sm font-medium text-gray-900 dark:text-gray-100">
               수량
             </label>
             <div className="flex items-center space-x-3">
-              <div className="flex items-center border border-gray-300 rounded-lg">
+              <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                  className="p-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 text-gray-900 dark:text-gray-100"
                   disabled={quantity <= 1}
                 >
                   -
                 </button>
-                <span className="px-4 py-2 font-medium min-w-[3rem] text-center">
+                <span className="px-4 py-2 font-medium min-w-[3rem] text-center text-gray-900 dark:text-gray-100">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="p-2 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                  className="p-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 text-gray-900 dark:text-gray-100"
                   disabled={
                     !isInStock || quantity >= (selectedSize?.stock || 0)
                   }
@@ -452,7 +457,7 @@ export default function ProductDetailClient({
                 </button>
               </div>
               {selectedSize && (
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-gray-500 dark:text-gray-400">
                   {selectedSize.stock}개 남음
                 </span>
               )}
@@ -534,7 +539,9 @@ export default function ProductDetailClient({
           {/* SNS Share */}
           {showShareOptions && (
             <div ref={shareOptionsRef} className="space-y-3 overflow-hidden">
-              <h4 className="text-sm font-medium text-gray-900">공유하기</h4>
+              <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                공유하기
+              </h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button
                   onClick={() => {
@@ -611,26 +618,32 @@ export default function ProductDetailClient({
           {/* Features */}
           <div
             ref={featuresRef}
-            className="grid grid-cols-3 gap-3 lg:gap-4 py-4 lg:py-6 border-t border-gray-200"
+            className="grid grid-cols-3 gap-3 lg:gap-4 py-4 lg:py-6 border-t border-gray-200 dark:border-gray-700"
           >
             <div className="text-center">
               <Truck className="h-5 w-5 lg:h-6 lg:w-6 mx-auto mb-2 text-green-600" />
-              <div className="text-xs lg:text-sm font-medium">당일발송</div>
-              <div className="text-xs text-gray-500 hidden sm:block">
+              <div className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">
+                당일발송
+              </div>
+              <div className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
                 평일 오후 2시까지 주문시
               </div>
             </div>
             <div className="text-center">
               <RotateCcw className="h-5 w-5 lg:h-6 lg:w-6 mx-auto mb-2 text-blue-600" />
-              <div className="text-xs lg:text-sm font-medium">교환보장</div>
-              <div className="text-xs text-gray-500 hidden sm:block">
+              <div className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">
+                교환보장
+              </div>
+              <div className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
                 7일 내 무료 교환
               </div>
             </div>
             <div className="text-center">
               <Shield className="h-5 w-5 lg:h-6 lg:w-6 mx-auto mb-2 text-purple-600" />
-              <div className="text-xs lg:text-sm font-medium">품질보증</div>
-              <div className="text-xs text-gray-500 hidden sm:block">
+              <div className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">
+                품질보증
+              </div>
+              <div className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
                 불량 시 즉시 교환
               </div>
             </div>
@@ -639,7 +652,7 @@ export default function ProductDetailClient({
           {/* Brand Story */}
           <div
             ref={brandStoryRef}
-            className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 lg:p-6 rounded-2xl space-y-3 lg:space-y-4"
+            className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-4 lg:p-6 rounded-2xl space-y-3 lg:space-y-4"
           >
             <div className="flex items-center space-x-2">
               <div className="w-6 h-6 lg:w-8 lg:h-8 lumina-gradient rounded-full flex items-center justify-center">
@@ -647,11 +660,11 @@ export default function ProductDetailClient({
                   L
                 </span>
               </div>
-              <h3 className="font-semibold text-gray-900 text-sm lg:text-base">
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm lg:text-base">
                 LUMINA Story
               </h3>
             </div>
-            <p className="text-xs lg:text-sm text-gray-700 leading-relaxed">
+            <p className="text-xs lg:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
               &ldquo;빛나는 당신을 위한 디자인&rdquo; LUMINA는 단순한 의류가
               아닌, 당신의 개성과 아름다움을 빛나게 하는 스타일을 제안합니다.
               세련된 디자인과 최고급 소재로 완성된 이 제품으로 특별한 순간을
@@ -661,16 +674,18 @@ export default function ProductDetailClient({
 
           {/* Product Features */}
           <div className="space-y-3 lg:space-y-4">
-            <h3 className="font-semibold text-gray-900 text-sm lg:text-base">
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm lg:text-base">
               상품 특징
             </h3>
             <ul className="space-y-2">
               {product.features.map((feature, index) => (
                 <li
                   key={index}
-                  className="flex items-start space-x-2 text-xs lg:text-sm text-gray-700"
+                  className="flex items-start space-x-2 text-xs lg:text-sm text-gray-700 dark:text-gray-300"
                 >
-                  <span className="text-gray-400 mt-1 flex-shrink-0">•</span>
+                  <span className="text-gray-400 dark:text-gray-500 mt-1 flex-shrink-0">
+                    •
+                  </span>
                   <span className="leading-relaxed">{feature}</span>
                 </li>
               ))}
@@ -680,7 +695,7 @@ export default function ProductDetailClient({
       </div>
 
       {/* Mobile Sticky Actions */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-40 shadow-lg">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-3 z-40 shadow-lg">
         <div className="flex space-x-2">
           <Button
             size="lg"
@@ -694,7 +709,7 @@ export default function ProductDetailClient({
             <Button
               size="lg"
               variant="outline"
-              className="flex-1 lumina-border-gradient text-gray-900 hover:lumina-gradient hover:text-white text-sm py-3"
+              className="flex-1 lumina-border-gradient text-gray-900 dark:text-gray-100 hover:lumina-gradient hover:text-white text-sm py-3"
               onClick={handleBuyNow}
             >
               💫 구매

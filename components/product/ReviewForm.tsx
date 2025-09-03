@@ -217,7 +217,7 @@ export default function ReviewForm({
                   </button>
                 ))}
               </div>
-              <span className="text-sm text-gray-600 min-w-[120px]">
+              <span className="text-sm text-gray-600 dark:text-gray-400 min-w-[120px]">
                 {getRatingText(hoverRating || rating)}
               </span>
             </div>
@@ -236,7 +236,9 @@ export default function ReviewForm({
               maxLength={100}
               className="w-full"
             />
-            <p className="text-xs text-gray-500">{title.length}/100자</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {title.length}/100자
+            </p>
           </div>
 
           {/* 리뷰 내용 */}
@@ -253,7 +255,9 @@ export default function ReviewForm({
               maxLength={1000}
               className="w-full resize-none"
             />
-            <p className="text-xs text-gray-500">{content.length}/1000자</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {content.length}/1000자
+            </p>
           </div>
 
           {/* 장점 */}
@@ -270,7 +274,9 @@ export default function ReviewForm({
               maxLength={300}
               className="w-full resize-none"
             />
-            <p className="text-xs text-gray-500">{pros.length}/300자</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {pros.length}/300자
+            </p>
           </div>
 
           {/* 단점 */}
@@ -287,7 +293,9 @@ export default function ReviewForm({
               maxLength={300}
               className="w-full resize-none"
             />
-            <p className="text-xs text-gray-500">{cons.length}/300자</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {cons.length}/300자
+            </p>
           </div>
 
           {/* 추천 여부 */}
@@ -302,7 +310,9 @@ export default function ReviewForm({
                   onChange={() => setRecommend(true)}
                   className="w-4 h-4 text-blue-600"
                 />
-                <span className="text-sm">추천해요</span>
+                <span className="text-sm text-gray-900 dark:text-gray-100">
+                  추천해요
+                </span>
               </label>
               <label className="flex items-center space-x-2 cursor-pointer">
                 <input
@@ -312,7 +322,9 @@ export default function ReviewForm({
                   onChange={() => setRecommend(false)}
                   className="w-4 h-4 text-blue-600"
                 />
-                <span className="text-sm">추천하지 않아요</span>
+                <span className="text-sm text-gray-900 dark:text-gray-100">
+                  추천하지 않아요
+                </span>
               </label>
             </div>
           </div>
@@ -325,13 +337,13 @@ export default function ReviewForm({
             <div className="space-y-3">
               {/* 업로드 버튼 */}
               {images.length < 5 && (
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <Upload className="w-8 h-8 mb-2 text-gray-400" />
-                    <p className="text-sm text-gray-600">
+                    <Upload className="w-8 h-8 mb-2 text-gray-400 dark:text-gray-500" />
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
                       클릭하여 이미지 업로드
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       PNG, JPG, JPEG (최대 5MB)
                     </p>
                   </div>
@@ -372,11 +384,11 @@ export default function ReviewForm({
           </div>
 
           {/* 주의사항 */}
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <h4 className="text-sm font-medium text-blue-900 mb-2">
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+            <h4 className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
               리뷰 작성 시 주의사항
             </h4>
-            <ul className="text-xs text-blue-800 space-y-1">
+            <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-1">
               <li>• 상품과 관련 없는 내용은 삭제될 수 있습니다</li>
               <li>• 개인정보나 연락처는 포함하지 마세요</li>
               <li>• 허위사실이나 과장된 내용은 작성하지 마세요</li>

@@ -62,7 +62,7 @@ export default function VariantPicker({
       {/* Size Selection */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <label className="block text-sm font-medium text-gray-900">
+          <label className="block text-sm font-medium text-gray-900 dark:text-gray-100">
             사이즈: <span className="font-bold">{selectedVariant.size}</span>
           </label>
           <Dialog open={showSizeGuide} onOpenChange={setShowSizeGuide}>
@@ -70,7 +70,7 @@ export default function VariantPicker({
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-sm text-gray-600 hover:text-gray-900"
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
               >
                 <Ruler className="h-4 w-4 mr-1" />
                 사이즈 가이드
@@ -78,40 +78,51 @@ export default function VariantPicker({
             </DialogTrigger>
             <DialogContent className="max-w-2xl">
               <DialogHeader>
-                <DialogTitle>사이즈 가이드</DialogTitle>
+                <DialogTitle className="text-gray-900 dark:text-gray-100">
+                  사이즈 가이드
+                </DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-2 font-medium">사이즈</th>
-                        <th className="text-center py-2 font-medium">
+                      <tr className="border-b border-gray-200 dark:border-gray-700">
+                        <th className="text-left py-2 font-medium text-gray-900 dark:text-gray-100">
+                          사이즈
+                        </th>
+                        <th className="text-center py-2 font-medium text-gray-900 dark:text-gray-100">
                           가슴둘레
                         </th>
-                        <th className="text-center py-2 font-medium">
+                        <th className="text-center py-2 font-medium text-gray-900 dark:text-gray-100">
                           어깨너비
                         </th>
-                        <th className="text-center py-2 font-medium">총길이</th>
-                        <th className="text-center py-2 font-medium">
+                        <th className="text-center py-2 font-medium text-gray-900 dark:text-gray-100">
+                          총길이
+                        </th>
+                        <th className="text-center py-2 font-medium text-gray-900 dark:text-gray-100">
                           소매길이
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {Object.entries(measurements).map(([size, measures]) => (
-                        <tr key={size} className="border-b">
-                          <td className="py-2 font-medium">{size}</td>
-                          <td className="text-center py-2">
+                        <tr
+                          key={size}
+                          className="border-b border-gray-200 dark:border-gray-700"
+                        >
+                          <td className="py-2 font-medium text-gray-900 dark:text-gray-100">
+                            {size}
+                          </td>
+                          <td className="text-center py-2 text-gray-700 dark:text-gray-300">
                             {measures.chest}cm
                           </td>
-                          <td className="text-center py-2">
+                          <td className="text-center py-2 text-gray-700 dark:text-gray-300">
                             {measures.shoulder}cm
                           </td>
-                          <td className="text-center py-2">
+                          <td className="text-center py-2 text-gray-700 dark:text-gray-300">
                             {measures.length}cm
                           </td>
-                          <td className="text-center py-2">
+                          <td className="text-center py-2 text-gray-700 dark:text-gray-300">
                             {measures.sleeve}cm
                           </td>
                         </tr>
@@ -119,8 +130,10 @@ export default function VariantPicker({
                     </tbody>
                   </table>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg text-sm text-gray-600">
-                  <p className="font-medium mb-2">📏 측정 방법:</p>
+                <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg text-sm text-gray-600 dark:text-gray-400">
+                  <p className="font-medium mb-2 text-gray-900 dark:text-gray-100">
+                    📏 측정 방법:
+                  </p>
                   <ul className="space-y-1">
                     <li>• 가슴둘레: 가슴 가장 넓은 부분의 단면 길이</li>
                     <li>• 어깨너비: 어깨 끝에서 끝까지의 직선 길이</li>
@@ -164,7 +177,7 @@ export default function VariantPicker({
 
       {/* Color Selection */}
       <div className="space-y-3">
-        <label className="block text-sm font-medium text-gray-900">
+        <label className="block text-sm font-medium text-gray-900 dark:text-gray-100">
           색상: <span className="font-bold">{selectedVariant.color}</span>
         </label>
 
