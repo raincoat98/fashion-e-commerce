@@ -270,11 +270,6 @@ export default function DraggableProductList({
 
       if (alreadyInCart) {
         console.log("이미 장바구니에 있음:", product.id);
-        toast({
-          title: "이미 장바구니에 있습니다",
-          description: `${product.name}이(가) 이미 장바구니에 추가되어 있습니다.`,
-          variant: "default",
-        });
         return;
       }
 
@@ -292,20 +287,8 @@ export default function DraggableProductList({
 
         console.log("장바구니에 추가할 아이템:", cartItem);
         addItem(cartItem);
-
-        toast({
-          title: "장바구니에 추가되었습니다",
-          description: `${product.name}이(가) 장바구니에 추가되었습니다.`,
-          variant: "default",
-        });
       } catch (error) {
         console.error("장바구니 추가 오류:", error);
-        toast({
-          title: "오류가 발생했습니다",
-          description:
-            "장바구니 추가 중 오류가 발생했습니다. 다시 시도해주세요.",
-          variant: "destructive",
-        });
       } finally {
         setTimeout(() => {
           setCartAddingItems((prev) => {
@@ -316,7 +299,7 @@ export default function DraggableProductList({
         }, 1000);
       }
     },
-    [state.items, addItem, toast]
+    [state.items, addItem]
   );
 
   // 위시리스트 추가/제거 핸들러
@@ -332,12 +315,6 @@ export default function DraggableProductList({
         if (alreadyInWishlist) {
           console.log("위시리스트에서 제거:", product.id);
           removeFromWishlistByProductId(product.id);
-
-          toast({
-            title: "위시리스트에서 제거되었습니다",
-            description: `${product.name}이(가) 위시리스트에서 제거되었습니다.`,
-            variant: "default",
-          });
         } else {
           console.log("위시리스트에 추가:", product.id);
           // 위시리스트에 추가
@@ -356,21 +333,9 @@ export default function DraggableProductList({
 
           console.log("위시리스트에 추가할 아이템:", wishlistItem);
           addToWishlist(wishlistItem);
-
-          toast({
-            title: "위시리스트에 추가되었습니다",
-            description: `${product.name}이(가) 위시리스트에 추가되었습니다.`,
-            variant: "default",
-          });
         }
       } catch (error) {
         console.error("위시리스트 작업 오류:", error);
-        toast({
-          title: "오류가 발생했습니다",
-          description:
-            "위시리스트 작업 중 오류가 발생했습니다. 다시 시도해주세요.",
-          variant: "destructive",
-        });
       } finally {
         setTimeout(() => {
           setWishlistAddingItems((prev) => {
@@ -381,13 +346,7 @@ export default function DraggableProductList({
         }, 1000);
       }
     },
-    [
-      storeIsInWishlist,
-      wishlist,
-      removeFromWishlistByProductId,
-      addToWishlist,
-      toast,
-    ]
+    [storeIsInWishlist, wishlist, removeFromWishlistByProductId, addToWishlist]
   );
 
   // 이미지 로딩 핸들러

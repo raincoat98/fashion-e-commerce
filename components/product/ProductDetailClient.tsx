@@ -298,11 +298,6 @@ export default function ProductDetailClient({
       size: selectedVariant.size,
       color: selectedVariant.color,
     });
-
-    toast({
-      title: "장바구니에 추가되었습니다",
-      description: `${product.name} (${selectedVariant.size}, ${selectedVariant.color})`,
-    });
   };
 
   const handleBuyNow = () => {

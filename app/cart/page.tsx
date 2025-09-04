@@ -4,11 +4,10 @@ import React from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { Trash2, Plus, Minus, ShoppingBag, Check, Heart } from "lucide-react";
+import { Trash2, Plus, Minus, ShoppingBag, Check } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/contexts/CartContext";
-import { useProductStore } from "@/stores/useProductStore";
 
 export default function CartPage() {
   const {

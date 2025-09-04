@@ -60,22 +60,11 @@ export default function ProductCard({ product }: ProductCardProps) {
       size: selectedSize,
       color: selectedColor || "기본",
     });
-
-    toast({
-      title: "장바구니에 추가되었습니다",
-      description: `${product.name}이(가) 장바구니에 추가되었습니다.`,
-      duration: 2000,
-    });
   };
 
   const handleToggleWishlist = () => {
     if (isWishlisted) {
       removeFromWishlistByProductId(product.id);
-      toast({
-        title: "위시리스트에서 제거되었습니다",
-        description: `${product.name}이(가) 위시리스트에서 제거되었습니다.`,
-        duration: 2000,
-      });
     } else {
       addToWishlist({
         productId: product.id,
@@ -88,11 +77,6 @@ export default function ProductCard({ product }: ProductCardProps) {
         isNew: false,
         isSale: !!product.originalPrice,
         isBest: false,
-      });
-      toast({
-        title: "위시리스트에 추가되었습니다",
-        description: `${product.name}이(가) 위시리스트에 추가되었습니다.`,
-        duration: 2000,
       });
     }
   };

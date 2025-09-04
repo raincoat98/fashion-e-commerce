@@ -63,10 +63,6 @@ export default function WishlistPage() {
   const handleRemoveFromWishlist = (productId: string) => {
     removeFromWishlistByProductId(productId);
     setSelectedItems((prev) => prev.filter((id) => id !== productId));
-    toast({
-      title: "위시리스트에서 제거되었습니다",
-      duration: 2000,
-    });
   };
 
   // 선택된 항목들 일괄 삭제
@@ -75,10 +71,6 @@ export default function WishlistPage() {
       removeFromWishlistByProductId(productId);
     });
     setSelectedItems([]);
-    toast({
-      title: `${selectedCount}개 상품이 위시리스트에서 제거되었습니다`,
-      duration: 2000,
-    });
   };
 
   // 장바구니에 추가
@@ -91,11 +83,6 @@ export default function WishlistPage() {
       image: item.image,
       size: "M",
       color: "기본",
-    });
-
-    toast({
-      title: "장바구니에 추가되었습니다",
-      duration: 2000,
     });
   };
 
@@ -115,11 +102,6 @@ export default function WishlistPage() {
         size: "M",
         color: "기본",
       });
-    });
-
-    toast({
-      title: `${selectedCount}개 상품이 장바구니에 추가되었습니다`,
-      duration: 2000,
     });
   };
 

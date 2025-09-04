@@ -486,12 +486,6 @@ export default function ProductGrid({
       size: product.sizes[0] || "M",
       color: product.colors?.[0] || "기본",
     });
-
-    toast({
-      title: "장바구니에 추가되었습니다",
-      description: `${product.name}이(가) 장바구니에 추가되었습니다.`,
-      duration: 2000,
-    });
   };
 
   const handleToggleWishlist = (product: Product) => {
@@ -499,11 +493,6 @@ export default function ProductGrid({
 
     if (isWishlisted) {
       removeFromWishlistByProductId(product.id);
-      toast({
-        title: "위시리스트에서 제거되었습니다",
-        description: `${product.name}이(가) 위시리스트에서 제거되었습니다.`,
-        duration: 2000,
-      });
     } else {
       addToWishlist({
         productId: product.id,
@@ -516,11 +505,6 @@ export default function ProductGrid({
         isNew: product.isNew || false,
         isSale: product.isSale || !!product.originalPrice,
         isBest: product.isBest || false,
-      });
-      toast({
-        title: "위시리스트에 추가되었습니다",
-        description: `${product.name}이(가) 위시리스트에 추가되었습니다.`,
-        duration: 2000,
       });
     }
   };
