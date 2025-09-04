@@ -438,7 +438,7 @@ export default function TopBanner() {
             <>
               <button
                 onClick={handlePrev}
-                className="p-1 hover:bg-white/20 rounded transition-colors"
+                className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 active:scale-95 shadow-sm hover:shadow-md"
                 aria-label="이전 배너"
               >
                 <svg
@@ -460,8 +460,10 @@ export default function TopBanner() {
                   <button
                     key={index}
                     onClick={() => setCurrentBannerIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentBannerIndex ? "bg-white" : "bg-white/40"
+                    className={`w-3 h-3 rounded-full transition-all duration-200 hover:scale-110 ${
+                      index === currentBannerIndex
+                        ? "bg-white shadow-md"
+                        : "bg-white/40 hover:bg-white/60"
                     }`}
                     aria-label={`배너 ${index + 1}로 이동`}
                   />
@@ -469,7 +471,7 @@ export default function TopBanner() {
               </div>
               <button
                 onClick={handleNext}
-                className="p-1 hover:bg-white/20 rounded transition-colors"
+                className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 active:scale-95 shadow-sm hover:shadow-md"
                 aria-label="다음 배너"
               >
                 <svg
@@ -508,7 +510,7 @@ export default function TopBanner() {
                   <Link
                     key={index}
                     href={link.url}
-                    className="hover:underline transition-colors px-2 py-1 rounded bg-white/10 hover:bg-white/20"
+                    className="hover:underline transition-all duration-200 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 hover:shadow-sm active:scale-95 font-medium"
                   >
                     {link.text}
                   </Link>
@@ -517,7 +519,7 @@ export default function TopBanner() {
             ) : currentBanner.linkUrl ? (
               <Link
                 href={currentBanner.linkUrl}
-                className="text-xs hover:underline transition-colors px-2 py-1 rounded bg-white/10 hover:bg-white/20"
+                className="text-xs hover:underline transition-all duration-200 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 hover:shadow-sm active:scale-95 font-medium"
               >
                 자세히 보기
               </Link>
@@ -527,7 +529,7 @@ export default function TopBanner() {
 
         <button
           onClick={handleClose}
-          className="p-1 hover:bg-white/20 rounded transition-colors"
+          className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 active:scale-95 shadow-sm hover:shadow-md"
           aria-label="배너 닫기"
         >
           <X className="w-4 h-4" />
