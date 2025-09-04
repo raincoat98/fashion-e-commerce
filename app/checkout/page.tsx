@@ -337,12 +337,12 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
 
-      <main className="container mx-auto py-4 lg:py-8 px-4 lg:px-0">
+      <main className="container mx-auto py-3 sm:py-4 lg:py-8 px-3 sm:px-4 lg:px-0">
         {/* 진행 단계 표시 */}
-        <div className="mb-6 lg:mb-8">
-          <div className="flex items-center justify-center space-x-2 lg:space-x-4">
+        <div className="mb-4 sm:mb-6 lg:mb-8">
+          <div className="flex items-center justify-center space-x-1 sm:space-x-2 lg:space-x-4">
             <div
-              className={`flex items-center space-x-2 ${
+              className={`flex items-center space-x-1 sm:space-x-2 ${
                 currentStep === "shipping"
                   ? "text-blue-600 dark:text-blue-400"
                   : currentStep === "payment"
@@ -351,7 +351,7 @@ export default function CheckoutPage() {
               }`}
             >
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${
                   currentStep === "shipping"
                     ? "bg-blue-600 dark:bg-blue-500 text-white"
                     : currentStep === "payment"
@@ -360,16 +360,16 @@ export default function CheckoutPage() {
                 }`}
               >
                 {currentStep === "shipping" ? (
-                  "1"
+                  <span className="text-xs sm:text-sm">1</span>
                 ) : (
-                  <CheckCircle className="w-4 h-4" />
+                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                 )}
               </div>
-              <span className="font-medium">배송 정보</span>
+              <span className="font-medium text-xs sm:text-sm">배송 정보</span>
             </div>
-            <div className="w-8 h-1 bg-gray-300 dark:bg-gray-600"></div>
+            <div className="w-4 sm:w-8 h-1 bg-gray-300 dark:bg-gray-600"></div>
             <div
-              className={`flex items-center space-x-2 ${
+              className={`flex items-center space-x-1 sm:space-x-2 ${
                 currentStep === "payment"
                   ? "text-blue-600 dark:text-blue-400"
                   : currentStep === "complete"
@@ -378,7 +378,7 @@ export default function CheckoutPage() {
               }`}
             >
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${
                   currentStep === "payment"
                     ? "bg-blue-600 dark:bg-blue-500 text-white"
                     : currentStep === "complete"
@@ -387,44 +387,44 @@ export default function CheckoutPage() {
                 }`}
               >
                 {currentStep === "payment" ? (
-                  "2"
+                  <span className="text-xs sm:text-sm">2</span>
                 ) : currentStep === "complete" ? (
-                  <CheckCircle className="w-4 h-4" />
+                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                 ) : (
-                  "2"
+                  <span className="text-xs sm:text-sm">2</span>
                 )}
               </div>
-              <span className="font-medium">결제</span>
+              <span className="font-medium text-xs sm:text-sm">결제</span>
             </div>
-            <div className="w-8 h-1 bg-gray-300 dark:bg-gray-600"></div>
+            <div className="w-4 sm:w-8 h-1 bg-gray-300 dark:bg-gray-600"></div>
             <div
-              className={`flex items-center space-x-2 ${
+              className={`flex items-center space-x-1 sm:space-x-2 ${
                 currentStep === "complete"
                   ? "text-green-600 dark:text-green-400"
                   : "text-gray-400 dark:text-gray-500"
               }`}
             >
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${
                   currentStep === "complete"
                     ? "bg-green-600 dark:bg-green-500 text-white"
                     : "bg-gray-300 dark:bg-gray-600 text-white"
                 }`}
               >
                 {currentStep === "complete" ? (
-                  <CheckCircle className="w-4 h-4" />
+                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                 ) : (
-                  "3"
+                  <span className="text-xs sm:text-sm">3</span>
                 )}
               </div>
-              <span className="font-medium">완료</span>
+              <span className="font-medium text-xs sm:text-sm">완료</span>
             </div>
           </div>
         </div>
 
         {/* 배송 정보 입력 */}
         {currentStep === "shipping" && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-8">
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>

@@ -332,18 +332,18 @@ export default function ProductDetailClient({
       {/* Breadcrumb */}
       <div
         ref={breadcrumbRef}
-        className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-4 lg:mb-6 px-4 lg:px-0"
+        className="flex items-center space-x-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 sm:mb-4 lg:mb-6 px-3 sm:px-4 lg:px-0"
       >
         <span>홈</span>
-        <ChevronRight className="h-4 w-4" />
+        <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
         <span>상의</span>
-        <ChevronRight className="h-4 w-4" />
+        <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
         <span className="text-gray-900 dark:text-gray-100 truncate">
           {product.name}
         </span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 px-4 lg:px-0">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-12 px-3 sm:px-4 lg:px-0">
         {/* Product Images */}
         <div ref={imageRef} className="order-1 lg:order-1">
           <ImageGallery images={product.images} productName={product.name} />
@@ -352,7 +352,7 @@ export default function ProductDetailClient({
         {/* Product Info */}
         <div
           ref={infoRef}
-          className="order-2 lg:order-2 space-y-4 lg:space-y-6"
+          className="order-2 lg:order-2 space-y-3 sm:space-y-4 lg:space-y-6"
         >
           {/* Header */}
           <div>
@@ -366,10 +366,10 @@ export default function ProductDetailClient({
                 </Badge>
               )}
             </div>
-            <h1 className="text-xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 leading-tight">
+            <h1 className="text-lg sm:text-xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 leading-tight">
               {product.name}
             </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 italic">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3 sm:mb-4 italic">
               &ldquo;당신만의 빛을 내는 스타일&rdquo;
             </p>
             <div className="flex items-center space-x-3 mb-4">
@@ -613,11 +613,11 @@ export default function ProductDetailClient({
           {/* Features */}
           <div
             ref={featuresRef}
-            className="grid grid-cols-3 gap-3 lg:gap-4 py-4 lg:py-6 border-t border-gray-200 dark:border-gray-700"
+            className="grid grid-cols-3 gap-2 sm:gap-3 lg:gap-4 py-3 sm:py-4 lg:py-6 border-t border-gray-200 dark:border-gray-700"
           >
             <div className="text-center">
-              <Truck className="h-5 w-5 lg:h-6 lg:w-6 mx-auto mb-2 text-green-600" />
-              <div className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">
+              <Truck className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 mx-auto mb-1 sm:mb-2 text-green-600" />
+              <div className="text-xs sm:text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">
                 당일발송
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
@@ -625,8 +625,8 @@ export default function ProductDetailClient({
               </div>
             </div>
             <div className="text-center">
-              <RotateCcw className="h-5 w-5 lg:h-6 lg:w-6 mx-auto mb-2 text-blue-600" />
-              <div className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">
+              <RotateCcw className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 mx-auto mb-1 sm:mb-2 text-blue-600" />
+              <div className="text-xs sm:text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">
                 교환보장
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
@@ -634,8 +634,8 @@ export default function ProductDetailClient({
               </div>
             </div>
             <div className="text-center">
-              <Shield className="h-5 w-5 lg:h-6 lg:w-6 mx-auto mb-2 text-purple-600" />
-              <div className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">
+              <Shield className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 mx-auto mb-1 sm:mb-2 text-purple-600" />
+              <div className="text-xs sm:text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">
                 품질보증
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
@@ -690,11 +690,11 @@ export default function ProductDetailClient({
       </div>
 
       {/* Mobile Sticky Actions */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-3 z-40 shadow-lg">
-        <div className="flex space-x-2">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-3 sm:p-4 z-40 shadow-lg">
+        <div className="flex space-x-2 sm:space-x-3">
           <Button
             size="lg"
-            className="flex-1 lumina-gradient hover:opacity-90 text-white text-sm py-3"
+            className="flex-1 lumina-gradient hover:opacity-90 text-white text-xs sm:text-sm py-2.5 sm:py-3"
             disabled={!isInStock}
             onClick={handleAddToCart}
           >
@@ -704,7 +704,7 @@ export default function ProductDetailClient({
             <Button
               size="lg"
               variant="outline"
-              className="flex-1 lumina-border-gradient text-gray-900 dark:text-gray-100 hover:lumina-gradient hover:text-white text-sm py-3"
+              className="flex-1 lumina-border-gradient text-gray-900 dark:text-gray-100 hover:lumina-gradient hover:text-white text-xs sm:text-sm py-2.5 sm:py-3"
               onClick={handleBuyNow}
             >
               💫 구매

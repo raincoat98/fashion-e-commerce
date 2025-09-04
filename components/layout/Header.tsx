@@ -87,14 +87,14 @@ export default function Header() {
             : "var(--top-banner-height, 0px)",
       }}
     >
-      <div className="container mx-auto px-4 sm:px-6">
+      <div className="container mx-auto px-3 sm:px-6">
         {/* Main Header */}
-        <div className="flex items-center justify-between py-3 sm:py-4">
+        <div className="flex items-center justify-between py-2 sm:py-4">
           {/* Left Section - Mobile Menu & Logo */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center space-x-1 sm:space-x-4">
             {/* Mobile Menu Button */}
             <button
-              className="p-2 lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              className="p-2.5 lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="메뉴 열기"
             >
@@ -108,7 +108,7 @@ export default function Header() {
             {/* Logo */}
             <Link
               href="/"
-              className="text-xl sm:text-2xl font-bold lumina-text-gradient hover:opacity-80 transition-opacity"
+              className="text-lg sm:text-2xl font-bold lumina-text-gradient hover:opacity-80 transition-opacity"
             >
               LUMINA
             </Link>
@@ -179,7 +179,9 @@ export default function Header() {
             <Link
               href="/sale"
               className={`text-sm xl:text-base font-medium transition-colors hover:text-red-700 dark:hover:text-red-400 ${
-                pathname === "/sale" ? "text-red-700 dark:text-red-400" : "text-red-600 dark:text-red-400"
+                pathname === "/sale"
+                  ? "text-red-700 dark:text-red-400"
+                  : "text-red-600 dark:text-red-400"
               }`}
             >
               SALE
@@ -187,7 +189,7 @@ export default function Header() {
           </nav>
 
           {/* Right Section - Search, Admin, User Actions */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-1 sm:space-x-3">
             {/* Search - Desktop */}
             <div className="hidden md:block w-48 lg:w-64 xl:w-80">
               <Search placeholder="상품명, 브랜드를 검색하세요" />
@@ -195,7 +197,7 @@ export default function Header() {
 
             {/* Search Toggle - Mobile */}
             <button
-              className="p-2 lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              className="p-2.5 lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               onClick={() => setIsSearchExpanded(!isSearchExpanded)}
               aria-label="검색 열기"
             >
@@ -219,18 +221,20 @@ export default function Header() {
             </Link>
 
             {/* User Actions */}
-            <div className="flex items-center space-x-1 sm:space-x-2">
+            <div className="flex items-center space-x-0.5 sm:space-x-2">
               {/* Theme Toggle */}
-              <ThemeToggle />
+              <div className="hidden sm:block">
+                <ThemeToggle />
+              </div>
 
               {/* User Profile */}
               <Link href="/profile">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  className="h-9 w-9 sm:h-10 sm:w-10 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
-                  <User className="h-5 w-5" />
+                  <User className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </Link>
 
@@ -239,17 +243,17 @@ export default function Header() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="hidden sm:flex relative hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  className="h-9 w-9 sm:h-10 sm:w-10 relative hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <Heart
-                    className={`h-5 w-5 transition-all duration-300 ${
+                    className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-300 ${
                       wishlistCount > 0
                         ? "text-red-500 fill-current"
                         : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                     }`}
                   />
                   {wishlistCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px] font-medium">
+                    <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs rounded-full h-3.5 w-3.5 sm:h-4 sm:w-4 flex items-center justify-center text-[9px] sm:text-[10px] font-medium">
                       {wishlistCount}
                     </span>
                   )}
@@ -261,17 +265,17 @@ export default function Header() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="relative hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  className="h-9 w-9 sm:h-10 sm:w-10 relative hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <ShoppingBag
-                    className={`h-5 w-5 transition-all duration-300 ${
+                    className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-300 ${
                       cartItemCount > 0
                         ? "text-blue-600 fill-current"
                         : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                     }`}
                   />
                   {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px] font-medium">
+                    <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs rounded-full h-3.5 w-3.5 sm:h-4 sm:w-4 flex items-center justify-center text-[9px] sm:text-[10px] font-medium">
                       {cartItemCount}
                     </span>
                   )}
@@ -283,18 +287,18 @@ export default function Header() {
 
         {/* Mobile Search Bar */}
         {isSearchExpanded && (
-          <div className="md:hidden pb-4 animate-slide-down">
+          <div className="md:hidden pb-3 animate-slide-down">
             <Search placeholder="상품명, 브랜드를 검색하세요" />
           </div>
         )}
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200 dark:border-gray-700 py-4 animate-slide-down bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
-            <nav className="space-y-3">
+          <div className="lg:hidden border-t border-gray-200 dark:border-gray-700 py-3 animate-slide-down bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
+            <nav className="space-y-2">
               <Link
                 href="/categories/new"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                className={`block px-4 py-2.5 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/new"
                     ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
                     : "text-gray-700 dark:text-gray-300"
@@ -305,7 +309,7 @@ export default function Header() {
               </Link>
               <Link
                 href="/categories/best"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                className={`block px-4 py-2.5 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/best"
                     ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
                     : "text-gray-700 dark:text-gray-300"
@@ -316,7 +320,7 @@ export default function Header() {
               </Link>
               <Link
                 href="/categories/outer?categories=아우터"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                className={`block px-4 py-2.5 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/outer"
                     ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
                     : "text-gray-700 dark:text-gray-300"
@@ -327,7 +331,7 @@ export default function Header() {
               </Link>
               <Link
                 href="/categories/top?categories=상의"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                className={`block px-4 py-2.5 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/top"
                     ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
                     : "text-gray-700 dark:text-gray-300"
@@ -338,7 +342,7 @@ export default function Header() {
               </Link>
               <Link
                 href="/categories/bottom?categories=하의"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                className={`block px-4 py-2.5 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/bottom"
                     ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
                     : "text-gray-700 dark:text-gray-300"
@@ -349,7 +353,7 @@ export default function Header() {
               </Link>
               <Link
                 href="/categories/dress?categories=드레스"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                className={`block px-4 py-2.5 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/categories/dress"
                     ? "text-gray-900 dark:text-gray-100 font-semibold bg-gray-100 dark:bg-gray-700"
                     : "text-gray-700 dark:text-gray-300"
@@ -360,7 +364,7 @@ export default function Header() {
               </Link>
               <Link
                 href="/sale"
-                className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                className={`block px-4 py-2.5 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 ${
                   pathname === "/sale"
                     ? "text-red-700 dark:text-red-400 font-semibold bg-red-50 dark:bg-red-900/20"
                     : "text-red-600 dark:text-red-400"
@@ -371,10 +375,10 @@ export default function Header() {
               </Link>
 
               {/* Mobile Admin Button */}
-              <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+              <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
                 <Link
                   href="/admin"
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                  className={`flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-all duration-200 ${
                     pathname === "/admin"
                       ? "bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border-2 border-yellow-500"
                       : "bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 hover:text-yellow-700 dark:hover:text-yellow-400 hover:border-yellow-400 border-2 border-gray-200 dark:border-gray-600"

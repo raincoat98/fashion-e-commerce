@@ -105,7 +105,7 @@ export default function BannerSlider({
   return (
     <div
       className={cn(
-        "relative w-full h-96 md:h-[500px] overflow-hidden",
+        "relative w-full h-80 sm:h-96 md:h-[500px] overflow-hidden",
         className
       )}
       onMouseEnter={handleMouseEnter}
@@ -153,21 +153,21 @@ export default function BannerSlider({
 
             {/* 배너 콘텐츠 */}
             <div className="relative z-10 h-full flex items-center">
-              <div className="container mx-auto px-4 md:px-8">
+              <div className="container mx-auto px-3 sm:px-4 md:px-8">
                 <div className="max-w-2xl text-white">
-                  <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight word-break-keep">
+                  <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 sm:mb-4 leading-tight word-break-keep">
                     {banner.title}
                   </h2>
-                  <p className="text-lg md:text-xl mb-8 text-gray-200 dark:text-gray-100 leading-relaxed word-break-keep">
+                  <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-gray-200 dark:text-gray-100 leading-relaxed word-break-keep">
                     {banner.description}
                   </p>
                   <Link href={banner.linkUrl}>
                     <Button
                       size="lg"
-                      className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 px-8 py-3 text-lg font-semibold transition-all duration-300 group"
+                      className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg font-semibold transition-all duration-300 group"
                     >
                       자세히 보기
-                      <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      <ChevronRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
                 </div>
@@ -183,31 +183,31 @@ export default function BannerSlider({
           <Button
             variant="ghost"
             size="icon"
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 dark:bg-black/40 hover:bg-black/40 dark:hover:bg-black/60 text-white border-0 rounded-full w-12 h-12 transition-all duration-300 z-20"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/20 dark:bg-black/40 hover:bg-black/40 dark:hover:bg-black/60 text-white border-0 rounded-full w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300 z-20"
             onClick={prevSlide}
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 dark:bg-black/40 hover:bg-black/40 dark:hover:bg-black/60 text-white border-0 rounded-full w-12 h-12 transition-all duration-300 z-20"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/20 dark:bg-black/40 hover:bg-black/40 dark:hover:bg-black/60 text-white border-0 rounded-full w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300 z-20"
             onClick={nextSlide}
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </Button>
         </>
       )}
 
       {/* 하단 점 네비게이션 */}
       {showDots && activeBanners.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
+        <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
           {activeBanners.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
               className={cn(
-                "w-3 h-3 rounded-full transition-all duration-300",
+                "w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300",
                 index === currentSlide
                   ? "bg-white scale-125"
                   : "bg-white/50 hover:bg-white/75"
@@ -219,7 +219,7 @@ export default function BannerSlider({
       )}
 
       {/* 슬라이드 인디케이터 */}
-      <div className="absolute top-4 right-4 bg-black/20 dark:bg-black/40 backdrop-blur-sm rounded-full px-3 py-1 text-white text-sm z-20">
+      <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-black/20 dark:bg-black/40 backdrop-blur-sm rounded-full px-2 sm:px-3 py-1 text-white text-xs sm:text-sm z-20">
         {currentSlide + 1} / {activeBanners.length}
       </div>
 

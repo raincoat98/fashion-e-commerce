@@ -58,7 +58,7 @@ export default function ProductDetailPage({
       <Header />
 
       <main
-        className="container mx-auto py-4 lg:py-6 px-4 lg:px-0"
+        className="container mx-auto py-3 sm:py-4 lg:py-6 px-3 sm:px-4 lg:px-0"
         id="product-main"
       >
         {/* 페이지 로딩 애니메이션을 위한 wrapper */}
@@ -68,7 +68,7 @@ export default function ProductDetailPage({
       </main>
 
       {/* Mobile bottom padding for sticky actions */}
-      <div className="lg:hidden h-20"></div>
+      <div className="lg:hidden h-16 sm:h-20"></div>
 
       <Footer />
     </div>

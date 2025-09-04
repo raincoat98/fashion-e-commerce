@@ -533,10 +533,10 @@ export default function ProductGrid({
       )}
 
       {/* 메인 콘텐츠 영역 */}
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
         {/* 사이드바 필터 (데스크톱) */}
         {!isMobile && (
-          <div className="hidden lg:block w-80 flex-shrink-0">
+          <div className="hidden lg:block w-72 xl:w-80 flex-shrink-0">
             <div className="sticky top-4">
               <ProductFilter
                 isOpen={true}
@@ -552,9 +552,9 @@ export default function ProductGrid({
         )}
 
         {/* 메인 콘텐츠 */}
-        <div className="flex-1 space-y-6">
+        <div className="flex-1 space-y-4 lg:space-y-6">
           {/* 툴바 */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
             <div className="flex items-center gap-2 flex-wrap">
               {/* 모바일 필터 버튼 */}
               {isMobile && (
@@ -604,7 +604,7 @@ export default function ProductGrid({
 
               {/* 페이지네이션 */}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center space-x-2 mt-8">
+                <div className="flex justify-center items-center space-x-1 sm:space-x-2 mt-6 sm:mt-8">
                   <Button
                     variant="outline"
                     size="sm"
@@ -612,6 +612,7 @@ export default function ProductGrid({
                       updatePageAndURL(Math.max(1, currentPage - 1))
                     }
                     disabled={currentPage === 1}
+                    className="text-xs sm:text-sm px-2 sm:px-3"
                   >
                     이전
                   </Button>
@@ -625,6 +626,7 @@ export default function ProductGrid({
                           variant={currentPage === page ? "default" : "outline"}
                           size="sm"
                           onClick={() => updatePageAndURL(page)}
+                          className="text-xs sm:text-sm px-2 sm:px-3 min-w-[32px] sm:min-w-[36px]"
                         >
                           {page}
                         </Button>
@@ -641,6 +643,7 @@ export default function ProductGrid({
                       updatePageAndURL(Math.min(totalPages, currentPage + 1))
                     }
                     disabled={currentPage === totalPages}
+                    className="text-xs sm:text-sm px-2 sm:px-3"
                   >
                     다음
                   </Button>
