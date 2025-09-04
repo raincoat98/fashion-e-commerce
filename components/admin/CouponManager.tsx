@@ -424,49 +424,57 @@ export default function CouponManager() {
 
       {/* 쿠폰 관리 */}
       <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-gray-900 dark:text-gray-100">
+        <CardHeader className="p-4 sm:p-6">
+          <div className="flex flex-col space-y-3 sm:space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
+            <div className="min-w-0 flex-1">
+              <CardTitle className="text-lg sm:text-xl lg:text-2xl text-gray-900 dark:text-gray-100">
                 쿠폰 관리
               </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
+              <CardDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
                 쿠폰을 생성하고 관리하세요
               </CardDescription>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3 lg:space-x-4 flex-shrink-0">
               <Link href="/">
                 <Button
                   variant="outline"
-                  className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  size="sm"
+                  className="w-full sm:w-auto flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <Home className="w-4 h-4" />
-                  <span>홈으로 가기</span>
+                  <span className="hidden sm:inline">홈으로 가기</span>
+                  <span className="sm:hidden">홈</span>
                 </Button>
               </Link>
               <Button
                 variant="outline"
-                className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                size="sm"
+                className="w-full sm:w-auto flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 <Download className="w-4 h-4" />
-                <span>엑셀 다운로드</span>
+                <span className="hidden sm:inline">엑셀 다운로드</span>
+                <span className="sm:hidden">엑셀</span>
               </Button>
               <Dialog
                 open={isCreateDialogOpen}
                 onOpenChange={setIsCreateDialogOpen}
               >
                 <DialogTrigger asChild>
-                  <Button className="lumina-gradient text-white">
+                  <Button
+                    size="sm"
+                    className="w-full sm:w-auto lumina-gradient text-white"
+                  >
                     <Plus className="w-4 h-4 mr-2" />
-                    쿠폰 생성
+                    <span className="hidden sm:inline">쿠폰 생성</span>
+                    <span className="sm:hidden">생성</span>
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                  <DialogHeader>
-                    <DialogTitle className="text-gray-900 dark:text-gray-100">
+                  <DialogHeader className="pb-4">
+                    <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
                       새 쿠폰 생성
                     </DialogTitle>
-                    <DialogDescription className="text-gray-600 dark:text-gray-400">
+                    <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                       새로운 프로모션 쿠폰을 생성하세요
                     </DialogDescription>
                   </DialogHeader>
@@ -638,11 +646,11 @@ export default function CouponManager() {
                 onOpenChange={setIsEditDialogOpen}
               >
                 <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                  <DialogHeader>
-                    <DialogTitle className="text-gray-900 dark:text-gray-100">
+                  <DialogHeader className="pb-4">
+                    <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
                       쿠폰 수정
                     </DialogTitle>
-                    <DialogDescription className="text-gray-600 dark:text-gray-400">
+                    <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                       쿠폰 정보를 수정하세요
                     </DialogDescription>
                   </DialogHeader>
@@ -839,28 +847,26 @@ export default function CouponManager() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-4">
-              <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="상태" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">전체</SelectItem>
-                  <SelectItem value="active">활성</SelectItem>
-                  <SelectItem value="inactive">비활성</SelectItem>
-                </SelectContent>
-              </Select>
+          <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 mb-6">
+            <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+              <SelectTrigger className="w-full sm:w-40">
+                <SelectValue placeholder="상태" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">전체</SelectItem>
+                <SelectItem value="active">활성</SelectItem>
+                <SelectItem value="inactive">비활성</SelectItem>
+              </SelectContent>
+            </Select>
 
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
-                <Input
-                  placeholder="쿠폰 코드, 이름 검색..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-64 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                />
-              </div>
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
+              <Input
+                placeholder="쿠폰 코드, 이름 검색..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+              />
             </div>
           </div>
 
@@ -871,33 +877,35 @@ export default function CouponManager() {
                 key={coupon.id}
                 className="hover:shadow-md transition-shadow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
               >
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div>
-                        <div className="flex items-center space-x-3 mb-2">
-                          <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex flex-col space-y-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 mb-2">
+                          <h3 className="font-medium text-sm sm:text-base text-gray-900 dark:text-gray-100 truncate">
                             {coupon.name}
                           </h3>
-                          <Badge
-                            className={
-                              coupon.isActive
-                                ? "bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-200 hover:bg-green-100 dark:hover:bg-green-700"
-                                : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                            }
-                          >
-                            {coupon.isActive ? "활성" : "비활성"}
-                          </Badge>
-                          <Badge className="bg-blue-100 dark:bg-blue-700 text-blue-800 dark:text-blue-200 hover:bg-blue-100 dark:hover:bg-blue-700">
-                            {getCouponTypeLabel(coupon.type)}
-                          </Badge>
+                          <div className="flex items-center space-x-2">
+                            <Badge
+                              className={
+                                coupon.isActive
+                                  ? "bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-200 hover:bg-green-100 dark:hover:bg-green-700 text-xs"
+                                  : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 text-xs"
+                              }
+                            >
+                              {coupon.isActive ? "활성" : "비활성"}
+                            </Badge>
+                            <Badge className="bg-blue-100 dark:bg-blue-700 text-blue-800 dark:text-blue-200 hover:bg-blue-100 dark:hover:bg-blue-700 text-xs">
+                              {getCouponTypeLabel(coupon.type)}
+                            </Badge>
+                          </div>
                         </div>
 
-                        <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                        <div className="space-y-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                           <p>
                             <strong>코드:</strong> {coupon.code}
                           </p>
-                          <p>{coupon.description}</p>
+                          <p className="line-clamp-2">{coupon.description}</p>
                           <p>
                             <strong>할인:</strong>{" "}
                             {getCouponValueDisplay(coupon)}
@@ -918,40 +926,42 @@ export default function CouponManager() {
                       </div>
                     </div>
 
-                    <div className="flex items-center space-x-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => copyCouponCode(coupon.code)}
-                        className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => openEditDialog(coupon)}
-                        className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => toggleCouponStatus(coupon.id)}
-                        className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                      >
-                        {coupon.isActive ? (
-                          <EyeOff className="w-4 h-4" />
-                        ) : (
-                          <Eye className="w-4 h-4" />
-                        )}
-                      </Button>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => copyCouponCode(coupon.code)}
+                          className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 p-2"
+                        >
+                          <Copy className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => openEditDialog(coupon)}
+                          className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 p-2"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => toggleCouponStatus(coupon.id)}
+                          className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 p-2"
+                        >
+                          {coupon.isActive ? (
+                            <EyeOff className="w-4 h-4" />
+                          ) : (
+                            <Eye className="w-4 h-4" />
+                          )}
+                        </Button>
+                      </div>
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => deleteCoupon(coupon.id)}
-                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 border-gray-300 dark:border-gray-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 border-red-300 dark:border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 p-2"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

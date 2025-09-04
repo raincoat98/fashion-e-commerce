@@ -437,20 +437,20 @@ export default function OrderStatusManager() {
 
       {/* 주문 목록 */}
       <Card className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border-gray-200 dark:border-gray-700">
-        <CardHeader>
+        <CardHeader className="p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <CardTitle className="text-lg lg:text-xl text-gray-900 dark:text-gray-100">
+            <div className="min-w-0 flex-1">
+              <CardTitle className="text-lg sm:text-xl lg:text-2xl text-gray-900 dark:text-gray-100">
                 주문 관리
               </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
+              <CardDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
                 주문 상태를 관리하고 부분 취소, 영수증 발급을 처리하세요
               </CardDescription>
             </div>
             <Button
               variant="outline"
               size="sm"
-              className="flex items-center space-x-2 w-fit border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="flex items-center space-x-2 w-full sm:w-fit border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               onClick={handleExportOrderStatus}
             >
               <Download className="w-4 h-4" />
@@ -474,12 +474,12 @@ export default function OrderStatusManager() {
                   key={order.id}
                   className="hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 >
-                  <CardContent className="p-4 lg:p-6">
+                  <CardContent className="p-4 sm:p-6">
                     <div className="space-y-4">
                       {/* 주문 헤더 */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div className="flex flex-wrap items-center gap-2 lg:gap-4">
-                          <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-lg">
+                      <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 lg:gap-4">
+                          <h3 className="font-semibold text-base sm:text-lg text-gray-900 dark:text-gray-100">
                             {order.id}
                           </h3>
                           <Badge
@@ -487,7 +487,7 @@ export default function OrderStatusManager() {
                               orderStatusFlow.find(
                                 (s) => s.value === order.status
                               )?.color
-                            } px-3 py-1`}
+                            } px-2 sm:px-3 py-1 text-xs sm:text-sm`}
                           >
                             <StatusIcon className="w-3 h-3 mr-1" />
                             {
@@ -498,70 +498,70 @@ export default function OrderStatusManager() {
                           </Badge>
                           <Badge
                             variant="outline"
-                            className="px-3 py-1 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
+                            className="px-2 sm:px-3 py-1 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs sm:text-sm"
                           >
                             {PaymentMethod?.label}
                           </Badge>
                         </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">
                           {order.orderDate}
                         </div>
                       </div>
 
                       {/* 고객 정보 */}
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-4 rounded-xl">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-3 sm:p-4 rounded-xl">
                           <div className="flex items-center space-x-2 mb-2">
                             <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                            <p className="text-sm font-semibold text-blue-900 dark:text-blue-100">
+                            <p className="text-xs sm:text-sm font-semibold text-blue-900 dark:text-blue-100">
                               고객 정보
                             </p>
                           </div>
-                          <p className="font-medium text-gray-900 dark:text-gray-100">
+                          <p className="font-medium text-sm sm:text-base text-gray-900 dark:text-gray-100">
                             {order.customerName}
                           </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
                             {order.customerEmail}
                           </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                             {order.customerPhone}
                           </p>
                         </div>
-                        <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 p-4 rounded-xl">
+                        <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 p-3 sm:p-4 rounded-xl">
                           <div className="flex items-center space-x-2 mb-2">
                             <MapPin className="w-4 h-4 text-orange-600 dark:text-orange-400" />
-                            <p className="text-sm font-semibold text-orange-900 dark:text-orange-100">
+                            <p className="text-xs sm:text-sm font-semibold text-orange-900 dark:text-orange-100">
                               배송지
                             </p>
                           </div>
-                          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                          <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                             {order.shippingAddress}
                           </p>
                           {order.shippingMemo && (
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 italic">
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 italic">
                               메모: {order.shippingMemo}
                             </p>
                           )}
                         </div>
-                        <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-4 rounded-xl">
+                        <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-3 sm:p-4 rounded-xl sm:col-span-2 lg:col-span-1">
                           <div className="flex items-center space-x-2 mb-2">
                             <DollarSign className="w-4 h-4 text-green-600 dark:text-green-400" />
-                            <p className="text-sm font-semibold text-green-900 dark:text-green-100">
+                            <p className="text-xs sm:text-sm font-semibold text-green-900 dark:text-green-100">
                               금액 정보
                             </p>
                           </div>
                           <div className="space-y-1">
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                               상품: {order.subtotal.toLocaleString()}원
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                               배송비: {order.shippingFee.toLocaleString()}원
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                               할인: -{order.discountAmount.toLocaleString()}원
                             </p>
                             <div className="border-t border-green-200 dark:border-green-700 pt-1 mt-2">
-                              <p className="font-semibold text-green-900 dark:text-green-100">
+                              <p className="font-semibold text-sm sm:text-base text-green-900 dark:text-green-100">
                                 총 결제: {order.totalAmount.toLocaleString()}원
                               </p>
                             </div>
@@ -618,7 +618,7 @@ export default function OrderStatusManager() {
                       </div>
 
                       {/* 액션 버튼 */}
-                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                      <div className="flex flex-col space-y-3 lg:space-y-0 lg:flex-row lg:items-center lg:justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div className="flex flex-wrap gap-2">
                           <Button
                             size="sm"
@@ -698,11 +698,11 @@ export default function OrderStatusManager() {
       {/* 상태 변경 다이얼로그 */}
       <Dialog open={isStatusDialogOpen} onOpenChange={setIsStatusDialogOpen}>
         <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-gray-100">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
               주문 상태 변경
             </DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-400">
+            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               주문 상태를 변경하세요
             </DialogDescription>
           </DialogHeader>
@@ -758,11 +758,11 @@ export default function OrderStatusManager() {
       {/* 부분 취소 다이얼로그 */}
       <Dialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
         <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-gray-100">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
               부분 취소
             </DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-400">
+            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               취소할 상품과 수량을 선택하세요
             </DialogDescription>
           </DialogHeader>
@@ -843,11 +843,11 @@ export default function OrderStatusManager() {
       {/* 영수증 발급 다이얼로그 */}
       <Dialog open={isReceiptDialogOpen} onOpenChange={setIsReceiptDialogOpen}>
         <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-gray-100">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
               영수증 발급
             </DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-400">
+            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               주문에 대한 영수증을 발급하세요
             </DialogDescription>
           </DialogHeader>

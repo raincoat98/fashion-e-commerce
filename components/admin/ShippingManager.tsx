@@ -550,20 +550,20 @@ ${
 
       {/* 배송 주문 목록 */}
       <Card className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border-gray-200 dark:border-gray-700">
-        <CardHeader>
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <CardHeader className="p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <CardTitle className="text-lg lg:text-xl text-gray-900 dark:text-gray-100">
+              <CardTitle className="text-lg sm:text-xl lg:text-2xl text-gray-900 dark:text-gray-100">
                 배송 관리
               </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
+              <CardDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 송장 발급, 배송 추적, 출고 라벨 인쇄를 관리하세요
               </CardDescription>
             </div>
             <Button
               variant="outline"
               size="sm"
-              className="flex items-center space-x-2 w-fit border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="flex items-center space-x-2 w-full sm:w-fit border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               onClick={handleExportShipping}
             >
               <Download className="w-4 h-4" />
@@ -610,18 +610,18 @@ ${
                   key={order.id}
                   className="hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 >
-                  <CardContent className="p-4 lg:p-6">
-                    <div className="space-y-4">
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="space-y-3 sm:space-y-4">
                       {/* 주문 헤더 */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div className="flex flex-wrap items-center gap-2 lg:gap-4">
-                          <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-lg">
+                      <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 lg:gap-4">
+                          <h3 className="font-semibold text-base sm:text-lg text-gray-900 dark:text-gray-100">
                             {order.id}
                           </h3>
                           <Badge
                             className={`${
                               statusConfig[order.status].color
-                            } px-3 py-1`}
+                            } px-2 sm:px-3 py-1 text-xs sm:text-sm`}
                           >
                             <StatusIcon className="w-3 h-3 mr-1" />
                             {statusConfig[order.status].label}
@@ -631,71 +631,71 @@ ${
                               <img
                                 src={courier.logo}
                                 alt={courier.name}
-                                className="h-5 lg:h-6"
+                                className="h-4 sm:h-5 lg:h-6"
                               />
-                              <span className="text-sm text-gray-600 dark:text-gray-400">
+                              <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                                 {courier.name}
                               </span>
                             </div>
                           )}
                         </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">
                           {order.createdAt}
                         </div>
                       </div>
 
                       {/* 고객 정보 */}
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-4 rounded-xl">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-3 sm:p-4 rounded-xl">
                           <div className="flex items-center space-x-2 mb-2">
                             <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                            <p className="text-sm font-semibold text-blue-900 dark:text-blue-100">
+                            <p className="text-xs sm:text-sm font-semibold text-blue-900 dark:text-blue-100">
                               고객 정보
                             </p>
                           </div>
-                          <p className="font-medium text-gray-900 dark:text-gray-100">
+                          <p className="font-medium text-sm sm:text-base text-gray-900 dark:text-gray-100">
                             {order.customerName}
                           </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                             {order.customerPhone}
                           </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                             {order.customerEmail}
                           </p>
                         </div>
-                        <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 p-4 rounded-xl">
+                        <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 p-3 sm:p-4 rounded-xl">
                           <div className="flex items-center space-x-2 mb-2">
                             <MapPin className="w-4 h-4 text-orange-600 dark:text-orange-400" />
-                            <p className="text-sm font-semibold text-orange-900 dark:text-orange-100">
+                            <p className="text-xs sm:text-sm font-semibold text-orange-900 dark:text-orange-100">
                               배송지
                             </p>
                           </div>
-                          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                          <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                             {order.shippingAddress}
                           </p>
                           {order.shippingMemo && (
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 italic">
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 italic">
                               메모: {order.shippingMemo}
                             </p>
                           )}
                         </div>
-                        <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-4 rounded-xl">
+                        <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-3 sm:p-4 rounded-xl sm:col-span-2 lg:col-span-1">
                           <div className="flex items-center space-x-2 mb-2">
                             <Package2 className="w-4 h-4 text-green-600 dark:text-green-400" />
-                            <p className="text-sm font-semibold text-green-900 dark:text-green-100">
+                            <p className="text-xs sm:text-sm font-semibold text-green-900 dark:text-green-100">
                               배송 정보
                             </p>
                           </div>
                           <div className="space-y-1">
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                               무게: {order.weight}kg
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                               크기: {order.dimensions.length}x
                               {order.dimensions.width}x{order.dimensions.height}
                               cm
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                               배송비: {order.shippingCost.toLocaleString()}원
                             </p>
                           </div>
@@ -706,7 +706,7 @@ ${
                       <div>
                         <div className="flex items-center space-x-2 mb-3">
                           <ShoppingCart className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                          <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                          <h4 className="font-semibold text-sm sm:text-base text-gray-900 dark:text-gray-100">
                             상품 내역
                           </h4>
                         </div>
@@ -714,13 +714,13 @@ ${
                           {order.items.map((item) => (
                             <div
                               key={item.id}
-                              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 rounded-xl border border-gray-200 dark:border-gray-600"
+                              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 sm:p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 rounded-xl border border-gray-200 dark:border-gray-600"
                             >
                               <div className="flex-1 min-w-0">
-                                <p className="font-semibold text-gray-900 dark:text-gray-100 truncate">
+                                <p className="font-semibold text-sm sm:text-base text-gray-900 dark:text-gray-100 truncate">
                                   {item.name}
                                 </p>
-                                <div className="flex flex-wrap gap-2 text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                <div className="flex flex-wrap gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
                                   <span>{item.size}</span>
                                   <span>•</span>
                                   <span>{item.color}</span>
@@ -735,31 +735,31 @@ ${
 
                       {/* 송장 정보 */}
                       {order.trackingNumber && (
-                        <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                        <div className="p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                          <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-gray-100">
                                 송장번호
                               </p>
-                              <p className="text-lg font-mono text-blue-600 dark:text-blue-400">
+                              <p className="text-base sm:text-lg font-mono text-blue-600 dark:text-blue-400 break-all">
                                 {order.trackingNumber}
                               </p>
                               {order.estimatedDelivery && (
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                                   예상 배송: {order.estimatedDelivery}
                                 </p>
                               )}
                             </div>
-                            <div className="flex items-center space-x-2">
+                            <div className="flex items-center space-x-2 flex-shrink-0">
                               <Button
                                 size="sm"
                                 variant="outline"
                                 onClick={() =>
                                   copyTrackingNumber(order.trackingNumber!)
                                 }
-                                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs sm:text-sm px-2 sm:px-3"
                               >
-                                <Copy className="w-4 h-4 mr-1" />
+                                <Copy className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                                 복사
                               </Button>
                               <Button
@@ -771,9 +771,9 @@ ${
                                     courier?.code || ""
                                   )
                                 }
-                                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs sm:text-sm px-2 sm:px-3"
                               >
-                                <ExternalLink className="w-4 h-4 mr-1" />
+                                <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                                 추적
                               </Button>
                             </div>
@@ -782,18 +782,18 @@ ${
                       )}
 
                       {/* 액션 버튼 */}
-                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-4 border-t border-gray-200 dark:border-gray-600">
+                      <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between pt-4 border-t border-gray-200 dark:border-gray-600">
                         <div className="flex flex-wrap gap-2">
                           {!order.trackingNumber && (
                             <Button
                               size="sm"
-                              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+                              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white text-xs sm:text-sm"
                               onClick={() => {
                                 setSelectedOrder(order);
                                 setIsShippingDialogOpen(true);
                               }}
                             >
-                              <Package className="w-4 h-4 mr-1" />
+                              <Package className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                               <span className="hidden sm:inline">
                                 송장 발급
                               </span>
@@ -804,9 +804,9 @@ ${
                             size="sm"
                             variant="outline"
                             onClick={() => generateShippingLabel(order)}
-                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs sm:text-sm"
                           >
-                            <Printer className="w-4 h-4 mr-1" />
+                            <Printer className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                             <span className="hidden sm:inline">출고 라벨</span>
                             <span className="sm:hidden">라벨</span>
                           </Button>
@@ -817,9 +817,9 @@ ${
                               setSelectedOrder(order);
                               setIsTrackingDialogOpen(true);
                             }}
-                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs sm:text-sm"
                           >
-                            <Eye className="w-4 h-4 mr-1" />
+                            <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                             <span className="hidden sm:inline">상세 보기</span>
                             <span className="sm:hidden">상세</span>
                           </Button>
@@ -828,9 +828,9 @@ ${
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs sm:text-sm"
                           >
-                            <Download className="w-4 h-4 mr-1" />
+                            <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                             <span className="hidden sm:inline">배송서</span>
                             <span className="sm:hidden">다운로드</span>
                           </Button>
@@ -838,9 +838,9 @@ ${
                             <Button
                               size="sm"
                               variant="outline"
-                              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs sm:text-sm"
                             >
-                              <FileText className="w-4 h-4 mr-1" />
+                              <FileText className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                               <span className="hidden sm:inline">송장서</span>
                             </Button>
                           )}

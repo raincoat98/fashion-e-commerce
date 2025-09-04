@@ -341,11 +341,11 @@ export default function CustomerManager() {
         {/* 고객 관리 탭 */}
         <TabsContent value="customers" className="space-y-6">
           <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-gray-900 dark:text-gray-100">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
                 고객 목록
               </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
+              <CardDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
                 고객 정보를 관리하고 주문 이력을 확인하세요
               </CardDescription>
             </CardHeader>
@@ -494,11 +494,11 @@ export default function CustomerManager() {
         {/* 리뷰 관리 탭 */}
         <TabsContent value="reviews" className="space-y-6">
           <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-gray-900 dark:text-gray-100">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
                 리뷰 관리
               </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
+              <CardDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
                 고객 리뷰를 승인하고 관리하세요
               </CardDescription>
             </CardHeader>
@@ -509,7 +509,7 @@ export default function CustomerManager() {
                   value={reviewStatusFilter}
                   onValueChange={setReviewStatusFilter}
                 >
-                  <SelectTrigger className="w-40">
+                  <SelectTrigger className="w-full sm:w-40">
                     <SelectValue placeholder="상태" />
                   </SelectTrigger>
                   <SelectContent>
@@ -528,55 +528,57 @@ export default function CustomerManager() {
                     key={review.id}
                     className="hover:shadow-md transition-shadow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   >
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <h3 className="font-medium text-gray-900 dark:text-gray-100">
-                              {review.customerName}
-                            </h3>
-                            <Badge
-                              className={getReviewStatusColor(review.status)}
-                            >
-                              {review.status === "pending"
-                                ? "승인 대기"
-                                : review.status === "approved"
-                                ? "승인됨"
-                                : "거부됨"}
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                            {review.productName}
-                          </p>
-                          <div className="flex items-center space-x-2 mb-2">
-                            <div className="flex items-center">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <Star
-                                  key={star}
-                                  className={`w-4 h-4 ${
-                                    star <= review.rating
-                                      ? "text-yellow-400 fill-current"
-                                      : "text-gray-300 dark:text-gray-600"
-                                  }`}
-                                />
-                              ))}
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col space-y-4">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-2">
+                              <h3 className="font-medium text-gray-900 dark:text-gray-100 truncate">
+                                {review.customerName}
+                              </h3>
+                              <Badge
+                                className={getReviewStatusColor(review.status)}
+                              >
+                                {review.status === "pending"
+                                  ? "승인 대기"
+                                  : review.status === "approved"
+                                  ? "승인됨"
+                                  : "거부됨"}
+                              </Badge>
                             </div>
-                            <span className="text-sm text-gray-600 dark:text-gray-400">
-                              {review.rating}/5
-                            </span>
-                          </div>
-                          <h4 className="font-medium mb-1 text-gray-900 dark:text-gray-100">
-                            {review.title}
-                          </h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                            {review.content}
-                          </p>
-                          <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-                            <span>{review.createdAt}</span>
-                            <span>도움됨 {review.helpfulCount}개</span>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 truncate">
+                              {review.productName}
+                            </p>
+                            <div className="flex items-center space-x-2 mb-2">
+                              <div className="flex items-center">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <Star
+                                    key={star}
+                                    className={`w-4 h-4 ${
+                                      star <= review.rating
+                                        ? "text-yellow-400 fill-current"
+                                        : "text-gray-300 dark:text-gray-600"
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                              <span className="text-sm text-gray-600 dark:text-gray-400">
+                                {review.rating}/5
+                              </span>
+                            </div>
+                            <h4 className="font-medium mb-1 text-gray-900 dark:text-gray-100">
+                              {review.title}
+                            </h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">
+                              {review.content}
+                            </p>
+                            <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                              <span>{review.createdAt}</span>
+                              <span>도움됨 {review.helpfulCount}개</span>
+                            </div>
                           </div>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
                           {review.status === "pending" && (
                             <>
                               <Button
@@ -632,11 +634,11 @@ export default function CustomerManager() {
         onOpenChange={setIsCustomerDialogOpen}
       >
         <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-gray-100">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
               고객 상세 정보
             </DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-400">
+            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               고객 정보와 주문 이력을 확인하세요
             </DialogDescription>
           </DialogHeader>
@@ -781,11 +783,11 @@ export default function CustomerManager() {
       {/* 리뷰 상세 다이얼로그 */}
       <Dialog open={isReviewDialogOpen} onOpenChange={setIsReviewDialogOpen}>
         <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-gray-100">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
               리뷰 상세
             </DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-400">
+            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               리뷰 내용을 확인하고 승인/거부를 결정하세요
             </DialogDescription>
           </DialogHeader>

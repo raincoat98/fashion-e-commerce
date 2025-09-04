@@ -1482,109 +1482,112 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
         {/* 상품 관리 */}
         <Card className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border-gray-200 dark:border-gray-700">
-          <CardHeader>
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-              <div>
-                <CardTitle className="text-lg lg:text-xl text-gray-900 dark:text-gray-100">
+          <CardHeader className="p-4 sm:p-6">
+            <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 flex-1">
+                <CardTitle className="text-lg sm:text-xl lg:text-2xl text-gray-900 dark:text-gray-100">
                   상품 관리
                 </CardTitle>
-                <CardDescription className="text-gray-600 dark:text-gray-400">
+                <CardDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
                   상품을 등록하고 관리하세요
                 </CardDescription>
               </div>
-              <div className="flex flex-wrap items-center gap-2 lg:gap-4">
+              <div className="flex flex-col space-y-2 sm:space-y-0 sm:flex-row sm:items-center sm:gap-3 lg:gap-4 flex-shrink-0">
                 <Link href="/">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 w-full sm:w-auto"
                   >
                     <Home className="w-4 h-4" />
                     <span className="hidden sm:inline">홈으로 가기</span>
                     <span className="sm:hidden">홈</span>
                   </Button>
                 </Link>
-                <Button
-                  onClick={() => setShowProductForm(true)}
-                  size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">상품 등록</span>
-                  <span className="sm:hidden">등록</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                >
-                  <Download className="w-4 h-4" />
-                  <span className="hidden sm:inline">엑셀 다운로드</span>
-                  <span className="sm:hidden">엑셀</span>
-                </Button>
-                <Dialog
-                  open={isBulkUploadDialogOpen}
-                  onOpenChange={setIsBulkUploadDialogOpen}
-                >
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                    >
-                      <Upload className="w-4 h-4" />
-                      <span className="hidden sm:inline">대량 업로드</span>
-                      <span className="sm:hidden">업로드</span>
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                    <DialogHeader>
-                      <DialogTitle className="text-gray-900 dark:text-gray-100">
-                        대량 상품 업로드
-                      </DialogTitle>
-                      <DialogDescription className="text-gray-600 dark:text-gray-400">
-                        CSV 파일을 업로드하여 상품을 대량으로 등록하세요
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <div>
-                        <Label
-                          htmlFor="bulk-upload"
-                          className="text-gray-900 dark:text-gray-100"
-                        >
-                          CSV 파일 선택
-                        </Label>
-                        <Input
-                          id="bulk-upload"
-                          type="file"
-                          accept=".csv"
-                          onChange={(e) =>
-                            e.target.files &&
-                            handleBulkUpload(e.target.files[0])
-                          }
-                          className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                        />
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={() => setShowProductForm(true)}
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white flex-1 sm:flex-none"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    <span className="hidden sm:inline">상품 등록</span>
+                    <span className="sm:hidden">등록</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex-1 sm:flex-none"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span className="hidden sm:inline">엑셀 다운로드</span>
+                    <span className="sm:hidden">엑셀</span>
+                  </Button>
+                  <Dialog
+                    open={isBulkUploadDialogOpen}
+                    onOpenChange={setIsBulkUploadDialogOpen}
+                  >
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex-1 sm:flex-none"
+                      >
+                        <Upload className="w-4 h-4" />
+                        <span className="hidden sm:inline">대량 업로드</span>
+                        <span className="sm:hidden">업로드</span>
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <DialogHeader>
+                        <DialogTitle className="text-gray-900 dark:text-gray-100">
+                          대량 상품 업로드
+                        </DialogTitle>
+                        <DialogDescription className="text-gray-600 dark:text-gray-400">
+                          CSV 파일을 업로드하여 상품을 대량으로 등록하세요
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label
+                            htmlFor="bulk-upload"
+                            className="text-gray-900 dark:text-gray-100"
+                          >
+                            CSV 파일 선택
+                          </Label>
+                          <Input
+                            id="bulk-upload"
+                            type="file"
+                            accept=".csv"
+                            onChange={(e) =>
+                              e.target.files &&
+                              handleBulkUpload(e.target.files[0])
+                            }
+                            className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          />
+                        </div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          <p>CSV 파일 형식:</p>
+                          <p>
+                            상품명,설명,가격,할인가격,카테고리,컬렉션,색상,사이즈,재고,태그
+                          </p>
+                        </div>
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
-                        <p>CSV 파일 형식:</p>
-                        <p>
-                          상품명,설명,가격,할인가격,카테고리,컬렉션,색상,사이즈,재고,태그
-                        </p>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </div>
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center space-x-4">
+          <CardContent className="p-4 sm:p-6 pt-0">
+            <div className="space-y-4 mb-6">
+              {/* 필터 섹션 */}
+              <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:space-x-4">
                 <Select
                   value={selectedCategory}
                   onValueChange={setSelectedCategory}
                 >
-                  <SelectTrigger className="w-40 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                  <SelectTrigger className="w-full sm:w-40 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                     <SelectValue placeholder="카테고리" />
                   </SelectTrigger>
                   <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
@@ -1610,7 +1613,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   value={selectedCollection}
                   onValueChange={setSelectedCollection}
                 >
-                  <SelectTrigger className="w-40 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                  <SelectTrigger className="w-full sm:w-40 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                     <SelectValue placeholder="컬렉션" />
                   </SelectTrigger>
                   <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
@@ -1640,26 +1643,28 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   />
                   <Label
                     htmlFor="show-inactive"
-                    className="text-sm text-gray-900 dark:text-gray-100"
+                    className="text-xs sm:text-sm text-gray-900 dark:text-gray-100"
                   >
-                    비활성화 상품 표시
+                    <span className="hidden sm:inline">비활성화 상품 표시</span>
+                    <span className="sm:hidden">비활성 표시</span>
                   </Label>
                 </div>
+              </div>
 
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
-                  <Input
-                    placeholder="상품명, 설명 검색..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 w-64 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                  />
-                </div>
+              {/* 검색 섹션 */}
+              <div className="relative w-full">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
+                <Input
+                  placeholder="상품명, 설명 검색..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                />
               </div>
             </div>
 
             {/* 상품 목록 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
               {finalFilteredProducts.map((product) => (
                 <Card
                   key={product.id}
@@ -1669,8 +1674,8 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                       : ""
                   }`}
                 >
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="space-y-3 sm:space-y-4">
                       {/* 상품 이미지 */}
                       <div className="relative aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
                         {product.images.length > 0 ? (
@@ -1681,37 +1686,41 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
-                            <Image className="w-12 h-12 text-gray-400 dark:text-gray-500" />
+                            <Image className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 dark:text-gray-500" />
                           </div>
                         )}
-                        <div className="absolute top-2 right-2 flex space-x-1">
+                        <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 flex flex-wrap gap-1">
                           {product.isActive ? (
-                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-900 dark:text-green-200">
+                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-900 dark:text-green-200 text-xs">
                               활성
                             </Badge>
                           ) : (
-                            <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300">
+                            <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 text-xs">
                               비활성
                             </Badge>
                           )}
                           {product.isFeatured && (
-                            <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100 dark:bg-purple-900 dark:text-purple-200">
+                            <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100 dark:bg-purple-900 dark:text-purple-200 text-xs">
                               피처드
                             </Badge>
                           )}
                           {product.isLimited && (
-                            <Badge variant="destructive">LIMITED</Badge>
+                            <Badge variant="destructive" className="text-xs">
+                              LIMITED
+                            </Badge>
                           )}
                           {product.isHot && (
-                            <Badge variant="destructive">HOT</Badge>
+                            <Badge variant="destructive" className="text-xs">
+                              HOT
+                            </Badge>
                           )}
                           {product.isNew && (
-                            <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900 dark:text-blue-200">
+                            <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900 dark:text-blue-200 text-xs">
                               NEW
                             </Badge>
                           )}
                           {product.isBest && (
-                            <Badge className="bg-yellow-500 text-white dark:bg-yellow-600">
+                            <Badge className="bg-yellow-500 text-white dark:bg-yellow-600 text-xs">
                               BEST
                             </Badge>
                           )}
@@ -1720,10 +1729,10 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
                       {/* 상품 정보 */}
                       <div className="space-y-2">
-                        <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                        <h3 className="font-medium text-sm sm:text-base text-gray-900 dark:text-gray-100 line-clamp-2">
                           {product.name}
                         </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                           {product.description}
                         </p>
 
@@ -1731,21 +1740,21 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                           {product.originalPrice &&
                           product.originalPrice > product.price ? (
                             <>
-                              <span className="text-lg font-bold text-red-600 dark:text-red-400">
+                              <span className="text-base sm:text-lg font-bold text-red-600 dark:text-red-400">
                                 {product.price.toLocaleString()}원
                               </span>
-                              <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
+                              <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 line-through">
                                 {product.originalPrice.toLocaleString()}원
                               </span>
                             </>
                           ) : (
-                            <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                            <span className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100">
                               {product.price.toLocaleString()}원
                             </span>
                           )}
                         </div>
 
-                        <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                        <div className="space-y-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                           <div className="flex items-center justify-between">
                             <span>재고: {product.stock}개</span>
                             <span>{product.category}</span>
@@ -1818,7 +1827,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                             size="sm"
                             variant="outline"
                             onClick={() => openEditDialog(product)}
-                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 p-2"
                           >
                             <Edit className="w-4 h-4" />
                           </Button>
@@ -1826,7 +1835,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                             size="sm"
                             variant="outline"
                             onClick={() => toggleProductStatus(product.id)}
-                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 p-2"
                           >
                             {product.isActive ? (
                               <EyeOff className="w-4 h-4" />
@@ -1838,7 +1847,11 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                             size="sm"
                             variant="outline"
                             onClick={() => toggleProductFeatured(product.id)}
-                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            className={`p-2 ${
+                              product.isFeatured
+                                ? "border-yellow-300 dark:border-yellow-600 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
+                                : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            }`}
                           >
                             <Star
                               className={`w-4 h-4 ${
@@ -1853,7 +1866,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                           size="sm"
                           variant="outline"
                           onClick={() => handleDeleteProduct(product.id)}
-                          className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 border-red-300 dark:border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                          className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 border-red-300 dark:border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 p-2"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>

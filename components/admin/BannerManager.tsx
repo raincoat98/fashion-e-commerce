@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useBanners } from "@/hooks/useBanners";
 import { Button } from "@/components/ui/button";
 import {
@@ -204,20 +205,21 @@ export default function BannerManager() {
   return (
     <div className="space-y-6">
       <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-        <CardHeader>
-          <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-            <div>
-              <CardTitle className="text-gray-900 dark:text-gray-100">
+        <CardHeader className="p-4 sm:p-6">
+          <div className="flex flex-col space-y-3 sm:space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
+            <div className="min-w-0 flex-1">
+              <CardTitle className="text-lg sm:text-xl lg:text-2xl text-gray-900 dark:text-gray-100">
                 배너 관리
               </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
+              <CardDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
                 메인 페이지 배너를 등록, 수정, 삭제할 수 있습니다
               </CardDescription>
             </div>
-            <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
+            <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3 lg:space-x-4 flex-shrink-0">
               <Link href="/">
                 <Button
                   variant="outline"
+                  size="sm"
                   className="w-full sm:w-auto flex items-center justify-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <Home className="w-4 h-4" />
@@ -227,6 +229,7 @@ export default function BannerManager() {
               </Link>
               <Button
                 onClick={handleAddBanner}
+                size="sm"
                 className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
               >
                 <Plus className="w-4 h-4" />
@@ -238,20 +241,21 @@ export default function BannerManager() {
         </CardHeader>
         <CardContent>
           {/* 모바일 카드 레이아웃 */}
-          <div className="block md:hidden space-y-4">
+          <div className="block md:hidden space-y-3 sm:space-y-4">
             {banners.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-gray-400 dark:text-gray-500 mb-4">
-                  <Package className="w-16 h-16 mx-auto" />
+              <div className="text-center py-8 sm:py-12">
+                <div className="text-gray-400 dark:text-gray-500 mb-3 sm:mb-4">
+                  <Package className="w-12 h-12 sm:w-16 sm:h-16 mx-auto" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+                <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                   등록된 배너가 없습니다
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400 mb-4">
+                <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-4">
                   첫 번째 배너를 추가해보세요
                 </p>
                 <Button
                   onClick={handleAddBanner}
+                  size="sm"
                   className="inline-flex items-center bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
@@ -264,33 +268,35 @@ export default function BannerManager() {
                   key={banner.id}
                   className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800"
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-start space-x-4">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex items-start space-x-3 sm:space-x-4">
                       {/* 이미지 */}
-                      <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
-                        <img
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden flex-shrink-0">
+                        <Image
                           src={banner.imageUrl}
                           alt={banner.title}
+                          width={64}
+                          height={64}
                           className="w-full h-full object-cover"
                         />
                       </div>
 
                       {/* 메인 정보 */}
-                      <div className="flex-1 space-y-2">
+                      <div className="flex-1 space-y-2 min-w-0">
                         <div className="flex items-start justify-between">
-                          <div>
-                            <h3 className="font-medium text-sm text-gray-900 dark:text-gray-100">
+                          <div className="min-w-0 flex-1">
+                            <h3 className="font-medium text-sm sm:text-base text-gray-900 dark:text-gray-100 truncate">
                               {banner.title}
                             </h3>
-                            <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mt-1">
                               {banner.description}
                             </p>
                           </div>
-                          <div className="flex items-center space-x-1 ml-2">
+                          <div className="flex items-center space-x-1 ml-2 flex-shrink-0">
                             <Button
                               size="sm"
                               variant="ghost"
-                              className="p-1"
+                              className="p-1 h-6 w-6"
                               onClick={() => handleOrderChange(banner.id, "up")}
                               disabled={banner.order === 1}
                             >
@@ -299,7 +305,7 @@ export default function BannerManager() {
                             <Button
                               size="sm"
                               variant="ghost"
-                              className="p-1"
+                              className="p-1 h-6 w-6"
                               onClick={() =>
                                 handleOrderChange(banner.id, "down")
                               }
@@ -311,7 +317,7 @@ export default function BannerManager() {
                         </div>
 
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-2 min-w-0">
                             <Switch
                               checked={banner.isActive}
                               onCheckedChange={() =>
@@ -341,11 +347,11 @@ export default function BannerManager() {
                             </span>
                           </div>
 
-                          <div className="flex items-center space-x-1">
+                          <div className="flex items-center space-x-1 flex-shrink-0">
                             <Button
                               size="sm"
                               variant="outline"
-                              className="p-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                              className="p-1.5 h-7 w-7 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                               onClick={() => handleEditBanner(banner)}
                             >
                               <Edit className="w-3 h-3" />
@@ -353,7 +359,7 @@ export default function BannerManager() {
                             <Button
                               size="sm"
                               variant="destructive"
-                              className="p-2 bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white"
+                              className="p-1.5 h-7 w-7 bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white"
                               onClick={() => handleDeleteBanner(banner.id)}
                             >
                               <Trash2 className="w-3 h-3" />
@@ -381,18 +387,19 @@ export default function BannerManager() {
           {/* 데스크톱 테이블 레이아웃 */}
           <div className="hidden md:block overflow-x-auto">
             {banners.length === 0 ? (
-              <div className="text-center py-16">
+              <div className="text-center py-12 lg:py-16">
                 <div className="text-gray-400 dark:text-gray-500 mb-4">
-                  <Package className="w-20 h-20 mx-auto" />
+                  <Package className="w-16 h-16 lg:w-20 lg:h-20 mx-auto" />
                 </div>
-                <h3 className="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">
+                <h3 className="text-lg lg:text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">
                   등록된 배너가 없습니다
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-6">
                   첫 번째 배너를 추가하여 메인 페이지를 꾸며보세요
                 </p>
                 <Button
                   onClick={handleAddBanner}
+                  size="sm"
                   className="inline-flex items-center bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
@@ -403,13 +410,17 @@ export default function BannerManager() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>순서</TableHead>
-                    <TableHead>이미지</TableHead>
-                    <TableHead>제목</TableHead>
-                    <TableHead>링크</TableHead>
-                    <TableHead>상태</TableHead>
-                    <TableHead>등록일</TableHead>
-                    <TableHead>액션</TableHead>
+                    <TableHead className="text-sm lg:text-base">순서</TableHead>
+                    <TableHead className="text-sm lg:text-base">
+                      이미지
+                    </TableHead>
+                    <TableHead className="text-sm lg:text-base">제목</TableHead>
+                    <TableHead className="text-sm lg:text-base">링크</TableHead>
+                    <TableHead className="text-sm lg:text-base">상태</TableHead>
+                    <TableHead className="text-sm lg:text-base">
+                      등록일
+                    </TableHead>
+                    <TableHead className="text-sm lg:text-base">액션</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -417,11 +428,14 @@ export default function BannerManager() {
                     <TableRow key={banner.id}>
                       <TableCell>
                         <div className="flex items-center space-x-2">
-                          <span className="font-medium">{banner.order}</span>
+                          <span className="font-medium text-sm lg:text-base">
+                            {banner.order}
+                          </span>
                           <div className="flex flex-col space-y-1">
                             <Button
                               size="sm"
                               variant="ghost"
+                              className="h-6 w-6 p-0"
                               onClick={() => handleOrderChange(banner.id, "up")}
                               disabled={banner.order === 1}
                             >
@@ -430,6 +444,7 @@ export default function BannerManager() {
                             <Button
                               size="sm"
                               variant="ghost"
+                              className="h-6 w-6 p-0"
                               onClick={() =>
                                 handleOrderChange(banner.id, "down")
                               }
@@ -441,26 +456,28 @@ export default function BannerManager() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="w-20 h-12 rounded-lg overflow-hidden">
-                          <img
+                        <div className="w-16 h-10 lg:w-20 lg:h-12 rounded-lg overflow-hidden">
+                          <Image
                             src={banner.imageUrl}
                             alt={banner.title}
+                            width={80}
+                            height={48}
                             className="w-full h-full object-cover"
                           />
                         </div>
                       </TableCell>
                       <TableCell>
                         <div>
-                          <p className="font-medium text-gray-900 dark:text-gray-100">
+                          <p className="font-medium text-sm lg:text-base text-gray-900 dark:text-gray-100">
                             {banner.title}
                           </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-xs lg:text-sm text-gray-600 dark:text-gray-400">
                             {banner.description}
                           </p>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className="text-sm text-blue-600 dark:text-blue-400">
+                        <span className="text-xs lg:text-sm text-blue-600 dark:text-blue-400 truncate max-w-32">
                           {banner.linkUrl}
                         </span>
                       </TableCell>
@@ -474,6 +491,7 @@ export default function BannerManager() {
                           />
                           <Badge
                             variant={banner.isActive ? "default" : "secondary"}
+                            className="text-xs"
                           >
                             {banner.isActive ? (
                               <>
@@ -490,7 +508,7 @@ export default function BannerManager() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                        <span className="text-xs lg:text-sm text-gray-600 dark:text-gray-400">
                           {banner.createdAt}
                         </span>
                       </TableCell>
@@ -503,7 +521,7 @@ export default function BannerManager() {
                             className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                           >
                             <Edit className="w-3 h-3 mr-1" />
-                            수정
+                            <span className="hidden lg:inline">수정</span>
                           </Button>
                           <Button
                             size="sm"
@@ -512,7 +530,7 @@ export default function BannerManager() {
                             className="bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white"
                           >
                             <Trash2 className="w-3 h-3 mr-1" />
-                            삭제
+                            <span className="hidden lg:inline">삭제</span>
                           </Button>
                         </div>
                       </TableCell>
@@ -528,18 +546,20 @@ export default function BannerManager() {
       {/* 배너 추가/수정 다이얼로그 */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-gray-100">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
               {editingBanner ? "배너 수정" : "새 배너 추가"}
             </DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-400">
+            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               배너 정보를 입력하고 저장하세요
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-4 sm:space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="title">배너 제목</Label>
+                <Label htmlFor="title" className="text-sm sm:text-base">
+                  배너 제목
+                </Label>
                 <Input
                   id="title"
                   value={formData.title}
@@ -547,10 +567,13 @@ export default function BannerManager() {
                     setFormData({ ...formData, title: e.target.value })
                   }
                   placeholder="배너 제목을 입력하세요"
+                  className="mt-1"
                 />
               </div>
               <div>
-                <Label htmlFor="order">노출 순서</Label>
+                <Label htmlFor="order" className="text-sm sm:text-base">
+                  노출 순서
+                </Label>
                 <Input
                   id="order"
                   type="number"
@@ -563,11 +586,14 @@ export default function BannerManager() {
                   }
                   min="1"
                   max={banners.length + 1}
+                  className="mt-1"
                 />
               </div>
             </div>
             <div>
-              <Label htmlFor="description">배너 설명</Label>
+              <Label htmlFor="description" className="text-sm sm:text-base">
+                배너 설명
+              </Label>
               <Textarea
                 id="description"
                 value={formData.description}
@@ -576,11 +602,14 @@ export default function BannerManager() {
                 }
                 placeholder="배너에 대한 설명을 입력하세요"
                 rows={3}
+                className="mt-1"
               />
             </div>
             <div>
-              <Label htmlFor="imageUrl">이미지 URL</Label>
-              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+              <Label htmlFor="imageUrl" className="text-sm sm:text-base">
+                이미지 URL
+              </Label>
+              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 mt-1">
                 <Input
                   id="imageUrl"
                   value={formData.imageUrl}
@@ -592,7 +621,7 @@ export default function BannerManager() {
                 />
                 <Button
                   variant="outline"
-                  size="icon"
+                  size="sm"
                   className="w-full sm:w-auto"
                 >
                   <Upload className="w-4 h-4" />
@@ -601,7 +630,9 @@ export default function BannerManager() {
               </div>
             </div>
             <div>
-              <Label htmlFor="linkUrl">링크 URL</Label>
+              <Label htmlFor="linkUrl" className="text-sm sm:text-base">
+                링크 URL
+              </Label>
               <Input
                 id="linkUrl"
                 value={formData.linkUrl}
@@ -609,6 +640,7 @@ export default function BannerManager() {
                   setFormData({ ...formData, linkUrl: e.target.value })
                 }
                 placeholder="클릭 시 이동할 URL을 입력하세요"
+                className="mt-1"
               />
             </div>
             <div className="flex items-center space-x-2">
@@ -619,22 +651,26 @@ export default function BannerManager() {
                   setFormData({ ...formData, isActive: checked })
                 }
               />
-              <Label htmlFor="isActive">배너 노출</Label>
+              <Label htmlFor="isActive" className="text-sm sm:text-base">
+                배너 노출
+              </Label>
             </div>
             {formData.imageUrl && (
               <div>
-                <Label>미리보기</Label>
+                <Label className="text-sm sm:text-base">미리보기</Label>
                 <div className="mt-2 w-full h-32 sm:h-48 rounded-lg overflow-hidden border">
-                  <img
+                  <Image
                     src={formData.imageUrl}
                     alt="배너 미리보기"
+                    width={400}
+                    height={192}
                     className="w-full h-full object-cover"
                   />
                 </div>
               </div>
             )}
           </div>
-          <DialogFooter className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+          <DialogFooter className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 pt-4">
             <Button
               variant="outline"
               onClick={() => setIsDialogOpen(false)}

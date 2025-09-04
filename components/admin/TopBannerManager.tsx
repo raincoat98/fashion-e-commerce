@@ -326,126 +326,287 @@ export default function TopBannerManager() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
             탑배너 관리
           </h2>
-          <p className="text-muted-foreground text-gray-600 dark:text-gray-400">
+          <p className="text-sm sm:text-base text-muted-foreground text-gray-600 dark:text-gray-400">
             웹사이트 상단에 표시되는 배너를 관리합니다.
           </p>
         </div>
         <Button
           onClick={handleAddBanner}
-          className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+          className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white w-full sm:w-fit"
         >
-          <Plus className="w-4 h-4 mr-2" />새 배너 추가
+          <Plus className="w-4 h-4 mr-2" />
+          <span className="hidden sm:inline">새 배너 추가</span>
+          <span className="sm:hidden">배너 추가</span>
         </Button>
       </div>
 
       <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-        <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-gray-100">
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
             탑배너 목록
           </CardTitle>
-          <CardDescription className="text-gray-600 dark:text-gray-400">
+          <CardDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
             현재 등록된 탑배너 목록입니다. 순서를 변경하거나 상태를 관리할 수
             있습니다.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-50 dark:bg-gray-700">
-                <TableHead className="text-gray-900 dark:text-gray-100">
-                  순서
-                </TableHead>
-                <TableHead className="text-gray-900 dark:text-gray-100">
-                  제목
-                </TableHead>
-                <TableHead className="text-gray-900 dark:text-gray-100">
-                  내용
-                </TableHead>
-                <TableHead className="text-gray-900 dark:text-gray-100">
-                  타입
-                </TableHead>
-                <TableHead className="text-gray-900 dark:text-gray-100">
-                  전체
-                </TableHead>
-                <TableHead className="text-gray-900 dark:text-gray-100">
-                  색상
-                </TableHead>
-                <TableHead className="text-gray-900 dark:text-gray-100">
-                  링크
-                </TableHead>
-                <TableHead className="text-gray-900 dark:text-gray-100">
-                  기간
-                </TableHead>
-                <TableHead className="text-gray-900 dark:text-gray-100">
-                  상태
-                </TableHead>
-                <TableHead className="text-gray-900 dark:text-gray-100">
-                  작업
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {topBanners.map((banner) => (
-                <TableRow
-                  key={banner.id}
-                  className="hover:bg-gray-50 dark:hover:bg-gray-700"
-                >
-                  <TableCell className="text-gray-900 dark:text-gray-100">
-                    <div className="flex items-center space-x-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleReorder(banner.id, "up")}
-                        disabled={banner.order === 1}
-                        className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+        <CardContent className="p-4 sm:p-6 pt-0">
+          {/* 데스크톱 테이블 레이아웃 */}
+          <div className="hidden lg:block overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-50 dark:bg-gray-700">
+                  <TableHead className="text-gray-900 dark:text-gray-100">
+                    순서
+                  </TableHead>
+                  <TableHead className="text-gray-900 dark:text-gray-100">
+                    제목
+                  </TableHead>
+                  <TableHead className="text-gray-900 dark:text-gray-100">
+                    내용
+                  </TableHead>
+                  <TableHead className="text-gray-900 dark:text-gray-100">
+                    타입
+                  </TableHead>
+                  <TableHead className="text-gray-900 dark:text-gray-100">
+                    전체
+                  </TableHead>
+                  <TableHead className="text-gray-900 dark:text-gray-100">
+                    색상
+                  </TableHead>
+                  <TableHead className="text-gray-900 dark:text-gray-100">
+                    링크
+                  </TableHead>
+                  <TableHead className="text-gray-900 dark:text-gray-100">
+                    기간
+                  </TableHead>
+                  <TableHead className="text-gray-900 dark:text-gray-100">
+                    상태
+                  </TableHead>
+                  <TableHead className="text-gray-900 dark:text-gray-100">
+                    작업
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {topBanners.map((banner) => (
+                  <TableRow
+                    key={banner.id}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                  >
+                    <TableCell className="text-gray-900 dark:text-gray-100">
+                      <div className="flex items-center space-x-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleReorder(banner.id, "up")}
+                          disabled={banner.order === 1}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                        >
+                          <ArrowUp className="w-3 h-3" />
+                        </Button>
+                        <span className="w-8 text-center">{banner.order}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleReorder(banner.id, "down")}
+                          disabled={banner.order === topBanners.length}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                        >
+                          <ArrowDown className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-medium text-gray-900 dark:text-gray-100">
+                      {banner.title}
+                    </TableCell>
+                    <TableCell className="max-w-xs truncate text-gray-700 dark:text-gray-300">
+                      {banner.content}
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          banner.bannerType === "lumina-gradient"
+                            ? "default"
+                            : "secondary"
+                        }
                       >
-                        <ArrowUp className="w-3 h-3" />
-                      </Button>
-                      <span className="w-8 text-center">{banner.order}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleReorder(banner.id, "down")}
-                        disabled={banner.order === topBanners.length}
-                        className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                        {banner.bannerType === "lumina-gradient"
+                          ? "LUMINA"
+                          : "커스텀"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={banner.isFullWidth ? "default" : "outline"}
                       >
-                        <ArrowDown className="w-3 h-3" />
-                      </Button>
+                        {banner.isFullWidth ? "전체" : "일반"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-2">
+                        {banner.bannerType === "custom" ? (
+                          <>
+                            <div
+                              className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600"
+                              style={{
+                                backgroundColor: banner.backgroundColor,
+                              }}
+                            />
+                            <div
+                              className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600"
+                              style={{ backgroundColor: banner.textColor }}
+                            />
+                          </>
+                        ) : (
+                          <div className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600 lumina-gradient"></div>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col space-y-1">
+                        {banner.linkUrl && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            asChild
+                            className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                          >
+                            <a
+                              href={banner.linkUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </Button>
+                        )}
+                        {banner.links && banner.links.length > 0 && (
+                          <div className="text-xs text-muted-foreground text-gray-500 dark:text-gray-400">
+                            +{banner.links.length}개 추가 링크
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm text-gray-700 dark:text-gray-300">
+                        <div>{banner.startDate}</div>
+                        <div className="text-muted-foreground text-gray-500 dark:text-gray-400">
+                          ~ {banner.endDate}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{getStatusBadge(banner)}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleToggleStatus(banner.id)}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                        >
+                          {banner.isActive ? (
+                            <EyeOff className="w-4 h-4" />
+                          ) : (
+                            <Eye className="w-4 h-4" />
+                          )}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditBanner(banner)}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteBanner(banner.id)}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* 모바일 카드 레이아웃 */}
+          <div className="lg:hidden space-y-4">
+            {topBanners.map((banner) => (
+              <Card
+                key={banner.id}
+                className="bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+              >
+                <CardContent className="p-4">
+                  <div className="space-y-3">
+                    {/* 헤더 */}
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-sm sm:text-base text-gray-900 dark:text-gray-100 truncate">
+                          {banner.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
+                          {banner.content}
+                        </p>
+                      </div>
+                      <div className="ml-3 flex-shrink-0">
+                        {getStatusBadge(banner)}
+                      </div>
                     </div>
-                  </TableCell>
-                  <TableCell className="font-medium text-gray-900 dark:text-gray-100">
-                    {banner.title}
-                  </TableCell>
-                  <TableCell className="max-w-xs truncate text-gray-700 dark:text-gray-300">
-                    {banner.content}
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={
-                        banner.bannerType === "lumina-gradient"
-                          ? "default"
-                          : "secondary"
-                      }
-                    >
-                      {banner.bannerType === "lumina-gradient"
-                        ? "LUMINA"
-                        : "커스텀"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={banner.isFullWidth ? "default" : "outline"}>
-                      {banner.isFullWidth ? "전체" : "일반"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-2">
-                      {banner.bannerType === "custom" ? (
-                        <>
+
+                    {/* 상세 정보 */}
+                    <div className="grid grid-cols-2 gap-3 text-xs sm:text-sm">
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          순서:
+                        </span>
+                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                          {banner.order}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          타입:
+                        </span>
+                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                          {banner.bannerType === "custom" ? "커스텀" : "Lumina"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          전체폭:
+                        </span>
+                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                          {banner.isFullWidth ? "예" : "아니오"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          기간:
+                        </span>
+                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                          {banner.startDate} ~ {banner.endDate}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 색상 정보 */}
+                    {banner.bannerType === "custom" && (
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          색상:
+                        </span>
+                        <div className="flex items-center space-x-2">
                           <div
                             className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600"
                             style={{ backgroundColor: banner.backgroundColor }}
@@ -454,97 +615,83 @@ export default function TopBannerManager() {
                             className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600"
                             style={{ backgroundColor: banner.textColor }}
                           />
-                        </>
-                      ) : (
-                        <div className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600 lumina-gradient"></div>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex flex-col space-y-1">
-                      {banner.linkUrl && (
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 액션 버튼 */}
+                    <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-600">
+                      <div className="flex items-center space-x-2">
                         <Button
                           variant="ghost"
                           size="sm"
-                          asChild
-                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+                          onClick={() => handleReorder(banner.id, "up")}
+                          disabled={banner.order === 1}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1.5"
                         >
-                          <a
-                            href={banner.linkUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
+                          <ArrowUp className="w-3 h-3" />
                         </Button>
-                      )}
-                      {banner.links && banner.links.length > 0 && (
-                        <div className="text-xs text-muted-foreground text-gray-500 dark:text-gray-400">
-                          +{banner.links.length}개 추가 링크
-                        </div>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-sm text-gray-700 dark:text-gray-300">
-                      <div>{banner.startDate}</div>
-                      <div className="text-muted-foreground text-gray-500 dark:text-gray-400">
-                        ~ {banner.endDate}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleReorder(banner.id, "down")}
+                          disabled={banner.order === topBanners.length}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1.5"
+                        >
+                          <ArrowDown className="w-3 h-3" />
+                        </Button>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleToggleStatus(banner.id)}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1.5"
+                        >
+                          {banner.isActive ? (
+                            <EyeOff className="w-3 h-3" />
+                          ) : (
+                            <Eye className="w-3 h-3" />
+                          )}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditBanner(banner)}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1.5"
+                        >
+                          <Edit className="w-3 h-3" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteBanner(banner.id)}
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1.5"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
                       </div>
                     </div>
-                  </TableCell>
-                  <TableCell>{getStatusBadge(banner)}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleToggleStatus(banner.id)}
-                        className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-                      >
-                        {banner.isActive ? (
-                          <EyeOff className="w-4 h-4" />
-                        ) : (
-                          <Eye className="w-4 h-4" />
-                        )}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEditBanner(banner)}
-                        className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteBanner(banner.id)}
-                        className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-gray-100">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
               {editingBanner ? "탑배너 수정" : "새 탑배너 추가"}
             </DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-400">
+            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               탑배너의 정보를 입력하세요. 이 배너는 웹사이트 상단에 표시됩니다.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label
                   htmlFor="title"

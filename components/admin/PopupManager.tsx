@@ -370,114 +370,233 @@ export default function PopupManager() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+      <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
             팝업 관리
           </h2>
-          <p className="text-muted-foreground dark:text-gray-400">
+          <p className="text-sm sm:text-base text-muted-foreground dark:text-gray-400 mt-1">
             웹사이트에 표시되는 팝업을 관리합니다.
           </p>
         </div>
         <Button
           onClick={handleAddPopup}
-          className="bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white"
+          size="sm"
+          className="w-full sm:w-auto bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white"
         >
-          <Plus className="w-4 h-4 mr-2" />새 팝업 추가
+          <Plus className="w-4 h-4 mr-2" />
+          <span className="hidden sm:inline">새 팝업 추가</span>
+          <span className="sm:hidden">팝업 추가</span>
         </Button>
       </div>
 
       <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-        <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-gray-100">
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-base sm:text-lg text-gray-900 dark:text-gray-100">
             팝업 목록
           </CardTitle>
-          <CardDescription className="text-gray-600 dark:text-gray-400">
+          <CardDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
             현재 등록된 팝업 목록입니다. 표시 조건과 상태를 관리할 수 있습니다.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>제목</TableHead>
-                <TableHead>크기</TableHead>
-                <TableHead>위치</TableHead>
-                <TableHead>표시 조건</TableHead>
-                <TableHead>대상</TableHead>
-                <TableHead>기간</TableHead>
-                <TableHead>시간</TableHead>
-                <TableHead>상태</TableHead>
-                <TableHead>작업</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {popups.map((popup) => (
-                <TableRow key={popup.id}>
-                  <TableCell>
-                    <div>
-                      <div className="font-medium text-gray-900 dark:text-gray-100">
-                        {popup.title}
-                      </div>
-                      <div className="text-sm text-muted-foreground dark:text-gray-400 max-w-xs truncate">
-                        {popup.content}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-gray-900 dark:text-gray-100">
-                    {popup.width} × {popup.height}
-                  </TableCell>
-                  <TableCell className="text-gray-900 dark:text-gray-100">
-                    {getPositionText(popup.position)}
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-sm">
-                      <div className="text-gray-900 dark:text-gray-100">
-                        {getDisplayTypeText(popup.displayType)}
-                      </div>
-                      {popup.displayType === "delay" && (
-                        <div className="text-muted-foreground dark:text-gray-400">
-                          {popup.delaySeconds}초 후
+        <CardContent className="p-4 sm:p-6 pt-0">
+          {/* 데스크톱 테이블 레이아웃 */}
+          <div className="hidden lg:block overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>제목</TableHead>
+                  <TableHead>크기</TableHead>
+                  <TableHead>위치</TableHead>
+                  <TableHead>표시 조건</TableHead>
+                  <TableHead>대상</TableHead>
+                  <TableHead>기간</TableHead>
+                  <TableHead>시간</TableHead>
+                  <TableHead>상태</TableHead>
+                  <TableHead>작업</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {popups.map((popup) => (
+                  <TableRow key={popup.id}>
+                    <TableCell>
+                      <div>
+                        <div className="font-medium text-gray-900 dark:text-gray-100">
+                          {popup.title}
                         </div>
-                      )}
-                      {popup.displayType === "scroll" && (
-                        <div className="text-muted-foreground dark:text-gray-400">
-                          {popup.scrollPercentage}% 스크롤 시
+                        <div className="text-sm text-muted-foreground dark:text-gray-400 max-w-xs truncate">
+                          {popup.content}
                         </div>
-                      )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-gray-900 dark:text-gray-100">
+                      {popup.width} × {popup.height}
+                    </TableCell>
+                    <TableCell className="text-gray-900 dark:text-gray-100">
+                      {getPositionText(popup.position)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm">
+                        <div className="text-gray-900 dark:text-gray-100">
+                          {getDisplayTypeText(popup.displayType)}
+                        </div>
+                        {popup.displayType === "delay" && (
+                          <div className="text-muted-foreground dark:text-gray-400">
+                            {popup.delaySeconds}초 후
+                          </div>
+                        )}
+                        {popup.displayType === "scroll" && (
+                          <div className="text-muted-foreground dark:text-gray-400">
+                            {popup.scrollPercentage}% 스크롤 시
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-gray-900 dark:text-gray-100">
+                      {getTargetAudienceText(popup.targetAudience)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm">
+                        <div className="text-gray-900 dark:text-gray-100">
+                          {popup.startDate}
+                        </div>
+                        <div className="text-muted-foreground dark:text-gray-400">
+                          ~ {popup.endDate}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm">
+                        <div className="text-gray-900 dark:text-gray-100">
+                          {popup.startTime}
+                        </div>
+                        <div className="text-muted-foreground dark:text-gray-400">
+                          ~ {popup.endTime}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{getStatusBadge(popup)}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleToggleStatus(popup.id)}
+                          className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                          {popup.isActive ? (
+                            <EyeOff className="w-4 h-4" />
+                          ) : (
+                            <Eye className="w-4 h-4" />
+                          )}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditPopup(popup)}
+                          className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeletePopup(popup.id)}
+                          className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* 모바일 카드 레이아웃 */}
+          <div className="lg:hidden space-y-4">
+            {popups.map((popup) => (
+              <Card
+                key={popup.id}
+                className="bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+              >
+                <CardContent className="p-4">
+                  <div className="space-y-3">
+                    {/* 헤더 */}
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-sm sm:text-base text-gray-900 dark:text-gray-100 truncate">
+                          {popup.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
+                          {popup.content}
+                        </p>
+                      </div>
+                      <div className="ml-3 flex-shrink-0">
+                        {getStatusBadge(popup)}
+                      </div>
                     </div>
-                  </TableCell>
-                  <TableCell className="text-gray-900 dark:text-gray-100">
-                    {getTargetAudienceText(popup.targetAudience)}
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-sm">
-                      <div className="text-gray-900 dark:text-gray-100">
-                        {popup.startDate}
+
+                    {/* 상세 정보 */}
+                    <div className="grid grid-cols-2 gap-3 text-xs sm:text-sm">
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          크기:
+                        </span>
+                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                          {popup.width} × {popup.height}
+                        </span>
                       </div>
-                      <div className="text-muted-foreground dark:text-gray-400">
-                        ~ {popup.endDate}
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          위치:
+                        </span>
+                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                          {getPositionText(popup.position)}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          표시:
+                        </span>
+                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                          {getDisplayTypeText(popup.displayType)}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          대상:
+                        </span>
+                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                          {getTargetAudienceText(popup.targetAudience)}
+                        </span>
+                      </div>
+                      <div className="col-span-2">
+                        <span className="text-gray-500 dark:text-gray-400">
+                          기간:
+                        </span>
+                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                          {popup.startDate} ~ {popup.endDate}
+                        </span>
+                      </div>
+                      <div className="col-span-2">
+                        <span className="text-gray-500 dark:text-gray-400">
+                          시간:
+                        </span>
+                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                          {popup.startTime} ~ {popup.endTime}
+                        </span>
                       </div>
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-sm">
-                      <div className="text-gray-900 dark:text-gray-100">
-                        {popup.startTime}
-                      </div>
-                      <div className="text-muted-foreground dark:text-gray-400">
-                        ~ {popup.endTime}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>{getStatusBadge(popup)}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-2">
+
+                    {/* 액션 버튼 */}
+                    <div className="flex items-center space-x-2 pt-2 border-t border-gray-200 dark:border-gray-600">
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => handleToggleStatus(popup.id)}
-                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5"
                       >
                         {popup.isActive ? (
                           <EyeOff className="w-4 h-4" />
@@ -489,7 +608,7 @@ export default function PopupManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleEditPopup(popup)}
-                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -497,26 +616,26 @@ export default function PopupManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDeletePopup(popup.id)}
-                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-gray-100">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
               {editingPopup ? "팝업 수정" : "새 팝업 추가"}
             </DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-400">
+            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               팝업의 정보와 표시 조건을 설정하세요.
             </DialogDescription>
           </DialogHeader>
@@ -526,7 +645,7 @@ export default function PopupManager() {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 기본 정보
               </h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label
                     htmlFor="title"
@@ -604,7 +723,7 @@ export default function PopupManager() {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 표시 설정
               </h3>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label
                     htmlFor="width"
@@ -649,7 +768,7 @@ export default function PopupManager() {
                     className="border-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 sm:col-span-2 lg:col-span-1">
                   <Label
                     htmlFor="position"
                     className="text-gray-900 dark:text-gray-100"
@@ -707,7 +826,7 @@ export default function PopupManager() {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 표시 조건
               </h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label
                     htmlFor="displayType"
@@ -853,7 +972,7 @@ export default function PopupManager() {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 기간 설정
               </h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label
                     htmlFor="startDate"
@@ -889,7 +1008,7 @@ export default function PopupManager() {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label
                     htmlFor="startTime"
