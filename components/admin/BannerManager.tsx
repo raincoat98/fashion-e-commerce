@@ -219,20 +219,20 @@ export default function BannerManager() {
               <Link href="/">
                 <Button
                   variant="outline"
-                  size="sm"
-                  className="w-full sm:w-auto flex items-center justify-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  size="default"
+                  icon={Home}
+                  className="w-full sm:w-auto"
                 >
-                  <Home className="w-4 h-4" />
                   <span className="hidden sm:inline">홈으로 가기</span>
                   <span className="sm:hidden">홈</span>
                 </Button>
               </Link>
               <Button
                 onClick={handleAddBanner}
-                size="sm"
-                className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
+                size="default"
+                icon={Plus}
+                className="w-full sm:w-auto"
               >
-                <Plus className="w-4 h-4" />
                 <span className="hidden sm:inline">배너 추가</span>
                 <span className="sm:hidden">추가</span>
               </Button>
@@ -253,12 +253,7 @@ export default function BannerManager() {
                 <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-4">
                   첫 번째 배너를 추가해보세요
                 </p>
-                <Button
-                  onClick={handleAddBanner}
-                  size="sm"
-                  className="inline-flex items-center bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
+                <Button onClick={handleAddBanner} size="default" icon={Plus}>
                   배너 추가
                 </Button>
               </div>
@@ -294,18 +289,16 @@ export default function BannerManager() {
                           </div>
                           <div className="flex items-center space-x-1 ml-2 flex-shrink-0">
                             <Button
-                              size="sm"
+                              size="icon"
                               variant="ghost"
-                              className="p-1 h-6 w-6"
                               onClick={() => handleOrderChange(banner.id, "up")}
                               disabled={banner.order === 1}
                             >
                               <ArrowUp className="w-3 h-3" />
                             </Button>
                             <Button
-                              size="sm"
+                              size="icon"
                               variant="ghost"
-                              className="p-1 h-6 w-6"
                               onClick={() =>
                                 handleOrderChange(banner.id, "down")
                               }
@@ -349,17 +342,15 @@ export default function BannerManager() {
 
                           <div className="flex items-center space-x-1 flex-shrink-0">
                             <Button
-                              size="sm"
+                              size="icon"
                               variant="outline"
-                              className="p-1.5 h-7 w-7 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                               onClick={() => handleEditBanner(banner)}
                             >
                               <Edit className="w-3 h-3" />
                             </Button>
                             <Button
-                              size="sm"
+                              size="icon"
                               variant="destructive"
-                              className="p-1.5 h-7 w-7 bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white"
                               onClick={() => handleDeleteBanner(banner.id)}
                             >
                               <Trash2 className="w-3 h-3" />
@@ -397,12 +388,7 @@ export default function BannerManager() {
                 <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-6">
                   첫 번째 배너를 추가하여 메인 페이지를 꾸며보세요
                 </p>
-                <Button
-                  onClick={handleAddBanner}
-                  size="sm"
-                  className="inline-flex items-center bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
+                <Button onClick={handleAddBanner} size="default" icon={Plus}>
                   배너 추가
                 </Button>
               </div>
@@ -433,18 +419,16 @@ export default function BannerManager() {
                           </span>
                           <div className="flex flex-col space-y-1">
                             <Button
-                              size="sm"
+                              size="icon"
                               variant="ghost"
-                              className="h-6 w-6 p-0"
                               onClick={() => handleOrderChange(banner.id, "up")}
                               disabled={banner.order === 1}
                             >
                               <ArrowUp className="w-3 h-3" />
                             </Button>
                             <Button
-                              size="sm"
+                              size="icon"
                               variant="ghost"
-                              className="h-6 w-6 p-0"
                               onClick={() =>
                                 handleOrderChange(banner.id, "down")
                               }
@@ -515,21 +499,19 @@ export default function BannerManager() {
                       <TableCell>
                         <div className="flex items-center space-x-2">
                           <Button
-                            size="sm"
+                            size="default"
                             variant="outline"
+                            icon={Edit}
                             onClick={() => handleEditBanner(banner)}
-                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                           >
-                            <Edit className="w-3 h-3 mr-1" />
                             <span className="hidden lg:inline">수정</span>
                           </Button>
                           <Button
-                            size="sm"
+                            size="default"
                             variant="destructive"
+                            icon={Trash2}
                             onClick={() => handleDeleteBanner(banner.id)}
-                            className="bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white"
                           >
-                            <Trash2 className="w-3 h-3 mr-1" />
                             <span className="hidden lg:inline">삭제</span>
                           </Button>
                         </div>
@@ -621,10 +603,10 @@ export default function BannerManager() {
                 />
                 <Button
                   variant="outline"
-                  size="sm"
+                  size="default"
+                  icon={Upload}
                   className="w-full sm:w-auto"
                 >
-                  <Upload className="w-4 h-4" />
                   <span className="ml-2 sm:hidden">업로드</span>
                 </Button>
               </div>
@@ -674,14 +656,11 @@ export default function BannerManager() {
             <Button
               variant="outline"
               onClick={() => setIsDialogOpen(false)}
-              className="w-full sm:w-auto border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="w-full sm:w-auto"
             >
               취소
             </Button>
-            <Button
-              onClick={handleSaveBanner}
-              className="w-full sm:w-auto bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
-            >
+            <Button onClick={handleSaveBanner} className="w-full sm:w-auto">
               {editingBanner ? "수정" : "추가"}
             </Button>
           </DialogFooter>
