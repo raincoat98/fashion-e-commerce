@@ -251,71 +251,71 @@ export default function CustomerManager() {
   return (
     <div className="space-y-6">
       {/* 고객 통계 */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400">
                   전체 고객
                 </p>
-                <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                <p className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">
                   {customerStats.total}
                 </p>
               </div>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-400">
-                <Users className="w-4 h-4" />
+              <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg flex items-center justify-center bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-400">
+                <Users className="w-3 h-3 md:w-4 md:h-4" />
               </div>
             </div>
           </CardContent>
         </Card>
         <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400">
                   활성 고객
                 </p>
-                <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                <p className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">
                   {customerStats.active}
                 </p>
               </div>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-400">
-                <CheckCircle className="w-4 h-4" />
+              <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg flex items-center justify-center bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-400">
+                <CheckCircle className="w-3 h-3 md:w-4 md:h-4" />
               </div>
             </div>
           </CardContent>
         </Card>
         <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400">
                   VIP 고객
                 </p>
-                <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                <p className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">
                   {customerStats.gold + customerStats.platinum}
                 </p>
               </div>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400">
-                <Award className="w-4 h-4" />
+              <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg flex items-center justify-center bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400">
+                <Award className="w-3 h-3 md:w-4 md:h-4" />
               </div>
             </div>
           </CardContent>
         </Card>
         <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400">
                   승인 대기
                 </p>
-                <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                <p className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">
                   {reviewStats.pending}
                 </p>
               </div>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400">
-                <Clock className="w-4 h-4" />
+              <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg flex items-center justify-center bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400">
+                <Clock className="w-3 h-3 md:w-4 md:h-4" />
               </div>
             </div>
           </CardContent>
@@ -351,7 +351,7 @@ export default function CustomerManager() {
             </CardHeader>
             <CardContent>
               {/* 검색 및 필터 */}
-              <div className="flex items-center space-x-4 mb-6">
+              <div className="flex flex-col md:flex-row md:items-center space-y-3 md:space-y-0 md:space-x-4 mb-6">
                 <div className="flex-1">
                   <Input
                     placeholder="고객명, 이메일로 검색..."
@@ -361,7 +361,7 @@ export default function CustomerManager() {
                   />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-40">
+                  <SelectTrigger className="w-full md:w-40">
                     <SelectValue placeholder="상태" />
                   </SelectTrigger>
                   <SelectContent>
@@ -380,13 +380,13 @@ export default function CustomerManager() {
                     key={customer.id}
                     className="hover:shadow-md transition-shadow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   >
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                            <User className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                    <CardContent className="p-4 md:p-6">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
+                        <div className="flex items-center space-x-3 md:space-x-4">
+                          <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                            <User className="w-5 h-5 md:w-6 md:h-6 text-gray-600 dark:text-gray-400" />
                           </div>
-                          <div>
+                          <div className="flex-1">
                             <h3 className="font-medium text-gray-900 dark:text-gray-100">
                               {customer.name}
                             </h3>
@@ -422,45 +422,51 @@ export default function CustomerManager() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mt-4">
                         <div className="text-center">
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
                             주문 수
                           </p>
-                          <p className="font-medium text-gray-900 dark:text-gray-100">
+                          <p className="text-sm md:text-base font-medium text-gray-900 dark:text-gray-100">
                             {customer.totalOrders}건
                           </p>
                         </div>
                         <div className="text-center">
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
                             총 구매액
                           </p>
-                          <p className="font-medium text-gray-900 dark:text-gray-100">
+                          <p className="text-sm md:text-base font-medium text-gray-900 dark:text-gray-100">
                             {customer.totalSpent.toLocaleString()}원
                           </p>
                         </div>
                         <div className="text-center">
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
                             리뷰 수
                           </p>
-                          <p className="font-medium text-gray-900 dark:text-gray-100">
+                          <p className="text-sm md:text-base font-medium text-gray-900 dark:text-gray-100">
                             {customer.totalReviews}개
                           </p>
                         </div>
                         <div className="text-center">
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
                             평균 평점
                           </p>
-                          <p className="font-medium text-gray-900 dark:text-gray-100">
+                          <p className="text-sm md:text-base font-medium text-gray-900 dark:text-gray-100">
                             {customer.averageRating}
                           </p>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
-                          가입일: {customer.joinDate} | 마지막 로그인:{" "}
-                          {customer.lastLogin}
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-2 md:space-y-0 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
+                          <div className="md:hidden">
+                            <div>가입일: {customer.joinDate}</div>
+                            <div>마지막 로그인: {customer.lastLogin}</div>
+                          </div>
+                          <div className="hidden md:block">
+                            가입일: {customer.joinDate} | 마지막 로그인:{" "}
+                            {customer.lastLogin}
+                          </div>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Button
@@ -470,7 +476,7 @@ export default function CustomerManager() {
                               setSelectedCustomer(customer);
                               setIsCustomerDialogOpen(true);
                             }}
-                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 w-full md:w-auto"
                           >
                             <Eye className="w-4 h-4 mr-1" />
                             상세보기

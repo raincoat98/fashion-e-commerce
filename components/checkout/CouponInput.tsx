@@ -154,8 +154,8 @@ export default function CouponInput({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center space-x-2 text-lg">
           <Gift className="w-5 h-5 text-yellow-600" />
           <span>쿠폰 적용</span>
         </CardTitle>
@@ -163,7 +163,7 @@ export default function CouponInput({
       <CardContent className="space-y-4">
         {!appliedCoupon ? (
           <div className="space-y-4">
-            <div className="flex space-x-2">
+            <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
               <Input
                 placeholder="쿠폰 코드를 입력하세요"
                 value={couponCode}
@@ -174,7 +174,7 @@ export default function CouponInput({
               <Button
                 onClick={applyCoupon}
                 disabled={isLoading}
-                className="lumina-gradient text-white"
+                className="lumina-gradient text-white w-full md:w-auto"
               >
                 {isLoading ? "적용 중..." : "적용"}
               </Button>
@@ -188,64 +188,71 @@ export default function CouponInput({
             )}
 
             {/* 사용 가능한 쿠폰 목록 */}
-            <div className="space-y-2">
+            <div className="space-y-3">
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 사용 가능한 쿠폰
               </p>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {availableCoupons.map((coupon) => (
                   <div
                     key={coupon.code}
-                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                    className="bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
                   >
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center">
-                        {getDiscountIcon(coupon.type)}
-                      </div>
-                      <div>
-                        <div className="flex items-center space-x-2">
-                          <span className="font-medium text-sm text-gray-900 dark:text-gray-100">
-                            {coupon.name}
-                          </span>
-                          <Badge className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 text-xs">
-                            {getDiscountDisplay(coupon)}
-                          </Badge>
+                    <div className="p-4">
+                      <div className="flex items-start space-x-3">
+                        <div className="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                          {getDiscountIcon(coupon.type)}
                         </div>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
-                          {coupon.description}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-500">
-                          최소 주문 {coupon.minOrderAmount.toLocaleString()}원
-                        </p>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-col space-y-2">
+                            <div className="flex flex-col space-y-1">
+                              <span className="font-medium text-base text-gray-900 dark:text-gray-100">
+                                {coupon.name}
+                              </span>
+                              <Badge className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 text-sm w-fit">
+                                {getDiscountDisplay(coupon)}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                              {coupon.description}
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-500">
+                              최소 주문 {coupon.minOrderAmount.toLocaleString()}
+                              원
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={async () => {
-                        setCouponCode(coupon.code);
-                        setIsLoading(true);
-                        setError("");
+                    <div className="px-4 pb-4">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={async () => {
+                          setCouponCode(coupon.code);
+                          setIsLoading(true);
+                          setError("");
 
-                        // Mock API 호출 시뮬레이션
-                        await new Promise((resolve) =>
-                          setTimeout(resolve, 500)
-                        );
+                          // Mock API 호출 시뮬레이션
+                          await new Promise((resolve) =>
+                            setTimeout(resolve, 500)
+                          );
 
-                        onCouponApplied(coupon);
-                        setCouponCode("");
-                        setIsLoading(false);
+                          onCouponApplied(coupon);
+                          setCouponCode("");
+                          setIsLoading(false);
 
-                        toast({
-                          title: "쿠폰 적용 완료",
-                          description: `${coupon.name}이(가) 성공적으로 적용되었습니다.`,
-                        });
-                      }}
-                      disabled={isLoading}
-                      className="text-xs"
-                    >
-                      {isLoading ? "적용 중..." : "적용"}
-                    </Button>
+                          toast({
+                            title: "쿠폰 적용 완료",
+                            description: `${coupon.name}이(가) 성공적으로 적용되었습니다.`,
+                          });
+                        }}
+                        disabled={isLoading}
+                        className="w-full text-sm py-2.5"
+                      >
+                        {isLoading ? "적용 중..." : "적용하기"}
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -254,33 +261,40 @@ export default function CouponInput({
         ) : (
           <div className="space-y-4">
             {/* 적용된 쿠폰 표시 */}
-            <div className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <div className="flex items-center space-x-2">
-                    <span className="font-medium text-gray-900 dark:text-gray-100">
-                      {appliedCoupon.name}
-                    </span>
-                    <Badge className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
-                      {getDiscountDisplay(appliedCoupon)}
-                    </Badge>
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg overflow-hidden">
+              <div className="p-4">
+                <div className="flex items-start space-x-3">
+                  <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {appliedCoupon.description}
-                  </p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex flex-col space-y-1">
+                        <span className="font-medium text-base text-gray-900 dark:text-gray-100">
+                          {appliedCoupon.name}
+                        </span>
+                        <Badge className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-sm w-fit">
+                          {getDiscountDisplay(appliedCoupon)}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                        {appliedCoupon.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={removeCoupon}
-                className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
-              >
-                <X className="w-4 h-4" />
-              </Button>
+              <div className="px-4 pb-4">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={removeCoupon}
+                  className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 w-full text-sm py-2.5"
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  쿠폰 제거
+                </Button>
+              </div>
             </div>
           </div>
         )}
