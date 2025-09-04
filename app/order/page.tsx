@@ -25,6 +25,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface OrderItem {
   id: string;
@@ -169,19 +170,19 @@ export default function OrderPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200";
       case "paid":
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200";
       case "processing":
-        return "bg-purple-100 text-purple-800";
+        return "bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-200";
       case "shipped":
-        return "bg-indigo-100 text-indigo-800";
+        return "bg-indigo-100 dark:bg-indigo-900/20 text-indigo-800 dark:text-indigo-200";
       case "delivered":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200";
       case "cancelled":
-        return "bg-red-100 text-red-800";
+        return "bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200";
     }
   };
 
@@ -234,79 +235,87 @@ export default function OrderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
 
-      <main className="container mx-auto py-8">
-        <div className="max-w-6xl mx-auto space-y-6">
+      <main className="container mx-auto px-4 py-4 sm:py-6 lg:py-8">
+        <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
           {/* 페이지 헤더 */}
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">주문 내역</h1>
-            <p className="text-gray-600">주문하신 상품의 상태를 확인하세요</p>
+          <div className="px-2 sm:px-0">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+              주문 내역
+            </h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
+              주문하신 상품의 상태를 확인하세요
+            </p>
           </div>
 
           {/* 주문 통계 */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
                       전체 주문
                     </p>
-                    <p className="text-xl font-bold text-gray-900">
+                    <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                       {getOrderCount("all")}건
                     </p>
                   </div>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-100 text-blue-800">
-                    <ShoppingBag className="w-4 h-4" />
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 flex-shrink-0">
+                    <ShoppingBag className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
                 </div>
               </CardContent>
             </Card>
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">배송 중</p>
-                    <p className="text-xl font-bold text-gray-900">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
+                      배송 중
+                    </p>
+                    <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                       {getOrderCount("shipped")}건
                     </p>
                   </div>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-indigo-100 text-indigo-800">
-                    <Truck className="w-4 h-4" />
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 flex-shrink-0">
+                    <Truck className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
                 </div>
               </CardContent>
             </Card>
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
                       배송 완료
                     </p>
-                    <p className="text-xl font-bold text-gray-900">
+                    <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                       {getOrderCount("delivered")}건
                     </p>
                   </div>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green-100 text-green-800">
-                    <CheckCircle className="w-4 h-4" />
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 flex-shrink-0">
+                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
                 </div>
               </CardContent>
             </Card>
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">처리 중</p>
-                    <p className="text-xl font-bold text-gray-900">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
+                      처리 중
+                    </p>
+                    <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                       {getOrderCount("processing")}건
                     </p>
                   </div>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-purple-100 text-purple-800">
-                    <Package className="w-4 h-4" />
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 flex-shrink-0">
+                    <Package className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
                 </div>
               </CardContent>
@@ -315,40 +324,78 @@ export default function OrderPage() {
 
           {/* 주문 목록 */}
           <Card>
-            <CardHeader>
-              <CardTitle>주문 목록</CardTitle>
+            <CardHeader className="px-3 sm:px-6">
+              <CardTitle className="text-lg sm:text-xl">주문 목록</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-3 sm:px-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="grid w-full grid-cols-6">
-                  <TabsTrigger value="all">
-                    전체 ({getOrderCount("all")})
-                  </TabsTrigger>
-                  <TabsTrigger value="pending">
-                    결제 대기 ({getOrderCount("pending")})
-                  </TabsTrigger>
-                  <TabsTrigger value="processing">
-                    처리 중 ({getOrderCount("processing")})
-                  </TabsTrigger>
-                  <TabsTrigger value="shipped">
-                    배송 중 ({getOrderCount("shipped")})
-                  </TabsTrigger>
-                  <TabsTrigger value="delivered">
-                    배송 완료 ({getOrderCount("delivered")})
-                  </TabsTrigger>
-                  <TabsTrigger value="cancelled">
-                    취소됨 ({getOrderCount("cancelled")})
-                  </TabsTrigger>
-                </TabsList>
+                <div className="overflow-x-auto">
+                  <TabsList className="grid w-full grid-cols-6 min-w-[600px] sm:min-w-0">
+                    <TabsTrigger
+                      value="all"
+                      className="text-xs sm:text-sm px-2 sm:px-3"
+                    >
+                      <span className="hidden sm:inline">전체</span>
+                      <span className="sm:hidden">전체</span>
+                      <span className="ml-1">({getOrderCount("all")})</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="pending"
+                      className="text-xs sm:text-sm px-2 sm:px-3"
+                    >
+                      <span className="hidden sm:inline">결제 대기</span>
+                      <span className="sm:hidden">대기</span>
+                      <span className="ml-1">({getOrderCount("pending")})</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="processing"
+                      className="text-xs sm:text-sm px-2 sm:px-3"
+                    >
+                      <span className="hidden sm:inline">처리 중</span>
+                      <span className="sm:hidden">처리</span>
+                      <span className="ml-1">
+                        ({getOrderCount("processing")})
+                      </span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="shipped"
+                      className="text-xs sm:text-sm px-2 sm:px-3"
+                    >
+                      <span className="hidden sm:inline">배송 중</span>
+                      <span className="sm:hidden">배송</span>
+                      <span className="ml-1">({getOrderCount("shipped")})</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="delivered"
+                      className="text-xs sm:text-sm px-2 sm:px-3"
+                    >
+                      <span className="hidden sm:inline">배송 완료</span>
+                      <span className="sm:hidden">완료</span>
+                      <span className="ml-1">
+                        ({getOrderCount("delivered")})
+                      </span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="cancelled"
+                      className="text-xs sm:text-sm px-2 sm:px-3"
+                    >
+                      <span className="hidden sm:inline">취소됨</span>
+                      <span className="sm:hidden">취소</span>
+                      <span className="ml-1">
+                        ({getOrderCount("cancelled")})
+                      </span>
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
 
                 <TabsContent value={activeTab} className="space-y-4 mt-6">
                   {filteredOrders.length === 0 ? (
                     <div className="text-center py-12">
-                      <ShoppingBag className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      <ShoppingBag className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+                      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                         주문 내역이 없습니다
                       </h3>
-                      <p className="text-gray-600 mb-6">
+                      <p className="text-gray-600 dark:text-gray-400 mb-6">
                         해당 상태의 주문이 없습니다.
                       </p>
                       <Link href="/">
@@ -358,49 +405,60 @@ export default function OrderPage() {
                   ) : (
                     filteredOrders.map((order) => (
                       <Card key={order.id} className="overflow-hidden">
-                        <CardHeader className="bg-gray-50">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <CardTitle className="text-lg">
+                        <CardHeader className="bg-gray-50 dark:bg-gray-800 px-3 sm:px-6 py-3 sm:py-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                            <div className="min-w-0 flex-1">
+                              <CardTitle className="text-base sm:text-lg dark:text-white truncate">
                                 {order.id}
                               </CardTitle>
-                              <CardDescription>
+                              <CardDescription className="dark:text-gray-400 text-xs sm:text-sm">
                                 {order.orderDate}
                               </CardDescription>
                             </div>
                             <div className="flex items-center space-x-2">
-                              <Badge className={getStatusColor(order.status)}>
+                              <Badge
+                                className={`${getStatusColor(
+                                  order.status
+                                )} text-xs sm:text-sm`}
+                              >
                                 <div className="flex items-center space-x-1">
                                   {getStatusIcon(order.status)}
-                                  <span>{getStatusLabel(order.status)}</span>
+                                  <span className="hidden sm:inline">
+                                    {getStatusLabel(order.status)}
+                                  </span>
+                                  <span className="sm:hidden">
+                                    {getStatusLabel(order.status).slice(0, 2)}
+                                  </span>
                                 </div>
                               </Badge>
                             </div>
                           </div>
                         </CardHeader>
-                        <CardContent className="p-6">
-                          <div className="space-y-4">
+                        <CardContent className="p-3 sm:p-6">
+                          <div className="space-y-3 sm:space-y-4">
                             {/* 상품 목록 */}
-                            <div className="space-y-3">
+                            <div className="space-y-2 sm:space-y-3">
                               {order.items.map((item) => (
                                 <div
                                   key={item.id}
-                                  className="flex items-center space-x-4"
+                                  className="flex items-start space-x-3 sm:space-x-4"
                                 >
-                                  <img
+                                  <Image
                                     src={item.image}
                                     alt={item.name}
-                                    className="w-16 h-16 object-cover rounded-lg"
+                                    width={64}
+                                    height={64}
+                                    className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg flex-shrink-0"
                                   />
-                                  <div className="flex-1">
-                                    <h4 className="font-medium text-gray-900">
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="font-medium text-gray-900 dark:text-white text-sm sm:text-base line-clamp-2">
                                       {item.name}
                                     </h4>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
                                       {item.size} / {item.color} /{" "}
                                       {item.quantity}개
                                     </p>
-                                    <p className="text-sm font-medium text-gray-900">
+                                    <p className="text-sm sm:text-base font-medium text-gray-900 dark:text-white mt-1">
                                       {(
                                         item.price * item.quantity
                                       ).toLocaleString()}
@@ -411,21 +469,21 @@ export default function OrderPage() {
                               ))}
                             </div>
 
-                            <div className="border-t pt-4">
-                              <div className="flex items-center justify-between">
+                            <div className="border-t dark:border-gray-700 pt-3 sm:pt-4">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
                                 <div>
-                                  <p className="text-sm text-gray-600">
+                                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                                     총 결제금액
                                   </p>
-                                  <p className="text-lg font-bold text-gray-900">
+                                  <p className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
                                     {order.totalAmount.toLocaleString()}원
                                   </p>
                                 </div>
-                                <div className="text-right">
-                                  <p className="text-sm text-gray-600">
+                                <div className="text-left sm:text-right">
+                                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                                     결제수단
                                   </p>
-                                  <p className="text-sm font-medium">
+                                  <p className="text-sm font-medium dark:text-white">
                                     {order.paymentMethod}
                                   </p>
                                 </div>
@@ -434,20 +492,29 @@ export default function OrderPage() {
 
                             {/* 배송 정보 */}
                             {order.trackingNumber && (
-                              <div className="p-3 bg-blue-50 rounded-lg">
-                                <div className="flex items-center justify-between">
-                                  <div>
-                                    <p className="text-sm font-medium text-blue-900">
+                              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
+                                  <div className="min-w-0 flex-1">
+                                    <p className="text-xs sm:text-sm font-medium text-blue-900 dark:text-blue-200">
                                       송장번호
                                     </p>
-                                    <p className="text-sm text-blue-700">
+                                    <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-300 break-all">
                                       {order.trackingNumber}
                                     </p>
                                   </div>
-                                  <Link href="/profile">
-                                    <Button size="sm" variant="outline">
-                                      <Truck className="w-4 h-4 mr-1" />
-                                      배송조회
+                                  <Link
+                                    href="/profile"
+                                    className="flex-shrink-0"
+                                  >
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      className="w-full sm:w-auto"
+                                    >
+                                      <Truck className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                                      <span className="text-xs sm:text-sm">
+                                        배송조회
+                                      </span>
                                     </Button>
                                   </Link>
                                 </div>
@@ -455,27 +522,54 @@ export default function OrderPage() {
                             )}
 
                             {/* 액션 버튼 */}
-                            <div className="flex items-center justify-between pt-4 border-t">
-                              <div className="flex space-x-2">
-                                <Button variant="outline" size="sm">
-                                  <Eye className="w-4 h-4 mr-1" />
-                                  상세보기
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 pt-3 sm:pt-4 border-t dark:border-gray-700">
+                              <div className="flex flex-wrap gap-2">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-xs sm:text-sm"
+                                >
+                                  <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                                  <span className="hidden sm:inline">
+                                    상세보기
+                                  </span>
+                                  <span className="sm:hidden">상세</span>
                                 </Button>
-                                <Button variant="outline" size="sm">
-                                  <Download className="w-4 h-4 mr-1" />
-                                  주문서
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-xs sm:text-sm"
+                                >
+                                  <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                                  <span className="hidden sm:inline">
+                                    주문서
+                                  </span>
+                                  <span className="sm:hidden">주문서</span>
                                 </Button>
                                 {order.status === "delivered" && (
-                                  <Button variant="outline" size="sm">
-                                    <Star className="w-4 h-4 mr-1" />
-                                    리뷰작성
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="text-xs sm:text-sm"
+                                  >
+                                    <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                                    <span className="hidden sm:inline">
+                                      리뷰작성
+                                    </span>
+                                    <span className="sm:hidden">리뷰</span>
                                   </Button>
                                 )}
                               </div>
                               {order.status === "shipped" && (
-                                <Button size="sm">
-                                  <RefreshCw className="w-4 h-4 mr-1" />
-                                  배송상태 새로고침
+                                <Button
+                                  size="sm"
+                                  className="text-xs sm:text-sm w-full sm:w-auto"
+                                >
+                                  <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                                  <span className="hidden sm:inline">
+                                    배송상태 새로고침
+                                  </span>
+                                  <span className="sm:hidden">새로고침</span>
                                 </Button>
                               )}
                             </div>
