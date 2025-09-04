@@ -38,6 +38,12 @@
     --lumina-light: 220 14% 96%; /* 라이트 그레이 */
     --lumina-white: 0 0% 100%; /* 퓨어 화이트 */
     --lumina-black: 220 13% 9%; /* 딥 블랙 */
+
+    /* 반응형 브레이크포인트 */
+    --mobile-max: 767px;
+    --tablet-min: 768px;
+    --tablet-max: 1023px;
+    --desktop-min: 1024px;
   }
 
   .dark {
@@ -206,7 +212,63 @@
 
 @layer components {
   .container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8;
+  }
+
+  /* 반응형 텍스트 크기 */
+  .text-responsive-xs {
+    @apply text-xs sm:text-sm;
+  }
+
+  .text-responsive-sm {
+    @apply text-sm sm:text-base;
+  }
+
+  .text-responsive-base {
+    @apply text-base sm:text-lg;
+  }
+
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl lg:text-2xl;
+  }
+
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl lg:text-3xl;
+  }
+
+  .text-responsive-2xl {
+    @apply text-2xl sm:text-3xl lg:text-4xl;
+  }
+
+  /* 반응형 패딩 */
+  .p-responsive {
+    @apply p-3 sm:p-4 lg:p-6;
+  }
+
+  .px-responsive {
+    @apply px-3 sm:px-4 lg:px-6;
+  }
+
+  .py-responsive {
+    @apply py-3 sm:py-4 lg:py-6;
+  }
+
+  /* 반응형 간격 */
+  .space-responsive {
+    @apply space-y-3 sm:space-y-4 lg:space-y-6;
+  }
+
+  .gap-responsive {
+    @apply gap-3 sm:gap-4 lg:gap-6;
+  }
+
+  /* 반응형 그리드 */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  .grid-responsive-2 {
+    @apply grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5;
   }
 }
 
