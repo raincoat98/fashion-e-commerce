@@ -1779,14 +1779,39 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
         open={isStatusChangeDialogOpen}
         onOpenChange={setIsStatusChangeDialogOpen}
       >
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>주문 상태 변경</DialogTitle>
-            <DialogDescription>
-              주문 {selectedOrder?.id}의 상태를 변경하세요.
-            </DialogDescription>
+        <DialogContent className="max-w-md p-0">
+          <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <DialogTitle>주문 상태 변경</DialogTitle>
+                <DialogDescription className="mt-1">
+                  주문 {selectedOrder?.id}의 상태를 변경하세요.
+                </DialogDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsStatusChangeDialogOpen(false)}
+                className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="닫기"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </Button>
+            </div>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-4 p-6 pt-4">
             <div>
               <Label htmlFor="orderStatus">새로운 상태</Label>
               <Select value={newOrderStatus} onValueChange={setNewOrderStatus}>
@@ -1820,14 +1845,39 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
         open={isPartialCancelDialogOpen}
         onOpenChange={setIsPartialCancelDialogOpen}
       >
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>부분 취소</DialogTitle>
-            <DialogDescription>
-              주문 {selectedOrder?.id}에서 취소할 상품과 수량을 선택하세요.
-            </DialogDescription>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto p-0">
+          <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <DialogTitle>부분 취소</DialogTitle>
+                <DialogDescription className="mt-1">
+                  주문 {selectedOrder?.id}에서 취소할 상품과 수량을 선택하세요.
+                </DialogDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsPartialCancelDialogOpen(false)}
+                className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="닫기"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </Button>
+            </div>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-4 p-6 pt-4">
             {selectedOrder?.products.map((product: any, index: number) => (
               <div key={index} className="border rounded-lg p-4">
                 <div className="flex items-center justify-between">

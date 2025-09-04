@@ -527,16 +527,41 @@ export default function BannerManager() {
 
       {/* 배너 추가/수정 다이얼로그 */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader className="pb-4">
-            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
-              {editingBanner ? "배너 수정" : "새 배너 추가"}
-            </DialogTitle>
-            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-              배너 정보를 입력하고 저장하세요
-            </DialogDescription>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+          <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
+                  {editingBanner ? "배너 수정" : "새 배너 추가"}
+                </DialogTitle>
+                <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
+                  배너 정보를 입력하고 저장하세요
+                </DialogDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsDialogOpen(false)}
+                className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="닫기"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </Button>
+            </div>
           </DialogHeader>
-          <div className="space-y-4 sm:space-y-6">
+          <div className="space-y-4 sm:space-y-6 p-6 pt-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="title" className="text-sm sm:text-base">
@@ -652,7 +677,7 @@ export default function BannerManager() {
               </div>
             )}
           </div>
-          <DialogFooter className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 pt-4">
+          <DialogFooter className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 p-6 pt-4 border-t border-gray-200 dark:border-gray-700 sticky bottom-0 bg-white dark:bg-gray-800">
             <Button
               variant="outline"
               onClick={() => setIsDialogOpen(false)}

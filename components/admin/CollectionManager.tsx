@@ -387,16 +387,41 @@ export default function CollectionManager() {
                   <span className="sm:hidden">생성</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                <DialogHeader>
-                  <DialogTitle className="text-gray-900 dark:text-gray-100">
-                    새 컬렉션 생성
-                  </DialogTitle>
-                  <DialogDescription className="text-gray-600 dark:text-gray-400">
-                    새로운 컬렉션을 생성하세요
-                  </DialogDescription>
+              <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+                <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <DialogTitle className="text-gray-900 dark:text-gray-100">
+                        새 컬렉션 생성
+                      </DialogTitle>
+                      <DialogDescription className="text-gray-600 dark:text-gray-400 mt-1">
+                        새로운 컬렉션을 생성하세요
+                      </DialogDescription>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setIsCreateDialogOpen(false)}
+                      className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      aria-label="닫기"
+                    >
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </Button>
+                  </div>
                 </DialogHeader>
-                <div className="space-y-4">
+                <div className="space-y-4 p-6 pt-4">
                   <div>
                     <Label htmlFor="name">컬렉션명</Label>
                     <Input
@@ -489,7 +514,7 @@ export default function CollectionManager() {
                     <Label htmlFor="isFeature">피처 컬렉션으로 설정</Label>
                   </div>
 
-                  <div className="flex justify-end space-x-2">
+                  <div className="flex justify-end space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <Button
                       variant="outline"
                       onClick={() => setIsCreateDialogOpen(false)}
@@ -510,17 +535,42 @@ export default function CollectionManager() {
 
             {/* 컬렉션 수정 다이얼로그 */}
             <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-              <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                <DialogHeader>
-                  <DialogTitle className="text-gray-900 dark:text-gray-100">
-                    컬렉션 수정
-                  </DialogTitle>
-                  <DialogDescription className="text-gray-600 dark:text-gray-400">
-                    컬렉션 정보를 수정하세요
-                  </DialogDescription>
+              <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+                <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <DialogTitle className="text-gray-900 dark:text-gray-100">
+                        컬렉션 수정
+                      </DialogTitle>
+                      <DialogDescription className="text-gray-600 dark:text-gray-400 mt-1">
+                        컬렉션 정보를 수정하세요
+                      </DialogDescription>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setIsEditDialogOpen(false)}
+                      className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      aria-label="닫기"
+                    >
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </Button>
+                  </div>
                 </DialogHeader>
                 {editingCollection && (
-                  <div className="space-y-4">
+                  <div className="space-y-4 p-6 pt-4">
                     <div>
                       <Label htmlFor="edit-name">컬렉션명</Label>
                       <Input
@@ -628,7 +678,7 @@ export default function CollectionManager() {
                       </div>
                     </div>
 
-                    <div className="flex justify-end space-x-2">
+                    <div className="flex justify-end space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
                       <Button
                         variant="outline"
                         onClick={() => setIsEditDialogOpen(false)}
@@ -801,20 +851,45 @@ export default function CollectionManager() {
         open={isProductManageDialogOpen}
         onOpenChange={setIsProductManageDialogOpen}
       >
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader className="pb-4">
-            <DialogTitle className="flex items-center space-x-2 text-lg sm:text-xl text-gray-900 dark:text-gray-100">
-              <Package className="w-5 h-5" />
-              <span className="truncate">
-                {managingCollection?.name} 상품 관리
-              </span>
-            </DialogTitle>
-            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-              이 컬렉션에 포함할 상품을 선택하세요.
-            </DialogDescription>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+          <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <DialogTitle className="flex items-center space-x-2 text-lg sm:text-xl text-gray-900 dark:text-gray-100">
+                  <Package className="w-5 h-5" />
+                  <span className="truncate">
+                    {managingCollection?.name} 상품 관리
+                  </span>
+                </DialogTitle>
+                <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
+                  이 컬렉션에 포함할 상품을 선택하세요.
+                </DialogDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsProductManageDialogOpen(false)}
+                className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="닫기"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </Button>
+            </div>
           </DialogHeader>
 
-          <div className="space-y-4">
+          <div className="space-y-4 p-6 pt-4">
             {/* 상품 검색 및 전체 선택 */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
               <div className="relative flex-1">
@@ -902,7 +977,7 @@ export default function CollectionManager() {
             </div>
 
             {/* 액션 버튼 */}
-            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-2">
+            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
               <Button
                 variant="outline"
                 onClick={() => setIsProductManageDialogOpen(false)}

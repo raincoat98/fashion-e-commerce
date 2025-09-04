@@ -633,17 +633,42 @@ export default function CustomerManager() {
         open={isCustomerDialogOpen}
         onOpenChange={setIsCustomerDialogOpen}
       >
-        <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader className="pb-4">
-            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
-              고객 상세 정보
-            </DialogTitle>
-            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-              고객 정보와 주문 이력을 확인하세요
-            </DialogDescription>
+        <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+          <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
+                  고객 상세 정보
+                </DialogTitle>
+                <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
+                  고객 정보와 주문 이력을 확인하세요
+                </DialogDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsCustomerDialogOpen(false)}
+                className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="닫기"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </Button>
+            </div>
           </DialogHeader>
           {selectedCustomer && (
-            <div className="space-y-4">
+            <div className="space-y-4 p-6 pt-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h4 className="font-medium mb-2 text-gray-900 dark:text-gray-100">
@@ -782,17 +807,42 @@ export default function CustomerManager() {
 
       {/* 리뷰 상세 다이얼로그 */}
       <Dialog open={isReviewDialogOpen} onOpenChange={setIsReviewDialogOpen}>
-        <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader className="pb-4">
-            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
-              리뷰 상세
-            </DialogTitle>
-            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-              리뷰 내용을 확인하고 승인/거부를 결정하세요
-            </DialogDescription>
+        <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+          <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
+                  리뷰 상세
+                </DialogTitle>
+                <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
+                  리뷰 내용을 확인하고 승인/거부를 결정하세요
+                </DialogDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsReviewDialogOpen(false)}
+                className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="닫기"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </Button>
+            </div>
           </DialogHeader>
           {selectedReview && (
-            <div className="space-y-4">
+            <div className="space-y-4 p-6 pt-4">
               <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="font-medium text-gray-900 dark:text-gray-100">

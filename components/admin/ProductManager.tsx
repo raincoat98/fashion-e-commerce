@@ -698,34 +698,62 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     <div className="space-y-6">
       {/* 상품 등록 모달 */}
       <Dialog open={showProductForm} onOpenChange={setShowProductForm}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader>
-            <DialogTitle className="flex items-center justify-between text-gray-900 dark:text-gray-100">
-              <span>{editingProduct ? "상품 수정" : "상품 등록"}</span>
-              <div className="flex gap-2">
-                {formData.isLimited && (
-                  <Badge variant="destructive">LIMITED</Badge>
-                )}
-                {formData.isHot && <Badge variant="destructive">HOT</Badge>}
-                {formData.isNew && (
-                  <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900 dark:text-blue-200">
-                    NEW
-                  </Badge>
-                )}
-                {formData.isBest && (
-                  <Badge className="bg-yellow-500 text-white dark:bg-yellow-600">
-                    BEST
-                  </Badge>
-                )}
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+          <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <DialogTitle className="flex items-center justify-between text-gray-900 dark:text-gray-100">
+                  <span>{editingProduct ? "상품 수정" : "상품 등록"}</span>
+                  <div className="flex gap-2">
+                    {formData.isLimited && (
+                      <Badge variant="destructive">LIMITED</Badge>
+                    )}
+                    {formData.isHot && <Badge variant="destructive">HOT</Badge>}
+                    {formData.isNew && (
+                      <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900 dark:text-blue-200">
+                        NEW
+                      </Badge>
+                    )}
+                    {formData.isBest && (
+                      <Badge className="bg-yellow-500 text-white dark:bg-yellow-600">
+                        BEST
+                      </Badge>
+                    )}
+                  </div>
+                </DialogTitle>
+                <DialogDescription className="text-gray-600 dark:text-gray-400 mt-1">
+                  {editingProduct
+                    ? "상품 정보를 수정하세요"
+                    : "새로운 상품을 등록하세요"}
+                </DialogDescription>
               </div>
-            </DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-400">
-              {editingProduct
-                ? "상품 정보를 수정하세요"
-                : "새로운 상품을 등록하세요"}
-            </DialogDescription>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowProductForm(false)}
+                className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="닫기"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </Button>
+            </div>
           </DialogHeader>
-          <form onSubmit={handleProductFormSubmit} className="space-y-6">
+          <form
+            onSubmit={handleProductFormSubmit}
+            className="space-y-6 p-6 pt-4"
+          >
             {/* 기본 정보 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -1538,16 +1566,41 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                         <span className="sm:hidden">업로드</span>
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                      <DialogHeader>
-                        <DialogTitle className="text-gray-900 dark:text-gray-100">
-                          대량 상품 업로드
-                        </DialogTitle>
-                        <DialogDescription className="text-gray-600 dark:text-gray-400">
-                          CSV 파일을 업로드하여 상품을 대량으로 등록하세요
-                        </DialogDescription>
+                    <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+                      <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <DialogTitle className="text-gray-900 dark:text-gray-100">
+                              대량 상품 업로드
+                            </DialogTitle>
+                            <DialogDescription className="text-gray-600 dark:text-gray-400 mt-1">
+                              CSV 파일을 업로드하여 상품을 대량으로 등록하세요
+                            </DialogDescription>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setIsBulkUploadDialogOpen(false)}
+                            className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            aria-label="닫기"
+                          >
+                            <svg
+                              className="h-4 w-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </Button>
+                        </div>
                       </DialogHeader>
-                      <div className="space-y-4">
+                      <div className="space-y-4 p-6 pt-4">
                         <div>
                           <Label
                             htmlFor="bulk-upload"

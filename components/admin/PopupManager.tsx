@@ -384,9 +384,11 @@ export default function PopupManager() {
           size="sm"
           className="w-full sm:w-auto bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white"
         >
-          <Plus className="w-4 h-4 mr-2" />
-          <span className="hidden sm:inline">새 팝업 추가</span>
-          <span className="sm:hidden">팝업 추가</span>
+          <span className="flex items-center">
+            <Plus className="w-4 h-4 mr-2" />
+            <span className="hidden sm:inline">새 팝업 추가</span>
+            <span className="sm:hidden">팝업 추가</span>
+          </span>
         </Button>
       </div>
 
@@ -484,11 +486,13 @@ export default function PopupManager() {
                           onClick={() => handleToggleStatus(popup.id)}
                           className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
-                          {popup.isActive ? (
-                            <EyeOff className="w-4 h-4" />
-                          ) : (
-                            <Eye className="w-4 h-4" />
-                          )}
+                          <span>
+                            {popup.isActive ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
+                          </span>
                         </Button>
                         <Button
                           variant="ghost"
@@ -598,11 +602,13 @@ export default function PopupManager() {
                         onClick={() => handleToggleStatus(popup.id)}
                         className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5"
                       >
-                        {popup.isActive ? (
-                          <EyeOff className="w-4 h-4" />
-                        ) : (
-                          <Eye className="w-4 h-4" />
-                        )}
+                        <span>
+                          {popup.isActive ? (
+                            <EyeOff className="w-4 h-4" />
+                          ) : (
+                            <Eye className="w-4 h-4" />
+                          )}
+                        </span>
                       </Button>
                       <Button
                         variant="ghost"
@@ -630,16 +636,41 @@ export default function PopupManager() {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <DialogHeader className="pb-4">
-            <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
-              {editingPopup ? "팝업 수정" : "새 팝업 추가"}
-            </DialogTitle>
-            <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-              팝업의 정보와 표시 조건을 설정하세요.
-            </DialogDescription>
+        <DialogContent className="max-w-4xl w-[calc(100vw-2rem)] sm:w-[calc(100vw-4rem)] lg:w-[calc(100vw-8rem)] max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+          <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <DialogTitle className="text-lg sm:text-xl text-gray-900 dark:text-gray-100">
+                  {editingPopup ? "팝업 수정" : "새 팝업 추가"}
+                </DialogTitle>
+                <DialogDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
+                  팝업의 정보와 표시 조건을 설정하세요.
+                </DialogDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsDialogOpen(false)}
+                className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="닫기"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </Button>
+            </div>
           </DialogHeader>
-          <div className="grid gap-6 py-4">
+          <div className="grid gap-6 p-6 pt-4">
             {/* 기본 정보 */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
@@ -1062,7 +1093,7 @@ export default function PopupManager() {
               </Label>
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="flex flex-row justify-end space-x-2 sm:space-x-2 p-6 pt-4 border-t border-gray-200 dark:border-gray-700 sticky bottom-0 bg-white dark:bg-gray-800">
             <Button
               variant="outline"
               onClick={() => setIsDialogOpen(false)}
@@ -1074,7 +1105,7 @@ export default function PopupManager() {
               onClick={handleSavePopup}
               className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
             >
-              {editingPopup ? "수정" : "추가"}
+              <span>{editingPopup ? "수정" : "추가"}</span>
             </Button>
           </DialogFooter>
         </DialogContent>

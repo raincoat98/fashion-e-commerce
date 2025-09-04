@@ -91,7 +91,7 @@ export default function Header() {
         {/* Main Header */}
         <div className="flex items-center justify-between py-2 sm:py-4">
           {/* Left Section - Mobile Menu & Logo */}
-          <div className="flex items-center space-x-1 sm:space-x-4">
+          <div className="flex items-center space-x-1 sm:space-x-4 flex-shrink-0">
             {/* Mobile Menu Button */}
             <button
               className="p-2.5 lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -115,7 +115,7 @@ export default function Header() {
           </div>
 
           {/* Center Section - Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8 flex-shrink-0">
             <Link
               href="/categories/new"
               className={`text-sm xl:text-base transition-colors hover:text-gray-900 dark:hover:text-gray-100 ${
@@ -198,13 +198,13 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* Right Section - Search, Admin, User Actions */}
-          <div className="flex items-center space-x-1 sm:space-x-3">
-            {/* Search - Desktop */}
-            <div className="hidden md:block w-48 lg:w-64 xl:w-80">
-              <Search placeholder="상품명, 브랜드를 검색하세요" />
-            </div>
+          {/* Center Section - Search (Desktop) */}
+          <div className="hidden md:block flex-1 max-w-md lg:max-w-lg xl:max-w-xl mx-6">
+            <Search placeholder="상품명, 브랜드를 검색하세요" />
+          </div>
 
+          {/* Right Section - Admin, User Actions */}
+          <div className="flex items-center space-x-1 sm:space-x-3 flex-shrink-0">
             {/* Search Toggle - Mobile */}
             <button
               className="p-2.5 lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -297,8 +297,10 @@ export default function Header() {
 
         {/* Mobile Search Bar */}
         {isSearchExpanded && (
-          <div className="md:hidden pb-3 animate-slide-down">
-            <Search placeholder="상품명, 브랜드를 검색하세요" />
+          <div className="md:hidden pb-4 animate-slide-down">
+            <div className="px-2">
+              <Search placeholder="상품명, 브랜드를 검색하세요" />
+            </div>
           </div>
         )}
 

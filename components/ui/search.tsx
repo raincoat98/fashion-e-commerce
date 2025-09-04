@@ -181,7 +181,10 @@ export default function Search({
 
     return parts.map((part, index) =>
       regex.test(part) ? (
-        <span key={index} className="bg-yellow-200 font-semibold">
+        <span
+          key={index}
+          className="bg-yellow-200 dark:bg-yellow-800/50 font-semibold text-yellow-900 dark:text-yellow-100 px-1 rounded"
+        >
           {part}
         </span>
       ) : (
@@ -217,8 +220,8 @@ export default function Search({
 
   return (
     <div ref={searchRef} className={`relative ${className}`}>
-      <div className="relative">
-        <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+      <div className="relative group">
+        <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-4 w-4 transition-colors duration-200 group-focus-within:text-blue-500 dark:group-focus-within:text-blue-400" />
         <input
           ref={inputRef}
           type="text"
@@ -232,7 +235,7 @@ export default function Search({
           }}
           placeholder={placeholder}
           spellCheck={false}
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-100 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          className="w-full pl-10 pr-10 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 hover:border-gray-400 dark:hover:border-gray-500"
         />
         {searchTerm && (
           <button
@@ -251,7 +254,7 @@ export default function Search({
 
       {/* 검색 결과 드롭다운 */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 max-h-96 overflow-y-auto backdrop-blur-sm">
           {isLoading ? (
             <div className="p-4 text-center text-gray-500 dark:text-gray-400">
               검색 중...
@@ -263,14 +266,14 @@ export default function Search({
                   <button
                     key={result.id}
                     onClick={() => handleResultClick(result)}
-                    className={`w-full p-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                    className={`w-full p-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 ${
                       index === highlightedIndex
-                        ? "bg-gray-100 dark:bg-gray-700"
+                        ? "bg-blue-50 dark:bg-blue-900/20 border-l-2 border-blue-500"
                         : ""
-                    } ${index === 0 ? "rounded-t-lg" : ""}`}
+                    } ${index === 0 ? "rounded-t-xl" : ""}`}
                   >
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gray-200 rounded-md overflow-hidden flex-shrink-0">
+                      <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
                         <img
                           src={result.image}
                           alt={result.name}
@@ -316,10 +319,10 @@ export default function Search({
                   </button>
                 ))}
               </div>
-              <div className="border-t border-gray-200 dark:border-gray-700 p-3">
+              <div className="border-t border-gray-200 dark:border-gray-700 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-b-xl">
                 <button
                   onClick={handleViewAllResults}
-                  className="w-full flex items-center justify-center space-x-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                  className="w-full flex items-center justify-center space-x-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
                 >
                   <span>"{searchTerm}" 검색 결과 모두 보기</span>
                   <ArrowRight className="h-4 w-4" />
