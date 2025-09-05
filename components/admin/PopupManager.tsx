@@ -591,12 +591,12 @@ export default function PopupManager() {
                     </div>
 
                     {/* 액션 버튼 */}
-                    <div className="flex items-center space-x-2 pt-2 border-t border-gray-200 dark:border-gray-600">
+                    <div className="flex items-center gap-1 sm:gap-2 pt-2 border-t border-gray-200 dark:border-gray-600">
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => handleToggleStatus(popup.id)}
-                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5"
+                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 flex-shrink-0"
                       >
                         {popup.isActive ? (
                           <EyeOff className="w-4 h-4" />
@@ -608,7 +608,7 @@ export default function PopupManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleEditPopup(popup)}
-                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5"
+                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 flex-shrink-0"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -616,7 +616,7 @@ export default function PopupManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDeletePopup(popup.id)}
-                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5"
+                        className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 flex-shrink-0"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -1062,20 +1062,22 @@ export default function PopupManager() {
               </Label>
             </div>
           </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsDialogOpen(false)}
-              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-            >
-              취소
-            </Button>
-            <Button
-              onClick={handleSavePopup}
-              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
-            >
-              {editingPopup ? "수정" : "추가"}
-            </Button>
+          <DialogFooter className="flex gap-2 sm:gap-0 sm:space-x-2 lg:gap-4">
+            <div className="flex w-full space-x-2 sm:space-x-0 sm:w-auto lg:gap-4">
+              <Button
+                variant="outline"
+                onClick={() => setIsDialogOpen(false)}
+                className="w-1/2 sm:w-auto border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                취소
+              </Button>
+              <Button
+                onClick={handleSavePopup}
+                className="w-1/2 sm:w-auto bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+              >
+                {editingPopup ? "수정" : "추가"}
+              </Button>
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>

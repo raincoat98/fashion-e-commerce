@@ -782,18 +782,18 @@ ${
                       )}
 
                       {/* 액션 버튼 */}
-                      <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between pt-4 border-t border-gray-200 dark:border-gray-600">
-                        <div className="flex flex-wrap gap-2">
+                      <div className="pt-4 border-t border-gray-200 dark:border-gray-600">
+                        <div className="flex flex-wrap gap-1 sm:gap-2">
                           {!order.trackingNumber && (
                             <Button
                               size="sm"
-                              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white text-xs sm:text-sm"
+                              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white text-xs px-2 sm:px-3 flex-shrink-0"
                               onClick={() => {
                                 setSelectedOrder(order);
                                 setIsShippingDialogOpen(true);
                               }}
                             >
-                              <Package className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                              <Package className="w-3 h-3 mr-1" />
                               <span className="hidden sm:inline">
                                 송장 발급
                               </span>
@@ -804,9 +804,9 @@ ${
                             size="sm"
                             variant="outline"
                             onClick={() => generateShippingLabel(order)}
-                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs sm:text-sm"
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs px-2 sm:px-3 flex-shrink-0"
                           >
-                            <Printer className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                            <Printer className="w-3 h-3 mr-1" />
                             <span className="hidden sm:inline">출고 라벨</span>
                             <span className="sm:hidden">라벨</span>
                           </Button>
@@ -817,20 +817,18 @@ ${
                               setSelectedOrder(order);
                               setIsTrackingDialogOpen(true);
                             }}
-                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs sm:text-sm"
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs px-2 sm:px-3 flex-shrink-0"
                           >
-                            <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                            <Eye className="w-3 h-3 mr-1" />
                             <span className="hidden sm:inline">상세 보기</span>
                             <span className="sm:hidden">상세</span>
                           </Button>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs sm:text-sm"
+                            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs px-2 sm:px-3 flex-shrink-0"
                           >
-                            <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                            <Download className="w-3 h-3 mr-1" />
                             <span className="hidden sm:inline">배송서</span>
                             <span className="sm:hidden">다운로드</span>
                           </Button>
@@ -838,9 +836,9 @@ ${
                             <Button
                               size="sm"
                               variant="outline"
-                              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs sm:text-sm"
+                              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs px-2 sm:px-3 flex-shrink-0"
                             >
-                              <FileText className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                              <FileText className="w-3 h-3 mr-1" />
                               <span className="hidden sm:inline">송장서</span>
                             </Button>
                           )}
