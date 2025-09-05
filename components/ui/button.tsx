@@ -12,12 +12,12 @@ const buttonVariants = cva(
       variant: {
         // 솔리드 버튼 - 주요 액션용, 강한 어포던스
         default:
-          "bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white shadow-lg hover:shadow-xl border border-blue-700 dark:border-blue-400",
+          "bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white shadow-lg hover:shadow-xl",
         destructive:
           "bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white shadow-lg hover:shadow-xl border border-red-700 dark:border-red-400",
         // 고스트 버튼 - 보조 액션용, 테두리만 표시
         outline:
-          "border-2 border-gray-300 dark:border-gray-600 bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 hover:text-gray-900 dark:hover:text-gray-100 shadow-sm hover:shadow-md",
+          "border border-gray-300 dark:border-gray-600 bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 hover:text-gray-900 dark:hover:text-gray-100 shadow-sm hover:shadow-md",
         // 세컨더리 버튼 - 중간 중요도 액션
         secondary:
           "bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-600",

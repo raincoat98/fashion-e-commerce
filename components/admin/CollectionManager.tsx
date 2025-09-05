@@ -387,8 +387,8 @@ export default function CollectionManager() {
                   <span className="sm:hidden">생성</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
-                <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+              <DialogContent className="max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+                <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <DialogTitle className="text-gray-900 dark:text-gray-100">
@@ -421,9 +421,11 @@ export default function CollectionManager() {
                     </Button>
                   </div>
                 </DialogHeader>
-                <div className="space-y-4 p-6 pt-4">
+                <div className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-3 sm:pt-4">
                   <div>
-                    <Label htmlFor="name">컬렉션명</Label>
+                    <Label htmlFor="name" className="text-sm font-medium">
+                      컬렉션명
+                    </Label>
                     <Input
                       id="name"
                       value={newCollection.name}
@@ -434,11 +436,17 @@ export default function CollectionManager() {
                         })
                       }
                       placeholder="컬렉션명을 입력하세요"
+                      className="mt-1"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="description">설명</Label>
+                    <Label
+                      htmlFor="description"
+                      className="text-sm font-medium"
+                    >
+                      설명
+                    </Label>
                     <Textarea
                       id="description"
                       value={newCollection.description}
@@ -450,11 +458,14 @@ export default function CollectionManager() {
                       }
                       placeholder="컬렉션에 대한 설명을 입력하세요"
                       rows={3}
+                      className="mt-1"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="image">이미지 URL</Label>
+                    <Label htmlFor="image" className="text-sm font-medium">
+                      이미지 URL
+                    </Label>
                     <Input
                       id="image"
                       value={newCollection.image}
@@ -465,12 +476,15 @@ export default function CollectionManager() {
                         })
                       }
                       placeholder="이미지 URL을 입력하세요"
+                      className="mt-1"
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <Label htmlFor="slug">슬러그</Label>
+                      <Label htmlFor="slug" className="text-sm font-medium">
+                        슬러그
+                      </Label>
                       <Input
                         id="slug"
                         value={newCollection.slug}
@@ -481,10 +495,16 @@ export default function CollectionManager() {
                           })
                         }
                         placeholder="URL용 슬러그"
+                        className="mt-1"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="sortOrder">정렬 순서</Label>
+                      <Label
+                        htmlFor="sortOrder"
+                        className="text-sm font-medium"
+                      >
+                        정렬 순서
+                      </Label>
                       <Input
                         id="sortOrder"
                         type="number"
@@ -496,11 +516,12 @@ export default function CollectionManager() {
                           })
                         }
                         placeholder="정렬 순서"
+                        className="mt-1"
                       />
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 pt-2">
                     <Checkbox
                       id="isFeature"
                       checked={newCollection.isFeature}
@@ -511,10 +532,12 @@ export default function CollectionManager() {
                         })
                       }
                     />
-                    <Label htmlFor="isFeature">피처 컬렉션으로 설정</Label>
+                    <Label htmlFor="isFeature" className="text-sm">
+                      피처 컬렉션으로 설정
+                    </Label>
                   </div>
 
-                  <div className="flex justify-end space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <Button
                       variant="outline"
                       onClick={() => setIsCreateDialogOpen(false)}
@@ -535,8 +558,8 @@ export default function CollectionManager() {
 
             {/* 컬렉션 수정 다이얼로그 */}
             <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-              <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
-                <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+              <DialogContent className="max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+                <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <DialogTitle className="text-gray-900 dark:text-gray-100">
@@ -570,9 +593,14 @@ export default function CollectionManager() {
                   </div>
                 </DialogHeader>
                 {editingCollection && (
-                  <div className="space-y-4 p-6 pt-4">
+                  <div className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-3 sm:pt-4">
                     <div>
-                      <Label htmlFor="edit-name">컬렉션명</Label>
+                      <Label
+                        htmlFor="edit-name"
+                        className="text-sm font-medium"
+                      >
+                        컬렉션명
+                      </Label>
                       <Input
                         id="edit-name"
                         value={editingCollection.name}
@@ -583,11 +611,17 @@ export default function CollectionManager() {
                           })
                         }
                         placeholder="컬렉션명을 입력하세요"
+                        className="mt-1"
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="edit-description">설명</Label>
+                      <Label
+                        htmlFor="edit-description"
+                        className="text-sm font-medium"
+                      >
+                        설명
+                      </Label>
                       <Textarea
                         id="edit-description"
                         value={editingCollection.description}
@@ -599,11 +633,17 @@ export default function CollectionManager() {
                         }
                         placeholder="컬렉션에 대한 설명을 입력하세요"
                         rows={3}
+                        className="mt-1"
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="edit-image">이미지 URL</Label>
+                      <Label
+                        htmlFor="edit-image"
+                        className="text-sm font-medium"
+                      >
+                        이미지 URL
+                      </Label>
                       <Input
                         id="edit-image"
                         value={editingCollection.image}
@@ -614,12 +654,18 @@ export default function CollectionManager() {
                           })
                         }
                         placeholder="이미지 URL을 입력하세요"
+                        className="mt-1"
                       />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div>
-                        <Label htmlFor="edit-slug">슬러그</Label>
+                        <Label
+                          htmlFor="edit-slug"
+                          className="text-sm font-medium"
+                        >
+                          슬러그
+                        </Label>
                         <Input
                           id="edit-slug"
                           value={editingCollection.slug || ""}
@@ -630,10 +676,16 @@ export default function CollectionManager() {
                             })
                           }
                           placeholder="URL용 슬러그"
+                          className="mt-1"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="edit-sortOrder">정렬 순서</Label>
+                        <Label
+                          htmlFor="edit-sortOrder"
+                          className="text-sm font-medium"
+                        >
+                          정렬 순서
+                        </Label>
                         <Input
                           id="edit-sortOrder"
                           type="number"
@@ -645,11 +697,12 @@ export default function CollectionManager() {
                             })
                           }
                           placeholder="정렬 순서"
+                          className="mt-1"
                         />
                       </div>
                     </div>
 
-                    <div className="flex items-center space-x-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 pt-2">
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           id="edit-isActive"
@@ -661,7 +714,9 @@ export default function CollectionManager() {
                             })
                           }
                         />
-                        <Label htmlFor="edit-isActive">활성화</Label>
+                        <Label htmlFor="edit-isActive" className="text-sm">
+                          활성화
+                        </Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox
@@ -674,11 +729,13 @@ export default function CollectionManager() {
                             })
                           }
                         />
-                        <Label htmlFor="edit-isFeature">피처 컬렉션</Label>
+                        <Label htmlFor="edit-isFeature" className="text-sm">
+                          피처 컬렉션
+                        </Label>
                       </div>
                     </div>
 
-                    <div className="flex justify-end space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <div className="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
                       <Button
                         variant="outline"
                         onClick={() => setIsEditDialogOpen(false)}
@@ -851,8 +908,8 @@ export default function CollectionManager() {
         open={isProductManageDialogOpen}
         onOpenChange={setIsProductManageDialogOpen}
       >
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
-          <DialogHeader className="p-6 pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <DialogContent className="max-w-4xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 p-0">
+          <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <DialogTitle className="flex items-center space-x-2 text-lg sm:text-xl text-gray-900 dark:text-gray-100">
@@ -889,9 +946,9 @@ export default function CollectionManager() {
             </div>
           </DialogHeader>
 
-          <div className="space-y-4 p-6 pt-4">
+          <div className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-3 sm:pt-4">
             {/* 상품 검색 및 전체 선택 */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
+            <div className="flex flex-col gap-3 sm:gap-4">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
                 <Input
@@ -904,7 +961,7 @@ export default function CollectionManager() {
               <Button
                 variant="outline"
                 onClick={toggleAllProducts}
-                className="whitespace-nowrap w-full sm:w-auto border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                className="w-full border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 size="sm"
               >
                 {filteredProductsForDialog.every((p) =>
@@ -916,7 +973,7 @@ export default function CollectionManager() {
             </div>
 
             {/* 상품 목록 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-h-96 overflow-y-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-h-80 sm:max-h-96 overflow-y-auto">
               {filteredProductsForDialog.map((product) => {
                 const isSelected =
                   managingCollection?.productIds.includes(product.id) || false;
@@ -972,12 +1029,12 @@ export default function CollectionManager() {
             </div>
 
             {/* 선택된 상품 수 표시 */}
-            <div className="text-sm text-gray-600 dark:text-gray-400 text-center py-2 bg-gray-50 dark:bg-gray-700 rounded">
+            <div className="text-sm text-gray-600 dark:text-gray-400 text-center py-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
               선택된 상품: {managingCollection?.productIds.length || 0}개
             </div>
 
             {/* 액션 버튼 */}
-            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
               <Button
                 variant="outline"
                 onClick={() => setIsProductManageDialogOpen(false)}
