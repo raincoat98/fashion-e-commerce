@@ -31,7 +31,7 @@ const buttonVariants = cva(
         default: "h-11 px-6 py-2.5 text-sm",
         sm: "h-9 px-4 py-2 text-xs",
         lg: "h-12 px-8 py-3 text-base",
-        icon: "h-11 w-11",
+        icon: "h-12 w-12 flex items-center justify-center p-0",
       },
     },
     defaultVariants: {
@@ -69,6 +69,21 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
     const isDisabled = disabled || loading;
 
+    // asChild가 true일 때는 Slot이 단일 요소만 받을 수 있으므로 children만 렌더링
+    if (asChild) {
+      return (
+        <Comp
+          className={cn(buttonVariants({ variant, size, className }))}
+          ref={ref}
+          disabled={isDisabled}
+          {...props}
+        >
+          {children}
+        </Comp>
+      );
+    }
+
+    // 일반 button일 때는 아이콘과 로딩 스피너 포함
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
@@ -99,11 +114,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </svg>
         )}
         {Icon && iconPosition === "left" && !loading && (
-          <Icon className="mr-2 h-4 w-4" />
+          <Icon className={cn(size === "icon" ? "h-5 w-5" : "mr-2 h-4 w-4")} />
         )}
         {children}
         {Icon && iconPosition === "right" && !loading && (
-          <Icon className="ml-2 h-4 w-4" />
+          <Icon className={cn(size === "icon" ? "h-5 w-5" : "ml-2 h-4 w-4")} />
         )}
       </Comp>
     );
