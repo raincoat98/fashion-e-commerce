@@ -848,7 +848,7 @@ ${order.estimatedDelivery ? `예상배송일: ${order.estimatedDelivery}` : ""}
                       <Button variant="ghost" size="sm" className="relative">
                         <Bell className="w-4 h-4 lg:w-5 lg:h-5" />
                         {unreadNotificationsCount > 0 && (
-                          <span className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                          <span className="absolute top-0 right-0 sm:-top-1 sm:-right-1 w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
                             {unreadNotificationsCount}
                           </span>
                         )}
