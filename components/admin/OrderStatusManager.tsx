@@ -618,7 +618,7 @@ export default function OrderStatusManager() {
                       </div>
 
                       {/* 액션 버튼 */}
-                      <div className="flex flex-col space-y-3 lg:space-y-0 lg:flex-row lg:items-center lg:justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                      <div className="flex flex-wrap gap-2 lg:justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div className="flex flex-wrap gap-2">
                           <Button
                             size="sm"
