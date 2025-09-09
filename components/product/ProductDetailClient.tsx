@@ -6,7 +6,6 @@ import ImageGallery from "@/components/product/ImageGallery";
 import VariantPicker from "@/components/product/VariantPicker";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { useProductStore } from "@/stores/useProductStore";
 import {
@@ -76,10 +75,14 @@ export default function ProductDetailClient({
   product,
 }: ProductDetailClientProps) {
   const router = useRouter();
-  const { addItem } = useCart();
   const { toast } = useToast();
-  const { addToWishlist, removeFromWishlistByProductId, isInWishlist } =
-    useProductStore();
+  const {
+    addToWishlist,
+    removeFromWishlistByProductId,
+    isInWishlist,
+    addToCart,
+    getProductById,
+  } = useProductStore();
   const [selectedVariant, setSelectedVariant] = useState({
     size: "M",
     color: "Black",
@@ -289,14 +292,40 @@ export default function ProductDetailClient({
   const handleAddToCart = () => {
     if (!isInStock) return;
 
-    addItem({
-      id: product.id,
+    // 스토어에서 실제 상품 정보 가져오기
+    const storeProduct = getProductById(product.id.toString());
+    if (!storeProduct) {
+      toast({
+        title: "오류",
+        description: "상품 정보를 찾을 수 없습니다.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // 선택된 색상과 사이즈의 재고 확인
+    const colorSizeStock =
+      storeProduct.colorSizeStocks?.[selectedVariant.color]?.[
+        selectedVariant.size
+      ] || 0;
+    const stock = colorSizeStock > 0 ? colorSizeStock : storeProduct.stock;
+
+    addToCart({
+      productId: product.id.toString(),
       name: product.name,
       price: product.price,
       originalPrice: product.originalPrice,
       image: product.images[0],
       size: selectedVariant.size,
       color: selectedVariant.color,
+      quantity: quantity,
+      stock: stock,
+    });
+
+    toast({
+      title: "장바구니에 추가되었습니다",
+      description: `${product.name} (${selectedVariant.size}, ${selectedVariant.color}) ${quantity}개가 장바구니에 추가되었습니다.`,
+      duration: 2000,
     });
   };
 

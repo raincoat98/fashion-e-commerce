@@ -14,7 +14,11 @@ export async function generateStaticParams() {
 
 // Generate metadata for each product
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  // 기본 메타데이터 (실제로는 상품 데이터를 가져와서 생성해야 함)
+  // 스토어에서 상품 데이터 가져오기 (서버 사이드에서는 직접 접근 불가)
+  // 클라이언트 사이드에서 동적으로 메타데이터를 설정하거나
+  // API를 통해 상품 정보를 가져와야 함
+
+  // 임시로 기본 메타데이터 사용 (실제 구현에서는 API 호출 필요)
   const defaultProduct = {
     name: "LUMINA 상품",
     description:

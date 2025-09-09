@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import DraggableProductList from "@/components/home/DraggableProductList";
+import { useProductStore } from "@/stores/useProductStore";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -16,6 +17,75 @@ export default function RelatedProducts({
   currentProductId,
 }: RelatedProductsProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const { products, getProductById } = useProductStore();
+
+  // 현재 상품 정보 가져오기
+  const currentProduct = getProductById(currentProductId.toString());
+
+  // 관련 상품 계산 (같은 카테고리, 비슷한 가격대, 베스트셀러 등)
+  const relatedProducts = useMemo(() => {
+    if (!currentProduct) return [];
+
+    // 현재 상품과 같은 카테고리의 다른 상품들
+    const sameCategoryProducts = products.filter(
+      (product) =>
+        product.id !== currentProductId.toString() &&
+        product.category === currentProduct.category &&
+        product.isActive
+    );
+
+    // 비슷한 가격대의 상품들 (현재 가격의 ±30% 범위)
+    const similarPriceProducts = products.filter(
+      (product) =>
+        product.id !== currentProductId.toString() &&
+        product.isActive &&
+        product.price >= currentProduct.price * 0.7 &&
+        product.price <= currentProduct.price * 1.3
+    );
+
+    // 베스트셀러 상품들
+    const bestSellerProducts = products.filter(
+      (product) =>
+        product.id !== currentProductId.toString() &&
+        product.isActive &&
+        product.isBest
+    );
+
+    // 상품들을 우선순위에 따라 결합
+    const allRelated = [
+      ...sameCategoryProducts,
+      ...similarPriceProducts,
+      ...bestSellerProducts,
+    ];
+
+    // 중복 제거 및 최대 6개까지만 반환
+    const uniqueProducts = allRelated
+      .filter(
+        (product, index, self) =>
+          index === self.findIndex((p) => p.id === product.id)
+      )
+      .slice(0, 6);
+
+    // DraggableProductList에서 사용할 형식으로 변환
+    return uniqueProducts.map((product) => ({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.originalPrice || product.price,
+      image: product.images[0],
+      category: product.category,
+      rating: product.rating,
+      reviewCount: product.reviewCount,
+      isNew: product.isNew,
+      isSale: product.isSale,
+      discount: product.originalPrice
+        ? Math.round(
+            ((product.originalPrice - product.price) / product.originalPrice) *
+              100
+          )
+        : 0,
+    }));
+  }, [products, currentProduct, currentProductId]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -43,99 +113,6 @@ export default function RelatedProducts({
 
     return () => ctx.revert();
   }, []);
-
-  // Mock related products - replace with actual API call
-  // In a real app, this would be based on:
-  // - Same category products
-  // - Frequently bought together
-  // - User viewing history
-  // - Similar price range
-  const relatedProducts = [
-    {
-      id: "101",
-      name: "슬림핏 데님 자켓",
-      price: 59000,
-      originalPrice: 89000,
-      image:
-        "https://images.pexels.com/photos/4482959/pexels-photo-4482959.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "아우터",
-      rating: 4.6,
-      reviewCount: 89,
-      isNew: false,
-      isSale: true,
-      discount: 34,
-    },
-    {
-      id: "102",
-      name: "와이드 슬랙스",
-      price: 39000,
-      originalPrice: 65000,
-      image:
-        "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "하의",
-      rating: 4.8,
-      reviewCount: 156,
-      isNew: false,
-      isSale: true,
-      discount: 40,
-    },
-    {
-      id: "103",
-      name: "크롭 니트 가디건",
-      price: 45000,
-      originalPrice: 75000,
-      image:
-        "https://images.pexels.com/photos/6983021/pexels-photo-6983021.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "상의",
-      rating: 4.7,
-      reviewCount: 203,
-      isNew: false,
-      isSale: true,
-      discount: 40,
-    },
-    {
-      id: "104",
-      name: "하이웨스트 스커트",
-      price: 29000,
-      originalPrice: 49000,
-      image:
-        "https://images.pexels.com/photos/25841774/pexels-photo-25841774.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "하의",
-      rating: 4.5,
-      reviewCount: 112,
-      isNew: false,
-      isSale: true,
-      discount: 41,
-    },
-    {
-      id: "105",
-      name: "베이직 티셔츠",
-      price: 25000,
-      originalPrice: 35000,
-      image:
-        "https://images.pexels.com/photos/428338/pexels-photo-428338.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "상의",
-      rating: 4.4,
-      reviewCount: 78,
-      isNew: true,
-      isSale: false,
-      discount: 29,
-    },
-    {
-      id: "106",
-      name: "데님 쇼츠",
-      price: 35000,
-      originalPrice: 55000,
-      image:
-        "https://images.pexels.com/photos/1594639/pexels-photo-1594639.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "하의",
-      rating: 4.3,
-      reviewCount: 95,
-      isNew: false,
-      isSale: true,
-      discount: 36,
-    },
-  ].filter((product) => product.id !== currentProductId.toString());
 
   return (
     <section ref={sectionRef}>

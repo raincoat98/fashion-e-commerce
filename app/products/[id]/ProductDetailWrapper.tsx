@@ -47,16 +47,31 @@ export default function ProductDetailWrapper({
     images: storeProduct.images,
     rating: storeProduct.rating,
     reviewCount: storeProduct.reviewCount,
-    sizes: storeProduct.sizes.map((size) => ({
-      name: size,
-      available: true,
-      stock: Math.floor(storeProduct.stock / storeProduct.sizes.length) || 1,
-    })),
-    colors: storeProduct.colors.map((color) => ({
-      name: color,
-      hex: getColorHex(color),
-      available: true,
-    })),
+    sizes: storeProduct.sizes.map((size) => {
+      // 선택된 색상에 따른 사이즈별 재고 확인
+      const sizeStock = storeProduct.sizeStocks?.[size] || 0;
+      const isAvailable = sizeStock > 0;
+
+      return {
+        name: size,
+        available: isAvailable,
+        stock: sizeStock,
+      };
+    }),
+    colors: storeProduct.colors.map((color) => {
+      // 색상별 사용 가능 여부 확인
+      const colorAvailable = storeProduct.colorSizeAvailability?.[color]
+        ? Object.values(storeProduct.colorSizeAvailability[color]).some(
+            (available) => available
+          )
+        : true;
+
+      return {
+        name: color,
+        hex: getColorHex(color),
+        available: colorAvailable,
+      };
+    }),
     materials: "코튼 100%",
     care: "찬물 단독 세탁, 자연 건조",
     modelInfo: "모델 착용 사이즈: M / 키 168cm",
