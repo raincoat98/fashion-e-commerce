@@ -344,7 +344,7 @@ export default function Header() {
                         ? "h-5 w-5"
                         : screenSize === "tablet"
                         ? "h-4 w-4"
-                        : "h-4 w-4"
+                        : "h-5 w-5"
                     }`}
                   />
                 </Button>
@@ -363,7 +363,7 @@ export default function Header() {
                         ? "h-5 w-5"
                         : screenSize === "tablet"
                         ? "h-4 w-4"
-                        : "h-4 w-4"
+                        : "h-5 w-5"
                     } transition-all duration-300 ${
                       wishlistCount > 0
                         ? "text-red-500 fill-current"
@@ -399,7 +399,7 @@ export default function Header() {
                         ? "h-5 w-5"
                         : screenSize === "tablet"
                         ? "h-4 w-4"
-                        : "h-4 w-4"
+                        : "h-5 w-5"
                     } transition-all duration-300 ${
                       cartItemCount > 0
                         ? "text-blue-600 fill-current"
