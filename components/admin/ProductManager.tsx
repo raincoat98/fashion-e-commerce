@@ -26,6 +26,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -56,93 +62,6 @@ import {
 } from "lucide-react";
 import { useProductStore, Product } from "@/stores/useProductStore";
 import { useCollectionStore, Collection } from "@/stores/useCollectionStore";
-
-// Mock 데이터 (실제로는 스토어에서 가져오므로 사용되지 않음)
-const mockProducts: Product[] = []; /* 사용되지 않는 mock 데이터
-const unusedMockProducts = [
-  {
-    id: "1",
-    name: "LUMINA 시그니처 티셔츠",
-    description: "프리미엄 코튼 소재의 시그니처 티셔츠",
-    price: 89000,
-    originalPrice: 120000,
-    category: "상의",
-    subCategory: "티셔츠",
-    images: [
-      "https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "https://images.pexels.com/photos/1805411/pexels-photo-1805411.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&w=800",
-    ],
-    colors: ["화이트", "블랙", "네이비"],
-    sizes: ["S", "M", "L", "XL"],
-    stock: 150,
-    isActive: true,
-    isSale: true,
-    isFeatured: true,
-    tags: ["시그니처", "베스트셀러", "신상"],
-    isLimited: false,
-    isHot: true,
-    isNew: false,
-    isBest: false,
-    rating: 4.8,
-    reviewCount: 156,
-    createdAt: "2025-01-01T00:00:00Z",
-    updatedAt: "2025-01-15T00:00:00Z",
-  },
-  {
-    id: "2",
-    name: "프리미엄 데님 팬츠",
-    description: "고급 데님 소재의 프리미엄 팬츠",
-    price: 129000,
-    originalPrice: 159000,
-    category: "하의",
-    subCategory: "팬츠",
-    images: [
-      "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "https://images.pexels.com/photos/852860/pexels-photo-852860.jpeg?auto=compress&cs=tinysrgb&w=800",
-    ],
-    colors: ["블루", "블랙"],
-    sizes: ["26", "27", "28", "29", "30"],
-    stock: 80,
-    isActive: true,
-    isFeatured: false,
-    tags: ["프리미엄", "데님"],
-    isLimited: false,
-    isHot: false,
-    isNew: true,
-    isBest: false,
-    badge: "NEW",
-    createdAt: "2025-01-05",
-    updatedAt: "2025-01-10",
-  },
-  {
-    id: "3",
-    name: "엘레간트 원피스",
-    description: "우아한 실루엣의 엘레간트 원피스",
-    price: 159000,
-    salePrice: 127000,
-    category: "dress",
-    collection: "elegant",
-    images: [
-      "/images/products/dress-1.jpg",
-      "/images/products/dress-2.jpg",
-      "/images/products/dress-3.jpg",
-    ],
-    colors: ["블랙", "네이비", "베이지"],
-    sizes: ["XS", "S", "M", "L"],
-    stock: 45,
-    isActive: true,
-    isFeatured: true,
-    tags: ["엘레간트", "원피스", "할인"],
-    isLimited: true,
-    isHot: false,
-    isNew: false,
-    isBest: false,
-    badge: "LIMITED",
-    createdAt: "2025-01-10",
-    updatedAt: "2025-01-12",
-  },
-]; */
 
 const categoryOptions = [
   { value: "top", label: "상의" },
@@ -223,6 +142,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     filteredProducts,
   } = useProductStore();
 
+  // 상품 상태 변경을 위한 추가 구독
+  const [forceUpdate, setForceUpdate] = useState(0);
+
   // 컬렉션 스토어
   const {
     collections,
@@ -240,7 +162,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
   const [selectedCollection, setSelectedCollection] = useState<string>("all");
   const [isBulkUploadDialogOpen, setIsBulkUploadDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [, forceUpdate] = useState({});
+  const [refreshKey, setRefreshKey] = useState(0);
 
   // ProductForm 통합을 위한 상태
   const [showProductForm, setShowProductForm] = useState(false);
@@ -276,6 +198,14 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     { name: "Gray", hex: "#9CA3AF", available: true },
   ]);
 
+  // 색상별 사이즈별 재고 관리 상태
+  const [colorSizeStocks, setColorSizeStocks] = useState<
+    Record<string, Record<string, number>>
+  >({});
+  const [colorSizeAvailability, setColorSizeAvailability] = useState<
+    Record<string, Record<string, boolean>>
+  >({});
+
   const [newImage, setNewImage] = useState("");
   const [newFeature, setNewFeature] = useState("");
 
@@ -283,6 +213,54 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
   useEffect(() => {
     console.log("사이즈 상태 변경:", sizes);
   }, [sizes]);
+
+  // 색상 상태 변경 모니터링 및 colorSizeAvailability 동기화
+  useEffect(() => {
+    console.log("colors 상태 변경:", colors);
+
+    setColorSizeAvailability((prevAvailability) => {
+      // 색상이 변경될 때 colorSizeAvailability 동기화
+      const newColorSizeAvailability = { ...prevAvailability };
+      let hasChanges = false;
+
+      colors.forEach((color) => {
+        if (color.name && !newColorSizeAvailability[color.name]) {
+          // 새 색상에 대한 기본값 설정 (기존 값이 없는 경우에만)
+          newColorSizeAvailability[color.name] = sizes.reduce((acc, size) => {
+            acc[size.name] = true;
+            return acc;
+          }, {} as Record<string, boolean>);
+          hasChanges = true;
+        } else if (color.name && newColorSizeAvailability[color.name]) {
+          // 기존 색상이 있지만 새로운 사이즈가 추가된 경우
+          sizes.forEach((size) => {
+            if (newColorSizeAvailability[color.name][size.name] === undefined) {
+              newColorSizeAvailability[color.name][size.name] = true;
+              hasChanges = true;
+            }
+          });
+        }
+      });
+
+      // 존재하지 않는 색상 제거 (단, 편집 중이 아닐 때만)
+      if (!editingProduct) {
+        const currentColorNames = colors.map((c) => c.name).filter(Boolean);
+        Object.keys(newColorSizeAvailability).forEach((colorName) => {
+          if (!currentColorNames.includes(colorName)) {
+            delete newColorSizeAvailability[colorName];
+            hasChanges = true;
+          }
+        });
+      }
+
+      if (hasChanges) {
+        console.log("colorSizeAvailability 동기화:", newColorSizeAvailability);
+        return newColorSizeAvailability;
+      }
+
+      return prevAvailability;
+    });
+  }, [colors, sizes, editingProduct]);
 
   // 카테고리 변경 시 사이즈 업데이트
   useEffect(() => {
@@ -304,16 +282,44 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     }
   }, [formData.category]);
 
-  // 컬렉션 필터링을 위한 추가 필터링
+  // 로컬 상품 기반 필터링
   const finalFilteredProducts = React.useMemo(() => {
     console.log("finalFilteredProducts 계산 시작:", {
-      filteredProductsLength: filteredProducts.length,
+      productsLength: products.length,
       selectedCollection,
+      searchTerm,
+      selectedCategory,
     });
 
-    let filtered = filteredProducts;
+    let filtered = products;
 
-    // 컬렉션 필터링 (스토어의 filteredProducts에 컬렉션 필터가 없으므로 추가)
+    // 검색어 필터링
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.description
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          product.tags.some((tag) =>
+            tag.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+      );
+    }
+
+    // 카테고리 필터링
+    if (selectedCategory && selectedCategory !== "all") {
+      filtered = filtered.filter(
+        (product) => product.category === selectedCategory
+      );
+    }
+
+    // 활성화 상태 필터링
+    if (!showInactive) {
+      filtered = filtered.filter((product) => product.isActive);
+    }
+
+    // 컬렉션 필터링
     if (selectedCollection !== "all") {
       const collection = collections.find((c) => c.id === selectedCollection);
       if (collection) {
@@ -324,13 +330,20 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
     }
 
     console.log("finalFilteredProducts 계산 완료:", {
-      originalLength: filteredProducts.length,
+      originalLength: products.length,
       filteredLength: filtered.length,
       firstProduct: filtered[0],
     });
 
     return filtered;
-  }, [filteredProducts, selectedCollection, collections]);
+  }, [
+    products,
+    selectedCollection,
+    collections,
+    searchTerm,
+    selectedCategory,
+    showInactive,
+  ]);
 
   // 상품 수정 다이얼로그 열기
   const openEditDialog = (product: Product) => {
@@ -361,13 +374,42 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         isBest: product.isBest || false,
       });
 
-      // 사이즈와 색상 데이터 설정
+      // 사이즈와 색상 데이터 설정 (개별 재고 관리)
+      // 상품에 colorSizeStocks 정보가 있으면 사용, 없으면 sizeStocks 사용, 없으면 균등 분할
+      const colorSizeStocks = product.colorSizeStocks || {};
+      const colorSizeAvailability = product.colorSizeAvailability || {};
+      const sizeStocks = product.sizeStocks || {};
+      console.log("상품 수정 다이얼로그 열기:", {
+        productId: product.id,
+        productName: product.name,
+        totalStock: product.stock,
+        colorSizeStocks: colorSizeStocks,
+        colorSizeAvailability: colorSizeAvailability,
+        sizeStocks: sizeStocks,
+        sizes: product.sizes,
+        colors: product.colors,
+      });
+
       setSizes(
-        product.sizes.map((size) => ({
-          name: size,
-          available: true, // 기본값
-          stock: Math.floor(product.stock / product.sizes.length), // 재고를 사이즈 개수로 나눔
-        }))
+        product.sizes.map((size, index) => {
+          let stockValue;
+          if (sizeStocks[size]) {
+            // 기존 개별 재고 정보가 있으면 사용
+            stockValue = sizeStocks[size];
+          } else {
+            // 개별 재고 정보가 없으면 균등 분할 (소수점 반올림)
+            const baseStock = Math.round(product.stock / product.sizes.length);
+            stockValue = baseStock;
+          }
+
+          console.log(`사이즈 ${size} 재고 설정:`, stockValue);
+
+          return {
+            name: size,
+            available: true, // 기본값
+            stock: stockValue,
+          };
+        })
       );
 
       setColors(
@@ -378,6 +420,71 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         }))
       );
 
+      // 색상별 사이즈별 재고 정보 로드
+      if (Object.keys(colorSizeStocks).length > 0) {
+        setColorSizeStocks(colorSizeStocks);
+      } else {
+        // colorSizeStocks가 없으면 기본값으로 초기화
+        const defaultColorSizeStocks: Record<
+          string,
+          Record<string, number>
+        > = {};
+        product.colors.forEach((color) => {
+          defaultColorSizeStocks[color] = {};
+          product.sizes.forEach((size) => {
+            defaultColorSizeStocks[color][size] = Math.round(
+              product.stock / (product.colors.length * product.sizes.length)
+            );
+          });
+        });
+        setColorSizeStocks(defaultColorSizeStocks);
+      }
+
+      // 색상별 사이즈별 사용 가능 여부 로드
+      console.log(
+        "상품에서 로드된 colorSizeAvailability:",
+        colorSizeAvailability
+      );
+      if (Object.keys(colorSizeAvailability).length > 0) {
+        // 기존 데이터가 있으면 사용하되, 누락된 색상/사이즈는 기본값으로 채움
+        const mergedColorSizeAvailability: Record<
+          string,
+          Record<string, boolean>
+        > = {};
+
+        product.colors.forEach((color) => {
+          mergedColorSizeAvailability[color] = {};
+          product.sizes.forEach((size) => {
+            // 기존 값이 있으면 사용, 없으면 true로 기본값 설정
+            mergedColorSizeAvailability[color][size] =
+              colorSizeAvailability[color]?.[size] ?? true;
+          });
+        });
+
+        console.log(
+          "병합된 colorSizeAvailability:",
+          mergedColorSizeAvailability
+        );
+        setColorSizeAvailability(mergedColorSizeAvailability);
+      } else {
+        // colorSizeAvailability가 없으면 기본값으로 초기화 (모든 사이즈 사용 가능)
+        const defaultColorSizeAvailability: Record<
+          string,
+          Record<string, boolean>
+        > = {};
+        product.colors.forEach((color) => {
+          defaultColorSizeAvailability[color] = {};
+          product.sizes.forEach((size) => {
+            defaultColorSizeAvailability[color][size] = true;
+          });
+        });
+        console.log(
+          "기본 colorSizeAvailability 생성:",
+          defaultColorSizeAvailability
+        );
+        setColorSizeAvailability(defaultColorSizeAvailability);
+      }
+
       setEditingProduct(product);
       setShowProductForm(true);
     }
@@ -385,12 +492,34 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
   // 상품 삭제
   const handleDeleteProduct = (id: string) => {
+    console.log("=== handleDeleteProduct 시작 ===");
+    console.log("삭제할 상품 ID:", id);
+
     const productToDelete = products.find((product) => product.id === id);
+    if (!productToDelete) {
+      console.error("삭제할 상품을 찾을 수 없습니다:", id);
+      toast({
+        title: "오류",
+        description: "삭제할 상품을 찾을 수 없습니다.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    console.log("삭제할 상품:", productToDelete.name);
+
+    // 2. Zustand 스토어에서 삭제
     deleteProduct(id);
+
+    // 3. 강제 리렌더링
+    setForceUpdate((prev) => prev + 1);
+    setRefreshKey((prev) => prev + 1);
+
+    console.log("=== handleDeleteProduct 완료 ===");
 
     toast({
       title: "상품 삭제 완료",
-      description: `${productToDelete?.name || "상품"}이 삭제되었습니다.`,
+      description: `${productToDelete.name}이 삭제되었습니다.`,
       duration: 3000,
     });
   };
@@ -398,61 +527,100 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
   // 상품 활성화/비활성화
   const toggleProductStatus = React.useCallback(
     (id: string) => {
+      console.log("=== toggleProductStatus 시작 ===");
+      console.log("클릭된 상품 ID:", id);
+      console.log("현재 products:", products.length);
+
       const product = products.find((p) => p.id === id);
-      const newStatus = !product?.isActive;
+      if (!product) {
+        console.error("상품을 찾을 수 없습니다:", id);
+        toast({
+          title: "오류",
+          description: "상품을 찾을 수 없습니다.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const newStatus = !product.isActive;
 
       console.log("상품 상태 변경 전:", {
         id,
-        currentStatus: product?.isActive,
+        currentStatus: product.isActive,
         newStatus,
+        productName: product.name,
       });
 
+      // 1. 로컬 상태 먼저 업데이트 (즉시 반영)
+      // 스토어에서 직접 업데이트되므로 로컬 상태 업데이트 불필요
+
+      // 2. Zustand 스토어 업데이트
       updateProduct(id, { isActive: newStatus });
 
-      // 강제 리렌더링
-      setTimeout(() => {
-        forceUpdate({});
-        console.log("강제 리렌더링 실행");
-      }, 100);
+      // 3. 강제 리렌더링
+      setForceUpdate((prev) => prev + 1);
+      setRefreshKey((prev) => prev + 1);
 
-      console.log(
-        "상품 상태 변경 후 - products:",
-        products.find((p) => p.id === id)
-      );
+      console.log("=== toggleProductStatus 완료 ===");
 
       toast({
         title: "상품 상태 변경",
-        description: `${product?.name || "상품"}이 ${
+        description: `${product.name}이 ${
           newStatus ? "활성화" : "비활성화"
         }되었습니다.`,
         duration: 2000,
       });
     },
-    [products, updateProduct, forceUpdate, toast]
+    [products, updateProduct, toast]
   );
 
   // 상품 피처드 토글
   const toggleProductFeatured = React.useCallback(
     (id: string) => {
-      const product = products.find((p) => p.id === id);
-      const newFeatured = !product?.isFeatured;
+      console.log("=== toggleProductFeatured 시작 ===");
+      console.log("클릭된 상품 ID:", id);
 
+      const product = products.find((p) => p.id === id);
+      if (!product) {
+        console.error("상품을 찾을 수 없습니다:", id);
+        toast({
+          title: "오류",
+          description: "상품을 찾을 수 없습니다.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const newFeatured = !product.isFeatured;
+
+      console.log("피처드 상태 변경 전:", {
+        id,
+        currentFeatured: product.isFeatured,
+        newFeatured,
+        productName: product.name,
+      });
+
+      // 1. 로컬 상태 먼저 업데이트 (즉시 반영)
+      // 스토어에서 직접 업데이트되므로 로컬 상태 업데이트 불필요
+
+      // 2. Zustand 스토어 업데이트
       updateProduct(id, { isFeatured: newFeatured });
 
-      // 강제 리렌더링
-      setTimeout(() => {
-        forceUpdate({});
-      }, 100);
+      // 3. 강제 리렌더링
+      setForceUpdate((prev) => prev + 1);
+      setRefreshKey((prev) => prev + 1);
+
+      console.log("=== toggleProductFeatured 완료 ===");
 
       toast({
         title: "피처드 상태 변경",
-        description: `${product?.name || "상품"}이 ${
+        description: `${product.name}이 ${
           newFeatured ? "피처드" : "일반"
         } 상품으로 변경되었습니다.`,
         duration: 2000,
       });
     },
-    [products, updateProduct, forceUpdate, toast]
+    [products, updateProduct, toast]
   );
 
   // 대량 업로드 시뮬레이션
@@ -468,32 +636,147 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
   };
 
   const handleSizeChange = (index: number, field: string, value: any) => {
+    console.log("사이즈 변경:", { index, field, value });
     const newSizes = [...sizes];
     newSizes[index] = { ...newSizes[index], [field]: value };
     setSizes(newSizes);
+
+    // 재고 변경 시 로그 출력
+    if (field === "stock") {
+      const totalStock = newSizes.reduce((sum, size) => sum + size.stock, 0);
+      console.log("총 재고 업데이트:", totalStock);
+    }
   };
 
   const handleColorChange = (index: number, field: string, value: any) => {
     const newColors = [...colors];
+    const oldColorName = newColors[index].name;
     newColors[index] = { ...newColors[index], [field]: value };
     setColors(newColors);
+
+    // 색상 이름이 변경된 경우 colorSizeAvailability 업데이트
+    if (field === "name" && oldColorName !== value) {
+      setColorSizeAvailability((prev) => {
+        const newAvailability = { ...prev };
+        if (oldColorName && newAvailability[oldColorName]) {
+          newAvailability[value] = newAvailability[oldColorName];
+          delete newAvailability[oldColorName];
+        } else if (value) {
+          // 새 색상에 대한 기본값 설정
+          newAvailability[value] = sizes.reduce((acc, size) => {
+            acc[size.name] = true;
+            return acc;
+          }, {} as Record<string, boolean>);
+        }
+        return newAvailability;
+      });
+
+      // colorSizeStocks도 업데이트
+      setColorSizeStocks((prev) => {
+        const newStocks = { ...prev };
+        if (oldColorName && newStocks[oldColorName]) {
+          newStocks[value] = newStocks[oldColorName];
+          delete newStocks[oldColorName];
+        } else if (value) {
+          // 새 색상에 대한 기본값 설정
+          newStocks[value] = sizes.reduce((acc, size) => {
+            acc[size.name] = 0;
+            return acc;
+          }, {} as Record<string, number>);
+        }
+        return newStocks;
+      });
+    }
+  };
+
+  // 색상별 사이즈별 재고 변경
+  const handleColorSizeStockChange = (
+    color: string,
+    size: string,
+    stock: number
+  ) => {
+    setColorSizeStocks((prev) => ({
+      ...prev,
+      [color]: {
+        ...prev[color],
+        [size]: stock,
+      },
+    }));
+  };
+
+  // 색상별 사이즈별 사용 가능 여부 변경 핸들러
+  const handleColorSizeAvailabilityChange = (
+    color: string,
+    size: string,
+    available: boolean
+  ) => {
+    setColorSizeAvailability((prev) => ({
+      ...prev,
+      [color]: {
+        ...prev[color],
+        [size]: available,
+      },
+    }));
   };
 
   const addSize = () => {
     const defaultSize = formData.category === "bottom" ? "26" : "S";
-    setSizes([...sizes, { name: defaultSize, available: true, stock: 0 }]);
+    const newSize = { name: defaultSize, available: true, stock: 0 };
+    setSizes([...sizes, newSize]);
+
+    // 모든 색상에 새 사이즈 재고 추가
+    const newColorSizeStocks = { ...colorSizeStocks };
+    Object.keys(newColorSizeStocks).forEach((color) => {
+      newColorSizeStocks[color][defaultSize] = 0;
+    });
+    setColorSizeStocks(newColorSizeStocks);
+
+    // 모든 색상에 새 사이즈 사용 가능 여부 추가
+    const newColorSizeAvailability = { ...colorSizeAvailability };
+    Object.keys(newColorSizeAvailability).forEach((color) => {
+      newColorSizeAvailability[color][defaultSize] = true;
+    });
+    setColorSizeAvailability(newColorSizeAvailability);
   };
 
   const removeSize = (index: number) => {
+    const sizeToRemove = sizes[index];
     setSizes(sizes.filter((_, i) => i !== index));
+
+    // 모든 색상에서 해당 사이즈 재고 제거
+    const newColorSizeStocks = { ...colorSizeStocks };
+    Object.keys(newColorSizeStocks).forEach((color) => {
+      delete newColorSizeStocks[color][sizeToRemove.name];
+    });
+    setColorSizeStocks(newColorSizeStocks);
+
+    // 모든 색상에서 해당 사이즈 사용 가능 여부 제거
+    const newColorSizeAvailability = { ...colorSizeAvailability };
+    Object.keys(newColorSizeAvailability).forEach((color) => {
+      delete newColorSizeAvailability[color][sizeToRemove.name];
+    });
+    setColorSizeAvailability(newColorSizeAvailability);
   };
 
   const addColor = () => {
-    setColors([...colors, { name: "", hex: "#000000", available: true }]);
+    const newColor = { name: "", hex: "#000000", available: true };
+    setColors([...colors, newColor]);
+    // colorSizeAvailability는 useEffect에서 자동으로 처리됨
   };
 
   const removeColor = (index: number) => {
+    const colorToRemove = colors[index];
     setColors(colors.filter((_, i) => i !== index));
+
+    // 해당 색상의 재고 정보 제거
+    const newColorSizeStocks = { ...colorSizeStocks };
+    delete newColorSizeStocks[colorToRemove.name];
+    setColorSizeStocks(newColorSizeStocks);
+
+    // 해당 색상의 사용 가능 여부 정보 제거
+    const newColorSizeAvailability = { ...colorSizeAvailability };
+    delete newColorSizeAvailability[colorToRemove.name];
+    setColorSizeAvailability(newColorSizeAvailability);
   };
 
   const addImage = () => {
@@ -544,6 +827,21 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
     if (editingProduct) {
       // 수정 모드
+      const sizeStocks = sizes.reduce((acc, size) => {
+        acc[size.name] = size.stock;
+        return acc;
+      }, {} as Record<string, number>);
+
+      // 색상별 사이즈별 재고가 있으면 사용, 없으면 기본 사이즈별 재고 사용
+      const finalColorSizeStocks =
+        Object.keys(colorSizeStocks).length > 0 ? colorSizeStocks : undefined;
+      const finalColorSizeAvailability =
+        Object.keys(colorSizeAvailability).length > 0
+          ? colorSizeAvailability
+          : undefined;
+      const finalSizeStocks =
+        Object.keys(colorSizeStocks).length > 0 ? undefined : sizeStocks;
+
       const updates = {
         name: formData.name,
         description: formData.description,
@@ -557,6 +855,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         colors: colors.map((c) => c.name),
         sizes: sizes.map((s) => s.name),
         stock: sizes.reduce((sum, size) => sum + size.stock, 0),
+        sizeStocks: finalSizeStocks, // 기본 사이즈별 재고 정보
+        colorSizeStocks: finalColorSizeStocks, // 색상별 사이즈별 재고 정보
+        colorSizeAvailability: finalColorSizeAvailability, // 색상별 사이즈별 사용 가능 여부
         tags: formData.features.filter((f) => f.trim() !== ""),
         isActive: formData.isActive ?? true,
         isNew: formData.isNew ?? false,
@@ -566,6 +867,8 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         isLimited: formData.isLimited ?? false,
         isHot: formData.isHot ?? false,
       };
+
+      console.log("상품 수정:", editingProduct.id);
 
       updateProduct(editingProduct.id, updates);
 
@@ -581,6 +884,28 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         addProductToCollection(formData.collection, editingProduct.id);
       }
 
+      // 로컬 상태 업데이트 (재고 정보 명시적 포함)
+      const newStock = Object.values(colorSizeStocks).reduce(
+        (total, colorStocks) =>
+          total +
+          Object.values(colorStocks).reduce((sum, stock) => sum + stock, 0),
+        0
+      );
+
+      console.log("새로운 총 재고:", newStock);
+      console.log("사이즈별 재고:", sizeStocks);
+      console.log("색상별 사이즈별 재고:", finalColorSizeStocks);
+      console.log(
+        "색상별 사이즈별 사용 가능 여부:",
+        finalColorSizeAvailability
+      );
+
+      // 스토어에서 직접 업데이트되므로 로컬 상태 업데이트 불필요
+
+      // 강제 리렌더링
+      setForceUpdate((prev) => prev + 1);
+      setRefreshKey((prev) => prev + 1);
+
       toast({
         title: "상품 수정 완료",
         description: "상품 정보가 성공적으로 수정되었습니다.",
@@ -588,6 +913,21 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
       });
     } else {
       // 등록 모드
+      const sizeStocks = sizes.reduce((acc, size) => {
+        acc[size.name] = size.stock;
+        return acc;
+      }, {} as Record<string, number>);
+
+      // 색상별 사이즈별 재고가 있으면 사용, 없으면 기본 사이즈별 재고 사용
+      const finalColorSizeStocks =
+        Object.keys(colorSizeStocks).length > 0 ? colorSizeStocks : undefined;
+      const finalColorSizeAvailability =
+        Object.keys(colorSizeAvailability).length > 0
+          ? colorSizeAvailability
+          : undefined;
+      const finalSizeStocks =
+        Object.keys(colorSizeStocks).length > 0 ? undefined : sizeStocks;
+
       const newProduct = {
         name: formData.name,
         description: formData.description,
@@ -601,7 +941,15 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         images: formData.images,
         colors: colors.map((c) => c.name),
         sizes: sizes.map((s) => s.name),
-        stock: sizes.reduce((sum, size) => sum + size.stock, 0),
+        stock: Object.values(colorSizeStocks).reduce(
+          (total, colorStocks) =>
+            total +
+            Object.values(colorStocks).reduce((sum, stock) => sum + stock, 0),
+          0
+        ),
+        sizeStocks: finalSizeStocks, // 기본 사이즈별 재고 정보
+        colorSizeStocks: finalColorSizeStocks, // 색상별 사이즈별 재고 정보
+        colorSizeAvailability: finalColorSizeAvailability, // 색상별 사이즈별 사용 가능 여부
         isActive: formData.isActive ?? true,
         isNew: formData.isNew ?? false,
         isSale: formData.originalPrice !== formData.price,
@@ -618,14 +966,21 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         tags: formData.features.filter((f) => f.trim() !== ""),
       };
 
+      // 새로 생성된 상품의 ID는 Date.now().toString()로 생성됨
+      const newProductId = Date.now().toString();
+
       addProduct(newProduct);
 
       // 컬렉션에 상품 추가 (none이 아닌 경우에만)
       if (formData.collection && formData.collection !== "none") {
-        // 새로 생성된 상품의 ID는 Date.now().toString()로 생성됨
-        const newProductId = Date.now().toString();
         addProductToCollection(formData.collection, newProductId);
       }
+
+      // 스토어에서 직접 추가되므로 로컬 상태 업데이트 불필요
+
+      // 강제 리렌더링
+      setForceUpdate((prev) => prev + 1);
+      setRefreshKey((prev) => prev + 1);
 
       toast({
         title: "상품 등록 완료",
@@ -678,6 +1033,8 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
       { name: "White", hex: "#FFFFFF", available: true },
       { name: "Gray", hex: "#9CA3AF", available: true },
     ]);
+    setColorSizeStocks({});
+    setColorSizeAvailability({});
     setNewImage("");
     setNewFeature("");
   };
@@ -994,245 +1351,220 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
             <Separator />
 
-            {/* 사이즈 관리 */}
-            <div>
-              <Label className="text-base font-medium text-gray-900 dark:text-gray-100">
-                사이즈 관리
-              </Label>
-              <div className="space-y-2 mt-2">
-                {sizes.map((size, index) => (
-                  <div key={index} className="flex gap-2 items-center">
-                    <Select
-                      value={size.name}
-                      onValueChange={(value) =>
-                        handleSizeChange(index, "name", value)
-                      }
-                    >
-                      <SelectTrigger className="w-24 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                        <SelectValue placeholder="사이즈" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
-                        {formData.category === "bottom" ? (
-                          // 하의: 숫자 사이즈
-                          <>
-                            <SelectItem
-                              value="21"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              21
-                            </SelectItem>
-                            <SelectItem
-                              value="22"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              22
-                            </SelectItem>
-                            <SelectItem
-                              value="23"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              23
-                            </SelectItem>
-                            <SelectItem
-                              value="24"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              24
-                            </SelectItem>
-                            <SelectItem
-                              value="25"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              25
-                            </SelectItem>
-                            <SelectItem
-                              value="26"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              26
-                            </SelectItem>
-                            <SelectItem
-                              value="27"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              27
-                            </SelectItem>
-                            <SelectItem
-                              value="28"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              28
-                            </SelectItem>
-                            <SelectItem
-                              value="29"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              29
-                            </SelectItem>
-                            <SelectItem
-                              value="30"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              30
-                            </SelectItem>
-                            <SelectItem
-                              value="31"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              31
-                            </SelectItem>
-                            <SelectItem
-                              value="32"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              32
-                            </SelectItem>
-                            <SelectItem
-                              value="33"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              33
-                            </SelectItem>
-                            <SelectItem
-                              value="34"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              34
-                            </SelectItem>
-                          </>
-                        ) : (
-                          // 상의/기타: 문자 사이즈
-                          <>
-                            <SelectItem
-                              value="XS"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              XS
-                            </SelectItem>
-                            <SelectItem
-                              value="S"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              S
-                            </SelectItem>
-                            <SelectItem
-                              value="M"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              M
-                            </SelectItem>
-                            <SelectItem
-                              value="L"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-100"
-                            >
-                              L
-                            </SelectItem>
-                            <SelectItem
-                              value="XL"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              XL
-                            </SelectItem>
-                            <SelectItem
-                              value="XXL"
-                              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              XXL
-                            </SelectItem>
-                          </>
-                        )}
-                      </SelectContent>
-                    </Select>
-                    <Checkbox
-                      checked={size.available}
-                      onCheckedChange={(checked) =>
-                        handleSizeChange(index, "available", checked)
-                      }
-                    />
-                    <Label className="text-sm text-gray-900 dark:text-gray-100">
-                      재고 있음
-                    </Label>
-                    <Input
-                      type="number"
-                      value={size.stock}
-                      onChange={(e) =>
-                        handleSizeChange(
-                          index,
-                          "stock",
-                          parseInt(e.target.value)
-                        )
-                      }
-                      placeholder="재고"
-                      className="w-20 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                    />
-                    <Button
-                      type="button"
-                      onClick={() => removeSize(index)}
-                      size="sm"
-                      variant="outline"
-                      className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
-                  </div>
-                ))}
-                <Button
-                  type="button"
-                  onClick={addSize}
-                  size="sm"
-                  variant="outline"
-                  className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                >
-                  <Plus className="w-4 h-4 mr-1" />
-                  사이즈 추가
-                </Button>
-              </div>
-            </div>
-
             <Separator />
 
             {/* 색상 관리 */}
             <div>
-              <Label className="text-base font-medium text-gray-900 dark:text-gray-100">
-                색상 관리
-              </Label>
-              <div className="space-y-2 mt-2">
-                {colors.map((color, index) => (
-                  <div key={index} className="flex gap-2 items-center">
-                    <Input
-                      value={color.name}
-                      onChange={(e) =>
-                        handleColorChange(index, "name", e.target.value)
-                      }
-                      placeholder="색상명"
-                      className="w-24 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                    />
-                    <Input
-                      type="color"
-                      value={color.hex}
-                      onChange={(e) =>
-                        handleColorChange(index, "hex", e.target.value)
-                      }
-                      className="w-16 h-10 border-gray-300 dark:border-gray-600"
-                    />
-                    <Checkbox
-                      checked={color.available}
-                      onCheckedChange={(checked) =>
-                        handleColorChange(index, "available", checked)
-                      }
-                    />
-                    <Label className="text-sm text-gray-900 dark:text-gray-100">
-                      재고 있음
-                    </Label>
-                    <Button
-                      type="button"
-                      onClick={() => removeColor(index)}
-                      size="sm"
-                      variant="outline"
-                      className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+              <div className="flex items-center justify-between mb-4">
+                <Label className="text-base font-medium text-gray-900 dark:text-gray-100">
+                  색상 및 사이즈 관리
+                </Label>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  총 재고:{" "}
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">
+                    {Object.values(colorSizeStocks).reduce(
+                      (total, colorStocks) =>
+                        total +
+                        Object.values(colorStocks).reduce(
+                          (sum, stock) => sum + stock,
+                          0
+                        ),
+                      0
+                    )}
+                    개
+                  </span>
+                </div>
+              </div>
+
+              {/* 사이즈 관리 */}
+              <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    사이즈 설정
+                  </Label>
+                  <Button
+                    type="button"
+                    onClick={addSize}
+                    size="sm"
+                    variant="outline"
+                    className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  >
+                    <Plus className="w-3 h-3 mr-1" />
+                    사이즈 추가
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {sizes.map((size, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-1 bg-white dark:bg-gray-600 rounded px-2 py-1"
                     >
-                      <X className="w-4 h-4" />
-                    </Button>
+                      <Select
+                        value={size.name}
+                        onValueChange={(value) =>
+                          handleSizeChange(index, "name", value)
+                        }
+                      >
+                        <SelectTrigger className="w-16 h-8 text-xs border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100">
+                          <SelectValue placeholder="사이즈" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                          {formData.category === "bottom" ? (
+                            // 하의: 숫자 사이즈
+                            <>
+                              {Array.from({ length: 14 }, (_, i) => i + 21).map(
+                                (sizeNum) => (
+                                  <SelectItem
+                                    key={sizeNum}
+                                    value={sizeNum.toString()}
+                                    className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600 text-xs"
+                                  >
+                                    {sizeNum}
+                                  </SelectItem>
+                                )
+                              )}
+                            </>
+                          ) : (
+                            // 상의/기타: 문자 사이즈
+                            <>
+                              {["XS", "S", "M", "L", "XL", "XXL"].map(
+                                (sizeName) => (
+                                  <SelectItem
+                                    key={sizeName}
+                                    value={sizeName}
+                                    className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600 text-xs"
+                                  >
+                                    {sizeName}
+                                  </SelectItem>
+                                )
+                              )}
+                            </>
+                          )}
+                        </SelectContent>
+                      </Select>
+                      <Button
+                        type="button"
+                        onClick={() => removeSize(index)}
+                        size="sm"
+                        variant="outline"
+                        className="h-6 w-6 p-0 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-4 mt-2">
+                {colors.map((color, index) => (
+                  <div
+                    key={index}
+                    className="border border-gray-200 dark:border-gray-600 rounded-lg p-4"
+                  >
+                    <div className="flex gap-2 items-center mb-3">
+                      <Input
+                        value={color.name}
+                        onChange={(e) =>
+                          handleColorChange(index, "name", e.target.value)
+                        }
+                        placeholder="색상명"
+                        className="w-24 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                      />
+                      <Input
+                        type="color"
+                        value={color.hex}
+                        onChange={(e) =>
+                          handleColorChange(index, "hex", e.target.value)
+                        }
+                        className="w-16 h-10 border-gray-300 dark:border-gray-600"
+                      />
+                      <Checkbox
+                        checked={color.available}
+                        onCheckedChange={(checked) =>
+                          handleColorChange(index, "available", checked)
+                        }
+                      />
+                      <Label className="text-sm text-gray-900 dark:text-gray-100">
+                        재고 있음
+                      </Label>
+                      <Button
+                        type="button"
+                        onClick={() => removeColor(index)}
+                        size="sm"
+                        variant="outline"
+                        className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+
+                    {/* 색상별 사이즈별 재고 입력 */}
+                    {color.name && sizes.length > 0 && (
+                      <div className="space-y-2">
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          {color.name} 색상 사이즈별 재고:
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                          {sizes.map((size) => (
+                            <div
+                              key={size.name}
+                              className="flex items-center gap-2 p-2 border border-gray-200 dark:border-gray-600 rounded-lg"
+                            >
+                              <div className="flex items-center gap-1">
+                                <Checkbox
+                                  checked={
+                                    colorSizeAvailability[color.name]?.[
+                                      size.name
+                                    ] !== false
+                                  }
+                                  onCheckedChange={(checked) =>
+                                    handleColorSizeAvailabilityChange(
+                                      color.name,
+                                      size.name,
+                                      checked as boolean
+                                    )
+                                  }
+                                  className="w-4 h-4"
+                                />
+                                <Label className="text-xs text-gray-600 dark:text-gray-400 font-medium">
+                                  {size.name}
+                                </Label>
+                                <span className="text-xs text-gray-400">
+                                  (
+                                  {colorSizeAvailability[color.name]?.[
+                                    size.name
+                                  ] !== false
+                                    ? "활성"
+                                    : "비활성"}
+                                  )
+                                </span>
+                              </div>
+                              {colorSizeAvailability[color.name]?.[
+                                size.name
+                              ] !== false && (
+                                <Input
+                                  type="number"
+                                  min="0"
+                                  value={
+                                    colorSizeStocks[color.name]?.[size.name] ||
+                                    0
+                                  }
+                                  onChange={(e) =>
+                                    handleColorSizeStockChange(
+                                      color.name,
+                                      size.name,
+                                      parseInt(e.target.value) || 0
+                                    )
+                                  }
+                                  className="w-16 h-8 text-xs border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                                  placeholder="재고"
+                                />
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
                 <Button
@@ -1664,7 +1996,10 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
             </div>
 
             {/* 상품 목록 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+            <div
+              key={refreshKey}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
+            >
               {finalFilteredProducts.map((product) => (
                 <Card
                   key={product.id}
@@ -1756,9 +2091,106 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
                         <div className="space-y-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                           <div className="flex items-center justify-between">
-                            <span>재고: {product.stock}개</span>
+                            <span>총 재고: {product.stock}개</span>
                             <span>{product.category}</span>
                           </div>
+                          {/* 색상별 사이즈별 재고 표시 */}
+                          {product.colorSizeStocks &&
+                          Object.keys(product.colorSizeStocks).length > 0 ? (
+                            <div className="bg-gray-50 dark:bg-gray-700 rounded-md p-2 mt-2">
+                              <Accordion
+                                type="single"
+                                collapsible
+                                className="w-full"
+                              >
+                                <AccordionItem
+                                  value="stock-details"
+                                  className="border-none"
+                                >
+                                  <AccordionTrigger className="text-xs font-medium text-gray-700 dark:text-gray-300 hover:no-underline py-1">
+                                    <span>색상별 사이즈 재고 보기</span>
+                                  </AccordionTrigger>
+                                  <AccordionContent className="pt-2">
+                                    <div className="space-y-2">
+                                      {Object.entries(
+                                        product.colorSizeStocks
+                                      ).map(([color, sizeStocks]) => (
+                                        <div key={color} className="space-y-1">
+                                          <div className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                                            {color}:
+                                          </div>
+                                          <div className="flex flex-wrap gap-1">
+                                            {Object.entries(sizeStocks).map(
+                                              ([size, stock]) => {
+                                                const isAvailable =
+                                                  product
+                                                    .colorSizeAvailability?.[
+                                                    color
+                                                  ]?.[size] !== false;
+                                                return (
+                                                  <Badge
+                                                    key={`${color}-${size}`}
+                                                    variant="outline"
+                                                    className={`text-xs ${
+                                                      isAvailable
+                                                        ? "border-green-300 dark:border-green-600 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20"
+                                                        : "border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-500 bg-gray-100 dark:bg-gray-800"
+                                                    }`}
+                                                  >
+                                                    {size}:{" "}
+                                                    {isAvailable
+                                                      ? `${stock}개`
+                                                      : "없음"}
+                                                  </Badge>
+                                                );
+                                              }
+                                            )}
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </AccordionContent>
+                                </AccordionItem>
+                              </Accordion>
+                            </div>
+                          ) : product.sizeStocks &&
+                            Object.keys(product.sizeStocks).length > 0 ? (
+                            <div className="bg-gray-50 dark:bg-gray-700 rounded-md p-2 mt-2">
+                              <Accordion
+                                type="single"
+                                collapsible
+                                className="w-full"
+                              >
+                                <AccordionItem
+                                  value="size-stock-details"
+                                  className="border-none"
+                                >
+                                  <AccordionTrigger className="text-xs font-medium text-gray-700 dark:text-gray-300 hover:no-underline py-1">
+                                    <span>사이즈별 재고 보기</span>
+                                  </AccordionTrigger>
+                                  <AccordionContent className="pt-2">
+                                    <div className="flex flex-wrap gap-1">
+                                      {Object.entries(product.sizeStocks).map(
+                                        ([size, stock]) => (
+                                          <Badge
+                                            key={size}
+                                            variant="outline"
+                                            className="text-xs border-blue-300 dark:border-blue-600 text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
+                                          >
+                                            {size}: {stock as number}개
+                                          </Badge>
+                                        )
+                                      )}
+                                    </div>
+                                  </AccordionContent>
+                                </AccordionItem>
+                              </Accordion>
+                            </div>
+                          ) : (
+                            <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                              재고 정보 없음
+                            </div>
+                          )}
                           {(() => {
                             const productCollections =
                               getCollectionsByProductId(product.id);

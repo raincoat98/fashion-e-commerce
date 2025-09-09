@@ -15,6 +15,9 @@ export interface Product {
   sizes: string[];
   colors: string[];
   stock: number;
+  sizeStocks?: Record<string, number>; // 사이즈별 재고 정보 (기본)
+  colorSizeStocks?: Record<string, Record<string, number>>; // 색상별 사이즈별 재고 정보
+  colorSizeAvailability?: Record<string, Record<string, boolean>>; // 색상별 사이즈별 사용 가능 여부
   isActive: boolean;
   isNew: boolean;
   isSale: boolean;
@@ -214,6 +217,23 @@ const sampleProducts: Product[] = [
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: ["화이트", "블랙", "네이비"],
     stock: 50,
+    sizeStocks: {
+      XS: 8,
+      S: 12,
+      M: 15,
+      L: 10,
+      XL: 5,
+    },
+    colorSizeStocks: {
+      화이트: { XS: 3, S: 4, M: 5, L: 3, XL: 2 },
+      블랙: { XS: 3, S: 4, M: 5, L: 4, XL: 2 },
+      네이비: { XS: 2, S: 4, M: 5, L: 3, XL: 1 },
+    },
+    colorSizeAvailability: {
+      화이트: { XS: true, S: true, M: true, L: true, XL: true },
+      블랙: { XS: true, S: true, M: true, L: true, XL: true },
+      네이비: { XS: true, S: true, M: true, L: true, XL: false }, // 네이비는 XL 사이즈 없음
+    },
     isActive: true,
     isNew: true,
     isSale: true,
@@ -242,6 +262,22 @@ const sampleProducts: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["베이지", "블랙", "그레이"],
     stock: 35,
+    sizeStocks: {
+      S: 8,
+      M: 12,
+      L: 10,
+      XL: 5,
+    },
+    colorSizeStocks: {
+      베이지: { S: 2, M: 3, L: 3, XL: 2 },
+      블랙: { S: 3, M: 4, L: 3, XL: 2 },
+      그레이: { S: 3, M: 5, L: 4, XL: 1 },
+    },
+    colorSizeAvailability: {
+      베이지: { S: true, M: true, L: true, XL: true },
+      블랙: { S: true, M: true, L: true, XL: true },
+      그레이: { S: true, M: true, L: true, XL: false }, // 그레이는 XL 사이즈 없음
+    },
     isActive: true,
     isNew: false,
     isSale: false,
@@ -272,6 +308,16 @@ const sampleProducts: Product[] = [
     sizes: ["XS", "S", "M", "L"],
     colors: ["블루", "핑크"],
     stock: 25,
+    sizeStocks: {
+      XS: 5,
+      S: 8,
+      M: 7,
+      L: 5,
+    },
+    colorSizeStocks: {
+      블루: { XS: 2, S: 4, M: 3, L: 2 },
+      핑크: { XS: 3, S: 4, M: 4, L: 3 },
+    },
     isActive: true,
     isNew: true,
     isSale: true,
@@ -301,6 +347,17 @@ const sampleProducts: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["아이보리", "그레이", "베이지"],
     stock: 40,
+    sizeStocks: {
+      S: 8,
+      M: 12,
+      L: 12,
+      XL: 8,
+    },
+    colorSizeStocks: {
+      아이보리: { S: 3, M: 4, L: 4, XL: 3 },
+      그레이: { S: 3, M: 4, L: 4, XL: 2 },
+      베이지: { S: 2, M: 4, L: 4, XL: 3 },
+    },
     isActive: true,
     isNew: false,
     isSale: false,
@@ -331,6 +388,16 @@ const sampleProducts: Product[] = [
     sizes: ["XS", "S", "M", "L"],
     colors: ["라이트블루", "다크블루"],
     stock: 30,
+    sizeStocks: {
+      XS: 6,
+      S: 8,
+      M: 10,
+      L: 6,
+    },
+    colorSizeStocks: {
+      라이트블루: { XS: 3, S: 4, M: 5, L: 3 },
+      다크블루: { XS: 3, S: 4, M: 5, L: 3 },
+    },
     isActive: false,
     isNew: false,
     isSale: true,
@@ -359,6 +426,17 @@ const sampleProducts: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["화이트", "블랙", "그레이"],
     stock: 100,
+    sizeStocks: {
+      S: 20,
+      M: 30,
+      L: 30,
+      XL: 20,
+    },
+    colorSizeStocks: {
+      화이트: { S: 7, M: 10, L: 10, XL: 7 },
+      블랙: { S: 7, M: 10, L: 10, XL: 7 },
+      그레이: { S: 6, M: 10, L: 10, XL: 6 },
+    },
     isActive: true,
     isNew: false,
     isSale: false,
@@ -388,6 +466,17 @@ const sampleProducts: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["베이지", "블랙", "네이비"],
     stock: 45,
+    sizeStocks: {
+      S: 10,
+      M: 15,
+      L: 12,
+      XL: 8,
+    },
+    colorSizeStocks: {
+      베이지: { S: 3, M: 5, L: 4, XL: 3 },
+      블랙: { S: 4, M: 5, L: 4, XL: 2 },
+      네이비: { S: 3, M: 5, L: 4, XL: 3 },
+    },
     isActive: true,
     isNew: false,
     isSale: true,
@@ -416,6 +505,17 @@ const sampleProducts: Product[] = [
     sizes: ["XS", "S", "M", "L"],
     colors: ["블랙", "네이비", "브라운"],
     stock: 30,
+    sizeStocks: {
+      XS: 6,
+      S: 8,
+      M: 10,
+      L: 6,
+    },
+    colorSizeStocks: {
+      블랙: { XS: 2, S: 3, M: 4, L: 2 },
+      네이비: { XS: 2, S: 3, M: 3, L: 2 },
+      브라운: { XS: 2, S: 2, M: 3, L: 2 },
+    },
     isActive: true,
     isNew: true,
     isSale: false,
@@ -445,6 +545,16 @@ const sampleProducts: Product[] = [
     sizes: ["S", "M", "L"],
     colors: ["베이지", "블랙", "카키"],
     stock: 25,
+    sizeStocks: {
+      S: 8,
+      M: 10,
+      L: 7,
+    },
+    colorSizeStocks: {
+      베이지: { S: 3, M: 4, L: 3 },
+      블랙: { S: 3, M: 3, L: 2 },
+      카키: { S: 2, M: 3, L: 2 },
+    },
     isActive: true,
     isNew: false,
     isSale: true,
@@ -473,6 +583,17 @@ const sampleProducts: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["라이트블루", "다크블루", "블랙"],
     stock: 40,
+    sizeStocks: {
+      S: 8,
+      M: 12,
+      L: 12,
+      XL: 8,
+    },
+    colorSizeStocks: {
+      라이트블루: { S: 3, M: 4, L: 4, XL: 3 },
+      다크블루: { S: 3, M: 4, L: 4, XL: 3 },
+      블랙: { S: 2, M: 4, L: 4, XL: 2 },
+    },
     isActive: true,
     isNew: false,
     isSale: false,
@@ -629,482 +750,484 @@ const sampleOrders: Order[] = [
 // Zustand 스토어 생성
 export const useProductStore = create<ProductStore>()(
   devtools(
-    persist(
-      (set, get) => ({
-        // 초기 상태
-        products: (() => {
-          console.log("상품 스토어 초기화 - 샘플 상품:", sampleProducts);
-          return sampleProducts;
-        })(),
-        orders: sampleOrders,
-        categories: sampleCategories,
-        cart: [],
-        wishlist: [],
+    (set, get) => ({
+      // 초기 상태
+      products: (() => {
+        console.log("상품 스토어 초기화 - 샘플 상품:", sampleProducts);
+        return sampleProducts;
+      })(),
+      orders: sampleOrders,
+      categories: sampleCategories,
+      cart: [],
+      wishlist: [],
 
-        // 필터링 및 검색
-        searchTerm: "",
-        selectedCategory: "",
-        selectedSubCategory: "",
-        selectedCollection: "",
-        priceRange: [0, 500000],
-        selectedSizes: [],
-        selectedColors: [],
-        sortBy: "createdAt",
-        sortOrder: "desc",
-        showInactive: true, // 관리자 페이지에서는 기본적으로 모든 상품 표시
+      // 필터링 및 검색
+      searchTerm: "",
+      selectedCategory: "",
+      selectedSubCategory: "",
+      selectedCollection: "",
+      priceRange: [0, 500000],
+      selectedSizes: [],
+      selectedColors: [],
+      sortBy: "createdAt",
+      sortOrder: "desc",
+      showInactive: true, // 관리자 페이지에서는 기본적으로 모든 상품 표시
 
-        // 페이지네이션
-        currentPage: 1,
-        itemsPerPage: 12,
+      // 페이지네이션
+      currentPage: 1,
+      itemsPerPage: 12,
 
-        // 선택된 상품
-        selectedProduct: null,
+      // 선택된 상품
+      selectedProduct: null,
 
-        // 상품 관리 액션들
-        addProduct: (product) => {
-          const newProduct: Product = {
-            ...product,
-            id: Date.now().toString(),
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          };
-          console.log("새 상품 추가:", newProduct);
-          set((state) => {
-            // 중복 추가 방지
-            const existingProduct = state.products.find(
-              (p) => p.name === newProduct.name
-            );
-            if (existingProduct) {
-              console.log("이미 존재하는 상품:", existingProduct.name);
-              return state;
-            }
-
-            const updatedProducts = [...state.products, newProduct];
-            console.log("업데이트된 상품 목록:", updatedProducts);
-            return {
-              products: updatedProducts,
-            };
-          });
-        },
-
-        updateProduct: (id, updates) => {
-          console.log("updateProduct 호출:", { id, updates });
-          set((state) => {
-            const oldProduct = state.products.find((p) => p.id === id);
-            console.log("업데이트 전 상품:", oldProduct);
-
-            const newProducts = state.products.map((product) =>
-              product.id === id
-                ? {
-                    ...product,
-                    ...updates,
-                    updatedAt: new Date().toISOString(),
-                  }
-                : product
-            );
-
-            const updatedProduct = newProducts.find((p) => p.id === id);
-            console.log("업데이트 후 상품:", updatedProduct);
-            console.log("전체 상품 목록 업데이트 후:", newProducts);
-
-            return {
-              products: newProducts,
-            };
-          });
-        },
-
-        deleteProduct: (id) => {
-          set((state) => ({
-            products: state.products.filter((product) => product.id !== id),
-          }));
-        },
-
-        getProductById: (id) => {
-          const { products } = get();
-          return products.find((product) => product.id === id);
-        },
-
-        // 필터링 및 검색 액션들
-        setSearchTerm: (term) => {
-          console.log("setSearchTerm 호출:", term);
-          set({ searchTerm: term, currentPage: 1 });
-        },
-        setSelectedCategory: (category) => {
-          console.log("setSelectedCategory 호출:", category);
-          set({
-            selectedCategory: category,
-            selectedSubCategory: "",
-            currentPage: 1,
-          });
-        },
-        setSelectedSubCategory: (subCategory) =>
-          set({ selectedSubCategory: subCategory, currentPage: 1 }),
-        setSelectedCollection: (collection) => {
-          console.log("setSelectedCollection 호출:", collection);
-          set({ selectedCollection: collection, currentPage: 1 });
-        },
-        setPriceRange: (range) => set({ priceRange: range, currentPage: 1 }),
-        setSelectedSizes: (sizes) =>
-          set({ selectedSizes: sizes, currentPage: 1 }),
-        setSelectedColors: (colors) =>
-          set({ selectedColors: colors, currentPage: 1 }),
-        setSortBy: (sortBy) => set({ sortBy, currentPage: 1 }),
-        setSortOrder: (order) => set({ sortOrder: order, currentPage: 1 }),
-        setShowInactive: (show) => {
-          console.log("setShowInactive 호출:", show);
-          set({ showInactive: show, currentPage: 1 });
-        },
-
-        resetFilters: () => {
-          console.log("resetFilters 호출");
-          set({
-            searchTerm: "",
-            selectedCategory: "",
-            selectedSubCategory: "",
-            selectedCollection: "",
-            priceRange: [0, 500000],
-            selectedSizes: [],
-            selectedColors: [],
-            sortBy: "createdAt",
-            sortOrder: "desc",
-            showInactive: true, // 관리자 페이지에서는 기본적으로 모든 상품 표시
-            currentPage: 1,
-          });
-        },
-
-        // 페이지네이션 액션들
-        setCurrentPage: (page) => set({ currentPage: page }),
-        setItemsPerPage: (items) =>
-          set({ itemsPerPage: items, currentPage: 1 }),
-
-        // 선택된 상품 액션
-        setSelectedProduct: (product) => set({ selectedProduct: product }),
-
-        // 주문 관리 액션들
-        addOrder: (order) => {
-          const newOrder: Order = {
-            ...order,
-            id: `order-${Date.now()}`,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          };
-          set((state) => ({
-            orders: [...state.orders, newOrder],
-          }));
-        },
-
-        updateOrderStatus: (id, status) => {
-          set((state) => ({
-            orders: state.orders.map((order) =>
-              order.id === id
-                ? { ...order, status, updatedAt: new Date().toISOString() }
-                : order
-            ),
-          }));
-        },
-
-        getOrderById: (id) => {
-          const { orders } = get();
-          return orders.find((order) => order.id === id);
-        },
-
-        // 카테고리 관리 액션들
-        addCategory: (category) => {
-          const newCategory: Category = {
-            ...category,
-            id: Date.now().toString(),
-          };
-          set((state) => ({
-            categories: [...state.categories, newCategory],
-          }));
-        },
-
-        updateCategory: (id, updates) => {
-          set((state) => ({
-            categories: state.categories.map((category) =>
-              category.id === id ? { ...category, ...updates } : category
-            ),
-          }));
-        },
-
-        deleteCategory: (id) => {
-          set((state) => ({
-            categories: state.categories.filter(
-              (category) => category.id !== id
-            ),
-          }));
-        },
-
-        getCategoryBySlug: (slug) => {
-          const { categories } = get();
-          return categories.find((category) => category.slug === slug);
-        },
-
-        // 장바구니 관리 액션들
-        addToCart: (item) => {
-          const newCartItem: CartItem = {
-            ...item,
-            id: Date.now().toString(),
-          };
-          set((state) => ({
-            cart: [...state.cart, newCartItem],
-          }));
-        },
-
-        updateCartItem: (id, updates) => {
-          set((state) => ({
-            cart: state.cart.map((item) =>
-              item.id === id ? { ...item, ...updates } : item
-            ),
-          }));
-        },
-
-        removeFromCart: (id) => {
-          set((state) => ({
-            cart: state.cart.filter((item) => item.id !== id),
-          }));
-        },
-
-        clearCart: () => {
-          set({ cart: [] });
-        },
-
-        getCartItemById: (id) => {
-          const { cart } = get();
-          return cart.find((item) => item.id === id);
-        },
-
-        // 위시리스트 관리 액션들
-        addToWishlist: (item) => {
-          const newWishlistItem: WishlistItem = {
-            ...item,
-            id: Date.now().toString(),
-            addedAt: new Date().toISOString(),
-          };
-          set((state) => ({
-            wishlist: [...state.wishlist, newWishlistItem],
-          }));
-        },
-
-        removeFromWishlist: (id) => {
-          set((state) => ({
-            wishlist: state.wishlist.filter((item) => item.id !== id),
-          }));
-        },
-
-        removeFromWishlistByProductId: (productId) => {
-          set((state) => ({
-            wishlist: state.wishlist.filter(
-              (item) => item.productId !== productId
-            ),
-          }));
-        },
-
-        clearWishlist: () => {
-          set({ wishlist: [] });
-        },
-
-        getWishlistItemById: (id) => {
-          const { wishlist } = get();
-          return wishlist.find((item) => item.id === id);
-        },
-
-        isInWishlist: (productId) => {
-          const { wishlist } = get();
-          return wishlist.some((item) => item.productId === productId);
-        },
-
-        // 계산된 값들
-        get filteredProducts() {
-          const {
-            products,
-            searchTerm,
-            selectedCategory,
-            selectedSubCategory,
-            priceRange,
-            selectedSizes,
-            selectedColors,
-            sortBy,
-            sortOrder,
-            showInactive,
-          } = get();
-
-          console.log("filteredProducts 계산 시작:", {
-            productsLength: products.length,
-            searchTerm,
-            selectedCategory,
-            showInactive,
-          });
-
-          let filtered = products;
-
-          // 활성화 상품 필터링 (showInactive가 false인 경우만)
-          if (!showInactive) {
-            console.log("활성화 상품만 필터링");
-            filtered = filtered.filter((product) => product.isActive);
-          } else {
-            console.log("모든 상품 표시 (비활성화 포함)");
+      // 상품 관리 액션들
+      addProduct: (product) => {
+        const newProduct: Product = {
+          ...product,
+          id: Date.now().toString(),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        console.log("새 상품 추가:", newProduct);
+        set((state) => {
+          // 중복 추가 방지
+          const existingProduct = state.products.find(
+            (p) => p.name === newProduct.name
+          );
+          if (existingProduct) {
+            console.log("이미 존재하는 상품:", existingProduct.name);
+            return state;
           }
 
-          // 검색어 필터링
-          if (searchTerm) {
-            console.log("검색어 필터링:", searchTerm);
-            filtered = filtered.filter(
-              (product) =>
-                product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.description
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase()) ||
-                product.tags.some((tag) =>
-                  tag.toLowerCase().includes(searchTerm.toLowerCase())
-                )
-            );
-            console.log("검색어 필터링 후 상품 수:", filtered.length);
+          const updatedProducts = [...state.products, newProduct];
+          console.log("업데이트된 상품 목록:", updatedProducts);
+          return {
+            products: updatedProducts,
+          };
+        });
+      },
+
+      updateProduct: (id, updates) => {
+        console.log("상품 업데이트:", id);
+
+        set((state) => {
+          const oldProduct = state.products.find((p) => p.id === id);
+          if (!oldProduct) {
+            console.error("업데이트할 상품을 찾을 수 없습니다:", id);
+            return state;
           }
 
-          // 카테고리 필터링
-          if (selectedCategory) {
-            console.log("카테고리 필터링:", selectedCategory);
-            filtered = filtered.filter(
-              (product) => product.category === selectedCategory
-            );
-            console.log("카테고리 필터링 후 상품 수:", filtered.length);
+          const newProducts = state.products.map((product) =>
+            product.id === id
+              ? {
+                  ...product,
+                  ...updates,
+                  updatedAt: new Date().toISOString(),
+                }
+              : product
+          );
+
+          return {
+            products: newProducts,
+          };
+        });
+      },
+
+      deleteProduct: (id) => {
+        console.log("deleteProduct 호출:", id);
+        set((state) => {
+          const productToDelete = state.products.find((p) => p.id === id);
+          console.log("삭제할 상품:", productToDelete);
+
+          if (!productToDelete) {
+            console.error("삭제할 상품을 찾을 수 없습니다:", id);
+            return state;
           }
 
-          // 서브카테고리 필터링
-          if (selectedSubCategory) {
-            filtered = filtered.filter(
-              (product) => product.subCategory === selectedSubCategory
-            );
-          }
+          const newProducts = state.products.filter(
+            (product) => product.id !== id
+          );
+          console.log("삭제 후 상품 목록:", newProducts);
 
-          // 컬렉션 필터링은 ProductManager에서 처리
-          // if (selectedCollection && selectedCollection !== "all") {
-          //   filtered = filtered.filter(
-          //     (product) => product.collection === selectedCollection
-          //   );
-          // }
+          return {
+            products: newProducts,
+          };
+        });
+      },
 
-          // 가격 범위 필터링
+      getProductById: (id) => {
+        const { products } = get();
+        return products.find((product) => product.id === id);
+      },
+
+      // 필터링 및 검색 액션들
+      setSearchTerm: (term) => {
+        console.log("setSearchTerm 호출:", term);
+        set({ searchTerm: term, currentPage: 1 });
+      },
+      setSelectedCategory: (category) => {
+        console.log("setSelectedCategory 호출:", category);
+        set({
+          selectedCategory: category,
+          selectedSubCategory: "",
+          currentPage: 1,
+        });
+      },
+      setSelectedSubCategory: (subCategory) =>
+        set({ selectedSubCategory: subCategory, currentPage: 1 }),
+      setSelectedCollection: (collection) => {
+        console.log("setSelectedCollection 호출:", collection);
+        set({ selectedCollection: collection, currentPage: 1 });
+      },
+      setPriceRange: (range) => set({ priceRange: range, currentPage: 1 }),
+      setSelectedSizes: (sizes) =>
+        set({ selectedSizes: sizes, currentPage: 1 }),
+      setSelectedColors: (colors) =>
+        set({ selectedColors: colors, currentPage: 1 }),
+      setSortBy: (sortBy) => set({ sortBy, currentPage: 1 }),
+      setSortOrder: (order) => set({ sortOrder: order, currentPage: 1 }),
+      setShowInactive: (show) => {
+        console.log("setShowInactive 호출:", show);
+        set({ showInactive: show, currentPage: 1 });
+      },
+
+      resetFilters: () => {
+        console.log("resetFilters 호출");
+        set({
+          searchTerm: "",
+          selectedCategory: "",
+          selectedSubCategory: "",
+          selectedCollection: "",
+          priceRange: [0, 500000],
+          selectedSizes: [],
+          selectedColors: [],
+          sortBy: "createdAt",
+          sortOrder: "desc",
+          showInactive: true, // 관리자 페이지에서는 기본적으로 모든 상품 표시
+          currentPage: 1,
+        });
+      },
+
+      // 페이지네이션 액션들
+      setCurrentPage: (page) => set({ currentPage: page }),
+      setItemsPerPage: (items) => set({ itemsPerPage: items, currentPage: 1 }),
+
+      // 선택된 상품 액션
+      setSelectedProduct: (product) => set({ selectedProduct: product }),
+
+      // 주문 관리 액션들
+      addOrder: (order) => {
+        const newOrder: Order = {
+          ...order,
+          id: `order-${Date.now()}`,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        set((state) => ({
+          orders: [...state.orders, newOrder],
+        }));
+      },
+
+      updateOrderStatus: (id, status) => {
+        set((state) => ({
+          orders: state.orders.map((order) =>
+            order.id === id
+              ? { ...order, status, updatedAt: new Date().toISOString() }
+              : order
+          ),
+        }));
+      },
+
+      getOrderById: (id) => {
+        const { orders } = get();
+        return orders.find((order) => order.id === id);
+      },
+
+      // 카테고리 관리 액션들
+      addCategory: (category) => {
+        const newCategory: Category = {
+          ...category,
+          id: Date.now().toString(),
+        };
+        set((state) => ({
+          categories: [...state.categories, newCategory],
+        }));
+      },
+
+      updateCategory: (id, updates) => {
+        set((state) => ({
+          categories: state.categories.map((category) =>
+            category.id === id ? { ...category, ...updates } : category
+          ),
+        }));
+      },
+
+      deleteCategory: (id) => {
+        set((state) => ({
+          categories: state.categories.filter((category) => category.id !== id),
+        }));
+      },
+
+      getCategoryBySlug: (slug) => {
+        const { categories } = get();
+        return categories.find((category) => category.slug === slug);
+      },
+
+      // 장바구니 관리 액션들
+      addToCart: (item) => {
+        const newCartItem: CartItem = {
+          ...item,
+          id: Date.now().toString(),
+        };
+        set((state) => ({
+          cart: [...state.cart, newCartItem],
+        }));
+      },
+
+      updateCartItem: (id, updates) => {
+        set((state) => ({
+          cart: state.cart.map((item) =>
+            item.id === id ? { ...item, ...updates } : item
+          ),
+        }));
+      },
+
+      removeFromCart: (id) => {
+        set((state) => ({
+          cart: state.cart.filter((item) => item.id !== id),
+        }));
+      },
+
+      clearCart: () => {
+        set({ cart: [] });
+      },
+
+      getCartItemById: (id) => {
+        const { cart } = get();
+        return cart.find((item) => item.id === id);
+      },
+
+      // 위시리스트 관리 액션들
+      addToWishlist: (item) => {
+        const newWishlistItem: WishlistItem = {
+          ...item,
+          id: Date.now().toString(),
+          addedAt: new Date().toISOString(),
+        };
+        set((state) => ({
+          wishlist: [...state.wishlist, newWishlistItem],
+        }));
+      },
+
+      removeFromWishlist: (id) => {
+        set((state) => ({
+          wishlist: state.wishlist.filter((item) => item.id !== id),
+        }));
+      },
+
+      removeFromWishlistByProductId: (productId) => {
+        set((state) => ({
+          wishlist: state.wishlist.filter(
+            (item) => item.productId !== productId
+          ),
+        }));
+      },
+
+      clearWishlist: () => {
+        set({ wishlist: [] });
+      },
+
+      getWishlistItemById: (id) => {
+        const { wishlist } = get();
+        return wishlist.find((item) => item.id === id);
+      },
+
+      isInWishlist: (productId) => {
+        const { wishlist } = get();
+        return wishlist.some((item) => item.productId === productId);
+      },
+
+      // 계산된 값들
+      get filteredProducts() {
+        const {
+          products,
+          searchTerm,
+          selectedCategory,
+          selectedSubCategory,
+          priceRange,
+          selectedSizes,
+          selectedColors,
+          sortBy,
+          sortOrder,
+          showInactive,
+        } = get();
+
+        console.log("filteredProducts 계산 시작:", {
+          productsLength: products.length,
+          searchTerm,
+          selectedCategory,
+          showInactive,
+        });
+
+        let filtered = products;
+
+        // 활성화 상품 필터링 (showInactive가 false인 경우만)
+        if (!showInactive) {
+          console.log("활성화 상품만 필터링");
+          filtered = filtered.filter((product) => product.isActive);
+        } else {
+          console.log("모든 상품 표시 (비활성화 포함)");
+        }
+
+        // 검색어 필터링
+        if (searchTerm) {
+          console.log("검색어 필터링:", searchTerm);
           filtered = filtered.filter(
             (product) =>
-              product.price >= priceRange[0] && product.price <= priceRange[1]
+              product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              product.description
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
+              product.tags.some((tag) =>
+                tag.toLowerCase().includes(searchTerm.toLowerCase())
+              )
           );
+          console.log("검색어 필터링 후 상품 수:", filtered.length);
+        }
 
-          // 사이즈 필터링
-          if (selectedSizes.length > 0) {
-            filtered = filtered.filter((product) =>
-              selectedSizes.some((size) => product.sizes.includes(size))
-            );
+        // 카테고리 필터링
+        if (selectedCategory) {
+          console.log("카테고리 필터링:", selectedCategory);
+          filtered = filtered.filter(
+            (product) => product.category === selectedCategory
+          );
+          console.log("카테고리 필터링 후 상품 수:", filtered.length);
+        }
+
+        // 서브카테고리 필터링
+        if (selectedSubCategory) {
+          filtered = filtered.filter(
+            (product) => product.subCategory === selectedSubCategory
+          );
+        }
+
+        // 컬렉션 필터링은 ProductManager에서 처리
+        // if (selectedCollection && selectedCollection !== "all") {
+        //   filtered = filtered.filter(
+        //     (product) => product.collection === selectedCollection
+        //   );
+        // }
+
+        // 가격 범위 필터링
+        filtered = filtered.filter(
+          (product) =>
+            product.price >= priceRange[0] && product.price <= priceRange[1]
+        );
+
+        // 사이즈 필터링
+        if (selectedSizes.length > 0) {
+          filtered = filtered.filter((product) =>
+            selectedSizes.some((size) => product.sizes.includes(size))
+          );
+        }
+
+        // 색상 필터링
+        if (selectedColors.length > 0) {
+          filtered = filtered.filter((product) =>
+            selectedColors.some((color) => product.colors.includes(color))
+          );
+        }
+
+        // 정렬
+        filtered.sort((a, b) => {
+          let aValue: any, bValue: any;
+
+          switch (sortBy) {
+            case "name":
+              aValue = a.name;
+              bValue = b.name;
+              break;
+            case "price":
+              aValue = a.price;
+              bValue = b.price;
+              break;
+            case "rating":
+              aValue = a.rating;
+              bValue = b.rating;
+              break;
+            case "createdAt":
+              aValue = new Date(a.createdAt);
+              bValue = new Date(b.createdAt);
+              break;
+            default:
+              aValue = a.name;
+              bValue = b.name;
           }
 
-          // 색상 필터링
-          if (selectedColors.length > 0) {
-            filtered = filtered.filter((product) =>
-              selectedColors.some((color) => product.colors.includes(color))
-            );
+          if (sortOrder === "asc") {
+            return aValue > bValue ? 1 : -1;
+          } else {
+            return aValue < bValue ? 1 : -1;
           }
+        });
 
-          // 정렬
-          filtered.sort((a, b) => {
-            let aValue: any, bValue: any;
+        console.log("filteredProducts 계산 완료:", {
+          originalLength: products.length,
+          filteredLength: filtered.length,
+          firstProduct: filtered[0],
+        });
 
-            switch (sortBy) {
-              case "name":
-                aValue = a.name;
-                bValue = b.name;
-                break;
-              case "price":
-                aValue = a.price;
-                bValue = b.price;
-                break;
-              case "rating":
-                aValue = a.rating;
-                bValue = b.rating;
-                break;
-              case "createdAt":
-                aValue = new Date(a.createdAt);
-                bValue = new Date(b.createdAt);
-                break;
-              default:
-                aValue = a.name;
-                bValue = b.name;
-            }
+        return filtered;
+      },
 
-            if (sortOrder === "asc") {
-              return aValue > bValue ? 1 : -1;
-            } else {
-              return aValue < bValue ? 1 : -1;
-            }
-          });
+      get paginatedProducts() {
+        const { filteredProducts, currentPage, itemsPerPage } = get();
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return filteredProducts.slice(startIndex, endIndex);
+      },
 
-          console.log("filteredProducts 계산 완료:", {
-            originalLength: products.length,
-            filteredLength: filtered.length,
-            firstProduct: filtered[0],
-          });
+      get totalPages() {
+        const { filteredProducts, itemsPerPage } = get();
+        return Math.ceil(filteredProducts.length / itemsPerPage);
+      },
 
-          return filtered;
-        },
+      get categoryNames() {
+        const { products } = get();
+        return Array.from(new Set(products.map((product) => product.category)));
+      },
 
-        get paginatedProducts() {
-          const { filteredProducts, currentPage, itemsPerPage } = get();
-          const startIndex = (currentPage - 1) * itemsPerPage;
-          const endIndex = startIndex + itemsPerPage;
-          return filteredProducts.slice(startIndex, endIndex);
-        },
+      get subCategories() {
+        const { products, selectedCategory } = get();
+        if (!selectedCategory) return [];
+        return Array.from(
+          new Set(
+            products
+              .filter((product) => product.category === selectedCategory)
+              .map((product) => product.subCategory)
+              .filter((subCat): subCat is string => Boolean(subCat))
+          )
+        );
+      },
 
-        get totalPages() {
-          const { filteredProducts, itemsPerPage } = get();
-          return Math.ceil(filteredProducts.length / itemsPerPage);
-        },
+      get cartTotal() {
+        const { cart } = get();
+        return cart.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        );
+      },
 
-        get categoryNames() {
-          const { products } = get();
-          return Array.from(
-            new Set(products.map((product) => product.category))
-          );
-        },
+      get cartItemCount() {
+        const { cart } = get();
+        return cart.reduce((count, item) => count + item.quantity, 0);
+      },
 
-        get subCategories() {
-          const { products, selectedCategory } = get();
-          if (!selectedCategory) return [];
-          return Array.from(
-            new Set(
-              products
-                .filter((product) => product.category === selectedCategory)
-                .map((product) => product.subCategory)
-                .filter((subCat): subCat is string => Boolean(subCat))
-            )
-          );
-        },
-
-        get cartTotal() {
-          const { cart } = get();
-          return cart.reduce(
-            (total, item) => total + item.price * item.quantity,
-            0
-          );
-        },
-
-        get cartItemCount() {
-          const { cart } = get();
-          return cart.reduce((count, item) => count + item.quantity, 0);
-        },
-
-        get wishlistCount() {
-          const { wishlist } = get();
-          return wishlist.length;
-        },
-      }),
-      {
-        name: "lumina-wishlist",
-        partialize: (state) => ({
-          wishlist: state.wishlist,
-          cart: state.cart,
-        }),
-      }
-    ),
+      get wishlistCount() {
+        const { wishlist } = get();
+        return wishlist.length;
+      },
+    }),
     {
       name: "product-store",
     }
