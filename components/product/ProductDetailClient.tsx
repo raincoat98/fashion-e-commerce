@@ -361,7 +361,7 @@ export default function ProductDetailClient({
       {/* Breadcrumb */}
       <div
         ref={breadcrumbRef}
-        className="flex items-center space-x-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 sm:mb-4 lg:mb-6 px-3 sm:px-4 lg:px-0"
+        className="hidden sm:flex items-center space-x-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 sm:mb-4 lg:mb-6 px-3 sm:px-4 lg:px-0"
       >
         <span>홈</span>
         <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />

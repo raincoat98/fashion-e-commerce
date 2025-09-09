@@ -6,7 +6,7 @@ export default function ProductLoading() {
     <div className="min-h-screen bg-white">
       <div className="container mx-auto py-4 lg:py-6 px-4 lg:px-0">
         {/* Breadcrumb Skeleton */}
-        <div className="flex items-center space-x-2 mb-4 lg:mb-6">
+        <div className="hidden sm:flex items-center space-x-2 mb-4 lg:mb-6">
           <Skeleton className="h-4 w-16" />
           <Skeleton className="h-4 w-4" />
           <Skeleton className="h-4 w-20" />

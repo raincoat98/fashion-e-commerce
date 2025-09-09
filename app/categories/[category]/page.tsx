@@ -30,7 +30,7 @@ export default function CategoryPage({
 
       <main className="container mx-auto py-8">
         {/* Breadcrumb */}
-        <div className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+        <div className="hidden sm:block text-sm text-gray-500 dark:text-gray-400 mb-6">
           <span>홈</span> /{" "}
           <span className="text-gray-900 dark:text-gray-100">
             {categoryInfo.name}

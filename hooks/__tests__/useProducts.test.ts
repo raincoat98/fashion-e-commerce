@@ -304,7 +304,7 @@ describe("useProducts", () => {
     const { result } = renderHook(() => useProducts());
 
     const products = result.current.products;
-    const productWithDiscount = products.find((p) => p.originalPrice);
+    const productWithDiscount = products.find((p: any) => p.originalPrice);
 
     if (productWithDiscount) {
       expect(productWithDiscount.discount).toBe(33); // (15000-10000)/15000 * 100 rounded
