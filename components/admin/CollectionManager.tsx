@@ -741,40 +741,40 @@ export default function CollectionManager() {
 
                     {/* 액션 버튼 */}
                     <div className="flex items-center justify-between pt-2 opacity-100">
-                      <div className="flex items-center space-x-1 sm:space-x-2">
+                      <div className="flex items-center space-x-2 sm:space-x-2">
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => openEditDialog(collection)}
                           title="컬렉션 수정"
-                          className="hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-600 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 p-1.5 sm:p-2"
+                          className="hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-600 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 p-2 sm:p-2 min-w-[40px] sm:min-w-[36px] h-10 sm:h-8"
                         >
-                          <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
+                          <Edit className="w-4 h-4 sm:w-4 sm:h-4" />
                         </Button>
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => openProductManageDialog(collection)}
                           title="상품 관리"
-                          className="hover:bg-green-50 dark:hover:bg-green-900/20 hover:border-green-300 dark:hover:border-green-600 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 p-1.5 sm:p-2"
+                          className="hover:bg-green-50 dark:hover:bg-green-900/20 hover:border-green-300 dark:hover:border-green-600 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 p-2 sm:p-2 min-w-[40px] sm:min-w-[36px] h-10 sm:h-8"
                         >
-                          <Package className="w-3 h-3 sm:w-4 sm:h-4" />
+                          <Package className="w-4 h-4 sm:w-4 sm:h-4" />
                         </Button>
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => toggleCollectionStatus(collection.id)}
                           title={collection.isActive ? "비활성화" : "활성화"}
-                          className={`border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 p-1.5 sm:p-2 ${
+                          className={`border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 p-2 sm:p-2 min-w-[40px] sm:min-w-[36px] h-10 sm:h-8 ${
                             collection.isActive
                               ? "hover:bg-orange-50 dark:hover:bg-orange-900/20 hover:border-orange-300 dark:hover:border-orange-600"
                               : "hover:bg-green-50 dark:hover:bg-green-900/20 hover:border-green-300 dark:hover:border-green-600"
                           }`}
                         >
                           {collection.isActive ? (
-                            <EyeOff className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <EyeOff className="w-4 h-4 sm:w-4 sm:h-4" />
                           ) : (
-                            <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <Eye className="w-4 h-4 sm:w-4 sm:h-4" />
                           )}
                         </Button>
                       </div>
@@ -782,10 +782,10 @@ export default function CollectionManager() {
                         size="sm"
                         variant="outline"
                         onClick={() => handleDeleteCollection(collection.id)}
-                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-300 dark:hover:border-red-600 border-gray-300 dark:border-gray-600 p-1.5 sm:p-2"
+                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-300 dark:hover:border-red-600 border-gray-300 dark:border-gray-600 p-2 sm:p-2 min-w-[40px] sm:min-w-[36px] h-10 sm:h-8"
                         title="삭제"
                       >
-                        <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <Trash2 className="w-4 h-4 sm:w-4 sm:h-4" />
                       </Button>
                     </div>
                   </div>
