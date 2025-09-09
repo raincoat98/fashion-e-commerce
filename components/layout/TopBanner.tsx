@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
+import { hideTopBannerForToday, isTopBannerHiddenToday } from "@/lib/cookies";
 
 // 모바일 감지 훅
 const useIsMobile = () => {
@@ -297,6 +298,12 @@ export default function TopBanner() {
   const loadBanners = useCallback(() => {
     if (!isClient || isAdminPage) return; // 클라이언트가 아니거나 admin 페이지에서는 배너 로드하지 않음
 
+    // 쿠키로 오늘 하루 숨김 설정이 되어 있는지 확인
+    if (isTopBannerHiddenToday()) {
+      setIsVisible(false);
+      return;
+    }
+
     // localStorage에서 저장된 배너 데이터를 가져옴
     const savedBanners = localStorage.getItem("topBanners");
     let banners: TopBanner[] = [];
@@ -360,8 +367,9 @@ export default function TopBanner() {
 
   const handleClose = () => {
     setIsVisible(false);
-    // 닫힌 탑배너를 localStorage에 저장
-    localStorage.setItem("topBannerClosed", "true");
+
+    // 쿠키로 오늘 하루 동안 숨김 설정
+    hideTopBannerForToday();
 
     // 배너가 닫힐 때 즉시 CSS 변수와 body padding 조정
     try {

@@ -565,36 +565,36 @@ export default function TopBannerManager() {
                     </div>
 
                     {/* 상세 정보 */}
-                    <div className="grid grid-cols-2 gap-3 text-xs sm:text-sm">
-                      <div>
+                    <div className="grid grid-cols-1 gap-2 text-xs">
+                      <div className="flex justify-between">
                         <span className="text-gray-500 dark:text-gray-400">
                           순서:
                         </span>
-                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                        <span className="text-gray-900 dark:text-gray-100">
                           {banner.order}
                         </span>
                       </div>
-                      <div>
+                      <div className="flex justify-between">
                         <span className="text-gray-500 dark:text-gray-400">
                           타입:
                         </span>
-                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                        <span className="text-gray-900 dark:text-gray-100">
                           {banner.bannerType === "custom" ? "커스텀" : "Lumina"}
                         </span>
                       </div>
-                      <div>
+                      <div className="flex justify-between">
                         <span className="text-gray-500 dark:text-gray-400">
                           전체폭:
                         </span>
-                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                        <span className="text-gray-900 dark:text-gray-100">
                           {banner.isFullWidth ? "예" : "아니오"}
                         </span>
                       </div>
-                      <div>
+                      <div className="flex justify-between">
                         <span className="text-gray-500 dark:text-gray-400">
                           기간:
                         </span>
-                        <span className="ml-1 text-gray-900 dark:text-gray-100">
+                        <span className="text-gray-900 dark:text-gray-100 text-right">
                           {banner.startDate} ~ {banner.endDate}
                         </span>
                       </div>
@@ -621,13 +621,13 @@ export default function TopBannerManager() {
 
                     {/* 액션 버튼 */}
                     <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-600">
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center gap-1">
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => handleReorder(banner.id, "up")}
                           disabled={banner.order === 1}
-                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1.5"
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1 flex-shrink-0"
                         >
                           <ArrowUp className="w-3 h-3" />
                         </Button>
@@ -636,17 +636,17 @@ export default function TopBannerManager() {
                           size="sm"
                           onClick={() => handleReorder(banner.id, "down")}
                           disabled={banner.order === topBanners.length}
-                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1.5"
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1 flex-shrink-0"
                         >
                           <ArrowDown className="w-3 h-3" />
                         </Button>
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center gap-1">
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => handleToggleStatus(banner.id)}
-                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1.5"
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1 flex-shrink-0"
                         >
                           {banner.isActive ? (
                             <EyeOff className="w-3 h-3" />
@@ -658,7 +658,7 @@ export default function TopBannerManager() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleEditBanner(banner)}
-                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1.5"
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1 flex-shrink-0"
                         >
                           <Edit className="w-3 h-3" />
                         </Button>
@@ -666,7 +666,7 @@ export default function TopBannerManager() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleDeleteBanner(banner.id)}
-                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1.5"
+                          className="hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-1 flex-shrink-0"
                         >
                           <Trash2 className="w-3 h-3" />
                         </Button>
@@ -981,17 +981,17 @@ export default function TopBannerManager() {
               </Label>
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0 sm:space-x-2">
             <Button
               variant="outline"
               onClick={() => setIsDialogOpen(false)}
-              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 w-full sm:w-auto"
             >
               취소
             </Button>
             <Button
               onClick={handleSaveBanner}
-              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white w-full sm:w-auto"
             >
               {editingBanner ? "수정" : "추가"}
             </Button>
