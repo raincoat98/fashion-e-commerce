@@ -215,12 +215,12 @@ export default function BannerManager() {
                 메인 페이지 배너를 등록, 수정, 삭제할 수 있습니다
               </CardDescription>
             </div>
-            <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3 lg:space-x-4 flex-shrink-0">
+            <div className="flex flex-row items-center space-x-2 sm:space-x-3 lg:space-x-4 flex-shrink-0">
               <Link href="/">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full sm:w-auto flex items-center justify-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  className="flex items-center justify-center space-x-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <Home className="w-4 h-4" />
                   <span className="hidden sm:inline">홈으로 가기</span>
@@ -230,7 +230,7 @@ export default function BannerManager() {
               <Button
                 onClick={handleAddBanner}
                 size="sm"
-                className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
+                className="flex items-center justify-center space-x-2 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white"
               >
                 <Plus className="w-4 h-4" />
                 <span className="hidden sm:inline">배너 추가</span>
