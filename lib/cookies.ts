@@ -66,3 +66,24 @@ export function isTopBannerHiddenToday(): boolean {
 
   return hiddenDate === today;
 }
+
+/**
+ * 특정 팝업을 오늘 하루 동안 숨기기
+ * @param popupId 팝업 ID
+ */
+export function hidePopupForToday(popupId: string): void {
+  const today = new Date().toDateString();
+  setCookie(`popupHidden_${popupId}`, today, 1);
+}
+
+/**
+ * 특정 팝업이 오늘 숨겨졌는지 확인
+ * @param popupId 팝업 ID
+ * @returns 오늘 숨겨졌으면 true, 아니면 false
+ */
+export function isPopupHiddenToday(popupId: string): boolean {
+  const hiddenDate = getCookie(`popupHidden_${popupId}`);
+  const today = new Date().toDateString();
+
+  return hiddenDate === today;
+}

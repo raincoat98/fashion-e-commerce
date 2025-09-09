@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
+import { hidePopupForToday, isPopupHiddenToday } from "@/lib/cookies";
 
 // 모바일 감지 훅
 const useIsMobile = () => {
@@ -60,7 +61,6 @@ export default function Popup() {
   const loadAndFilterPopups = () => {
     // 개발 중에는 닫힌 상태를 리셋 (필요시 주석 해제)
     localStorage.removeItem("closedPopups");
-    localStorage.removeItem("dontShowToday");
 
     // localStorage에서 저장된 팝업 데이터를 가져옴
     const savedPopups = localStorage.getItem("popups");
@@ -190,7 +190,6 @@ export default function Popup() {
       isAdminPage,
       popups: activePopups,
       closedPopups: JSON.parse(localStorage.getItem("closedPopups") || "[]"),
-      dontShowToday: JSON.parse(localStorage.getItem("dontShowToday") || "{}"),
     });
   };
 
@@ -258,12 +257,8 @@ export default function Popup() {
         return;
       }
 
-      // 오늘은 그만보기 체크
-      const dontShowToday = JSON.parse(
-        localStorage.getItem("dontShowToday") || "{}"
-      );
-      const today = new Date().toDateString();
-      if (dontShowToday[popup.id] === today) {
+      // 오늘은 그만보기 체크 (쿠키 기반)
+      if (isPopupHiddenToday(popup.id)) {
         console.log(`Popup ${popup.id} is set to not show today`);
         return;
       }
@@ -313,13 +308,8 @@ export default function Popup() {
       return newSet;
     });
 
-    // 오늘 날짜를 localStorage에 저장
-    const today = new Date().toDateString();
-    const dontShowToday = JSON.parse(
-      localStorage.getItem("dontShowToday") || "{}"
-    );
-    dontShowToday[popupId] = today;
-    localStorage.setItem("dontShowToday", JSON.stringify(dontShowToday));
+    // 쿠키로 오늘 하루 동안 숨김 설정
+    hidePopupForToday(popupId);
   };
 
   const getPositionStyles = (position: string) => {
