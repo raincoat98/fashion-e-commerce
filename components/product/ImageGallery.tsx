@@ -90,32 +90,43 @@ export default function ImageGallery({
 
       {/* Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-4xl h-[90vh] p-0 bg-black dark:bg-gray-900">
-          <div className="relative w-full h-full flex items-center justify-center">
+        <DialogContent className="max-w-4xl w-[95vw] h-[95vh] p-0 bg-black dark:bg-gray-900 border-0 [&>button]:hidden">
+          <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+            {/* Custom Close Button */}
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4 z-10 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-700/40 text-white dark:text-gray-100 rounded-full p-2"
+              className="absolute top-4 right-4 z-20 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-700/40 text-white dark:text-gray-100 rounded-full p-2 transition-all duration-200"
             >
               <X className="h-6 w-6" />
             </button>
 
-            <img
-              src={images[currentImage]}
-              alt={`${productName} ${currentImage + 1}`}
-              className="max-w-full max-h-full object-contain"
-            />
+            {/* Image Container */}
+            <div className="relative w-full h-full flex items-center justify-center p-4">
+              <img
+                src={images[currentImage]}
+                alt={`${productName} ${currentImage + 1}`}
+                className="max-w-full max-h-full object-contain"
+                style={{
+                  maxHeight: "calc(95vh - 8rem)",
+                  maxWidth: "calc(95vw - 8rem)",
+                  width: "auto",
+                  height: "auto",
+                }}
+              />
+            </div>
 
+            {/* Navigation Arrows */}
             {images.length > 1 && (
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-700/40 text-white dark:text-gray-100 rounded-full p-3"
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-700/40 text-white dark:text-gray-100 rounded-full p-3 transition-all duration-200 z-10"
                 >
                   <ChevronLeft className="h-6 w-6" />
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-700/40 text-white dark:text-gray-100 rounded-full p-3"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-700/40 text-white dark:text-gray-100 rounded-full p-3 transition-all duration-200 z-10"
                 >
                   <ChevronRight className="h-6 w-6" />
                 </button>
@@ -123,7 +134,7 @@ export default function ImageGallery({
             )}
 
             {/* Thumbnail Navigation in Modal */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
               {images.map((_, index) => (
                 <button
                   key={index}
