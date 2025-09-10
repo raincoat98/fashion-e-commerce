@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import {
   Ruler,
   Palette,
@@ -153,29 +155,41 @@ export default function StyleGuidePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <Header />
+
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-20">
+      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-12 sm:py-16 md:py-20">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 lumina-text-gradient">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 lumina-text-gradient">
               스타일 가이드
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 word-break-keep">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-6 sm:mb-8 word-break-keep px-2">
               당신만의 완벽한 스타일을 찾아보세요. LUMINA가 제안하는
-              <br />
+              <br className="hidden sm:block" />
+              <span className="sm:hidden"> </span>
               세련된 패션 가이드와 스타일링 팁을 확인하세요.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Badge variant="secondary" className="px-4 py-2 text-sm">
-                <Sparkles className="w-4 h-4 mr-2" />
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4">
+              <Badge
+                variant="secondary"
+                className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm"
+              >
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
                 전문가 추천
               </Badge>
-              <Badge variant="secondary" className="px-4 py-2 text-sm">
-                <Users className="w-4 h-4 mr-2" />
+              <Badge
+                variant="secondary"
+                className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm"
+              >
+                <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
                 체형별 가이드
               </Badge>
-              <Badge variant="secondary" className="px-4 py-2 text-sm">
-                <TrendingUp className="w-4 h-4 mr-2" />
+              <Badge
+                variant="secondary"
+                className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm"
+              >
+                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
                 트렌드 반영
               </Badge>
             </div>
@@ -183,46 +197,52 @@ export default function StyleGuidePage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-16">
-        <Tabs defaultValue="color" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-1 md:grid-cols-4">
-            <TabsTrigger value="color" className="flex items-center space-x-2">
-              <Palette className="w-4 h-4" />
-              <span>컬러 가이드</span>
+      <div className="container mx-auto px-4 py-8 sm:py-12 md:py-16">
+        <Tabs defaultValue="color" className="space-y-6 sm:space-y-8">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto">
+            <TabsTrigger
+              value="color"
+              className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-2 py-3 sm:py-2"
+            >
+              <Palette className="w-4 h-4 sm:w-4 sm:h-4" />
+              <span className="text-xs sm:text-sm">컬러 가이드</span>
             </TabsTrigger>
             <TabsTrigger
               value="styling"
-              className="flex items-center space-x-2"
+              className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-2 py-3 sm:py-2"
             >
-              <Lightbulb className="w-4 h-4" />
-              <span>스타일링 팁</span>
+              <Lightbulb className="w-4 h-4 sm:w-4 sm:h-4" />
+              <span className="text-xs sm:text-sm">스타일링 팁</span>
             </TabsTrigger>
             <TabsTrigger
               value="seasonal"
-              className="flex items-center space-x-2"
+              className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-2 py-3 sm:py-2"
             >
-              <Sparkles className="w-4 h-4" />
-              <span>계절별 스타일</span>
+              <Sparkles className="w-4 h-4 sm:w-4 sm:h-4" />
+              <span className="text-xs sm:text-sm">계절별 스타일</span>
             </TabsTrigger>
-            <TabsTrigger value="body" className="flex items-center space-x-2">
-              <Users className="w-4 h-4" />
-              <span>체형별 가이드</span>
+            <TabsTrigger
+              value="body"
+              className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-2 py-3 sm:py-2"
+            >
+              <Users className="w-4 h-4 sm:w-4 sm:h-4" />
+              <span className="text-xs sm:text-sm">체형별 가이드</span>
             </TabsTrigger>
           </TabsList>
 
           {/* 컬러 가이드 */}
-          <TabsContent value="color" className="space-y-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          <TabsContent value="color" className="space-y-6 sm:space-y-8">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4">
                 컬러 가이드
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto word-break-keep">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto word-break-keep px-4">
                 상황과 개성에 맞는 완벽한 컬러 조합을 찾아보세요. 각 컬러의
                 특성과 활용법을 알아보세요.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
               {colorPalettes.map((palette, index) => (
                 <Card
                   key={index}
@@ -237,25 +257,25 @@ export default function StyleGuidePage() {
                       <span>{palette.name}</span>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6">
                     <div className="flex space-x-2">
                       {palette.colors.map((color, colorIndex) => (
                         <div
                           key={colorIndex}
-                          className="w-12 h-12 rounded-lg shadow-sm border-2 border-white dark:border-gray-800"
+                          className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg shadow-sm border-2 border-white dark:border-gray-800"
                           style={{ backgroundColor: color }}
                         />
                       ))}
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                    <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">
                       {palette.description}
                     </p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {palette.bestFor.map((use, useIndex) => (
                         <Badge
                           key={useIndex}
                           variant="outline"
-                          className="text-xs"
+                          className="text-xs px-2 py-1"
                         >
                           {use}
                         </Badge>
@@ -268,39 +288,39 @@ export default function StyleGuidePage() {
           </TabsContent>
 
           {/* 스타일링 팁 */}
-          <TabsContent value="styling" className="space-y-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          <TabsContent value="styling" className="space-y-6 sm:space-y-8">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4">
                 스타일링 팁
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto word-break-keep">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto word-break-keep px-4">
                 전문가가 추천하는 실용적인 스타일링 팁으로 완벽한 룩을
                 완성하세요.
               </p>
             </div>
 
-            <div className="space-y-12">
+            <div className="space-y-8 sm:space-y-12">
               {stylingTips.map((category, categoryIndex) => (
                 <div key={categoryIndex}>
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4 sm:mb-6">
                     {category.category}
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {category.tips.map((tip, tipIndex) => (
                       <Card
                         key={tipIndex}
                         className="hover:shadow-lg transition-shadow"
                       >
-                        <CardContent className="p-6">
-                          <div className="flex items-start space-x-4">
-                            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                              <tip.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        <CardContent className="p-4 sm:p-6">
+                          <div className="flex items-start space-x-3 sm:space-x-4">
+                            <div className="p-2 sm:p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex-shrink-0">
+                              <tip.icon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
                             </div>
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1 sm:mb-2 text-sm sm:text-base">
                                 {tip.title}
                               </h4>
-                              <p className="text-gray-600 dark:text-gray-400 text-sm word-break-keep">
+                              <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm word-break-keep">
                                 {tip.description}
                               </p>
                             </div>
@@ -315,18 +335,18 @@ export default function StyleGuidePage() {
           </TabsContent>
 
           {/* 계절별 스타일 */}
-          <TabsContent value="seasonal" className="space-y-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          <TabsContent value="seasonal" className="space-y-6 sm:space-y-8">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4">
                 계절별 스타일
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto word-break-keep">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto word-break-keep px-4">
                 계절의 특성을 살린 완벽한 스타일링으로 언제나 세련된 모습을
                 유지하세요.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
               {seasonalStyles.map((season, index) => (
                 <Card
                   key={index}
@@ -335,30 +355,30 @@ export default function StyleGuidePage() {
                   <CardHeader>
                     <CardTitle className="text-2xl">{season.season}</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-6">
+                  <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6">
                     <div className="flex space-x-2">
                       {season.colors.map((color, colorIndex) => (
                         <div
                           key={colorIndex}
-                          className="w-8 h-8 rounded-full shadow-sm border-2 border-white dark:border-gray-800"
+                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full shadow-sm border-2 border-white dark:border-gray-800"
                           style={{ backgroundColor: color }}
                         />
                       ))}
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
                       {season.description}
                     </p>
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 sm:mb-3 text-sm sm:text-base">
                         추천 아이템
                       </h4>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2">
                         {season.items.map((item, itemIndex) => (
                           <div
                             key={itemIndex}
-                            className="flex items-center space-x-2 text-sm"
+                            className="flex items-center space-x-2 text-xs sm:text-sm"
                           >
-                            <CheckCircle className="w-4 h-4 text-green-500" />
+                            <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-500 flex-shrink-0" />
                             <span className="text-gray-700 dark:text-gray-300">
                               {item}
                             </span>
@@ -373,18 +393,18 @@ export default function StyleGuidePage() {
           </TabsContent>
 
           {/* 체형별 가이드 */}
-          <TabsContent value="body" className="space-y-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          <TabsContent value="body" className="space-y-6 sm:space-y-8">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4">
                 체형별 가이드
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto word-break-keep">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto word-break-keep px-4">
                 당신의 체형에 맞는 완벽한 스타일링으로 자신감 넘치는 모습을
                 연출하세요.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
               {[
                 {
                   type: "슬림 체형",
@@ -469,17 +489,17 @@ export default function StyleGuidePage() {
                       {bodyType.description}
                     </p>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6">
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center">
-                        <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center text-sm sm:text-base">
+                        <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-500 mr-2 flex-shrink-0" />
                         추천 스타일
                       </h4>
                       <ul className="space-y-1">
                         {bodyType.tips.map((tip, tipIndex) => (
                           <li
                             key={tipIndex}
-                            className="text-sm text-gray-600 dark:text-gray-400"
+                            className="text-xs sm:text-sm text-gray-600 dark:text-gray-400"
                           >
                             • {tip}
                           </li>
@@ -487,15 +507,15 @@ export default function StyleGuidePage() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center">
-                        <Info className="w-4 h-4 text-orange-500 mr-2" />
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center text-sm sm:text-base">
+                        <Info className="w-3 h-3 sm:w-4 sm:h-4 text-orange-500 mr-2 flex-shrink-0" />
                         피해야 할 스타일
                       </h4>
                       <ul className="space-y-1">
                         {bodyType.avoid.map((avoid, avoidIndex) => (
                           <li
                             key={avoidIndex}
-                            className="text-sm text-gray-600 dark:text-gray-400"
+                            className="text-xs sm:text-sm text-gray-600 dark:text-gray-400"
                           >
                             • {avoid}
                           </li>
@@ -510,27 +530,30 @@ export default function StyleGuidePage() {
         </Tabs>
 
         {/* CTA Section */}
-        <div className="mt-20 text-center">
+        <div className="mt-12 sm:mt-16 md:mt-20 text-center">
           <Card className="bg-gradient-to-r from-gray-900 to-gray-800 text-white border-0">
-            <CardContent className="p-12">
-              <h2 className="text-3xl font-bold mb-4">
+            <CardContent className="p-6 sm:p-8 md:p-12">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">
                 지금 바로 스타일링을 시작해보세요
               </h2>
-              <p className="text-gray-300 mb-8 max-w-2xl mx-auto word-break-keep">
+              <p className="text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto word-break-keep text-sm sm:text-base px-4">
                 LUMINA의 다양한 컬렉션에서 당신만의 완벽한 스타일을 찾아보세요.
                 전문가가 추천하는 아이템들로 더욱 세련된 모습을 연출하세요.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="lumina-gradient hover:opacity-90">
-                  <Shirt className="w-5 h-5 mr-2" />
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 text-sm sm:text-base"
+                >
+                  <Shirt className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   컬렉션 보러가기
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-gray-900"
+                  className="border-2 border-white text-white hover:bg-white hover:text-gray-900 bg-transparent text-sm sm:text-base"
                 >
-                  <Heart className="w-5 h-5 mr-2" />
+                  <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   위시리스트 보기
                 </Button>
               </div>
@@ -538,6 +561,8 @@ export default function StyleGuidePage() {
           </Card>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
