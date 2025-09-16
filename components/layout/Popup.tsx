@@ -60,7 +60,7 @@ export default function Popup() {
   // 팝업 데이터를 로드하고 필터링하는 함수
   const loadAndFilterPopups = () => {
     // 개발 중에는 닫힌 상태를 리셋 (필요시 주석 해제)
-    localStorage.removeItem("closedPopups");
+    // localStorage.removeItem("closedPopups");
 
     // localStorage에서 저장된 팝업 데이터를 가져옴
     const savedPopups = localStorage.getItem("popups");
@@ -244,9 +244,37 @@ export default function Popup() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // 스크롤 기반 팝업 처리
   useEffect(() => {
     popups.forEach((popup) => {
-      if (visiblePopups.has(popup.id)) return;
+      if (
+        popup.displayType === "scroll" &&
+        !visiblePopups.has(popup.id) &&
+        scrollPercentage >= popup.scrollPercentage
+      ) {
+        // 이미 닫힌 팝업은 다시 표시하지 않음
+        const closedPopups = JSON.parse(
+          localStorage.getItem("closedPopups") || "[]"
+        );
+        if (closedPopups.includes(popup.id)) {
+          return;
+        }
+
+        // 오늘은 그만보기 체크 (쿠키 기반)
+        if (isPopupHiddenToday(popup.id)) {
+          return;
+        }
+
+        console.log(`Showing scroll popup ${popup.id} at ${scrollPercentage}%`);
+        setVisiblePopups((prev) => new Set(prev).add(popup.id));
+      }
+    });
+  }, [scrollPercentage, popups, visiblePopups]);
+
+  // immediate와 delay 팝업 처리
+  useEffect(() => {
+    popups.forEach((popup) => {
+      if (visiblePopups.has(popup.id) || popup.displayType === "scroll") return;
 
       // 이미 닫힌 팝업은 다시 표시하지 않음
       const closedPopups = JSON.parse(
@@ -273,16 +301,12 @@ export default function Popup() {
           setTimeout(() => {
             setVisiblePopups((prev) => new Set(prev).add(popup.id));
           }, popup.delaySeconds * 1000);
-        } else if (popup.displayType === "scroll") {
-          if (scrollPercentage >= popup.scrollPercentage) {
-            setVisiblePopups((prev) => new Set(prev).add(popup.id));
-          }
         }
       };
 
       showPopup();
     });
-  }, [popups, scrollPercentage, visiblePopups]);
+  }, [popups]);
 
   const handleClose = (popupId: string) => {
     setVisiblePopups((prev) => {
