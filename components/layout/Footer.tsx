@@ -81,14 +81,6 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/lookbook"
-                  className="text-gray-300 hover:text-yellow-400 transition-colors"
-                >
-                  룩북
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/style-guide"
                   className="text-gray-300 hover:text-yellow-400 transition-colors"
                 >

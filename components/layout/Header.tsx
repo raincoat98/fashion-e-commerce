@@ -221,7 +221,6 @@ export default function Header() {
                 label: "원피스",
                 path: "/categories/dress",
               },
-              { href: "/lookbook", label: "룩북", path: "/lookbook" },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -474,7 +473,6 @@ export default function Header() {
                   label: "원피스",
                   path: "/categories/dress",
                 },
-                { href: "/lookbook", label: "룩북", path: "/lookbook" },
               ].map((item) => (
                 <Link
                   key={item.href}
