@@ -359,7 +359,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
       setFormData({
         name: product.name,
         price: product.price,
-        originalPrice: product.salePrice || product.price,
+        originalPrice: product.originalPrice || product.price,
         description: product.description,
         images: product.images,
         category: product.category,
@@ -823,6 +823,20 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
 
   const handleProductFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 할인가 검증
+    if (
+      formData.originalPrice > 0 &&
+      formData.originalPrice <= formData.price
+    ) {
+      toast({
+        title: "가격 오류",
+        description: "원가는 할인가보다 높아야 합니다.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const badge = getBadgeText();
 
     if (editingProduct) {
@@ -847,6 +861,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         description: formData.description,
         price: formData.price,
         originalPrice:
+          formData.originalPrice > 0 &&
           formData.originalPrice !== formData.price
             ? formData.originalPrice
             : undefined,
@@ -861,7 +876,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         tags: formData.features.filter((f) => f.trim() !== ""),
         isActive: formData.isActive ?? true,
         isNew: formData.isNew ?? false,
-        isSale: formData.originalPrice !== formData.price,
+        isSale:
+          formData.originalPrice > 0 &&
+          formData.originalPrice !== formData.price,
         isBest: formData.isBest ?? false,
         isFeatured: formData.isFeatured ?? false,
         isLimited: formData.isLimited ?? false,
@@ -933,6 +950,7 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         description: formData.description,
         price: formData.price,
         originalPrice:
+          formData.originalPrice > 0 &&
           formData.originalPrice !== formData.price
             ? formData.originalPrice
             : undefined,
@@ -952,7 +970,9 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
         colorSizeAvailability: finalColorSizeAvailability, // 색상별 사이즈별 사용 가능 여부
         isActive: formData.isActive ?? true,
         isNew: formData.isNew ?? false,
-        isSale: formData.originalPrice !== formData.price,
+        isSale:
+          formData.originalPrice > 0 &&
+          formData.originalPrice !== formData.price,
         isBest: formData.isBest ?? false,
         isFeatured: formData.isFeatured ?? false,
         isLimited: formData.isLimited ?? false,
@@ -1214,18 +1234,41 @@ export default function ProductManager({ onEditProduct }: ProductManagerProps) {
                   htmlFor="originalPrice"
                   className="text-gray-900 dark:text-gray-100"
                 >
-                  할인가
+                  원가 (할인 전 가격)
                 </Label>
                 <Input
                   id="originalPrice"
                   type="number"
                   value={formData.originalPrice}
                   onChange={(e) =>
-                    handleInputChange("originalPrice", parseInt(e.target.value))
+                    handleInputChange(
+                      "originalPrice",
+                      parseInt(e.target.value) || 0
+                    )
                   }
-                  placeholder="할인가를 입력하세요 (선택사항)"
+                  placeholder="원가를 입력하세요 (할인가보다 높아야 함)"
+                  min="0"
                   className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 />
+                {formData.originalPrice > 0 &&
+                  formData.originalPrice <= formData.price && (
+                    <p className="text-xs text-red-500 mt-1">
+                      원가는 할인가({formData.price.toLocaleString()}원)보다
+                      높아야 합니다.
+                    </p>
+                  )}
+                {formData.originalPrice > 0 &&
+                  formData.originalPrice > formData.price && (
+                    <p className="text-xs text-green-600 mt-1">
+                      할인율:{" "}
+                      {Math.round(
+                        ((formData.originalPrice - formData.price) /
+                          formData.originalPrice) *
+                          100
+                      )}
+                      %
+                    </p>
+                  )}
               </div>
             </div>
 

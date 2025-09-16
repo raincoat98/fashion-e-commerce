@@ -6,9 +6,8 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  price: number;
-  originalPrice?: number;
-  salePrice?: number;
+  price: number; // 할인가 (실제 판매가)
+  originalPrice?: number; // 원가 (할인 전 가격)
   category: string;
   subCategory?: string;
   images: string[];
@@ -205,8 +204,8 @@ const sampleProducts: Product[] = [
     name: "LUMINA 클래식 블라우스",
     description:
       "세련된 디자인의 클래식 블라우스로 어떤 자리에서도 우아함을 연출합니다.",
-    price: 89000,
-    originalPrice: 120000,
+    price: 89000, // 할인가
+    originalPrice: 120000, // 원가
     category: "top",
     subCategory: "블라우스",
     images: [
@@ -236,7 +235,7 @@ const sampleProducts: Product[] = [
     },
     isActive: true,
     isNew: true,
-    isSale: true,
+    isSale: true, // originalPrice > price 이므로 할인 상품
     isBest: false,
     isFeatured: false,
     isLimited: false,
@@ -252,7 +251,7 @@ const sampleProducts: Product[] = [
     id: "2",
     name: "LUMINA 슬림 팬츠",
     description: "편안하면서도 세련된 실루엣의 슬림 팬츠입니다.",
-    price: 129000,
+    price: 129000, // 정가 (할인 없음)
     category: "bottom",
     subCategory: "팬츠",
     images: [
@@ -280,7 +279,7 @@ const sampleProducts: Product[] = [
     },
     isActive: true,
     isNew: false,
-    isSale: false,
+    isSale: false, // 할인 없음
     isBest: true,
     isFeatured: true,
     isLimited: false,
@@ -296,8 +295,8 @@ const sampleProducts: Product[] = [
     id: "3",
     name: "LUMINA 플로럴 원피스",
     description: "우아한 플로럴 패턴의 원피스로 봄날의 로맨스를 완성합니다.",
-    price: 159000,
-    originalPrice: 199000,
+    price: 159000, // 할인가
+    originalPrice: 199000, // 원가
     category: "dress",
     subCategory: "미니원피스",
     images: [
@@ -320,7 +319,7 @@ const sampleProducts: Product[] = [
     },
     isActive: true,
     isNew: true,
-    isSale: true,
+    isSale: true, // originalPrice > price 이므로 할인 상품
     isBest: false,
     isFeatured: false,
     isLimited: true,
@@ -337,7 +336,7 @@ const sampleProducts: Product[] = [
     name: "LUMINA 니트 카디건",
     description:
       "부드러운 니트 소재의 카디건으로 따뜻함과 스타일을 동시에 만족합니다.",
-    price: 99000,
+    price: 99000, // 정가 (할인 없음)
     category: "top",
     subCategory: "니트",
     images: [
@@ -360,7 +359,7 @@ const sampleProducts: Product[] = [
     },
     isActive: true,
     isNew: false,
-    isSale: false,
+    isSale: false, // 할인 없음
     isBest: true,
     isFeatured: true,
     isLimited: false,
@@ -377,8 +376,8 @@ const sampleProducts: Product[] = [
     name: "LUMINA 데님 스커트",
     description:
       "클래식한 데님 스커트로 캐주얼하면서도 세련된 룩을 완성합니다.",
-    price: 79000,
-    originalPrice: 99000,
+    price: 79000, // 할인가
+    originalPrice: 99000, // 원가
     category: "bottom",
     subCategory: "스커트",
     images: [
@@ -400,7 +399,7 @@ const sampleProducts: Product[] = [
     },
     isActive: false,
     isNew: false,
-    isSale: true,
+    isSale: true, // originalPrice > price 이므로 할인 상품
     isBest: false,
     isFeatured: false,
     isLimited: false,
@@ -416,7 +415,7 @@ const sampleProducts: Product[] = [
     id: "6",
     name: "LUMINA 베이직 티셔츠",
     description: "편안하고 실용적인 베이직 티셔츠입니다.",
-    price: 29000,
+    price: 29000, // 정가 (할인 없음)
     category: "top",
     subCategory: "티셔츠",
     images: [
@@ -439,7 +438,7 @@ const sampleProducts: Product[] = [
     },
     isActive: true,
     isNew: false,
-    isSale: false,
+    isSale: false, // 할인 없음
     isBest: true,
     isFeatured: true,
     isLimited: false,
@@ -455,8 +454,8 @@ const sampleProducts: Product[] = [
     id: "7",
     name: "LUMINA 와이드 팬츠",
     description: "편안한 착용감의 와이드 팬츠입니다.",
-    price: 79000,
-    originalPrice: 99000,
+    price: 79000, // 할인가
+    originalPrice: 99000, // 원가
     category: "bottom",
     subCategory: "팬츠",
     images: [
@@ -479,7 +478,7 @@ const sampleProducts: Product[] = [
     },
     isActive: true,
     isNew: false,
-    isSale: true,
+    isSale: true, // originalPrice > price 이므로 할인 상품
     isBest: false,
     isFeatured: false,
     isLimited: false,
@@ -495,7 +494,7 @@ const sampleProducts: Product[] = [
     id: "8",
     name: "LUMINA 미디 원피스",
     description: "우아하고 세련된 미디 원피스입니다.",
-    price: 139000,
+    price: 139000, // 정가 (할인 없음)
     category: "dress",
     subCategory: "미디원피스",
     images: [
@@ -518,7 +517,7 @@ const sampleProducts: Product[] = [
     },
     isActive: true,
     isNew: true,
-    isSale: false,
+    isSale: false, // 할인 없음
     isBest: false,
     isFeatured: true,
     isLimited: false,
@@ -534,8 +533,8 @@ const sampleProducts: Product[] = [
     id: "9",
     name: "LUMINA 트렌치 코트",
     description: "클래식한 트렌치 코트로 세련된 룩을 완성합니다.",
-    price: 199000,
-    originalPrice: 249000,
+    price: 199000, // 할인가
+    originalPrice: 249000, // 원가
     category: "outer",
     subCategory: "코트",
     images: [
@@ -557,7 +556,7 @@ const sampleProducts: Product[] = [
     },
     isActive: true,
     isNew: false,
-    isSale: true,
+    isSale: true, // originalPrice > price 이므로 할인 상품
     isBest: true,
     isFeatured: true,
     isLimited: false,
@@ -573,7 +572,7 @@ const sampleProducts: Product[] = [
     id: "10",
     name: "LUMINA 데님 자켓",
     description: "캐주얼하면서도 세련된 데님 자켓입니다.",
-    price: 89000,
+    price: 89000, // 정가 (할인 없음)
     category: "outer",
     subCategory: "자켓",
     images: [
@@ -596,7 +595,7 @@ const sampleProducts: Product[] = [
     },
     isActive: true,
     isNew: false,
-    isSale: false,
+    isSale: false, // 할인 없음
     isBest: false,
     isFeatured: false,
     isLimited: false,
